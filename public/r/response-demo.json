@@ -1,0 +1,39 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "response-demo",
+  "title": "Response",
+  "description": "An answer set as prose — lists, a quote, links and inline code — with a code block that names its language and copies itself, and a table that scrolls rather than pushing the thread sideways.",
+  "registryDependencies": [
+    "https://aiellie.dev/r/response.json",
+    "https://aiellie.dev/r/bubble.json"
+  ],
+  "files": [
+    {
+      "path": "examples/messages/response.tsx",
+      "content": "\"use client\"\n\nimport {\n  Response,\n  ResponseCodeBlock,\n  ResponseTable,\n} from \"@/components/aiellie-ui/response\"\nimport { Bubble, BubbleContent, BubbleGroup } from \"@/components/ui/bubble\"\n\nconst sample = `export function useNow(live: boolean) {\n  // One clock per interval, shared by every stamp reading it.\n  const clock = clockFor(live ? 60_000 : 0)\n  return useSyncExternalStore(clock.subscribe, clock.getSnapshot)\n}`\n\nexport function ResponseDemo() {\n  return (\n    <BubbleGroup className=\"w-full max-w-sm\">\n      <Bubble align=\"end\">\n        <BubbleContent>How does the rollout work?</BubbleContent>\n      </Bubble>\n      <Bubble variant=\"ghost\">\n        <BubbleContent>\n          <Response>\n            <p>\n              It ships dark on Tuesday and goes on for staff first. Three things\n              have to be true before the flag turns on:\n            </p>\n            <ul>\n              <li>The migration has landed and been verified.</li>\n              <li>\n                <strong>Marta</strong> has signed off on the copy.\n              </li>\n              <li>\n                <code>flags.rollout</code> reads <code>staff</code> in\n                production.\n              </li>\n            </ul>\n            <blockquote>\n              If any of the three is still open on Monday, it waits a week.\n            </blockquote>\n            <p>\n              The <a href=\"#\">rollout note</a> has the full order of operations.\n            </p>\n          </Response>\n        </BubbleContent>\n      </Bubble>\n    </BubbleGroup>\n  )\n}\n\nexport function ResponseCodeDemo() {\n  return (\n    <Bubble variant=\"ghost\" className=\"w-full max-w-sm\">\n      <BubbleContent>\n        <Response>\n          <h2>Reading the clock</h2>\n          <p>\n            The stamps share one clock so they cannot disagree about what\n            &ldquo;now&rdquo; is:\n          </p>\n          <ResponseCodeBlock\n            code={sample}\n            language=\"typescript\"\n            filename=\"use-now.ts\"\n          />\n          <p>\n            Subscribing is what takes the first reading from the reader&rsquo;s\n            own clock rather than the server&rsquo;s.\n          </p>\n        </Response>\n      </BubbleContent>\n    </Bubble>\n  )\n}\n\nexport function ResponseTableDemo() {\n  return (\n    <Bubble variant=\"ghost\" className=\"w-full max-w-sm\">\n      <BubbleContent>\n        <Response>\n          <h2>Where each state shows</h2>\n          <ResponseTable>\n            <table>\n              <thead>\n                <tr>\n                  <th>State</th>\n                  <th>Shown as</th>\n                  <th>Announced</th>\n                </tr>\n              </thead>\n              <tbody>\n                <tr>\n                  <td>Sending</td>\n                  <td>Pulsing clock</td>\n                  <td>Sending</td>\n                </tr>\n                <tr>\n                  <td>Delivered</td>\n                  <td>Double tick</td>\n                  <td>Delivered</td>\n                </tr>\n                <tr>\n                  <td>Read</td>\n                  <td>Double tick, tinted</td>\n                  <td>Read</td>\n                </tr>\n              </tbody>\n            </table>\n          </ResponseTable>\n        </Response>\n      </BubbleContent>\n    </Bubble>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/messages/response.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Prose",
+        "demo": "ResponseDemo"
+      },
+      {
+        "name": "Code",
+        "demo": "ResponseCodeDemo"
+      },
+      {
+        "name": "Table",
+        "demo": "ResponseTableDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "messages"
+  ],
+  "type": "registry:example"
+}

@@ -80,6 +80,45 @@
       ]
     },
     {
+      "name": "response",
+      "type": "registry:ui",
+      "title": "Response",
+      "description": "The body of an answer rather than the bubble around it — headings, lists, quotes, links and tables set to read as prose, with code blocks that carry their language and a copy of exactly what is on screen.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/actions.json",
+        "https://aiellie.dev/r/highlight.json",
+        "https://aiellie.dev/r/use-copy-to-clipboard.json",
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/response.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/response.tsx"
+        }
+      ]
+    },
+    {
+      "name": "message-status",
+      "type": "registry:ui",
+      "title": "Message Status",
+      "description": "How far a message has got — waiting, gone, arrived, seen, or not sent — as a mark small enough to sit beside a timestamp, with the retry offered on the one state that asks something of the reader.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/message-status.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/message-status.tsx"
+        }
+      ]
+    },
+    {
       "name": "streaming-text",
       "type": "registry:ui",
       "title": "Streaming Text",
@@ -683,6 +722,81 @@
           {
             "name": "Sending",
             "demo": "SuggestionsControlledDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "response-demo",
+      "type": "registry:example",
+      "title": "Response",
+      "description": "An answer set as prose — lists, a quote, links and inline code — with a code block that names its language and copies itself, and a table that scrolls rather than pushing the thread sideways.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/response.json",
+        "https://aiellie.dev/r/bubble.json"
+      ],
+      "files": [
+        {
+          "path": "examples/messages/response.tsx",
+          "type": "registry:example",
+          "target": "examples/messages/response.tsx"
+        }
+      ],
+      "categories": [
+        "messages"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Prose",
+            "demo": "ResponseDemo"
+          },
+          {
+            "name": "Code",
+            "demo": "ResponseCodeDemo"
+          },
+          {
+            "name": "Table",
+            "demo": "ResponseTableDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "message-status-demo",
+      "type": "registry:example",
+      "title": "Message Status",
+      "description": "A message travelling from sending to read beside its timestamp, every state at rest, and the failed one offering the retry.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/message-status.json",
+        "https://aiellie.dev/r/timestamps.json",
+        "https://aiellie.dev/r/bubble.json"
+      ],
+      "files": [
+        {
+          "path": "examples/messages/message-status.tsx",
+          "type": "registry:example",
+          "target": "examples/messages/message-status.tsx"
+        }
+      ],
+      "categories": [
+        "messages"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Travelling",
+            "demo": "MessageStatusDemo"
+          },
+          {
+            "name": "States",
+            "demo": "MessageStatusStatesDemo"
+          },
+          {
+            "name": "Failed",
+            "demo": "MessageStatusFailedDemo"
           }
         ],
         "wide": false

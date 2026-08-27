@@ -72,6 +72,42 @@ export const aiellieui: Registry["items"] = [
     ],
   },
   {
+    name: "response",
+    type: "registry:ui",
+    title: "Response",
+    description:
+      "The body of an answer rather than the bubble around it — headings, lists, quotes, links and tables set to read as prose, with code blocks that carry their language and a copy of exactly what is on screen.",
+    registryDependencies: [
+      "actions",
+      "highlight",
+      "use-copy-to-clipboard",
+      "utils",
+    ],
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    files: [
+      {
+        path: "components/aiellie-ui/response.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/response.tsx",
+      },
+    ],
+  },
+  {
+    name: "message-status",
+    type: "registry:ui",
+    title: "Message Status",
+    description:
+      "How far a message has got — waiting, gone, arrived, seen, or not sent — as a mark small enough to sit beside a timestamp, with the retry offered on the one state that asks something of the reader.",
+    registryDependencies: ["utils"],
+    files: [
+      {
+        path: "components/aiellie-ui/message-status.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/message-status.tsx",
+      },
+    ],
+  },
+  {
     name: "streaming-text",
     type: "registry:ui",
     title: "Streaming Text",

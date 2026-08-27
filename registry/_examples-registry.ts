@@ -195,6 +195,54 @@ export const examples: Registry["items"] = [
     },
   },
   {
+    name: "response-demo",
+    type: "registry:example",
+    title: "Response",
+    description:
+      "An answer set as prose — lists, a quote, links and inline code — with a code block that names its language and copies itself, and a table that scrolls rather than pushing the thread sideways.",
+    registryDependencies: ["response", "bubble"],
+    files: [
+      {
+        path: "examples/messages/response.tsx",
+        type: "registry:example",
+        target: "examples/messages/response.tsx",
+      },
+    ],
+    categories: ["messages"],
+    meta: {
+      variants: [
+        { name: "Prose", demo: "ResponseDemo" },
+        { name: "Code", demo: "ResponseCodeDemo" },
+        { name: "Table", demo: "ResponseTableDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "message-status-demo",
+    type: "registry:example",
+    title: "Message Status",
+    description:
+      "A message travelling from sending to read beside its timestamp, every state at rest, and the failed one offering the retry.",
+    registryDependencies: ["message-status", "timestamps", "bubble"],
+    files: [
+      {
+        path: "examples/messages/message-status.tsx",
+        type: "registry:example",
+        target: "examples/messages/message-status.tsx",
+      },
+    ],
+    categories: ["messages"],
+    meta: {
+      variants: [
+        { name: "Travelling", demo: "MessageStatusDemo" },
+        { name: "States", demo: "MessageStatusStatesDemo" },
+        { name: "Failed", demo: "MessageStatusFailedDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
     name: "streaming-text-demo",
     type: "registry:example",
     title: "Streaming Text",

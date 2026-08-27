@@ -1,0 +1,40 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "message-status-demo",
+  "title": "Message Status",
+  "description": "A message travelling from sending to read beside its timestamp, every state at rest, and the failed one offering the retry.",
+  "registryDependencies": [
+    "https://aiellie.dev/r/message-status.json",
+    "https://aiellie.dev/r/timestamps.json",
+    "https://aiellie.dev/r/bubble.json"
+  ],
+  "files": [
+    {
+      "path": "examples/messages/message-status.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport {\n  MessageStatus,\n  type MessageStatusValue,\n} from \"@/components/aiellie-ui/message-status\"\nimport { Timestamp } from \"@/components/aiellie-ui/timestamps\"\nimport { Bubble, BubbleContent, BubbleGroup } from \"@/components/ui/bubble\"\n\nconst order: MessageStatusValue[] = [\"sending\", \"sent\", \"delivered\", \"read\"]\n\n/** A message actually travelling, which is the only way the states read right. */\nexport function MessageStatusDemo() {\n  // One moment per mount, so the stamp beside the status holds still while the\n  // status travels — and so the render stays pure.\n  const [sentAt] = React.useState(() => Date.now())\n  const [step, setStep] = React.useState(0)\n\n  React.useEffect(() => {\n    const id = setInterval(\n      () => setStep((previous) => (previous + 1) % (order.length + 1)),\n      1600\n    )\n    return () => clearInterval(id)\n  }, [])\n\n  const status = order[Math.min(step, order.length - 1)]\n\n  return (\n    <BubbleGroup className=\"w-full max-w-sm\">\n      <Bubble variant=\"muted\">\n        <BubbleContent>Are we still shipping on Tuesday?</BubbleContent>\n      </Bubble>\n      <Bubble align=\"end\">\n        <BubbleContent>Behind the flag, yes.</BubbleContent>\n      </Bubble>\n      <div className=\"flex items-center gap-2 self-end pe-1\">\n        <Timestamp date={sentAt} format=\"time\" />\n        <MessageStatus status={status} />\n      </div>\n    </BubbleGroup>\n  )\n}\n\nexport function MessageStatusStatesDemo() {\n  return (\n    <div className=\"flex w-full max-w-sm flex-col gap-3\">\n      {([\"sending\", \"sent\", \"delivered\", \"read\", \"failed\"] as const).map(\n        (status) => (\n          <div key={status} className=\"flex items-center justify-between\">\n            <span className=\"text-sm capitalize\">{status}</span>\n            <MessageStatus status={status} showLabel />\n          </div>\n        )\n      )}\n    </div>\n  )\n}\n\n/**\n * The one state that asks something of the reader gets a way to answer: a\n * failed message offers the retry rather than reporting the failure and leaving\n * them to find it.\n */\nexport function MessageStatusFailedDemo() {\n  const [status, setStatus] = React.useState<MessageStatusValue>(\"failed\")\n\n  React.useEffect(() => {\n    if (status !== \"sending\") return undefined\n    const id = setTimeout(() => setStatus(\"failed\"), 1800)\n    return () => clearTimeout(id)\n  }, [status])\n\n  return (\n    <BubbleGroup className=\"w-full max-w-sm\">\n      <Bubble\n        align=\"end\"\n        variant={status === \"failed\" ? \"destructive\" : \"default\"}\n      >\n        <BubbleContent>Behind the flag, yes.</BubbleContent>\n      </Bubble>\n      <div className=\"self-end pe-1\">\n        <MessageStatus\n          status={status}\n          showLabel\n          onRetry={() => setStatus(\"sending\")}\n        />\n      </div>\n    </BubbleGroup>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/messages/message-status.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Travelling",
+        "demo": "MessageStatusDemo"
+      },
+      {
+        "name": "States",
+        "demo": "MessageStatusStatesDemo"
+      },
+      {
+        "name": "Failed",
+        "demo": "MessageStatusFailedDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "messages"
+  ],
+  "type": "registry:example"
+}
