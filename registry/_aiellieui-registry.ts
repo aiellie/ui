@@ -10,6 +10,28 @@ import type { Registry } from "shadcn/schema"
  */
 export const aiellieui: Registry["items"] = [
   {
+    name: "code-block",
+    type: "registry:ui",
+    title: "Code Block",
+    description:
+      "A block of code as a thing on the page rather than a thing inside prose — named by its file, copied or saved exactly as it stands, numbered where the numbers are being referred to, marked on the lines being talked about, and able to still be arriving.",
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    registryDependencies: [
+      "actions",
+      "highlight",
+      "tooltip",
+      "use-copy-to-clipboard",
+      "utils",
+    ],
+    files: [
+      {
+        path: "components/aiellie-ui/code/code-block.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/code/code-block.tsx",
+      },
+    ],
+  },
+  {
     name: "code-snippet",
     type: "registry:ui",
     title: "Code Snippet",

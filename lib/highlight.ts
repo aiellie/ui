@@ -93,6 +93,29 @@ import {
     plain: "text-foreground/75",
   };
   
+  /**
+   * The pair a diff is read in. Deliberately not tokens: `lib/colors` names
+   * nothing for "added" and "removed", and minting two would put them in
+   * `/tokens` as though anything on the page could reach for them. They belong
+   * here beside the token colours because they are the same kind of thing — a
+   * hue that says something about the code rather than about the interface
+   * around it — and they are the same emerald and red the scanner already
+   * spends on literals, so a diff and the code inside it agree.
+   *
+   * The tint goes on the row and the hue on the mark, leaving the code itself
+   * to keep its own colouring: a changed line is still code, and a reader
+   * needs to see what kind before they can judge the change.
+   */
+  export const DIFF_ROW: Record<"add" | "remove", string> = {
+    add: "bg-emerald-500/[0.08] dark:bg-emerald-400/[0.12]",
+    remove: "bg-red-500/[0.07] dark:bg-red-400/[0.11]",
+  };
+
+  export const DIFF_MARK: Record<"add" | "remove", string> = {
+    add: "text-emerald-600 dark:text-emerald-400",
+    remove: "text-red-600 dark:text-red-400",
+  };
+
   export type TokenPalette = "color" | "mono";
   
   /** The palettes a code element offers, for one to be chosen by name. */

@@ -4,6 +4,30 @@
   "homepage": "https://aiellie.dev",
   "items": [
     {
+      "name": "code-block",
+      "type": "registry:ui",
+      "title": "Code Block",
+      "description": "A block of code as a thing on the page rather than a thing inside prose — named by its file, copied or saved exactly as it stands, numbered where the numbers are being referred to, marked on the lines being talked about, and able to still be arriving.",
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "registryDependencies": [
+        "https://aiellie.dev/r/actions.json",
+        "https://aiellie.dev/r/highlight.json",
+        "https://aiellie.dev/r/tooltip.json",
+        "https://aiellie.dev/r/use-copy-to-clipboard.json",
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/code/code-block.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/code/code-block.tsx"
+        }
+      ]
+    },
+    {
       "name": "code-snippet",
       "type": "registry:ui",
       "title": "Code Snippet",
@@ -541,6 +565,60 @@
       }
     },
     {
+      "name": "code-block-demo",
+      "type": "registry:example",
+      "title": "Code Block",
+      "description": "A named block of code with a copy of exactly what is on screen — numbered and marked where the prose is pointing at lines, set in weight rather than colour where the hues would speak over the page, wrapped for a narrow column, still arriving, or holding several files under tabs.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/code-block.json",
+        "https://aiellie.dev/r/actions.json",
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "files": [
+        {
+          "path": "examples/coding/code-block.tsx",
+          "type": "registry:example",
+          "target": "examples/coding/code-block.tsx"
+        }
+      ],
+      "categories": [
+        "coding"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Default",
+            "demo": "CodeBlockDemo"
+          },
+          {
+            "name": "Numbered",
+            "demo": "CodeBlockNumberedDemo"
+          },
+          {
+            "name": "Mono",
+            "demo": "CodeBlockMonoDemo"
+          },
+          {
+            "name": "Wrapped",
+            "demo": "CodeBlockWrapDemo"
+          },
+          {
+            "name": "Streaming",
+            "demo": "CodeBlockStreamingDemo"
+          },
+          {
+            "name": "Files",
+            "demo": "CodeBlockTabsDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
       "name": "code-snippet-demo",
       "type": "registry:example",
       "title": "Code Snippet",
@@ -550,9 +628,9 @@
       ],
       "files": [
         {
-          "path": "examples/code/code-snippet.tsx",
+          "path": "examples/coding/code-snippet.tsx",
           "type": "registry:example",
-          "target": "examples/code/code-snippet.tsx"
+          "target": "examples/coding/code-snippet.tsx"
         }
       ],
       "categories": [

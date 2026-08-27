@@ -34,3 +34,7 @@ https://github.com/aiellie
 25. add a color picker button to the toolbar to change bg 
 26. for avatars do agent, user, and banners
 27. add the libs like gradient glass etc. and show them in tokens
+28. do a 3 panel resizable layout with side bar and details
+29. be careful not to use button.tsx so much
+30. fix highlight code color 
+31. remove the focus rings

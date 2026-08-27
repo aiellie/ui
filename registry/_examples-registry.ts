@@ -61,6 +61,34 @@ export const examples: Registry["items"] = [
     },
   },
   {
+    name: "code-block-demo",
+    type: "registry:example",
+    title: "Code Block",
+    description:
+      "A named block of code with a copy of exactly what is on screen — numbered and marked where the prose is pointing at lines, set in weight rather than colour where the hues would speak over the page, wrapped for a narrow column, still arriving, or holding several files under tabs.",
+    registryDependencies: ["code-block", "actions", "utils"],
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    files: [
+      {
+        path: "examples/coding/code-block.tsx",
+        type: "registry:example",
+        target: "examples/coding/code-block.tsx",
+      },
+    ],
+    categories: ["coding"],
+    meta: {
+      variants: [
+        { name: "Default", demo: "CodeBlockDemo" },
+        { name: "Numbered", demo: "CodeBlockNumberedDemo" },
+        { name: "Mono", demo: "CodeBlockMonoDemo" },
+        { name: "Wrapped", demo: "CodeBlockWrapDemo" },
+        { name: "Streaming", demo: "CodeBlockStreamingDemo" },
+        { name: "Files", demo: "CodeBlockTabsDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
     name: "code-snippet-demo",
     type: "registry:example",
     title: "Code Snippet",
@@ -69,9 +97,9 @@ export const examples: Registry["items"] = [
     registryDependencies: ["code-snippet"],
     files: [
       {
-        path: "examples/code/code-snippet.tsx",
+        path: "examples/coding/code-snippet.tsx",
         type: "registry:example",
-        target: "examples/code/code-snippet.tsx",
+        target: "examples/coding/code-snippet.tsx",
       },
     ],
     categories: ["coding"],

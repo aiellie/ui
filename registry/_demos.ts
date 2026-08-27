@@ -16,13 +16,15 @@ import {
   ScrollVerticalIcon,
   PaintBoardIcon,
   SourceCodeIcon,
+  FileCodeIcon,
   TextFontIcon,
 } from "@hugeicons/core-free-icons"
 import type { IconSvgElement } from "@hugeicons/react"
 import type { RegistryItem } from "shadcn/schema"
 
 import type { DemoVariant } from "@/components/aiellie-ui/demos-switcher"
-import * as codeSnippetDemos from "@/examples/code/code-snippet"
+import * as codeBlockDemos from "@/examples/coding/code-block"
+import * as codeSnippetDemos from "@/examples/coding/code-snippet"
 import * as bubbleDemos from "@/examples/messages/bubble"
 import * as messageDemos from "@/examples/messages/message"
 import * as messageActionsDemos from "@/examples/messages/message-actions"
@@ -61,6 +63,10 @@ type ExampleDemos = {
 const exampleDemos: Record<string, ExampleDemos> = {
   "colors-demo": { icon: PaintBoardIcon, variants: colorsVariants },
   "fonts-demo": { icon: TextFontIcon, components: { ...fontsDemos } },
+  "code-block-demo": {
+    icon: FileCodeIcon,
+    components: { ...codeBlockDemos },
+  },
   "code-snippet-demo": {
     icon: SourceCodeIcon,
     components: { ...codeSnippetDemos },
