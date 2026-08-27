@@ -82,6 +82,7 @@ function MessageReactionPicker({
   reactions = defaultReactions,
   value = null,
   onValueChange,
+  closeOnPick = true,
   className,
   "aria-label": ariaLabel = "React to this message",
   ...props
@@ -89,6 +90,12 @@ function MessageReactionPicker({
   reactions?: readonly string[]
   value?: string | null
   onValueChange?: (value: string | null) => void
+  /**
+   * Picking a reaction is the whole errand, so the menu closes behind it. Base
+   * UI keeps a checkbox item's menu open by default, which is right for a list
+   * of settings and wrong for one gesture that is already finished.
+   */
+  closeOnPick?: boolean
 }) {
   return (
     <div
@@ -107,6 +114,7 @@ function MessageReactionPicker({
             data-slot="message-reaction"
             data-picked={picked || undefined}
             checked={picked}
+            closeOnClick={closeOnPick}
             onCheckedChange={() => onValueChange?.(picked ? null : reaction)}
             className={cn(
               "flex size-8 cursor-pointer items-center justify-center rounded-full text-base leading-none transition-[background-color,scale] duration-150 outline-none select-none",

@@ -72,6 +72,37 @@ export const aiellieui: Registry["items"] = [
     ],
   },
   {
+    name: "typing-bubble",
+    type: "registry:ui",
+    title: "Typing Bubble",
+    description:
+      "The bubble that stands in for a message not written yet — dots waving in the place the answer will take, announced as words rather than read out as punctuation.",
+    registryDependencies: ["bubble", "utils"],
+    files: [
+      {
+        path: "components/aiellie-ui/typing-bubble.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/typing-bubble.tsx",
+      },
+    ],
+  },
+  {
+    name: "message-highlight-toolbar",
+    type: "registry:ui",
+    title: "Message Highlight Toolbar",
+    description:
+      "A pill that appears over selected text in a message — reply to it, have it explained, edit it, or file it away — reading the selection out of context so an action can be dropped in without the toolbar knowing what it does.",
+    registryDependencies: ["actions", "menu", "tooltip", "utils"],
+    dependencies: ["@base-ui/react"],
+    files: [
+      {
+        path: "components/aiellie-ui/message-highlight-toolbar.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/message-highlight-toolbar.tsx",
+      },
+    ],
+  },
+  {
     name: "message-context-menu",
     type: "registry:ui",
     title: "Message Context Menu",

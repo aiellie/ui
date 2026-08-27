@@ -1,0 +1,39 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "message-highlight-toolbar-demo",
+  "title": "Message Highlight Toolbar",
+  "description": "Select any of the text in a message for the pill: reply, explain, edit, and a menu for filing it as a note, a memory or a snippet.",
+  "dependencies": [
+    "@hugeicons/core-free-icons",
+    "@hugeicons/react"
+  ],
+  "registryDependencies": [
+    "https://aiellie.dev/r/message-highlight-toolbar.json",
+    "https://aiellie.dev/r/bubble.json"
+  ],
+  "files": [
+    {
+      "path": "examples/messages/message-highlight-toolbar.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport {\n  AiIdeaIcon,\n  Bookmark02Icon,\n  Brain02Icon,\n  MessageSquareReplyIcon,\n  Note01Icon,\n  PencilEdit02Icon,\n} from \"@hugeicons/core-free-icons\"\nimport { HugeiconsIcon } from \"@hugeicons/react\"\n\nimport {\n  MessageHighlight,\n  MessageHighlightAction,\n  MessageHighlightMenu,\n  MessageHighlightMenuContent,\n  MessageHighlightMenuItem,\n  MessageHighlightMenuTrigger,\n  MessageHighlightSeparator,\n  MessageHighlightToolbar,\n  useMessageHighlight,\n} from \"@/components/aiellie-ui/message-highlight-toolbar\"\nimport { Bubble, BubbleContent, BubbleGroup } from \"@/components/ui/bubble\"\n\nconst answer =\n  \"Three people debated the rollout date and settled on shipping behind a flag next Tuesday. Marta wanted the whole thing held until the migration lands, and the compromise was to ship dark and turn it on for staff first.\"\n\n/**\n * The controls read the selection out of context rather than being handed it,\n * so an action can be dropped into the pill without the toolbar knowing what it\n * does with the words.\n */\nfunction HighlightActions({ onAction }: { onAction: (line: string) => void }) {\n  const { highlight, clear } = useMessageHighlight()\n  const text = highlight?.text ?? \"\"\n\n  const act = (line: string) => {\n    onAction(line)\n    clear()\n  }\n\n  const quoted = text.length > 32 ? `${text.slice(0, 32)}…` : text\n\n  return (\n    <>\n      <MessageHighlightAction\n        tooltip=\"Reply\"\n        onClick={() => act(`Replying to “${quoted}”`)}\n      >\n        <HugeiconsIcon icon={MessageSquareReplyIcon} />\n      </MessageHighlightAction>\n      <MessageHighlightAction\n        tooltip=\"Explain\"\n        onClick={() => act(`Explaining “${quoted}”`)}\n      >\n        <HugeiconsIcon icon={AiIdeaIcon} />\n      </MessageHighlightAction>\n      <MessageHighlightAction\n        tooltip=\"Edit\"\n        onClick={() => act(`Editing “${quoted}”`)}\n      >\n        <HugeiconsIcon icon={PencilEdit02Icon} />\n      </MessageHighlightAction>\n      <MessageHighlightSeparator />\n      <MessageHighlightMenu>\n        <MessageHighlightMenuTrigger tooltip=\"Save as\">\n          <HugeiconsIcon icon={Bookmark02Icon} />\n        </MessageHighlightMenuTrigger>\n        <MessageHighlightMenuContent align=\"end\">\n          <MessageHighlightMenuItem onClick={() => act(`Saved as a note`)}>\n            <HugeiconsIcon icon={Note01Icon} />\n            Note\n          </MessageHighlightMenuItem>\n          <MessageHighlightMenuItem onClick={() => act(`Saved to memory`)}>\n            <HugeiconsIcon icon={Brain02Icon} />\n            Memory\n          </MessageHighlightMenuItem>\n          <MessageHighlightMenuItem onClick={() => act(`Saved as a snippet`)}>\n            <HugeiconsIcon icon={Bookmark02Icon} />\n            Snippet\n          </MessageHighlightMenuItem>\n        </MessageHighlightMenuContent>\n      </MessageHighlightMenu>\n    </>\n  )\n}\n\nexport function MessageHighlightToolbarDemo() {\n  const [done, setDone] = React.useState<string | null>(null)\n\n  React.useEffect(() => {\n    if (!done) return undefined\n    const id = setTimeout(() => setDone(null), 2600)\n    return () => clearTimeout(id)\n  }, [done])\n\n  return (\n    <div className=\"flex w-full max-w-sm flex-col gap-2\">\n      <MessageHighlight>\n        <BubbleGroup>\n          <Bubble variant=\"muted\">\n            <BubbleContent>{answer}</BubbleContent>\n          </Bubble>\n        </BubbleGroup>\n        <MessageHighlightToolbar>\n          <HighlightActions onAction={setDone} />\n        </MessageHighlightToolbar>\n      </MessageHighlight>\n      <p className=\"min-h-4 ps-1 text-xs text-muted-foreground\">\n        {done ?? \"Select any of the text above.\"}\n      </p>\n    </div>\n  )\n}\n\n/**\n * The region can be the whole thread rather than one message: the toolbar is\n * positioned against whatever was selected inside it, so a quote spanning two\n * turns is still one selection.\n */\nexport function MessageHighlightToolbarThreadDemo() {\n  const [done, setDone] = React.useState<string | null>(null)\n\n  React.useEffect(() => {\n    if (!done) return undefined\n    const id = setTimeout(() => setDone(null), 2600)\n    return () => clearTimeout(id)\n  }, [done])\n\n  return (\n    <div className=\"flex w-full max-w-sm flex-col gap-2\">\n      <MessageHighlight>\n        <BubbleGroup className=\"gap-3\">\n          <Bubble align=\"end\">\n            <BubbleContent>What did they decide about the date?</BubbleContent>\n          </Bubble>\n          <Bubble variant=\"muted\">\n            <BubbleContent>{answer}</BubbleContent>\n          </Bubble>\n        </BubbleGroup>\n        <MessageHighlightToolbar>\n          <HighlightActions onAction={setDone} />\n        </MessageHighlightToolbar>\n      </MessageHighlight>\n      <p className=\"min-h-4 ps-1 text-xs text-muted-foreground\">\n        {done ?? \"Select across either message.\"}\n      </p>\n    </div>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/messages/message-highlight-toolbar.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "One message",
+        "demo": "MessageHighlightToolbarDemo"
+      },
+      {
+        "name": "Whole thread",
+        "demo": "MessageHighlightToolbarThreadDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "messages"
+  ],
+  "type": "registry:example"
+}

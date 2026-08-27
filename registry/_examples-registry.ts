@@ -195,6 +195,54 @@ export const examples: Registry["items"] = [
     },
   },
   {
+    name: "typing-bubble-demo",
+    type: "registry:example",
+    title: "Typing Bubble",
+    description:
+      "The stand-in for an answer still being written — a bubble holding its place, the dots alone, a line saying who is typing, or the caret a streamed answer starts at.",
+    registryDependencies: ["typing-bubble", "bubble", "message"],
+    files: [
+      {
+        path: "examples/messages/typing-bubble.tsx",
+        type: "registry:example",
+        target: "examples/messages/typing-bubble.tsx",
+      },
+    ],
+    categories: ["messages"],
+    meta: {
+      variants: [
+        { name: "Default", demo: "TypingBubbleDemo" },
+        { name: "Kinds", demo: "TypingBubbleVariantsDemo" },
+        { name: "In a thread", demo: "TypingBubbleFlowDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "message-highlight-toolbar-demo",
+    type: "registry:example",
+    title: "Message Highlight Toolbar",
+    description:
+      "Select any of the text in a message for the pill: reply, explain, edit, and a menu for filing it as a note, a memory or a snippet.",
+    registryDependencies: ["message-highlight-toolbar", "bubble"],
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    files: [
+      {
+        path: "examples/messages/message-highlight-toolbar.tsx",
+        type: "registry:example",
+        target: "examples/messages/message-highlight-toolbar.tsx",
+      },
+    ],
+    categories: ["messages"],
+    meta: {
+      variants: [
+        { name: "One message", demo: "MessageHighlightToolbarDemo" },
+        { name: "Whole thread", demo: "MessageHighlightToolbarThreadDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
     name: "message-context-menu-demo",
     type: "registry:example",
     title: "Message Context Menu",

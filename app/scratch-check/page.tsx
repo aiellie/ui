@@ -1,15 +1,17 @@
 "use client"
 
 import {
-  MessageContextMenuDemo,
-  MessageContextMenuReactionsDemo,
-} from "@/examples/messages/message-context-menu"
+  TypingBubbleDemo,
+  TypingBubbleFlowDemo,
+  TypingBubbleVariantsDemo,
+} from "@/examples/messages/typing-bubble"
 
 export default function Page() {
   return (
-    <div className="flex flex-col gap-10 p-10">
-      <MessageContextMenuDemo />
-      <MessageContextMenuReactionsDemo />
+    <div className="flex flex-col gap-12 p-10">
+      <TypingBubbleDemo />
+      <TypingBubbleVariantsDemo />
+      <TypingBubbleFlowDemo />
     </div>
   )
 }

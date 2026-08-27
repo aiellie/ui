@@ -1,6 +1,8 @@
 import type { ComponentType } from "react"
 import {
   BubbleChatSparkIcon,
+  BubbleChatDelayIcon,
+  TextSelectionIcon,
   CursorMagicSelection02Icon,
   Comment01Icon,
   Clock01Icon,
@@ -20,6 +22,8 @@ import * as bubbleDemos from "@/examples/messages/bubble"
 import * as messageDemos from "@/examples/messages/message"
 import * as messageActionsDemos from "@/examples/messages/message-actions"
 import * as messageContextMenuDemos from "@/examples/messages/message-context-menu"
+import * as messageHighlightToolbarDemos from "@/examples/messages/message-highlight-toolbar"
+import * as typingBubbleDemos from "@/examples/messages/typing-bubble"
 import * as messageScrollerDemos from "@/examples/messages/message-scroller"
 import * as suggestionsDemos from "@/examples/messages/suggestions"
 import * as timestampsDemos from "@/examples/messages/timestamps"
@@ -70,6 +74,14 @@ const exampleDemos: Record<string, ExampleDemos> = {
   "message-actions-demo": {
     icon: Comment01Icon,
     components: { ...messageActionsDemos },
+  },
+  "typing-bubble-demo": {
+    icon: BubbleChatDelayIcon,
+    components: { ...typingBubbleDemos },
+  },
+  "message-highlight-toolbar-demo": {
+    icon: TextSelectionIcon,
+    components: { ...messageHighlightToolbarDemos },
   },
   "message-context-menu-demo": {
     icon: CursorMagicSelection02Icon,

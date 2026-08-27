@@ -1,0 +1,40 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "typing-bubble-demo",
+  "title": "Typing Bubble",
+  "description": "The stand-in for an answer still being written — a bubble holding its place, the dots alone, a line saying who is typing, or the caret a streamed answer starts at.",
+  "registryDependencies": [
+    "https://aiellie.dev/r/typing-bubble.json",
+    "https://aiellie.dev/r/bubble.json",
+    "https://aiellie.dev/r/message.json"
+  ],
+  "files": [
+    {
+      "path": "examples/messages/typing-bubble.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport { TypingBubble } from \"@/components/aiellie-ui/typing-bubble\"\nimport { Bubble, BubbleContent, BubbleGroup } from \"@/components/ui/bubble\"\nimport {\n  Message,\n  MessageAvatar,\n  MessageContent,\n  MessageGroup,\n} from \"@/components/ui/message\"\n\nconst answer =\n  \"Three people debated the rollout date and settled on shipping behind a flag next Tuesday.\"\n\nfunction Avatar() {\n  return (\n    <MessageAvatar className=\"size-8 text-xs font-medium text-muted-foreground\">\n      E\n    </MessageAvatar>\n  )\n}\n\nexport function TypingBubbleDemo() {\n  return (\n    <BubbleGroup className=\"w-full max-w-sm\">\n      <Bubble align=\"end\">\n        <BubbleContent>Can you summarise the thread for me?</BubbleContent>\n      </Bubble>\n      <TypingBubble />\n    </BubbleGroup>\n  )\n}\n\n/**\n * Not four colours of the same bubble: four ways of saying an answer is coming.\n * A bubble holds the place the words will take, the dots on their own suit an\n * assistant whose prose is not bubbled, the line says who is typing, and the\n * caret is where a streamed answer will start appearing.\n */\nexport function TypingBubbleVariantsDemo() {\n  return (\n    <div className=\"flex w-full max-w-sm flex-col gap-5\">\n      <TypingBubble />\n      <TypingBubble variant=\"ghost\" />\n      <TypingBubble variant=\"label\" label=\"Ellie is typing\" />\n      <TypingBubble variant=\"caret\" label=\"Ellie is answering\" />\n    </div>\n  )\n}\n\n/**\n * The thread as it actually runs: the avatar is already in place, and the\n * bubble under it fills in rather than the row jumping when the words arrive.\n */\nexport function TypingBubbleFlowDemo() {\n  const [typing, setTyping] = React.useState(true)\n\n  React.useEffect(() => {\n    const id = setTimeout(\n      () => setTyping((previous) => !previous),\n      typing ? 2600 : 3400\n    )\n    return () => clearTimeout(id)\n  }, [typing])\n\n  return (\n    <MessageGroup className=\"w-full max-w-sm gap-3\">\n      <Message align=\"end\">\n        <MessageContent>\n          <Bubble align=\"end\">\n            <BubbleContent>What did they decide?</BubbleContent>\n          </Bubble>\n        </MessageContent>\n      </Message>\n      <Message>\n        <Avatar />\n        <MessageContent>\n          {typing ? (\n            <TypingBubble label=\"Ellie is typing\" />\n          ) : (\n            <Bubble variant=\"muted\">\n              <BubbleContent>{answer}</BubbleContent>\n            </Bubble>\n          )}\n        </MessageContent>\n      </Message>\n    </MessageGroup>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/messages/typing-bubble.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Default",
+        "demo": "TypingBubbleDemo"
+      },
+      {
+        "name": "Kinds",
+        "demo": "TypingBubbleVariantsDemo"
+      },
+      {
+        "name": "In a thread",
+        "demo": "TypingBubbleFlowDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "messages"
+  ],
+  "type": "registry:example"
+}
