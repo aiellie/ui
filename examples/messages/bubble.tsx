@@ -50,7 +50,7 @@ export function BubbleVariantsDemo() {
           primary color.
         </BubbleContent>
       </Bubble>
-      <Bubble variant="outline" align="start">
+      <Bubble variant="outline" align="end">
         <BubbleContent>We can also use an outlined variant.</BubbleContent>
       </Bubble>
       <Bubble variant="destructive" align="start">
@@ -59,7 +59,7 @@ export function BubbleVariantsDemo() {
           <span>🔥</span>
         </BubbleReactions>
       </Bubble>
-      <Bubble variant="ghost" align="start">
+      <Bubble variant="ghost" align="end">
         <BubbleContent>
           <p>{`Ghost bubbles work for assistant text, **markdown**, and other content that should not be framed.
 This is perfect for assistant messages that should not have a frame and can take the full width of the container. You can also render \`code\` in it.

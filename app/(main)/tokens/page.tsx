@@ -1,4 +1,4 @@
-import { TokensGrid } from "./components/tokens-grid"
+import { TokensSections } from "./components/tokens-sections"
 import { TokensHeader } from "./components/tokens-header"
 
 export default function Page() {
@@ -7,9 +7,7 @@ export default function Page() {
       <header className="flex flex-col gap-1">
         <TokensHeader />
       </header>
-      <div className="mx-auto w-full max-w-6xl pt-6">
-        <TokensGrid />
-      </div>
+      <TokensSections />
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { ElementsGrid } from "./components/elements-grid"
+import { ElementsSections } from "./components/elements-sections"
 import { ElementsHeader } from "./components/elements-header"
 
 export default function Page() {
@@ -7,9 +7,7 @@ export default function Page() {
       <header className="flex flex-col gap-1">
         <ElementsHeader />
       </header>
-      <div className="mx-auto w-full max-w-6xl pt-6">
-        <ElementsGrid />
-      </div>
+      <ElementsSections />
     </div>
   )
 }
