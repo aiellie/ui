@@ -195,6 +195,54 @@ export const examples: Registry["items"] = [
     },
   },
   {
+    name: "reactions-demo",
+    type: "registry:example",
+    title: "Reactions",
+    description:
+      "A counted row under a message, the picker and the tally wired together as two halves of one thing, and both sides of a thread including the row with nothing on it yet.",
+    registryDependencies: ["reactions", "message-context-menu", "bubble"],
+    files: [
+      {
+        path: "examples/messages/reactions.tsx",
+        type: "registry:example",
+        target: "examples/messages/reactions.tsx",
+      },
+    ],
+    categories: ["messages"],
+    meta: {
+      variants: [
+        { name: "Default", demo: "ReactionsDemo" },
+        { name: "With the picker", demo: "ReactionsWithPickerDemo" },
+        { name: "In a thread", demo: "ReactionsThreadDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "quoted-message-demo",
+    type: "registry:example",
+    title: "Quoted Message",
+    description:
+      "A reply carrying what it replies to, the quote as a way back to the original, and the quote waiting above something not sent yet.",
+    registryDependencies: ["quoted-message", "bubble"],
+    files: [
+      {
+        path: "examples/messages/quoted-message.tsx",
+        type: "registry:example",
+        target: "examples/messages/quoted-message.tsx",
+      },
+    ],
+    categories: ["messages"],
+    meta: {
+      variants: [
+        { name: "In a reply", demo: "QuotedMessageDemo" },
+        { name: "Jumping back", demo: "QuotedMessageJumpDemo" },
+        { name: "Before sending", demo: "QuotedMessagePendingDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
     name: "response-demo",
     type: "registry:example",
     title: "Response",

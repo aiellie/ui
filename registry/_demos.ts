@@ -1,6 +1,8 @@
 import type { ComponentType } from "react"
 import {
   BubbleChatSparkIcon,
+  FavouriteIcon,
+  QuoteDownIcon,
   ParagraphIcon,
   SentIcon,
   TypeCursorIcon,
@@ -27,6 +29,8 @@ import * as messageActionsDemos from "@/examples/messages/message-actions"
 import * as messageContextMenuDemos from "@/examples/messages/message-context-menu"
 import * as messageHighlightToolbarDemos from "@/examples/messages/message-highlight-toolbar"
 import * as messageStatusDemos from "@/examples/messages/message-status"
+import * as quotedMessageDemos from "@/examples/messages/quoted-message"
+import * as reactionsDemos from "@/examples/messages/reactions"
 import * as responseDemos from "@/examples/messages/response"
 import * as streamingTextDemos from "@/examples/messages/streaming-text"
 import * as typingIndicatorDemos from "@/examples/messages/typing-indicator"
@@ -80,6 +84,14 @@ const exampleDemos: Record<string, ExampleDemos> = {
   "message-actions-demo": {
     icon: Comment01Icon,
     components: { ...messageActionsDemos },
+  },
+  "reactions-demo": {
+    icon: FavouriteIcon,
+    components: { ...reactionsDemos },
+  },
+  "quoted-message-demo": {
+    icon: QuoteDownIcon,
+    components: { ...quotedMessageDemos },
   },
   "response-demo": {
     icon: ParagraphIcon,

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "reactions-demo",
+  "title": "Reactions",
+  "description": "A counted row under a message, the picker and the tally wired together as two halves of one thing, and both sides of a thread including the row with nothing on it yet.",
+  "registryDependencies": [
+    "https://aiellie.dev/r/reactions.json",
+    "https://aiellie.dev/r/message-context-menu.json",
+    "https://aiellie.dev/r/bubble.json"
+  ],
+  "files": [
+    {
+      "path": "examples/messages/reactions.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport {\n  MessageContextMenu,\n  MessageContextMenuContent,\n  MessageContextMenuTrigger,\n  MessageReactionPicker,\n} from \"@/components/aiellie-ui/message-context-menu\"\nimport {\n  Reactions,\n  toggleReaction,\n  type Reaction,\n} from \"@/components/aiellie-ui/reactions\"\nimport { Bubble, BubbleContent, BubbleGroup } from \"@/components/ui/bubble\"\n\nconst initial: Reaction[] = [\n  { emoji: \"👍\", count: 3, reacted: true, people: [\"Marta\", \"Sam\"] },\n  { emoji: \"🎉\", count: 1, people: [\"Ines\"] },\n]\n\nexport function ReactionsDemo() {\n  const [reactions, setReactions] = React.useState(initial)\n\n  return (\n    <BubbleGroup className=\"w-full max-w-sm gap-1.5\">\n      <Bubble variant=\"muted\">\n        <BubbleContent>\n          Shipping behind a flag next Tuesday, staff first.\n        </BubbleContent>\n      </Bubble>\n      <Reactions\n        reactions={reactions}\n        onToggle={(emoji) =>\n          setReactions((previous) => toggleReaction(previous, emoji))\n        }\n      />\n    </BubbleGroup>\n  )\n}\n\n/**\n * The picker and the tally are two halves of one thing: the picker sets the\n * reader's own reaction, the row shows what everyone gave. Right click the\n * message, or press one of the pills to take yours back.\n */\nexport function ReactionsWithPickerDemo() {\n  const [reactions, setReactions] = React.useState(initial)\n  const toggle = (emoji: string) =>\n    setReactions((previous) => toggleReaction(previous, emoji))\n\n  const mine = reactions.find((reaction) => reaction.reacted)?.emoji ?? null\n\n  return (\n    <BubbleGroup className=\"w-full max-w-sm gap-1.5\">\n      <MessageContextMenu>\n        <MessageContextMenuTrigger>\n          <Bubble variant=\"muted\">\n            <BubbleContent>\n              Right click for the picker, or press a pill below.\n            </BubbleContent>\n          </Bubble>\n        </MessageContextMenuTrigger>\n        <MessageContextMenuContent className=\"min-w-0\">\n          <MessageReactionPicker\n            value={mine}\n            onValueChange={(value) => {\n              if (mine && mine !== value) toggle(mine)\n              if (value) toggle(value)\n              else if (mine) toggle(mine)\n            }}\n          />\n        </MessageContextMenuContent>\n      </MessageContextMenu>\n      <Reactions reactions={reactions} onToggle={toggle} />\n    </BubbleGroup>\n  )\n}\n\n/** Both sides of a thread, including the row that has nothing on it yet. */\nexport function ReactionsThreadDemo() {\n  const [theirs, setTheirs] = React.useState<Reaction[]>(initial)\n  const [mine, setMine] = React.useState<Reaction[]>([])\n\n  return (\n    <BubbleGroup className=\"w-full max-w-sm gap-4\">\n      <div className=\"flex flex-col gap-1.5\">\n        <Bubble variant=\"muted\">\n          <BubbleContent>\n            Shipping behind a flag next Tuesday, staff first.\n          </BubbleContent>\n        </Bubble>\n        <Reactions\n          reactions={theirs}\n          onToggle={(emoji) =>\n            setTheirs((previous) => toggleReaction(previous, emoji))\n          }\n          onAdd={() => setTheirs((previous) => toggleReaction(previous, \"👀\"))}\n        />\n      </div>\n      <div className=\"flex flex-col gap-1.5\">\n        <Bubble align=\"end\">\n          <BubbleContent>That works — I&rsquo;ll tell the team.</BubbleContent>\n        </Bubble>\n        <Reactions\n          align=\"end\"\n          reactions={mine}\n          onToggle={(emoji) =>\n            setMine((previous) => toggleReaction(previous, emoji))\n          }\n          onAdd={() => setMine((previous) => toggleReaction(previous, \"❤️\"))}\n        />\n      </div>\n    </BubbleGroup>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/messages/reactions.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Default",
+        "demo": "ReactionsDemo"
+      },
+      {
+        "name": "With the picker",
+        "demo": "ReactionsWithPickerDemo"
+      },
+      {
+        "name": "In a thread",
+        "demo": "ReactionsThreadDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "messages"
+  ],
+  "type": "registry:example"
+}

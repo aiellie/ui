@@ -1,0 +1,39 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "quoted-message-demo",
+  "title": "Quoted Message",
+  "description": "A reply carrying what it replies to, the quote as a way back to the original, and the quote waiting above something not sent yet.",
+  "registryDependencies": [
+    "https://aiellie.dev/r/quoted-message.json",
+    "https://aiellie.dev/r/bubble.json"
+  ],
+  "files": [
+    {
+      "path": "examples/messages/quoted-message.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport { QuotedMessage } from \"@/components/aiellie-ui/quoted-message\"\nimport { Bubble, BubbleContent, BubbleGroup } from \"@/components/ui/bubble\"\n\nconst original =\n  \"Three people debated the rollout date and settled on shipping behind a flag next Tuesday, with staff first.\"\n\nexport function QuotedMessageDemo() {\n  return (\n    <BubbleGroup className=\"w-full max-w-sm gap-3\">\n      <Bubble variant=\"muted\">\n        <BubbleContent>{original}</BubbleContent>\n      </Bubble>\n      <Bubble align=\"end\">\n        <BubbleContent className=\"flex flex-col gap-1.5\">\n          <QuotedMessage author=\"Ellie\">{original}</QuotedMessage>\n          <span>Staff first is the part I wanted to check.</span>\n        </BubbleContent>\n      </Bubble>\n    </BubbleGroup>\n  )\n}\n\n/**\n * The quote as a way back to what it quotes: rendered as a button, it is what\n * a reader expects it to be — press it and the thread goes there.\n */\nexport function QuotedMessageJumpDemo() {\n  const [went, setWent] = React.useState(false)\n\n  React.useEffect(() => {\n    if (!went) return undefined\n    const id = setTimeout(() => setWent(false), 2000)\n    return () => clearTimeout(id)\n  }, [went])\n\n  return (\n    <div className=\"flex w-full max-w-sm flex-col gap-2\">\n      <BubbleGroup>\n        <Bubble align=\"end\">\n          <BubbleContent className=\"flex flex-col gap-1.5\">\n            <QuotedMessage\n              author=\"Ellie\"\n              lines={1}\n              render={<button type=\"button\" onClick={() => setWent(true)} />}\n            >\n              {original}\n            </QuotedMessage>\n            <span>Staff first is the part I wanted to check.</span>\n          </BubbleContent>\n        </Bubble>\n      </BubbleGroup>\n      <p className=\"min-h-4 pe-1 text-end text-xs text-muted-foreground\">\n        {went ? \"Jumped to the original\" : \"Press the quote.\"}\n      </p>\n    </div>\n  )\n}\n\n/**\n * The other place a quote lives: above whatever is being written, with a way to\n * call it off before it is sent.\n */\nexport function QuotedMessagePendingDemo() {\n  const [quoting, setQuoting] = React.useState(true)\n\n  return (\n    <div className=\"flex w-full max-w-sm flex-col gap-2\">\n      <BubbleGroup>\n        <Bubble variant=\"muted\">\n          <BubbleContent>{original}</BubbleContent>\n        </Bubble>\n      </BubbleGroup>\n      <div className=\"flex flex-col gap-2 rounded-xl border border-border/60 p-2\">\n        {quoting ? (\n          <QuotedMessage\n            author=\"Ellie\"\n            lines={1}\n            onDismiss={() => setQuoting(false)}\n          >\n            {original}\n          </QuotedMessage>\n        ) : null}\n        <p className=\"px-1 text-sm text-muted-foreground\">\n          {quoting ? \"Replying to Ellie…\" : \"Not replying to anything.\"}\n        </p>\n      </div>\n      {!quoting ? (\n        <button\n          type=\"button\"\n          onClick={() => setQuoting(true)}\n          className=\"w-fit cursor-pointer text-xs text-muted-foreground underline underline-offset-3 hover:text-foreground\"\n        >\n          Quote it again\n        </button>\n      ) : null}\n    </div>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/messages/quoted-message.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "In a reply",
+        "demo": "QuotedMessageDemo"
+      },
+      {
+        "name": "Jumping back",
+        "demo": "QuotedMessageJumpDemo"
+      },
+      {
+        "name": "Before sending",
+        "demo": "QuotedMessagePendingDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "messages"
+  ],
+  "type": "registry:example"
+}

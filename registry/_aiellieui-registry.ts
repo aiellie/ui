@@ -72,6 +72,37 @@ export const aiellieui: Registry["items"] = [
     ],
   },
   {
+    name: "reactions",
+    type: "registry:ui",
+    title: "Reactions",
+    description:
+      "What a message has collected, counted: a row of tallies where the reader's own is a state of the count rather than a mark of its own, each a real toggle that gives the reaction back when pressed again.",
+    registryDependencies: ["utils"],
+    files: [
+      {
+        path: "components/aiellie-ui/reactions.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/reactions.tsx",
+      },
+    ],
+  },
+  {
+    name: "quoted-message",
+    type: "registry:ui",
+    title: "Quoted Message",
+    description:
+      "The message a reply is about, kept to an excerpt above the reply itself — a rule on the start edge to say the words are borrowed, a way back to the original, and a way to call the quote off before it is sent.",
+    registryDependencies: ["utils"],
+    dependencies: ["@base-ui/react"],
+    files: [
+      {
+        path: "components/aiellie-ui/quoted-message.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/quoted-message.tsx",
+      },
+    ],
+  },
+  {
     name: "response",
     type: "registry:ui",
     title: "Response",
