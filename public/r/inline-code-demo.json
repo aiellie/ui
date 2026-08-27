@@ -1,0 +1,42 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "inline-code-demo",
+  "title": "Inline Code",
+  "description": "A symbol named in a sentence — plain, copying itself, leading somewhere, and set at three sizes to show it takes the size of whatever it sits among.",
+  "registryDependencies": [
+    "https://aiellie.dev/r/inline-code.json"
+  ],
+  "files": [
+    {
+      "path": "examples/coding/inline-code.tsx",
+      "content": "\"use client\"\n\nimport {\n  InlineCode,\n  InlineCodeCopy,\n  InlineCodeLink,\n} from \"@/components/aiellie-ui/code/inline-code\"\n\nexport function InlineCodeDemo() {\n  return (\n    <p className=\"max-w-sm text-sm leading-relaxed text-pretty text-foreground\">\n      Every part carries a <InlineCode>data-slot</InlineCode>, and state goes on\n      data attributes too — <InlineCode>data-active</InlineCode>,{\" \"}\n      <InlineCode>data-busy</InlineCode> — so a consumer can style a state\n      without re-implementing it.\n    </p>\n  )\n}\n\n/** The chip that copies itself, which is what a symbol worth naming is for. */\nexport function InlineCodeCopyDemo() {\n  return (\n    <p className=\"max-w-sm text-sm leading-relaxed text-pretty text-foreground\">\n      Add it with{\" \"}\n      <InlineCodeCopy copy=\"npx shadcn@latest add https://aiellie.dev/r/inline-code.json\">\n        npx shadcn add inline-code\n      </InlineCodeCopy>\n      , then set the tint with <InlineCodeCopy>--primary</InlineCodeCopy> and\n      everything derived from it follows.\n    </p>\n  )\n}\n\n/** A symbol that leads somewhere, as a real link so a modified click works. */\nexport function InlineCodeLinkDemo() {\n  return (\n    <p className=\"max-w-sm text-sm leading-relaxed text-pretty text-foreground\">\n      The scanner is{\" \"}\n      <InlineCodeLink href=\"#tokenize\">tokenize()</InlineCodeLink> in{\" \"}\n      <InlineCodeLink href=\"#highlight\">lib/highlight</InlineCodeLink>, and the\n      badge is <InlineCodeLink href=\"#iconFor\">iconFor()</InlineCodeLink> in{\" \"}\n      <InlineCodeLink href=\"#code-icons\">lib/code-icons</InlineCodeLink>.\n    </p>\n  )\n}\n\n/**\n * Sized in `em`, so the same chip comes out a shade smaller than whatever it\n * is set among rather than snapping to one size everywhere.\n */\nexport function InlineCodeScaleDemo() {\n  return (\n    <div className=\"flex max-w-sm flex-col gap-3 text-foreground\">\n      <h3 className=\"text-lg font-medium\">\n        Deriving <InlineCode>--primary</InlineCode>\n      </h3>\n      <p className=\"text-sm leading-relaxed\">\n        The tinted bubble is <InlineCode>oklch(from …)</InlineCode> at a fixed\n        lightness.\n      </p>\n      <p className=\"text-xs leading-relaxed text-muted-foreground\">\n        Change <InlineCode>--primary</InlineCode> and the set stays coherent.\n      </p>\n    </div>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/coding/inline-code.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "In prose",
+        "demo": "InlineCodeDemo"
+      },
+      {
+        "name": "Copying",
+        "demo": "InlineCodeCopyDemo"
+      },
+      {
+        "name": "Linking",
+        "demo": "InlineCodeLinkDemo"
+      },
+      {
+        "name": "Scale",
+        "demo": "InlineCodeScaleDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "coding"
+  ],
+  "type": "registry:example"
+}

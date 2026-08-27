@@ -1,0 +1,39 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "code-annotation-demo",
+  "title": "Code Annotation",
+  "description": "A note under the line it is about — as a remark, a warning or an error, and as one the reader can be done with.",
+  "registryDependencies": [
+    "https://aiellie.dev/r/code-annotation.json",
+    "https://aiellie.dev/r/code-block.json"
+  ],
+  "files": [
+    {
+      "path": "examples/coding/code-annotation.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport {\n  CodeBlock,\n  CodeBlockActions,\n  CodeBlockBody,\n  CodeBlockCopy,\n  CodeBlockHeader,\n  CodeBlockTitle,\n} from \"@/components/aiellie-ui/code/code-block\"\nimport { CodeAnnotation } from \"@/components/aiellie-ui/code/code-annotation\"\n\nconst CODE = `export function useTick(interval = 1000) {\n  const [now, setNow] = useState(Date.now())\n\n  useEffect(() => {\n    setNow(Date.now())\n  }, [interval])\n\n  return now\n}`\n\n/**\n * Closed, which is how a note arrives: the marker in the gutter says a line has\n * something to say about it, and the reader decides whether to hear it.\n */\nexport function CodeAnnotationDemo() {\n  return (\n    <CodeBlock>\n      <CodeBlockHeader>\n        <CodeBlockTitle>use-tick.ts</CodeBlockTitle>\n        <CodeBlockActions>\n          <CodeBlockCopy code={CODE} />\n        </CodeBlockActions>\n      </CodeBlockHeader>\n      <CodeBlockBody\n        code={CODE}\n        lineNumbers\n        highlightLines={[5]}\n        annotations={{\n          5: (\n            <CodeAnnotation tone=\"warning\">\n              A <code>setState</code> in an effect is a second render pass you\n              did not need. Read the clock in a store instead.\n            </CodeAnnotation>\n          ),\n        }}\n      />\n    </CodeBlock>\n  )\n}\n\n/**\n * Both open from the start, since the point of this one is to compare the\n * tones — a card the reader has to click twice before it shows what it is for\n * is a card that shows nothing.\n */\nexport function CodeAnnotationTonesDemo() {\n  return (\n    <CodeBlock>\n      <CodeBlockHeader>\n        <CodeBlockTitle>use-tick.ts</CodeBlockTitle>\n      </CodeBlockHeader>\n      <CodeBlockBody\n        code={CODE}\n        lineNumbers\n        highlightLines={[2, 5]}\n        defaultOpenAnnotations={[2, 5]}\n        annotations={{\n          2: (\n            <CodeAnnotation>\n              <code>Date.now()</code> in render is a render that cannot be\n              repeated.\n            </CodeAnnotation>\n          ),\n          5: (\n            <CodeAnnotation tone=\"error\">\n              This never ticks: the effect runs once and nothing schedules the\n              next one.\n            </CodeAnnotation>\n          ),\n        }}\n      />\n    </CodeBlock>\n  )\n}\n\n/**\n * A note the reader can be done with. Held here rather than inside the note,\n * since what a dismissal means — gone for this session, gone for good, filed\n * somewhere — is the caller's to decide.\n */\nexport function CodeAnnotationDismissDemo() {\n  const [shown, setShown] = React.useState(true)\n\n  return (\n    <CodeBlock>\n      <CodeBlockHeader>\n        <CodeBlockTitle>use-tick.ts</CodeBlockTitle>\n        <CodeBlockActions>\n          <CodeBlockCopy code={CODE} />\n        </CodeBlockActions>\n      </CodeBlockHeader>\n      <CodeBlockBody\n        code={CODE}\n        lineNumbers\n        highlightLines={shown ? [5] : undefined}\n        defaultOpenAnnotations={[5]}\n        annotations={\n          shown\n            ? {\n                5: (\n                  <CodeAnnotation onDismiss={() => setShown(false)}>\n                    Reading the clock through <code>useSyncExternalStore</code>{\" \"}\n                    keeps every stamp on screen agreeing about now.\n                  </CodeAnnotation>\n                ),\n              }\n            : undefined\n        }\n      />\n    </CodeBlock>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/coding/code-annotation.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Warning",
+        "demo": "CodeAnnotationDemo"
+      },
+      {
+        "name": "Tones",
+        "demo": "CodeAnnotationTonesDemo"
+      },
+      {
+        "name": "Dismissable",
+        "demo": "CodeAnnotationDismissDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "coding"
+  ],
+  "type": "registry:example"
+}

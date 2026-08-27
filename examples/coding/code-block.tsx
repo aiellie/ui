@@ -102,6 +102,25 @@ export function CodeBlockNumberedDemo() {
   )
 }
 
+/**
+ * The badge in the language's own colours rather than the interface's. Worth it
+ * where the file's identity is the point; noise where the header is one of
+ * several and they are all the same language.
+ */
+export function CodeBlockBrandDemo() {
+  return (
+    <CodeBlock>
+      <CodeBlockHeader>
+        <CodeBlockTitle icon="brand">use-tick.ts</CodeBlockTitle>
+        <CodeBlockActions>
+          <CodeBlockCopy code={CLOCK} />
+        </CodeBlockActions>
+      </CodeBlockHeader>
+      <CodeBlockBody code={CLOCK} />
+    </CodeBlock>
+  )
+}
+
 /** The palette for a block set among prose the three hues would speak over. */
 export function CodeBlockMonoDemo() {
   return (

@@ -80,10 +80,182 @@ export const examples: Registry["items"] = [
       variants: [
         { name: "Default", demo: "CodeBlockDemo" },
         { name: "Numbered", demo: "CodeBlockNumberedDemo" },
+        { name: "Brand icon", demo: "CodeBlockBrandDemo" },
         { name: "Mono", demo: "CodeBlockMonoDemo" },
         { name: "Wrapped", demo: "CodeBlockWrapDemo" },
         { name: "Streaming", demo: "CodeBlockStreamingDemo" },
         { name: "Files", demo: "CodeBlockTabsDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "code-tabs-demo",
+    type: "registry:example",
+    title: "Code Tabs",
+    description:
+      "Several files under one header, the strip scrolling rather than pushing the actions off the block, each tab's badge turning into the cross that shuts it, and the copy action always handed the file that is actually showing.",
+    registryDependencies: ["code-tabs", "code-block"],
+    files: [
+      {
+        path: "examples/coding/code-tabs.tsx",
+        type: "registry:example",
+        target: "examples/coding/code-tabs.tsx",
+      },
+    ],
+    categories: ["coding"],
+    meta: {
+      variants: [
+        { name: "Files", demo: "CodeTabsDemo" },
+        { name: "Bare", demo: "CodeTabsBareDemo" },
+        { name: "Mono", demo: "CodeTabsMonoDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "code-diff-demo",
+    type: "registry:example",
+    title: "Code Diff",
+    description:
+      "What a change actually did, from the unified diff that describes it — with the count in the header, numbered down both sides, side by side where the room is worth spending, and in weight rather than colour where it is not.",
+    registryDependencies: ["code-diff", "code-block"],
+    files: [
+      {
+        path: "examples/coding/code-diff.tsx",
+        type: "registry:example",
+        target: "examples/coding/code-diff.tsx",
+      },
+    ],
+    categories: ["coding"],
+    meta: {
+      variants: [
+        { name: "Unified", demo: "CodeDiffDemo" },
+        { name: "No numbers", demo: "CodeDiffBareDemo" },
+        { name: "Split", demo: "CodeDiffSplitDemo" },
+        { name: "Mono", demo: "CodeDiffMonoDemo" },
+      ],
+      wide: true,
+    },
+  },
+  {
+    name: "terminal-demo",
+    type: "registry:example",
+    title: "Terminal",
+    description:
+      "A command and what came back — a clean run, a run that failed and says so in the tone it failed in, and a run still going with the caret holding the end of the line.",
+    registryDependencies: ["terminal", "code-block"],
+    files: [
+      {
+        path: "examples/coding/terminal.tsx",
+        type: "registry:example",
+        target: "examples/coding/terminal.tsx",
+      },
+    ],
+    categories: ["coding"],
+    meta: {
+      variants: [
+        { name: "Run", demo: "TerminalDemo" },
+        { name: "Failed", demo: "TerminalFailedDemo" },
+        { name: "Running", demo: "TerminalRunningDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "tool-call-demo",
+    type: "registry:example",
+    title: "Tool Call",
+    description:
+      "A tool call folded behind its summary — open, as a run of three in four different states, failed, and driven from outside so a transcript can unfold the call it just finished.",
+    registryDependencies: ["tool-call"],
+    files: [
+      {
+        path: "examples/coding/tool-call.tsx",
+        type: "registry:example",
+        target: "examples/coding/tool-call.tsx",
+      },
+    ],
+    categories: ["coding"],
+    meta: {
+      variants: [
+        { name: "Open", demo: "ToolCallDemo" },
+        { name: "A run", demo: "ToolCallRunDemo" },
+        { name: "Failed", demo: "ToolCallFailedDemo" },
+        { name: "Controlled", demo: "ToolCallControlledDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "file-tree-demo",
+    type: "registry:example",
+    title: "File Tree",
+    description:
+      "The files a change touched, marked added, modified or removed — on its own, driving a block beside it, or with nothing marked at all for a tree that is showing a project rather than a change.",
+    registryDependencies: ["file-tree", "code-block"],
+    files: [
+      {
+        path: "examples/coding/file-tree.tsx",
+        type: "registry:example",
+        target: "examples/coding/file-tree.tsx",
+      },
+    ],
+    categories: ["coding"],
+    meta: {
+      variants: [
+        { name: "Changes", demo: "FileTreeDemo" },
+        { name: "Driving a block", demo: "FileTreeSelectionDemo" },
+        { name: "Plain", demo: "FileTreePlainDemo" },
+      ],
+      wide: true,
+    },
+  },
+  {
+    name: "code-annotation-demo",
+    type: "registry:example",
+    title: "Code Annotation",
+    description:
+      "A note under the line it is about — as a remark, a warning or an error, and as one the reader can be done with.",
+    registryDependencies: ["code-annotation", "code-block"],
+    files: [
+      {
+        path: "examples/coding/code-annotation.tsx",
+        type: "registry:example",
+        target: "examples/coding/code-annotation.tsx",
+      },
+    ],
+    categories: ["coding"],
+    meta: {
+      variants: [
+        { name: "Warning", demo: "CodeAnnotationDemo" },
+        { name: "Tones", demo: "CodeAnnotationTonesDemo" },
+        { name: "Dismissable", demo: "CodeAnnotationDismissDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "inline-code-demo",
+    type: "registry:example",
+    title: "Inline Code",
+    description:
+      "A symbol named in a sentence — plain, copying itself, leading somewhere, and set at three sizes to show it takes the size of whatever it sits among.",
+    registryDependencies: ["inline-code"],
+    files: [
+      {
+        path: "examples/coding/inline-code.tsx",
+        type: "registry:example",
+        target: "examples/coding/inline-code.tsx",
+      },
+    ],
+    categories: ["coding"],
+    meta: {
+      variants: [
+        { name: "In prose", demo: "InlineCodeDemo" },
+        { name: "Copying", demo: "InlineCodeCopyDemo" },
+        { name: "Linking", demo: "InlineCodeLinkDemo" },
+        { name: "Scale", demo: "InlineCodeScaleDemo" },
       ],
       wide: false,
     },

@@ -1,0 +1,43 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "code-diff-demo",
+  "title": "Code Diff",
+  "description": "What a change actually did, from the unified diff that describes it — with the count in the header, numbered down both sides, side by side where the room is worth spending, and in weight rather than colour where it is not.",
+  "registryDependencies": [
+    "https://aiellie.dev/r/code-diff.json",
+    "https://aiellie.dev/r/code-block.json"
+  ],
+  "files": [
+    {
+      "path": "examples/coding/code-diff.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport {\n  CodeBlock,\n  CodeBlockActions,\n  CodeBlockCopy,\n  CodeBlockHeader,\n  CodeBlockTitle,\n} from \"@/components/aiellie-ui/code/code-block\"\nimport {\n  CodeDiffBody,\n  CodeDiffStat,\n  diffStat,\n  parseDiff,\n} from \"@/components/aiellie-ui/code/code-diff\"\n\n/** As `git diff` writes it, headers and all, since that is what arrives. */\nconst DIFF = `diff --git a/lib/tick.ts b/lib/tick.ts\nindex 3f1c0a2..9b2e441 100644\n--- a/lib/tick.ts\n+++ b/lib/tick.ts\n@@ -4,7 +4,8 @@ const listeners = new Set<() => void>()\n export function subscribe(notify: () => void) {\n   listeners.add(notify)\n-  return () => listeners.delete(notify)\n+  start()\n+  return () => stop(notify)\n }`\n\n/** A rename and a widening, which is what split view is worth the room for. */\nconst RENAME = `@@ -1,6 +1,6 @@\n-export function fmt(at: number, tz: string) {\n-  return new Intl.DateTimeFormat(\"en-GB\", {\n-    timeZone: tz,\n+export function formatStamp(at: number, zone: string) {\n+  return new Intl.DateTimeFormat(locale, {\n+    timeZone: zone,\n     timeStyle: \"short\",\n   }).format(at)\n }`\n\nexport function CodeDiffDemo() {\n  const stat = React.useMemo(() => diffStat(parseDiff(DIFF)), [])\n\n  return (\n    <CodeBlock>\n      <CodeBlockHeader>\n        <CodeBlockTitle>lib/tick.ts</CodeBlockTitle>\n        <CodeDiffStat {...stat} />\n        <CodeBlockActions>\n          <CodeBlockCopy code={DIFF} tooltip=\"Copy diff\" />\n        </CodeBlockActions>\n      </CodeBlockHeader>\n      <CodeDiffBody diff={DIFF} />\n    </CodeBlock>\n  )\n}\n\n/** Without the numbers, for a diff quoted in a sentence rather than reviewed. */\nexport function CodeDiffBareDemo() {\n  return (\n    <CodeBlock>\n      <CodeBlockHeader>\n        <CodeBlockTitle>lib/tick.ts</CodeBlockTitle>\n        <CodeBlockActions>\n          <CodeBlockCopy code={DIFF} tooltip=\"Copy diff\" />\n        </CodeBlockActions>\n      </CodeBlockHeader>\n      <CodeDiffBody diff={DIFF} lineNumbers={false} />\n    </CodeBlock>\n  )\n}\n\n/**\n * Before and after side by side, which answers \"what did this used to say\"\n * without counting rows — and needs the width, which is why the card is wide.\n */\nexport function CodeDiffSplitDemo() {\n  const stat = React.useMemo(() => diffStat(parseDiff(RENAME)), [])\n\n  return (\n    <CodeBlock className=\"max-w-3xl\">\n      <CodeBlockHeader>\n        <CodeBlockTitle>lib/stamp.ts</CodeBlockTitle>\n        <CodeDiffStat {...stat} />\n        <CodeBlockActions>\n          <CodeBlockCopy code={RENAME} tooltip=\"Copy diff\" />\n        </CodeBlockActions>\n      </CodeBlockHeader>\n      <CodeDiffBody diff={RENAME} view=\"split\" />\n    </CodeBlock>\n  )\n}\n\n/** The palette for a diff set among prose the three hues would speak over. */\nexport function CodeDiffMonoDemo() {\n  return (\n    <CodeBlock>\n      <CodeBlockHeader>\n        <CodeBlockTitle>lib/tick.ts</CodeBlockTitle>\n        <CodeBlockActions>\n          <CodeBlockCopy code={DIFF} tooltip=\"Copy diff\" />\n        </CodeBlockActions>\n      </CodeBlockHeader>\n      <CodeDiffBody diff={DIFF} palette=\"mono\" />\n    </CodeBlock>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/coding/code-diff.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Unified",
+        "demo": "CodeDiffDemo"
+      },
+      {
+        "name": "No numbers",
+        "demo": "CodeDiffBareDemo"
+      },
+      {
+        "name": "Split",
+        "demo": "CodeDiffSplitDemo"
+      },
+      {
+        "name": "Mono",
+        "demo": "CodeDiffMonoDemo"
+      }
+    ],
+    "wide": true
+  },
+  "categories": [
+    "coding"
+  ],
+  "type": "registry:example"
+}

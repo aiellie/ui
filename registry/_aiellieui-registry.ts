@@ -18,6 +18,7 @@ export const aiellieui: Registry["items"] = [
     dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
     registryDependencies: [
       "actions",
+      "code-icons",
       "highlight",
       "tooltip",
       "use-copy-to-clipboard",
@@ -28,6 +29,122 @@ export const aiellieui: Registry["items"] = [
         path: "components/aiellie-ui/code/code-block.tsx",
         type: "registry:ui",
         target: "components/aiellie-ui/code/code-block.tsx",
+      },
+    ],
+  },
+  {
+    name: "code-diff",
+    type: "registry:ui",
+    title: "Code Diff",
+    description:
+      "What changed, from the unified diff the tool that changed it wrote — tinted by row and marked in the gutter, with the code inside still coloured as code, read as one sequence or with before and after side by side.",
+    registryDependencies: ["actions", "code-block", "highlight", "utils"],
+    files: [
+      {
+        path: "components/aiellie-ui/code/code-diff.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/code/code-diff.tsx",
+      },
+    ],
+  },
+  {
+    name: "code-tabs",
+    type: "registry:ui",
+    title: "Code Tabs",
+    description:
+      "Several files in one block: a strip of names for a code block's header that scrolls rather than shoving the actions off the end, with the arrow keys, Home and End a tab strip is expected to answer.",
+    dependencies: ["@base-ui/react", "@hugeicons/core-free-icons", "@hugeicons/react"],
+    registryDependencies: [
+      "actions",
+      "code-block",
+      "code-icons",
+      "highlight",
+      "utils",
+    ],
+    files: [
+      {
+        path: "components/aiellie-ui/code/code-tabs.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/code/code-tabs.tsx",
+      },
+    ],
+  },
+  {
+    name: "terminal",
+    type: "registry:ui",
+    title: "Terminal",
+    description:
+      "A run rather than a line to run: what was typed, coloured the way the snippet colours it, what came back in the tone it came back in, and how it ended — with the prompt kept out of anything you copy.",
+    registryDependencies: ["actions", "highlight", "utils"],
+    files: [
+      {
+        path: "components/aiellie-ui/code/terminal.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/code/terminal.tsx",
+      },
+    ],
+  },
+  {
+    name: "tool-call",
+    type: "registry:ui",
+    title: "Tool Call",
+    description:
+      "A tool being called and what it gave back, folded away behind the one line worth reading without opening it — queued, turning, finished or failed, with the arguments and the result each under their own heading.",
+    dependencies: ["@base-ui/react", "@hugeicons/core-free-icons", "@hugeicons/react"],
+    registryDependencies: ["actions", "utils"],
+    files: [
+      {
+        path: "components/aiellie-ui/tool-call.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/tool-call.tsx",
+      },
+    ],
+  },
+  {
+    name: "file-tree",
+    type: "registry:ui",
+    title: "File Tree",
+    description:
+      "Which files a change touched and where they sit relative to each other, as a real tree the arrow keys walk — folders that open, marks for added, modified and removed, and one file chosen to be shown.",
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    registryDependencies: ["actions", "code-icons", "utils"],
+    files: [
+      {
+        path: "components/aiellie-ui/code/file-tree.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/code/file-tree.tsx",
+      },
+    ],
+  },
+  {
+    name: "code-annotation",
+    type: "registry:ui",
+    title: "Code Annotation",
+    description:
+      "A note pinned under the line it is about rather than in prose below that has to name the line again — as a remark, a warning or an error, set in the interface face because a sentence about code is not code.",
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    registryDependencies: ["actions", "utils"],
+    files: [
+      {
+        path: "components/aiellie-ui/code/code-annotation.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/code/code-annotation.tsx",
+      },
+    ],
+  },
+  {
+    name: "inline-code",
+    type: "registry:ui",
+    title: "Inline Code",
+    description:
+      "A symbol named in a sentence — sized in em so it comes out a shade smaller than whatever is around it, kept from breaking across a line, and able to copy itself or to lead somewhere.",
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    registryDependencies: ["use-copy-to-clipboard", "utils"],
+    files: [
+      {
+        path: "components/aiellie-ui/code/inline-code.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/code/inline-code.tsx",
       },
     ],
   },
@@ -84,7 +201,7 @@ export const aiellieui: Registry["items"] = [
     description:
       "Base UI's menu with this registry's surface on it — a glass popup, rows that take an icon and a word, ticked rows, groups, rules, shortcuts and submenus — so anything that needs a menu styles none of it again.",
     registryDependencies: ["actions", "utils"],
-    dependencies: ["@base-ui/react"],
+    dependencies: ["@base-ui/react", "@hugeicons/core-free-icons", "@hugeicons/react"],
     files: [
       {
         path: "components/aiellie-ui/menu.tsx",
@@ -99,6 +216,7 @@ export const aiellieui: Registry["items"] = [
     title: "Reactions",
     description:
       "What a message has collected, counted: a row of tallies where the reader's own is a state of the count rather than a mark of its own, each a real toggle that gives the reaction back when pressed again.",
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
     registryDependencies: ["utils"],
     files: [
       {
@@ -115,7 +233,7 @@ export const aiellieui: Registry["items"] = [
     description:
       "The message a reply is about, kept to an excerpt above the reply itself — a rule on the start edge to say the words are borrowed, a way back to the original, and a way to call the quote off before it is sent.",
     registryDependencies: ["utils"],
-    dependencies: ["@base-ui/react"],
+    dependencies: ["@base-ui/react", "@hugeicons/core-free-icons", "@hugeicons/react"],
     files: [
       {
         path: "components/aiellie-ui/quoted-message.tsx",
@@ -132,6 +250,7 @@ export const aiellieui: Registry["items"] = [
       "The body of an answer rather than the bubble around it — headings, lists, quotes, links and tables set to read as prose, with code blocks that carry their language and a copy of exactly what is on screen.",
     registryDependencies: [
       "actions",
+      "code-icons",
       "highlight",
       "use-copy-to-clipboard",
       "utils",
@@ -151,6 +270,7 @@ export const aiellieui: Registry["items"] = [
     title: "Message Status",
     description:
       "How far a message has got — waiting, gone, arrived, seen, or not sent — as a mark small enough to sit beside a timestamp, with the retry offered on the one state that asks something of the reader.",
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
     registryDependencies: ["utils"],
     files: [
       {

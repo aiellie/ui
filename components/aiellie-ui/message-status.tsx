@@ -1,6 +1,13 @@
 "use client"
 
 import * as React from "react"
+import {
+  Alert01Icon,
+  Clock01Icon,
+  Tick02Icon,
+  TickDouble02Icon,
+} from "@hugeicons/core-free-icons"
+import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react"
 
 import { cn } from "@/lib/utils"
 
@@ -19,74 +26,16 @@ const defaultLabels: Record<MessageStatusValue, string> = {
   failed: "Not sent",
 }
 
-/**
- * The marks are drawn rather than imported: a single tick and a double tick
- * have to be the same tick, one shifted, or the pair reads as two unrelated
- * glyphs. No icon set is going to guarantee that.
- */
-function Tick({ double }: { double?: boolean }) {
-  return (
-    <svg
-      viewBox="0 0 16 16"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.75"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      className="size-3.5"
-    >
-      <path
-        d={double ? "M1.5 8.5 4.5 11.5 10 5.5" : "M3.5 8.5 6.5 11.5 12.5 4.5"}
-      />
-      {double ? <path d="M7 8.5 9.5 11.5 15 5.5" /> : null}
-    </svg>
-  )
-}
-
-function Clock() {
-  return (
-    <svg
-      viewBox="0 0 16 16"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      className="size-3.5"
-    >
-      <circle cx="8" cy="8" r="5.75" />
-      <path d="M8 4.75V8l2.25 1.5" />
-    </svg>
-  )
-}
-
-function Alert() {
-  return (
-    <svg
-      viewBox="0 0 16 16"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      className="size-3.5"
-    >
-      <circle cx="8" cy="8" r="5.75" />
-      <path d="M8 5v3.5" />
-      <path d="M8 11h.01" />
-    </svg>
-  )
-}
-
-const marks: Record<MessageStatusValue, React.ReactNode> = {
-  sending: <Clock />,
-  sent: <Tick />,
-  delivered: <Tick double />,
-  read: <Tick double />,
-  failed: <Alert />,
+const MARK_ICONS: Record<MessageStatusValue, IconSvgElement> = {
+  sending: Clock01Icon,
+  sent: Tick02Icon,
+  /* Read is the same double tick as delivered rather than a third shape: the
+     difference between them is not worth a new glyph to learn, so the colour
+     carries it and the label says it outright for anyone the colour does not
+     reach. */
+  delivered: TickDouble02Icon,
+  read: TickDouble02Icon,
+  failed: Alert01Icon,
 }
 
 export interface MessageStatusProps extends Omit<
@@ -104,10 +53,9 @@ export interface MessageStatusProps extends Omit<
  * How far a message has got: waiting, gone, arrived, seen — or not sent, which
  * is the only one of the five that asks something of the reader.
  *
- * Read is the same double tick as delivered rather than a third shape, because
- * the difference between them is not worth a new glyph to learn: the colour
- * carries it, and the label says it outright for anyone the colour does not
- * reach.
+ * Read is the same double tick as delivered rather than a third shape: the
+ * colour carries the difference, and the label says it outright for anyone the
+ * colour does not reach.
  */
 export function MessageStatus({
   status,
@@ -139,9 +87,12 @@ export function MessageStatus({
       )}
       {...props}
     >
-      <span aria-hidden="true" className="shrink-0">
-        {marks[status]}
-      </span>
+      <HugeiconsIcon
+        aria-hidden
+        icon={MARK_ICONS[status]}
+        strokeWidth={1.75}
+        className="size-3.5 shrink-0"
+      />
       <span className={showLabel ? undefined : "sr-only"}>{label}</span>
       {failed && onRetry ? (
         <button

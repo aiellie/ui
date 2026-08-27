@@ -1,6 +1,8 @@
 "use client"
 
 import * as React from "react"
+import { PlusSignIcon } from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
 
 import { cn } from "@/lib/utils"
 
@@ -106,18 +108,12 @@ export function Reactions({
             "flex size-6 cursor-pointer items-center justify-center rounded-full border border-dashed border-border text-muted-foreground transition-colors duration-150 outline-none hover:bg-muted hover:text-foreground focus-visible:ring-1 focus-visible:ring-ring/50 motion-reduce:transition-none dark:hover:bg-input/30"
           )}
         >
-          {/* Drawn rather than imported: a plus is not worth an icon set. */}
-          <svg
-            viewBox="0 0 16 16"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.75"
-            strokeLinecap="round"
-            aria-hidden="true"
+          <HugeiconsIcon
+            aria-hidden
+            icon={PlusSignIcon}
+            strokeWidth={2}
             className="size-3"
-          >
-            <path d="M8 3.5v9M3.5 8h9" />
-          </svg>
+          />
         </button>
       ) : null}
     </div>

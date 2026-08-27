@@ -10,7 +10,8 @@ import {
   ghostButton,
 } from "@/components/aiellie-ui/actions"
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard"
-import { TOKEN_PALETTES, iconFor, tokenize } from "@/lib/highlight"
+import { codeIconFrom, type CodeIconSet } from "@/lib/code-icons"
+import { TOKEN_PALETTES, tokenize } from "@/lib/highlight"
 import { cn } from "@/lib/utils"
 
 /**
@@ -83,12 +84,15 @@ function ResponseCodeBlock({
   code,
   language,
   filename,
+  icon,
   className,
   ...props
 }: Omit<React.ComponentProps<"figure">, "children"> & {
   code: string
   language?: string
   filename?: string
+  /** A set to derive the badge from, an icon of your own, or `null` for none. */
+  icon?: React.ReactNode | CodeIconSet
 }) {
   const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 })
   const lines = React.useMemo(() => tokenize(code), [code])
@@ -104,10 +108,8 @@ function ResponseCodeBlock({
       )}
       {...props}
     >
-      <figcaption className="flex items-center gap-2 border-b border-border/60 px-3 py-1.5 text-[11px] text-muted-foreground">
-        {language ? (
-          <HugeiconsIcon icon={iconFor(language)} className="size-3.5" />
-        ) : null}
+      <figcaption className="flex items-center gap-2 border-b border-border/60 px-3 py-1.5 text-[11px] text-muted-foreground [&_svg:not([class*='size-'])]:size-3.5">
+        {codeIconFrom(icon, name, language ? "mono" : undefined)}
         <span className="min-w-0 truncate font-mono">{name}</span>
         <button
           type="button"

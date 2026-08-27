@@ -17,13 +17,27 @@ import {
   PaintBoardIcon,
   SourceCodeIcon,
   FileCodeIcon,
+  GitCompareIcon,
+  Folder01Icon,
+  ComputerTerminal01Icon,
+  MagicWand01Icon,
+  Message01Icon,
+  CodeSquareIcon,
+  Tag01Icon,
   TextFontIcon,
 } from "@hugeicons/core-free-icons"
 import type { IconSvgElement } from "@hugeicons/react"
 import type { RegistryItem } from "shadcn/schema"
 
 import type { DemoVariant } from "@/components/aiellie-ui/demos-switcher"
+import * as codeAnnotationDemos from "@/examples/coding/code-annotation"
 import * as codeBlockDemos from "@/examples/coding/code-block"
+import * as codeDiffDemos from "@/examples/coding/code-diff"
+import * as codeTabsDemos from "@/examples/coding/code-tabs"
+import * as fileTreeDemos from "@/examples/coding/file-tree"
+import * as inlineCodeDemos from "@/examples/coding/inline-code"
+import * as terminalDemos from "@/examples/coding/terminal"
+import * as toolCallDemos from "@/examples/coding/tool-call"
 import * as codeSnippetDemos from "@/examples/coding/code-snippet"
 import * as bubbleDemos from "@/examples/messages/bubble"
 import * as messageDemos from "@/examples/messages/message"
@@ -66,6 +80,34 @@ const exampleDemos: Record<string, ExampleDemos> = {
   "code-block-demo": {
     icon: FileCodeIcon,
     components: { ...codeBlockDemos },
+  },
+  "code-diff-demo": {
+    icon: GitCompareIcon,
+    components: { ...codeDiffDemos },
+  },
+  "code-tabs-demo": {
+    icon: CodeSquareIcon,
+    components: { ...codeTabsDemos },
+  },
+  "terminal-demo": {
+    icon: ComputerTerminal01Icon,
+    components: { ...terminalDemos },
+  },
+  "tool-call-demo": {
+    icon: MagicWand01Icon,
+    components: { ...toolCallDemos },
+  },
+  "file-tree-demo": {
+    icon: Folder01Icon,
+    components: { ...fileTreeDemos },
+  },
+  "code-annotation-demo": {
+    icon: Message01Icon,
+    components: { ...codeAnnotationDemos },
+  },
+  "inline-code-demo": {
+    icon: Tag01Icon,
+    components: { ...inlineCodeDemos },
   },
   "code-snippet-demo": {
     icon: SourceCodeIcon,

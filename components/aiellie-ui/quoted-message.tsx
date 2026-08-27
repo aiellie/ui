@@ -3,6 +3,8 @@
 import * as React from "react"
 import { mergeProps } from "@base-ui/react/merge-props"
 import { useRender } from "@base-ui/react/use-render"
+import { Cancel01Icon } from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
 
 import { cn } from "@/lib/utils"
 
@@ -85,18 +87,12 @@ export function QuotedMessage({
                 }}
                 className="-me-1 flex size-5 shrink-0 cursor-pointer items-center justify-center rounded-md opacity-60 transition-[opacity,background-color] duration-150 outline-none hover:bg-current/[0.12] hover:opacity-100 focus-visible:ring-1 focus-visible:ring-current/40 motion-reduce:transition-none"
               >
-                {/* Drawn rather than imported: a cross is not worth a dependency. */}
-                <svg
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.75"
-                  strokeLinecap="round"
-                  aria-hidden="true"
+                <HugeiconsIcon
+                  aria-hidden
+                  icon={Cancel01Icon}
+                  strokeWidth={2}
                   className="size-3"
-                >
-                  <path d="M4.5 4.5 11.5 11.5M11.5 4.5 4.5 11.5" />
-                </svg>
+                />
               </button>
             ) : null}
           </>

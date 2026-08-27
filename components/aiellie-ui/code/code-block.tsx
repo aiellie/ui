@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import {
+  ArrowRight01Icon,
   Copy01Icon,
   Download01Icon,
   Tick02Icon,
@@ -25,12 +26,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard"
-import {
-  TOKEN_PALETTES,
-  iconFor,
-  tokenize,
-  type TokenPalette,
-} from "@/lib/highlight"
+import { codeIconFrom, type CodeIconSet } from "@/lib/code-icons"
+import { TOKEN_PALETTES, tokenize, type TokenPalette } from "@/lib/highlight"
 import { cn } from "@/lib/utils"
 
 /**
@@ -89,31 +86,23 @@ function CodeBlockHeader({
 }
 
 /**
- * What the block is called, with the badge for it. `iconFor` is keyed by
- * extension and by language name alike, so `use-tick.ts` and `typescript` land
- * on the same glyph without the caller saying which of the two it passed.
+ * What the block is called, with the badge for it, derived from the name —
+ * `use-tick.ts` and `typescript` land on the same glyph without the caller
+ * saying which of the two it passed.
  *
- * A name assembled from several children cannot be read that way, so pass
- * `icon` there. `icon={null}` drops the badge for a header that is carrying
- * its own.
+ * `icon` takes a set name to derive from (`"mono"` by default, `"brand"` for
+ * the language's own colours), an icon of your own, or `null` for a header
+ * carrying its own.
  */
 function CodeBlockTitle({
   icon,
   children,
   className,
   ...props
-}: React.ComponentProps<"span"> & { icon?: React.ReactNode }) {
-  const badge =
-    icon !== undefined ? (
-      icon
-    ) : typeof children === "string" ? (
-      <HugeiconsIcon
-        aria-hidden
-        icon={iconFor(children)}
-        className="shrink-0"
-        strokeWidth={2}
-      />
-    ) : null
+}: React.ComponentProps<"span"> & {
+  icon?: React.ReactNode | CodeIconSet
+}) {
+  const badge = codeIconFrom(icon, children, "mono")
 
   return (
     <span
@@ -367,6 +356,19 @@ export interface CodeBlockBodyProps
   lineNumbers?: boolean
   /** 1-based lines to mark, for pointing at the part being talked about. */
   highlightLines?: readonly number[]
+  /**
+   * Notes to drop in under a 1-based line, keyed by it. A tint says which line
+   * is being talked about; this says what is being said, and says it where the
+   * reader already is rather than in prose below that has to name the line
+   * again. `code-annotation` is what goes in here.
+   */
+  annotations?: Readonly<Record<number, React.ReactNode>>
+  /**
+   * Lines whose note is already showing. The rest are a click on the marker
+   * away — a block that unfolded every note it had would be mostly notes, and
+   * the code is what the reader came for.
+   */
+  defaultOpenAnnotations?: readonly number[]
   /** Wraps long lines instead of scrolling them, for a narrow column. */
   wrap?: boolean
   /** Blinks a caret after the last line while the code is still arriving. */
@@ -388,6 +390,8 @@ function CodeBlockBody({
   palette = "color",
   lineNumbers = false,
   highlightLines,
+  annotations,
+  defaultOpenAnnotations,
   wrap = false,
   streaming = false,
   className,
@@ -406,6 +410,25 @@ function CodeBlockBody({
   const marked = React.useMemo(() => new Set(highlightLines), [highlightLines])
 
   const colors = TOKEN_PALETTES[palette]
+
+  /* Which notes are showing. Held here rather than by the caller: whether a
+     reader has unfolded a remark is nobody else's business, and a caller made
+     to store it would only hand it straight back. */
+  const [openNotes, setOpenNotes] = React.useState<ReadonlySet<number>>(
+    () => new Set(defaultOpenAnnotations)
+  )
+  const toggleNote = (line: number) =>
+    setOpenNotes((previous) => {
+      const next = new Set(previous)
+      if (!next.delete(line)) next.add(line)
+      return next
+    })
+
+  /* One id per block, suffixed by line, so a marker's `aria-controls` reaches
+     its own note and not the same-numbered line of another block. */
+  const noteId = React.useId()
+  const hasAnnotations =
+    annotations != null && Object.keys(annotations).length > 0
 
   /* Room for the widest number the block will reach, so the gutter does not
      widen at line 100 and shove every line of code sideways. */
@@ -429,7 +452,11 @@ function CodeBlockBody({
       aria-busy={streaming || undefined}
       className={cn(
         !wrap && codeScroll,
-        "py-3 outline-none focus-visible:ring-1 focus-visible:ring-foreground/20 focus-visible:ring-inset",
+        /* A container, so an annotation inside can be sized against what is
+           actually visible. Everything in here is laid out at the width of the
+           widest line, which is the wrong width for a sentence — and `%` would
+           resolve against exactly that. `cqi` resolves against this box. */
+        "@container py-3 outline-none focus-visible:ring-1 focus-visible:ring-foreground/20 focus-visible:ring-inset",
         className
       )}
       {...props}
@@ -443,8 +470,17 @@ function CodeBlockBody({
         {lines.map((tokens, index) => {
           const number = index + 1
           const highlighted = marked.has(number)
+          const note = annotations?.[number]
+          const open = openNotes.has(number)
 
-          return (
+          /* The row's tint is translucent, which the stuck gutter's fill
+             cannot be — so its fill is that tint already mixed into the
+             surface under it, rather than a second layer stacked on top. */
+          const fill = highlighted
+            ? "bg-[color-mix(in_oklch,var(--primary)_7%,var(--background))] dark:bg-[color-mix(in_oklch,var(--primary)_12%,var(--popover))]"
+            : "bg-background dark:bg-popover"
+
+          const line = (
             /* min-h keeps a blank line the height of a full one without
                giving it a character to carry, which a copied selection would
                pick up.
@@ -456,13 +492,13 @@ function CodeBlockBody({
               key={index}
               data-slot="code-block-line"
               data-highlighted={highlighted || undefined}
+              data-annotated={note ? true : undefined}
               className={cn(
                 "flex min-h-[1.7em] animate-in pe-3.5 duration-300 fill-mode-both fade-in motion-reduce:animate-none",
-                /* A stuck gutter has to carry the start inset itself, or it
-                   parks flush against the block's edge the moment the row
-                   scrolls out from under it. Where there is no gutter, the row
-                   keeps the inset. */
-                !lineNumbers && "ps-3.5",
+                /* A stuck gutter carries the start inset itself, or it parks
+                   flush against the block's edge the moment the row scrolls
+                   out from under it. With no gutter, the row keeps it. */
+                !lineNumbers && !hasAnnotations && "ps-3.5",
                 /* Derived from the one token rather than picked, so a consumer
                    who changes `--primary` gets a mark that still belongs to
                    the rest of their interface. The dark step is heavier: the
@@ -470,34 +506,68 @@ function CodeBlockBody({
                 highlighted && "bg-primary/[0.07] dark:bg-primary/[0.12]"
               )}
             >
-              {lineNumbers && (
+              {(lineNumbers || hasAnnotations) && (
+                /* Marker and numbers in one stuck element rather than two: two
+                   siblings both pinned to `start-0` would sit on top of each
+                   other, and the fill has to be unbroken across the pair or
+                   the code shows through the seam between them. */
                 <span
-                  aria-hidden
-                  style={{ minInlineSize: `calc(${gutter} + 1.75rem)` }}
                   className={cn(
-                    /* Numbers exist to be pointed at, and a gutter that scrolls
-                       away takes them off screen exactly when a long line is
-                       being read. Sticking it to the start edge costs it an
-                       opaque fill, or the code slides underneath and through
-                       it — and costs it padding rather than margin, since a
-                       margin is not part of the fill and the code would run
-                       straight up against the numbers. The width above adds
-                       that padding back, which `border-box` sizing would
-                       otherwise take out of the digits' own room. */
-                    "sticky start-0 z-10 shrink-0 px-3.5 text-end tabular-nums select-none",
-                    /* `select-none` is the whole difference between a gutter
-                       and a column of text: the numbers stay out of a copied
-                       selection. */
-                    highlighted
-                      ? /* The row's tint is translucent, which an opaque fill
-                           cannot be — so the fill is that tint already mixed
-                           into the surface under it, rather than a second
-                           layer stacked on top. */
-                        "bg-[color-mix(in_oklch,var(--primary)_7%,var(--background))] text-primary/70 dark:bg-[color-mix(in_oklch,var(--primary)_12%,var(--popover))]"
-                      : "bg-background text-foreground/25 dark:bg-popover"
+                    "sticky start-0 z-10 flex shrink-0 items-start gap-1.5 ps-2.5 pe-3.5 select-none",
+                    fill
                   )}
                 >
-                  {number}
+                  {hasAnnotations &&
+                    (note ? (
+                      <button
+                        type="button"
+                        data-slot="code-block-annotation-marker"
+                        aria-expanded={open}
+                        /* Only while it exists: the note mounts on opening,
+                           and `aria-controls` pointing at nothing is worse
+                           than not pointing. `aria-expanded` carries the
+                           state either way. */
+                        aria-controls={open ? `${noteId}-${number}` : undefined}
+                        aria-label={
+                          open ? `Hide note on line ${number}` : `Show note on line ${number}`
+                        }
+                        onClick={() => toggleNote(number)}
+                        className="grid h-[1.7em] w-3.5 shrink-0 cursor-pointer place-items-center rounded-sm text-foreground/30 outline-none transition-colors duration-150 hover:text-foreground/70 focus-visible:ring-1 focus-visible:ring-foreground/20 motion-reduce:transition-none"
+                      >
+                        <HugeiconsIcon
+                          aria-hidden
+                          icon={ArrowRight01Icon}
+                          strokeWidth={2.5}
+                          className={cn(
+                            "size-3 transition-transform duration-150 motion-reduce:transition-none",
+                            /* The flip has to come before the rotation, or an
+                               open marker points up in an RTL layout. */
+                            "rtl:-scale-x-100",
+                            open && "rotate-90"
+                          )}
+                        />
+                      </button>
+                    ) : (
+                      /* An unannotated line still holds the column, so the
+                         numbers beside it do not step in and out as the eye
+                         travels down the block. */
+                      <span aria-hidden className="w-3.5 shrink-0" />
+                    ))}
+                  {lineNumbers && (
+                    <span
+                      aria-hidden
+                      style={{ minInlineSize: gutter }}
+                      /* `select-none` above is the whole difference between a
+                         gutter and a column of text: nothing in here joins a
+                         copied selection. */
+                      className={cn(
+                        "text-end tabular-nums",
+                        highlighted ? "text-primary/70" : "text-foreground/25"
+                      )}
+                    >
+                      {number}
+                    </span>
+                  )}
                 </span>
               )}
               <span
@@ -515,6 +585,31 @@ function CodeBlockBody({
                 {streaming && index === lines.length - 1 && <CodeBlockCaret />}
               </span>
             </span>
+          )
+
+          /* Closed notes are not rendered rather than hidden: `hidden` sets
+             `display: none` from the UA sheet, which the `block` below would
+             win against, and mounting on open is what gives the note its
+             entry animation. */
+          if (!note || !open) return line
+
+          /* `codeSurface` sizes the rows to the widest line, so a note left to
+             fill its parent would be as wide as the longest line in the block
+             and mostly off screen. It takes its own width instead, and sticks
+             to the start edge so scrolling to the end of a long line does not
+             leave the note behind. */
+          return (
+            <React.Fragment key={index}>
+              {line}
+              <span
+                id={`${noteId}-${number}`}
+                data-slot="code-block-annotation"
+                data-line={number}
+                className="sticky start-0 block w-fit max-w-[100cqi] animate-in px-3.5 py-1.5 duration-150 fade-in slide-in-from-top-1 motion-reduce:animate-none"
+              >
+                {note}
+              </span>
+            </React.Fragment>
           )
         })}
       </code>

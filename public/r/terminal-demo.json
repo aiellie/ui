@@ -1,0 +1,39 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "terminal-demo",
+  "title": "Terminal",
+  "description": "A command and what came back — a clean run, a run that failed and says so in the tone it failed in, and a run still going with the caret holding the end of the line.",
+  "registryDependencies": [
+    "https://aiellie.dev/r/terminal.json",
+    "https://aiellie.dev/r/code-block.json"
+  ],
+  "files": [
+    {
+      "path": "examples/coding/terminal.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport {\n  CodeBlockActions,\n  CodeBlockCopy,\n  CodeBlockHeader,\n  CodeBlockTitle,\n} from \"@/components/aiellie-ui/code/code-block\"\nimport {\n  Terminal,\n  TerminalBody,\n  TerminalCommand,\n  TerminalOutput,\n  TerminalStatus,\n} from \"@/components/aiellie-ui/code/terminal\"\n\nconst BUILD = \"pnpm registry:build\"\n\nexport function TerminalDemo() {\n  return (\n    <Terminal>\n      <CodeBlockHeader>\n        <CodeBlockTitle>zsh</CodeBlockTitle>\n        <CodeBlockActions>\n          <CodeBlockCopy code={BUILD} tooltip=\"Copy command\" />\n        </CodeBlockActions>\n      </CodeBlockHeader>\n      <TerminalBody>\n        <TerminalCommand>{BUILD}</TerminalCommand>\n        <TerminalOutput tone=\"muted\">- Building code-block…</TerminalOutput>\n        <TerminalOutput tone=\"muted\">- Building code-diff…</TerminalOutput>\n        <TerminalOutput tone=\"muted\">- Building terminal…</TerminalOutput>\n        <TerminalOutput tone=\"success\">✔ Building registry.</TerminalOutput>\n        <TerminalStatus code={0} />\n      </TerminalBody>\n    </Terminal>\n  )\n}\n\n/** The case the reader has to do something about, which is why it has a tone. */\nexport function TerminalFailedDemo() {\n  return (\n    <Terminal>\n      <CodeBlockHeader>\n        <CodeBlockTitle>zsh</CodeBlockTitle>\n      </CodeBlockHeader>\n      <TerminalBody>\n        <TerminalCommand>pnpm typecheck</TerminalCommand>\n        <TerminalOutput tone=\"error\">\n          components/ui/bubble.tsx:42:7 - error TS2322: Type &apos;string&apos;\n          is not assignable to type &apos;Variant&apos;.\n        </TerminalOutput>\n        <TerminalOutput tone=\"muted\">\n          Found 1 error in components/ui/bubble.tsx\n        </TerminalOutput>\n        <TerminalStatus code={2} />\n      </TerminalBody>\n    </Terminal>\n  )\n}\n\nconst LINES: { text: string; tone?: \"muted\" | \"success\" }[] = [\n  { text: \"· Compiled successfully\", tone: \"muted\" },\n  { text: \"· Collecting page data\", tone: \"muted\" },\n  { text: \"· Generating static pages (18/18)\", tone: \"muted\" },\n  { text: \"✔ Done in 4.2s\", tone: \"success\" },\n]\n\n/**\n * A run still going: the caret holds the end of the command while its output\n * arrives a line at a time, and the status only appears once there is one.\n */\nexport function TerminalRunningDemo() {\n  const [shown, setShown] = React.useState(0)\n  const done = shown >= LINES.length\n\n  React.useEffect(() => {\n    if (done) return\n    const id = setTimeout(() => setShown((value) => value + 1), 700)\n    return () => clearTimeout(id)\n  }, [done, shown])\n\n  return (\n    <Terminal>\n      <CodeBlockHeader>\n        <CodeBlockTitle>zsh</CodeBlockTitle>\n      </CodeBlockHeader>\n      {/* The finished run's height is reserved from the first frame, so lines\n          landing do not push the block out under a card that centres it. */}\n      <TerminalBody className=\"min-h-[132px]\">\n        <TerminalCommand running={!done}>pnpm build</TerminalCommand>\n        {LINES.slice(0, shown).map((line) => (\n          <TerminalOutput\n            key={line.text}\n            tone={line.tone}\n            className=\"animate-in duration-300 fill-mode-both fade-in motion-reduce:animate-none\"\n          >\n            {line.text}\n          </TerminalOutput>\n        ))}\n        {done && <TerminalStatus code={0} />}\n      </TerminalBody>\n    </Terminal>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/coding/terminal.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Run",
+        "demo": "TerminalDemo"
+      },
+      {
+        "name": "Failed",
+        "demo": "TerminalFailedDemo"
+      },
+      {
+        "name": "Running",
+        "demo": "TerminalRunningDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "coding"
+  ],
+  "type": "registry:example"
+}

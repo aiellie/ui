@@ -1,0 +1,375 @@
+import type * as React from "react"
+import {
+  BashIcon,
+  CppIcon,
+  CssThreeIcon,
+  HtmlFiveIcon,
+  JavaIcon,
+  JavaScriptIcon,
+  Jsx01Icon,
+  PhpIcon,
+  PythonIcon,
+  SourceCodeIcon,
+  SqlIcon,
+  Typescript01Icon,
+} from "@hugeicons/core-free-icons"
+import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react"
+
+import { cn } from "@/lib/utils"
+
+/**
+ * The badge a file or a language wears, in two sets: the interface one, drawn
+ * in `currentColor` from Hugeicons, and the brand one, drawn in each
+ * language's own colours.
+ *
+ * Split out from `lib/highlight` rather than living beside the scanner. The
+ * two are used together constantly and are still not the same kind of thing —
+ * `highlight` is a pass over text and a set of class strings, with no
+ * dependency at all; this is a map into an icon set. Keeping them in one file
+ * meant every consumer of the tokenizer installed Hugeicons whether or not it
+ * ever drew a badge. A code block wants both; a diff wants only the scanner.
+ *
+ * The brand marks are the one place in this registry that draws its own SVG,
+ * and they are the exception the rule is worth making: a logo is not a glyph
+ * with a shape you can choose, it is a specific mark in specific colours, and
+ * there is no icon set to reach for that has the Rust gear or the Go gopher's
+ * blue in it. Everything that is *not* a logo — ticks, chevrons, folders,
+ * crosses — still comes from Hugeicons, always.
+ */
+
+/**
+ * Keyed by both extension and language name, since the same code arrives
+ * labelled `ts`, `typescript`, or `use-tick.ts` and all three should land on
+ * one icon.
+ */
+const LANGUAGE_ICONS: Record<string, IconSvgElement> = {
+  ts: Typescript01Icon,
+  mts: Typescript01Icon,
+  cts: Typescript01Icon,
+  typescript: Typescript01Icon,
+  tsx: Jsx01Icon,
+  jsx: Jsx01Icon,
+  js: JavaScriptIcon,
+  mjs: JavaScriptIcon,
+  cjs: JavaScriptIcon,
+  javascript: JavaScriptIcon,
+  py: PythonIcon,
+  python: PythonIcon,
+  java: JavaIcon,
+  php: PhpIcon,
+  cpp: CppIcon,
+  cc: CppIcon,
+  sql: SqlIcon,
+  sh: BashIcon,
+  zsh: BashIcon,
+  bash: BashIcon,
+  shell: BashIcon,
+  html: HtmlFiveIcon,
+  css: CssThreeIcon,
+}
+
+/**
+ * The badge for a filename or a language name. A name with no extension —
+ * `Dockerfile`, `README` — falls through to the generic source icon rather
+ * than matching on the whole word.
+ */
+export function iconFor(nameOrLanguage: string): IconSvgElement {
+  return LANGUAGE_ICONS[keyFor(nameOrLanguage)] ?? SourceCodeIcon
+}
+
+/** The lookup key both sets share: the extension, or the whole name. */
+function keyFor(nameOrLanguage: string) {
+  const parts = nameOrLanguage.split(".")
+  /* A dotfile is all extension — `.gitignore` splits to `["", "gitignore"]`,
+     and the last part is the one that names it. */
+  return (parts.pop() || nameOrLanguage).toLowerCase()
+}
+
+type MarkProps = React.SVGProps<SVGSVGElement>
+
+/**
+ * Every mark below is written without `width` or `height` so the class sizing
+ * it wins, and with `aria-hidden` since the name it sits beside is already
+ * saying what the file is.
+ */
+function Mark({ children, ...props }: MarkProps) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden {...props}>
+      {children}
+    </svg>
+  )
+}
+
+const TypeScriptMark = (props: MarkProps) => (
+  <Mark viewBox="0 0 32 32" {...props}>
+    <path
+      fill="#007acc"
+      d="M23.827,8.243A4.424,4.424,0,0,1,26.05,9.524a5.853,5.853,0,0,1,.852,1.143c.011.045-1.534,1.083-2.471,1.662-.034.023-.169-.124-.322-.35a2.014,2.014,0,0,0-1.67-1c-1.077-.074-1.771.49-1.766,1.433a1.3,1.3,0,0,0,.153.666c.237.49.677.784,2.059,1.383,2.544,1.095,3.636,1.817,4.31,2.843a5.158,5.158,0,0,1,.416,4.333,4.764,4.764,0,0,1-3.932,2.815,10.9,10.9,0,0,1-2.708-.028,6.531,6.531,0,0,1-3.616-1.884,6.278,6.278,0,0,1-.926-1.371,2.655,2.655,0,0,1,.327-.208c.158-.09.756-.434,1.32-.761L19.1,19.6l.214.312a4.771,4.771,0,0,0,1.35,1.292,3.3,3.3,0,0,0,3.458-.175,1.545,1.545,0,0,0,.2-1.974c-.276-.395-.84-.727-2.443-1.422a8.8,8.8,0,0,1-3.349-2.055,4.687,4.687,0,0,1-.976-1.777,7.116,7.116,0,0,1-.062-2.268,4.332,4.332,0,0,1,3.644-3.374A9,9,0,0,1,23.827,8.243ZM15.484,9.726l.011,1.454h-4.63V24.328H7.6V11.183H2.97V9.755A13.986,13.986,0,0,1,3.01,8.289c.017-.023,2.832-.034,6.245-.028l6.211.017Z"
+    />
+  </Mark>
+)
+
+const JavaScriptMark = (props: MarkProps) => (
+  <Mark viewBox="0 0 32 32" {...props}>
+    <path
+      fill="#fbc02d"
+      d="M18.774,19.7a3.727,3.727,0,0,0,3.376,2.078c1.418,0,2.324-.709,2.324-1.688,0-1.173-.931-1.589-2.491-2.272l-.856-.367c-2.469-1.052-4.11-2.37-4.11-5.156,0-2.567,1.956-4.52,5.012-4.52A5.058,5.058,0,0,1,26.9,10.52l-2.665,1.711a2.327,2.327,0,0,0-2.2-1.467,1.489,1.489,0,0,0-1.638,1.467c0,1.027.636,1.442,2.1,2.078l.856.366c2.908,1.247,4.549,2.518,4.549,5.376,0,3.081-2.42,4.769-5.671,4.769a6.575,6.575,0,0,1-6.236-3.5ZM6.686,20c.538.954,1.027,1.76,2.2,1.76,1.124,0,1.834-.44,1.834-2.15V7.975h3.422V19.658c0,3.543-2.078,5.156-5.11,5.156A5.312,5.312,0,0,1,3.9,21.688Z"
+    />
+  </Mark>
+)
+
+/** The React atom, which is what a `.tsx` or `.jsx` file is really wearing. */
+const ReactMark = (props: MarkProps) => (
+  <Mark viewBox="-11.5 -10.23174 23 20.46348" {...props}>
+    <circle cx="0" cy="0" r="2.05" fill="#61dafb" />
+    <g stroke="#61dafb" strokeWidth="1" fill="none">
+      <ellipse rx="11" ry="4.2" />
+      <ellipse rx="11" ry="4.2" transform="rotate(60)" />
+      <ellipse rx="11" ry="4.2" transform="rotate(120)" />
+    </g>
+  </Mark>
+)
+
+const CssMark = (props: MarkProps) => (
+  <Mark viewBox="0 0 128 128" {...props}>
+    <path
+      fill="#38bdf8"
+      d="M64.004 25.602c-17.067 0-27.73 8.53-32 25.597 6.398-8.531 13.867-11.73 22.398-9.597 4.871 1.214 8.352 4.746 12.207 8.66C72.883 56.629 80.145 64 96.004 64c17.066 0 27.73-8.531 32-25.602-6.399 8.536-13.867 11.735-22.399 9.602-4.87-1.215-8.347-4.746-12.207-8.66-6.27-6.367-13.53-13.738-29.394-13.738zM32.004 64c-17.066 0-27.73 8.531-32 25.602C6.402 81.066 13.87 77.867 22.402 80c4.871 1.215 8.352 4.746 12.207 8.66 6.274 6.367 13.536 13.738 29.395 13.738 17.066 0 27.73-8.53 32-25.597-6.399 8.531-13.867 11.73-22.399 9.597-4.87-1.214-8.347-4.746-12.207-8.66C55.128 71.371 47.868 64 32.004 64zm0 0"
+    />
+  </Mark>
+)
+
+/**
+ * Flat rather than the two gradients the official mark carries. A gradient
+ * needs an `id`, and an `id` inside a component rendered once per row is a
+ * duplicate `id` per row — invalid, and a trap the first time someone tries to
+ * reference one. At the size a badge is drawn the ramp is invisible anyway.
+ */
+const PythonMark = (props: MarkProps) => (
+  <Mark viewBox="0 0 256 255" {...props}>
+    <path
+      fill="#387EB8"
+      d="M126.916.072c-64.832 0-60.784 28.115-60.784 28.115l.072 29.128h61.868v8.745H41.631S.145 61.355.145 126.77c0 65.417 36.21 63.097 36.21 63.097h21.61v-30.356s-1.165-36.21 35.632-36.21h61.362s34.475.557 34.475-33.319V33.97S194.67.072 126.916.072M92.802 19.66a11.12 11.12 0 0 1 11.13 11.13a11.12 11.12 0 0 1-11.13 11.13a11.12 11.12 0 0 1-11.13-11.13a11.12 11.12 0 0 1 11.13-11.13"
+    />
+    <path
+      fill="#FFC331"
+      d="M128.757 254.126c64.832 0 60.784-28.115 60.784-28.115l-.072-29.127H127.6v-8.745h86.441s41.486 4.705 41.486-60.712c0-65.416-36.21-63.096-36.21-63.096h-21.61v30.355s1.165 36.21-35.632 36.21h-61.362s-34.475-.557-34.475 33.32v56.013s-5.235 33.897 62.518 33.897m34.114-19.586a11.12 11.12 0 0 1-11.13-11.13a11.12 11.12 0 0 1 11.13-11.131a11.12 11.12 0 0 1 11.13 11.13a11.12 11.12 0 0 1-11.13 11.13"
+    />
+  </Mark>
+)
+
+const GoMark = (props: MarkProps) => (
+  <Mark viewBox="0 0 512 192" {...props}>
+    <path
+      fill="#00ACD7"
+      d="m292.533 13.295l1.124.75c13.212 8.725 22.685 20.691 28.917 35.15c1.496 2.243.499 3.49-2.493 4.237l-5.063 1.296c-11.447 2.949-20.53 5.429-31.827 8.378l-6.443 1.678c-2.32.574-2.96.333-5.428-2.477l-.348-.399c-3.519-3.988-6.155-6.652-10.817-9.03l-.899-.443c-15.705-7.727-30.911-5.484-45.12 3.74c-16.952 10.968-25.677 27.172-25.428 47.364c.25 19.942 13.96 36.395 33.654 39.137c16.951 2.244 31.16-3.739 42.378-16.452c2.244-2.743 4.238-5.734 6.73-9.224h-48.11c-5.235 0-6.481-3.24-4.736-7.478l.864-2.035c3.204-7.454 8.173-18.168 11.4-24.294l.704-1.319c.862-1.494 2.612-3.513 5.977-3.513h80.224c3.603-11.415 9.449-22.201 17.246-32.407c18.198-23.931 40.135-36.396 69.8-41.63c25.427-4.488 49.359-1.995 71.046 12.713c19.694 13.461 31.909 31.66 35.15 55.59c4.237 33.654-5.485 61.075-28.668 84.508c-16.453 16.702-36.645 27.172-59.829 31.908c-6.73 1.247-13.461 1.496-19.942 2.244c-22.685-.499-43.376-6.98-60.826-21.937c-12.273-10.61-20.727-23.648-24.928-38.828a105 105 0 0 1-10.47 16.89c-17.949 23.683-41.381 38.39-71.046 42.38c-24.43 3.24-47.115-1.497-67.058-16.454c-18.447-13.96-28.917-32.407-31.66-55.34c-3.24-27.173 4.737-51.603 21.19-73.041c17.7-23.184 41.132-37.891 69.8-43.126c22.999-4.16 45.037-1.595 64.936 11.464M411.12 49.017l-.798.178c-23.183 5.235-38.14 19.942-43.624 43.375c-4.488 19.444 4.985 39.138 22.934 47.115c13.71 5.983 27.421 5.235 40.633-1.496c19.694-10.22 30.413-26.175 31.66-47.613c-.25-3.24-.25-5.734-.749-8.227c-4.436-24.401-26.664-38.324-50.056-33.332M116.416 94.564c.997 0 1.496.748 1.496 1.745l-.499 5.983c0 .997-.997 1.745-1.745 1.745l-54.344-.249c-.997 0-1.246-.748-.748-1.496l3.49-6.232c.499-.748 1.496-1.496 2.493-1.496zM121.9 71.63c.997 0 1.496.748 1.247 1.496l-1.995 5.983c-.249.997-1.246 1.495-2.243 1.495l-117.912.25c-.997 0-1.246-.499-.748-1.247l5.235-6.73c.499-.748 1.745-1.247 2.742-1.247zm12.963-22.934c.997 0 1.246.748.748 1.496l-4.238 6.481c-.499.748-1.745 1.496-2.493 1.496l-90.24-.25c-.998 0-1.247-.498-.749-1.246l5.235-6.73c.499-.748 1.745-1.247 2.742-1.247z"
+    />
+  </Mark>
+)
+
+const RustMark = (props: MarkProps) => (
+  <Mark viewBox="0 0 256 256" {...props}>
+    <path
+      fill="currentColor"
+      d="m254.251 124.862l-10.747-6.653a146 146 0 0 0-.306-3.13l9.236-8.615a3.69 3.69 0 0 0 1.105-3.427a3.69 3.69 0 0 0-2.33-2.744l-11.807-4.415a137 137 0 0 0-.925-3.048l7.365-10.229a3.698 3.698 0 0 0-2.407-5.814l-12.45-2.025c-.484-.944-.988-1.874-1.496-2.796l5.231-11.483a3.68 3.68 0 0 0-.288-3.59a3.68 3.68 0 0 0-3.204-1.642l-12.636.44a100 100 0 0 0-1.996-2.421l2.904-12.308a3.7 3.7 0 0 0-.986-3.466a3.7 3.7 0 0 0-3.464-.986l-12.305 2.901a106 106 0 0 0-2.426-1.996l.442-12.635a3.68 3.68 0 0 0-1.64-3.205a3.69 3.69 0 0 0-3.59-.29l-11.48 5.234a133 133 0 0 0-2.796-1.5l-2.03-12.452a3.7 3.7 0 0 0-5.812-2.407l-10.236 7.365q-1.51-.481-3.042-.922L155.72 4.794a3.69 3.69 0 0 0-2.745-2.336a3.71 3.71 0 0 0-3.424 1.106l-8.615 9.243a111 111 0 0 0-3.13-.306l-6.653-10.75a3.698 3.698 0 0 0-6.289 0l-6.653 10.75a110 110 0 0 0-3.133.306l-8.617-9.243a3.695 3.695 0 0 0-6.169 1.23l-4.414 11.809c-1.023.293-2.035.604-3.045.922L82.599 10.16a3.69 3.69 0 0 0-3.579-.415a3.7 3.7 0 0 0-2.235 2.822l-2.03 12.452c-.94.487-1.869.988-2.796 1.5l-11.481-5.235a3.69 3.69 0 0 0-3.588.291a3.68 3.68 0 0 0-1.642 3.205l.44 12.635a118 118 0 0 0-2.426 1.996l-12.305-2.9a3.71 3.71 0 0 0-3.466.985a3.7 3.7 0 0 0-.986 3.466l2.899 12.308q-1.01 1.196-1.991 2.421l-12.636-.44a3.72 3.72 0 0 0-3.204 1.641a3.7 3.7 0 0 0-.291 3.59l5.234 11.484c-.509.922-1.012 1.852-1.5 2.796l-12.449 2.025a3.7 3.7 0 0 0-2.407 5.814l7.365 10.23q-.482 1.514-.925 3.047l-11.808 4.415a3.702 3.702 0 0 0-1.225 6.171l9.237 8.614c-.115 1.04-.217 2.087-.305 3.131L1.75 124.862A3.7 3.7 0 0 0 0 128.007c0 1.284.663 2.473 1.751 3.143l10.748 6.653q.132 1.572.305 3.131l-9.238 8.617a3.697 3.697 0 0 0 1.226 6.169l11.808 4.415c.294 1.022.605 2.037.925 3.047l-7.365 10.231a3.696 3.696 0 0 0 2.41 5.812l12.447 2.025c.487.944.986 1.874 1.5 2.8l-5.235 11.48a3.69 3.69 0 0 0 .291 3.59a3.68 3.68 0 0 0 3.204 1.641l12.63-.442c.659.821 1.322 1.626 1.997 2.426l-2.899 12.31a3.68 3.68 0 0 0 .986 3.459a3.68 3.68 0 0 0 3.466.983l12.305-2.898c.8.68 1.61 1.34 2.427 1.99l-.44 12.639a3.694 3.694 0 0 0 5.229 3.492l11.481-5.231a106 106 0 0 0 2.796 1.499l2.03 12.445a3.69 3.69 0 0 0 2.235 2.825a3.7 3.7 0 0 0 3.579-.413l10.229-7.37c1.01.32 2.025.633 3.047.927l4.415 11.804a3.69 3.69 0 0 0 2.744 2.331a3.68 3.68 0 0 0 3.425-1.106l8.617-9.238c1.04.12 2.086.22 3.133.313l6.653 10.748a3.7 3.7 0 0 0 3.143 1.75a3.7 3.7 0 0 0 3.145-1.75l6.653-10.748c1.047-.093 2.092-.193 3.131-.313l8.615 9.238a3.68 3.68 0 0 0 3.424 1.106a3.69 3.69 0 0 0 2.744-2.331l4.415-11.804c1.022-.294 2.038-.607 3.048-.927l10.231 7.37a3.7 3.7 0 0 0 5.812-2.412l2.03-12.445c.939-.487 1.868-.993 2.795-1.5l11.481 5.232a3.692 3.692 0 0 0 5.23-3.492l-.44-12.638a99 99 0 0 0 2.423-1.991l12.306 2.898c1.25.294 2.56-.07 3.463-.983a3.68 3.68 0 0 0 .986-3.459l-2.898-12.31c.675-.8 1.34-1.605 1.99-2.426l12.636.442a3.68 3.68 0 0 0 3.204-1.64a3.69 3.69 0 0 0 .289-3.592l-5.232-11.478c.511-.927 1.013-1.857 1.497-2.8l12.45-2.026a3.68 3.68 0 0 0 2.822-2.236a3.7 3.7 0 0 0-.415-3.576l-7.365-10.23q.479-1.516.925-3.048l11.806-4.415a3.68 3.68 0 0 0 2.331-2.745a3.68 3.68 0 0 0-1.106-3.424l-9.235-8.617c.112-1.04.215-2.086.305-3.13l10.748-6.654a3.69 3.69 0 0 0 1.751-3.143c0-1.281-.66-2.472-1.749-3.145m-71.932 89.156c-4.104-.885-6.714-4.93-5.833-9.047c.878-4.112 4.92-6.729 9.023-5.844c4.104.879 6.718 4.931 5.838 9.04c-.88 4.11-4.926 6.73-9.028 5.851m-3.652-24.699a6.93 6.93 0 0 0-8.23 5.332l-3.816 17.807c-11.775 5.344-24.85 8.313-38.621 8.313c-14.086 0-27.446-3.116-39.43-8.688l-3.814-17.806c-.802-3.747-4.486-6.134-8.228-5.33l-15.72 3.376a93 93 0 0 1-8.128-9.58h76.49c.865 0 1.442-.157 1.442-.945v-27.057c0-.787-.577-.944-1.443-.944H106.8v-17.15h24.195c2.208 0 11.809.63 14.878 12.902c.962 3.774 3.072 16.05 4.516 19.98c1.438 4.408 7.293 13.213 13.533 13.213h38.115c.433 0 .895-.049 1.382-.137a94 94 0 0 1-8.669 10.17zm-105.79 24.327c-4.105.886-8.146-1.731-9.029-5.843c-.878-4.119 1.732-8.162 5.836-9.047a7.607 7.607 0 0 1 9.028 5.85c.878 4.11-1.734 8.16-5.836 9.04M43.86 95.986c1.703 3.842-.03 8.345-3.867 10.045c-3.837 1.705-8.328-.03-10.03-3.875a7.615 7.615 0 0 1 3.867-10.045a7.6 7.6 0 0 1 10.03 3.874m-8.918 21.14l16.376-7.277a6.94 6.94 0 0 0 3.524-9.158l-3.372-7.626h13.264v59.788H37.973a93.7 93.7 0 0 1-3.566-25.672c0-3.398.183-6.756.535-10.056m71.862-5.807V93.696h31.586c1.632 0 11.52 1.886 11.52 9.28c0 6.139-7.584 8.34-13.821 8.34zm114.792 15.862q0 3.506-.257 6.948h-9.603c-.961 0-1.348.632-1.348 1.573v4.41c0 10.38-5.853 12.638-10.982 13.213c-4.884.55-10.3-2.045-10.967-5.034c-2.882-16.206-7.683-19.667-15.265-25.648c9.41-5.975 19.2-14.79 19.2-26.59c0-12.74-8.734-20.765-14.688-24.7c-8.352-5.506-17.6-6.61-20.095-6.61H58.279c13.467-15.03 31.719-25.677 52.362-29.551l11.706 12.28a6.923 6.923 0 0 0 9.799.226l13.098-12.528c27.445 5.11 50.682 22.194 64.073 45.633l-8.967 20.253c-1.548 3.505.032 7.604 3.527 9.157l17.264 7.668c.298 3.065.455 6.161.455 9.3M122.352 24.745c3.033-2.905 7.844-2.79 10.748.247c2.898 3.046 2.788 7.862-.252 10.765c-3.033 2.906-7.844 2.793-10.748-.25a7.62 7.62 0 0 1 .252-10.762m88.983 71.61a7.594 7.594 0 0 1 10.028-3.872c3.838 1.702 5.57 6.203 3.867 10.045a7.595 7.595 0 0 1-10.03 3.875c-3.833-1.703-5.565-6.2-3.865-10.048"
+    />
+  </Mark>
+)
+
+const BashMark = (props: MarkProps) => (
+  <Mark viewBox="0 0 24 24" fill="currentColor" {...props}>
+    <path d="M21.038 4.9 13.461.402a2.86 2.86 0 0 0-2.923.001L2.961 4.9A3.023 3.023 0 0 0 1.5 7.503v8.995c0 1.073.557 2.066 1.462 2.603l7.577 4.497a2.86 2.86 0 0 0 2.922 0l7.577-4.497a3.023 3.023 0 0 0 1.462-2.603V7.503A3.021 3.021 0 0 0 21.038 4.9zM15.17 18.946l.013.646c.001.078-.05.167-.111.198l-.383.22c-.061.031-.111-.007-.112-.085l-.007-.635c-.328.136-.66.169-.872.084-.04-.016-.057-.075-.041-.142l.139-.584a.24.24 0 0 1 .069-.121.163.163 0 0 1 .036-.026c.022-.011.043-.014.062-.006.229.077.521.041.802-.101.357-.181.596-.545.592-.907-.003-.328-.181-.465-.613-.468-.55.001-1.064-.107-1.072-.917-.007-.667.34-1.361.889-1.8l-.007-.652c-.001-.08.048-.168.111-.2l.37-.236c.061-.031.111.007.112.087l.006.653c.273-.109.511-.138.726-.088.047.012.067.076.048.151l-.144.578a.255.255 0 0 1-.065.116.161.161 0 0 1-.038.028.083.083 0 0 1-.057.009c-.098-.022-.332-.073-.699.113-.385.195-.52.53-.517.778.003.297.155.387.681.396.7.012 1.003.318 1.01 1.023.007.689-.362 1.433-.928 1.888zm3.973-1.087c0 .06-.008.116-.058.145l-1.916 1.164c-.05.029-.09.004-.09-.056v-.494c0-.06.037-.093.087-.122l1.887-1.129c.05-.029.09-.004.09.056v.436zm1.316-11.062-7.168 4.427c-.894.523-1.553 1.109-1.553 2.187v8.833c0 .645.26 1.063.66 1.184a2.304 2.304 0 0 1-.398.039c-.42 0-.833-.114-1.197-.33L3.226 18.64a2.494 2.494 0 0 1-1.201-2.142V7.503c0-.881.46-1.702 1.201-2.142L10.803.863a2.342 2.342 0 0 1 2.394 0l7.577 4.498a2.479 2.479 0 0 1 1.164 1.732c-.252-.536-.818-.682-1.479-.296z" />
+  </Mark>
+)
+
+const JsonMark = (props: MarkProps) => (
+  <Mark viewBox="0 0 24 24" fill="currentColor" {...props}>
+    <path d="M12.043 23.968c.479-.004.953-.029 1.426-.094a11.805 11.805 0 0 0 3.146-.863 12.404 12.404 0 0 0 3.793-2.542 11.977 11.977 0 0 0 2.44-3.427 11.794 11.794 0 0 0 1.02-3.476c.149-1.16.135-2.346-.045-3.499a11.96 11.96 0 0 0-.793-2.788 11.197 11.197 0 0 0-.854-1.617c-1.168-1.837-2.861-3.314-4.81-4.3a12.835 12.835 0 0 0-2.172-.87h-.005c.119.063.24.132.345.201.12.074.239.146.351.225a8.93 8.93 0 0 1 1.559 1.33c1.063 1.145 1.797 2.548 2.218 4.041.284.982.434 1.998.495 3.017.044.743.044 1.491-.047 2.229-.149 1.27-.554 2.51-1.228 3.596a7.475 7.475 0 0 1-1.903 2.084c-1.244.928-2.877 1.482-4.436 1.114a3.916 3.916 0 0 1-.748-.258 4.692 4.692 0 0 1-.779-.45 6.08 6.08 0 0 1-1.244-1.105 6.507 6.507 0 0 1-1.049-1.747 7.366 7.366 0 0 1-.494-2.54c-.03-1.273.225-2.553.854-3.67a6.43 6.43 0 0 1 1.663-1.918c.225-.178.464-.333.704-.479l.016-.007a5.121 5.121 0 0 0-1.441-.12 4.963 4.963 0 0 0-1.228.24c-.359.12-.704.27-1.019.45a6.146 6.146 0 0 0-.733.494c-.211.18-.42.36-.615.555-1.123 1.153-1.768 2.682-2.022 4.256-.15.973-.15 1.96-.091 2.95.105 1.395.391 2.787.945 4.062a8.518 8.518 0 0 0 1.348 2.173 8.14 8.14 0 0 0 3.132 2.23 7.934 7.934 0 0 0 2.113.54c.074.015.149.015.209.015zm-2.934-.398a4.102 4.102 0 0 1-.45-.228 8.5 8.5 0 0 1-2.038-1.534c-1.094-1.137-1.827-2.566-2.247-4.08a15.184 15.184 0 0 1-.495-3.172 12.14 12.14 0 0 1 .046-2.082c.135-1.257.495-2.501 1.124-3.58a6.889 6.889 0 0 1 1.783-2.053 6.23 6.23 0 0 1 1.633-.9 5.363 5.363 0 0 1 3.522-.045c.029 0 .029 0 .045.03.015.015.045.015.06.03.045.016.104.045.165.074.239.12.479.271.704.42a6.294 6.294 0 0 1 2.097 2.502c.42.914.615 1.934.631 2.938.014 1.079-.18 2.157-.645 3.146a6.42 6.42 0 0 1-2.638 2.832c.09.03.18.045.271.075.225.044.449.074.688.074 1.468.045 2.892-.66 3.94-1.647.195-.18.375-.375.54-.585.225-.27.435-.54.614-.823.239-.375.435-.75.614-1.154a8.112 8.112 0 0 0 .509-1.664c.196-1.004.211-2.022.149-3.026-.135-2.022-.673-4.045-1.842-5.724a9.054 9.054 0 0 0-.555-.719 9.868 9.868 0 0 0-1.063-1.034 8.477 8.477 0 0 0-1.363-.915 9.927 9.927 0 0 0-1.692-.598l-.3-.06c-.209-.03-.42-.044-.634-.06a8.453 8.453 0 0 0-1.015.016c-.704.045-1.412.16-2.112.337C5.799 1.227 2.863 3.566 1.3 6.67A11.834 11.834 0 0 0 .238 9.801a11.81 11.81 0 0 0-.104 3.775c.12 1.02.374 2.023.778 2.977.227.57.511 1.124.825 1.648 1.094 1.783 2.683 3.236 4.51 4.24.688.39 1.408.69 2.157.944.226.074.45.15.689.21z" />
+  </Mark>
+)
+
+const MarkdownMark = (props: MarkProps) => (
+  <Mark viewBox="0 0 22 16" fill="currentColor" strokeLinejoin="round" {...props}>
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M19.5 2.25H2.5C1.80964 2.25 1.25 2.80964 1.25 3.5V12.5C1.25 13.1904 1.80964 13.75 2.5 13.75H19.5C20.1904 13.75 20.75 13.1904 20.75 12.5V3.5C20.75 2.80964 20.1904 2.25 19.5 2.25ZM2.5 1C1.11929 1 0 2.11929 0 3.5V12.5C0 13.8807 1.11929 15 2.5 15H19.5C20.8807 15 22 13.8807 22 12.5V3.5C22 2.11929 20.8807 1 19.5 1H2.5ZM3 4.5H4H4.25H4.6899L4.98715 4.82428L7 7.02011L9.01285 4.82428L9.3101 4.5H9.75H10H11V5.5V11.5H9V7.79807L7.73715 9.17572L7 9.97989L6.26285 9.17572L5 7.79807V11.5H3V5.5V4.5ZM15 8V4.5H17V8H19.5L17 10.5L16 11.5L15 10.5L12.5 8H15Z"
+    />
+  </Mark>
+)
+
+const SvgMark = (props: MarkProps) => (
+  <Mark
+    viewBox="0 0 24 24"
+    fill="#d946ef"
+    stroke="#d946ef"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <path d="M8.3 10a.7.7 0 0 1-.626-1.079L11.4 3a.7.7 0 0 1 1.198-.043L16.3 8.9a.7.7 0 0 1-.572 1.1Z" />
+    <rect x="3" y="14" width="7" height="7" rx="1" />
+    <circle cx="17.5" cy="17.5" r="3.5" />
+  </Mark>
+)
+
+const IcoMark = (props: MarkProps) => (
+  <Mark
+    viewBox="0 0 24 24"
+    fill="#facc15"
+    stroke="#facc15"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" />
+  </Mark>
+)
+
+const GitMark = (props: MarkProps) => (
+  <Mark
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <path d="M15 6a9 9 0 0 0-9 9V3" />
+    <path d="M21 18h-6" />
+    <circle cx="18" cy="6" r="3" />
+    <circle cx="6" cy="18" r="3" />
+  </Mark>
+)
+
+const EnvMark = (props: MarkProps) => (
+  <Mark
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeLinecap="round"
+    {...props}
+  >
+    <circle cx="12" cy="12" r="5.6" strokeWidth="3.8" />
+    <g strokeWidth="3">
+      <path d="M12 6.1V3.2" />
+      <path d="M12 17.9V20.8" />
+      <path d="M6.1 12H3.2" />
+      <path d="M17.9 12H20.8" />
+      <path d="M7.83 7.83L5.78 5.78" />
+      <path d="M16.17 16.17L18.22 18.22" />
+      <path d="M16.17 7.83L18.22 5.78" />
+      <path d="M7.83 16.17L5.78 18.22" />
+    </g>
+  </Mark>
+)
+
+/**
+ * The languages with a mark of their own. Anything not in here falls back to
+ * the Hugeicon for the same key, in `currentColor` — the brand set is an
+ * upgrade where one exists, not a second set that has to cover everything.
+ */
+const BRAND_ICONS: Record<string, (props: MarkProps) => React.ReactElement> = {
+  ts: TypeScriptMark,
+  mts: TypeScriptMark,
+  cts: TypeScriptMark,
+  typescript: TypeScriptMark,
+  js: JavaScriptMark,
+  mjs: JavaScriptMark,
+  cjs: JavaScriptMark,
+  javascript: JavaScriptMark,
+  tsx: ReactMark,
+  jsx: ReactMark,
+  react: ReactMark,
+  css: CssMark,
+  py: PythonMark,
+  python: PythonMark,
+  go: GoMark,
+  golang: GoMark,
+  rs: RustMark,
+  rust: RustMark,
+  sh: BashMark,
+  zsh: BashMark,
+  bash: BashMark,
+  shell: BashMark,
+  json: JsonMark,
+  jsonc: JsonMark,
+  json5: JsonMark,
+  md: MarkdownMark,
+  mdx: MarkdownMark,
+  markdown: MarkdownMark,
+  svg: SvgMark,
+  ico: IcoMark,
+  gitignore: GitMark,
+  gitattributes: GitMark,
+  env: EnvMark,
+}
+
+export type CodeIconSet = "mono" | "brand"
+
+/**
+ * The badge for a filename or a language, in whichever set was asked for.
+ *
+ * `mono` is the default everywhere, because a badge in a header is interface:
+ * it should take the colour of the text beside it and get quieter with it. Set
+ * `brand` where the file's identity is the point — a tab strip of five
+ * languages, a tree of a mixed project — and each mark arrives in its own
+ * colours.
+ */
+export function CodeIcon({
+  name,
+  set = "mono",
+  className,
+  ...props
+}: MarkProps & { name: string; set?: CodeIconSet }) {
+  const Brand = set === "brand" ? BRAND_ICONS[keyFor(name)] : undefined
+
+  if (Brand) return <Brand className={cn("shrink-0", className)} {...props} />
+
+  return (
+    <HugeiconsIcon
+      aria-hidden
+      icon={iconFor(name)}
+      strokeWidth={2}
+      className={cn("shrink-0", className)}
+    />
+  )
+}
+
+/**
+ * What the `icon` prop on a code part resolves to. Three cases in one place,
+ * so a block header, a file tab and a tree row cannot drift on what
+ * `icon={null}` means:
+ *
+ * - a set name (`"mono"`, `"brand"`) derives the badge from the name
+ * - anything else renderable is used as it stands
+ * - `null` drops the badge, and `undefined` falls back to `fallback`
+ */
+export function codeIconFrom(
+  icon: React.ReactNode | CodeIconSet | undefined,
+  name: React.ReactNode,
+  fallback?: CodeIconSet
+): React.ReactNode {
+  /* Annotated rather than inferred: `React.ReactNode` includes
+     `Iterable<ReactNode>`, and a string is an iterable — so the equality
+     checks narrow to something wider than the two names on their own. */
+  const set: CodeIconSet | undefined =
+    icon === "mono" || icon === "brand"
+      ? (icon as CodeIconSet)
+      : icon === undefined
+        ? fallback
+        : undefined
+
+  if (set) {
+    /* A name assembled from several children cannot be read, so there is
+       nothing to derive from and the caller has to pass the icon itself. */
+    return typeof name === "string" ? <CodeIcon name={name} set={set} /> : null
+  }
+
+  return icon === undefined ? null : icon
+}
+
+export { BRAND_ICONS, LANGUAGE_ICONS }

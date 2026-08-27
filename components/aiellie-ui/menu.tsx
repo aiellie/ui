@@ -2,6 +2,8 @@
 
 import * as React from "react"
 import { Menu as MenuPrimitive } from "@base-ui/react/menu"
+import { ArrowRight01Icon, Tick02Icon } from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
 
 import { floating } from "@/components/aiellie-ui/actions"
 import { cn } from "@/lib/utils"
@@ -126,24 +128,15 @@ function MenuLinkItem({ className, ...props }: MenuPrimitive.LinkItem.Props) {
   )
 }
 
-/**
- * The mark a chosen row carries. Drawn rather than imported: a menu should not
- * drag an icon set into a project that has one already.
- */
+/** The mark a chosen row carries. */
 function MenuIndicatorMark({ className }: { className?: string }) {
   return (
-    <svg
-      viewBox="0 0 16 16"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.75"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
+    <HugeiconsIcon
+      aria-hidden
+      icon={Tick02Icon}
+      strokeWidth={2}
       className={cn("size-3.5", className)}
-    >
-      <path d="M3.5 8.5 6.5 11.5 12.5 4.5" />
-    </svg>
+    />
   )
 }
 
@@ -271,18 +264,12 @@ function MenuSubTrigger({
       {...props}
     >
       {children}
-      <svg
-        viewBox="0 0 16 16"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden="true"
+      <HugeiconsIcon
+        aria-hidden
+        icon={ArrowRight01Icon}
+        strokeWidth={2}
         className="ms-auto size-3.5 rtl:-scale-x-100"
-      >
-        <path d="M6 3.5 10.5 8 6 12.5" />
-      </svg>
+      />
     </MenuPrimitive.SubmenuTrigger>
   )
 }

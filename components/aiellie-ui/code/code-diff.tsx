@@ -190,8 +190,9 @@ function DiffCode({
   )
 }
 
-/** The number columns and the mark, which are about the diff and not in it. */
-function DiffGutter({
+/** The number columns, which are optional — a diff quoted in a sentence has
+    nothing to point at them with. */
+function DiffNumbers({
   row,
   columns,
   width,
@@ -212,20 +213,33 @@ function DiffGutter({
           {row?.[column] ?? ""}
         </span>
       ))}
-      <span
-        aria-hidden
-        /* `select-none` on the marks as well as the numbers: a diff copied
-           with its pluses still attached is not code you can paste anywhere. */
-        className={cn(
-          "w-3 shrink-0 select-none",
-          row && row.kind !== "context" && row.kind !== "hunk"
-            ? DIFF_MARK[row.kind]
-            : "text-foreground/20"
-        )}
-      >
-        {row ? MARKS[row.kind] : ""}
-      </span>
     </>
+  )
+}
+
+/**
+ * The mark, which is not optional. It rides with the row rather than with the
+ * numbers, because turning the numbers off would otherwise leave the tint as
+ * the only thing separating an added line from a removed one — and red and
+ * green as the only difference is exactly the pair a reader is most likely not
+ * to be able to tell apart.
+ *
+ * `select-none`, like the numbers: a diff copied with its pluses still welded
+ * on is not code you can paste anywhere.
+ */
+function DiffMark({ row }: { row?: DiffRow }) {
+  const tinted = row && (row.kind === "add" || row.kind === "remove")
+
+  return (
+    <span
+      aria-hidden
+      className={cn(
+        "w-3 shrink-0 select-none",
+        tinted ? DIFF_MARK[row.kind as "add" | "remove"] : "text-foreground/20"
+      )}
+    >
+      {row ? MARKS[row.kind] : ""}
+    </span>
   )
 }
 
@@ -346,12 +360,13 @@ export function CodeDiffBody({
                         )}
                       >
                         {lineNumbers && (
-                          <DiffGutter
+                          <DiffNumbers
                             row={row}
                             columns={[side === "left" ? "before" : "after"]}
                             width={width}
                           />
                         )}
+                        <DiffMark row={row} />
                         <span className="min-w-0 whitespace-pre">
                           {row ? (
                             <DiffCode
@@ -381,12 +396,13 @@ export function CodeDiffBody({
                   )}
                 >
                   {lineNumbers && (
-                    <DiffGutter
+                    <DiffNumbers
                       row={row}
                       columns={["before", "after"]}
                       width={width}
                     />
                   )}
+                  <DiffMark row={row} />
                   <span className="whitespace-pre">
                     <DiffCode row={row} colors={colors} />
                   </span>

@@ -1,4 +1,4 @@
-import { Geist, JetBrains_Mono } from "next/font/google"
+import { Geist, Geist_Mono } from "next/font/google"
 
 import { cn } from "@/lib/utils"
 
@@ -7,9 +7,9 @@ const fontSans = Geist({
   variable: "--font-sans",
 })
 
-const fontMono = JetBrains_Mono({
+const fontMono = Geist_Mono({
   subsets: ["latin"],
-  variable: "--font-jetbrains-mono",
+  variable: "--font-geist-mono",
 })
 
 /** Every font variable, ready to drop on the <html> element. */
@@ -35,9 +35,9 @@ const fontFamilies: FontFamily[] = [
     sample: "The quick brown fox jumps over the lazy dog",
   },
   {
-    name: "JetBrains Mono",
+    name: "Geist Mono",
     role: "Code, tokens and tabular numerals",
-    cssVar: "--font-jetbrains-mono",
+    cssVar: "--font-geist-mono",
     className: "font-mono",
     sample: "const ui = { ready: true } 0123456789",
   },

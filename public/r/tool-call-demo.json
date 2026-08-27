@@ -1,0 +1,42 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tool-call-demo",
+  "title": "Tool Call",
+  "description": "A tool call folded behind its summary — open, as a run of three in four different states, failed, and driven from outside so a transcript can unfold the call it just finished.",
+  "registryDependencies": [
+    "https://aiellie.dev/r/tool-call.json"
+  ],
+  "files": [
+    {
+      "path": "examples/coding/tool-call.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport {\n  ToolCall,\n  ToolCallCode,\n  ToolCallName,\n  ToolCallPanel,\n  ToolCallSection,\n  ToolCallSummary,\n  ToolCallTrigger,\n  type ToolCallStatus,\n} from \"@/components/aiellie-ui/tool-call\"\n\nconst ARGS = `{\n  \"pattern\": \"data-slot\",\n  \"path\": \"components/\",\n  \"limit\": 20\n}`\n\nconst RESULT = `components/ui/bubble.tsx:14\ncomponents/ui/marker.tsx:9\ncomponents/aiellie-ui/menu.tsx:37`\n\nexport function ToolCallDemo() {\n  return (\n    <ToolCall status=\"done\" defaultOpen className=\"max-w-sm\">\n      <ToolCallTrigger>\n        <ToolCallName>search_files</ToolCallName>\n        <ToolCallSummary>3 matches</ToolCallSummary>\n      </ToolCallTrigger>\n      <ToolCallPanel>\n        <ToolCallSection label=\"Arguments\">\n          <ToolCallCode>{ARGS}</ToolCallCode>\n        </ToolCallSection>\n        <ToolCallSection label=\"Result\">\n          <ToolCallCode>{RESULT}</ToolCallCode>\n        </ToolCallSection>\n      </ToolCallPanel>\n    </ToolCall>\n  )\n}\n\nconst RUN: { status: ToolCallStatus; name: string; summary: string }[] = [\n  { status: \"done\", name: \"read_file\", summary: \"84 lines\" },\n  { status: \"running\", name: \"search_files\", summary: \"searching\" },\n  { status: \"pending\", name: \"write_file\", summary: \"queued\" },\n]\n\n/**\n * A run of calls, which is how they actually appear. Collapsed: the summary is\n * the whole point of the row, and unfolding three sets of arguments buries the\n * answer they were called in service of.\n */\nexport function ToolCallRunDemo() {\n  return (\n    <div className=\"flex w-full max-w-sm flex-col gap-2\">\n      {RUN.map((call) => (\n        <ToolCall key={call.name} status={call.status}>\n          <ToolCallTrigger>\n            <ToolCallName>{call.name}</ToolCallName>\n            <ToolCallSummary>{call.summary}</ToolCallSummary>\n          </ToolCallTrigger>\n          <ToolCallPanel>\n            <ToolCallSection label=\"Arguments\">\n              <ToolCallCode>{ARGS}</ToolCallCode>\n            </ToolCallSection>\n          </ToolCallPanel>\n        </ToolCall>\n      ))}\n    </div>\n  )\n}\n\n/** The one state that asks something of the reader rather than reporting. */\nexport function ToolCallFailedDemo() {\n  return (\n    <ToolCall status=\"error\" defaultOpen className=\"max-w-sm\">\n      <ToolCallTrigger>\n        <ToolCallName>write_file</ToolCallName>\n        <ToolCallSummary>permission denied</ToolCallSummary>\n      </ToolCallTrigger>\n      <ToolCallPanel>\n        <ToolCallSection label=\"Error\">\n          <ToolCallCode className=\"text-red-600 dark:text-red-400\">\n            {`EACCES: permission denied,\nopen '/etc/hosts'`}\n          </ToolCallCode>\n        </ToolCallSection>\n      </ToolCallPanel>\n    </ToolCall>\n  )\n}\n\n/**\n * Opening and closing under the caller's hand, for a transcript that unfolds\n * the call it has just finished and folds the one before it away.\n */\nexport function ToolCallControlledDemo() {\n  const [open, setOpen] = React.useState(false)\n\n  return (\n    <ToolCall\n      status=\"done\"\n      open={open}\n      onOpenChange={setOpen}\n      className=\"max-w-sm\"\n    >\n      <ToolCallTrigger>\n        <ToolCallName>list_directory</ToolCallName>\n        <ToolCallSummary>{open ? \"showing\" : \"12 entries\"}</ToolCallSummary>\n      </ToolCallTrigger>\n      <ToolCallPanel>\n        <ToolCallSection label=\"Result\">\n          <ToolCallCode>\n            {`components/\\nexamples/\\nhooks/\\nlib/\\nregistry/`}\n          </ToolCallCode>\n        </ToolCallSection>\n      </ToolCallPanel>\n    </ToolCall>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/coding/tool-call.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Open",
+        "demo": "ToolCallDemo"
+      },
+      {
+        "name": "A run",
+        "demo": "ToolCallRunDemo"
+      },
+      {
+        "name": "Failed",
+        "demo": "ToolCallFailedDemo"
+      },
+      {
+        "name": "Controlled",
+        "demo": "ToolCallControlledDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "coding"
+  ],
+  "type": "registry:example"
+}

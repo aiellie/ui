@@ -14,6 +14,7 @@
       ],
       "registryDependencies": [
         "https://aiellie.dev/r/actions.json",
+        "https://aiellie.dev/r/code-icons.json",
         "https://aiellie.dev/r/highlight.json",
         "https://aiellie.dev/r/tooltip.json",
         "https://aiellie.dev/r/use-copy-to-clipboard.json",
@@ -24,6 +25,154 @@
           "path": "components/aiellie-ui/code/code-block.tsx",
           "type": "registry:ui",
           "target": "components/aiellie-ui/code/code-block.tsx"
+        }
+      ]
+    },
+    {
+      "name": "code-diff",
+      "type": "registry:ui",
+      "title": "Code Diff",
+      "description": "What changed, from the unified diff the tool that changed it wrote — tinted by row and marked in the gutter, with the code inside still coloured as code, read as one sequence or with before and after side by side.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/actions.json",
+        "https://aiellie.dev/r/code-block.json",
+        "https://aiellie.dev/r/highlight.json",
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/code/code-diff.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/code/code-diff.tsx"
+        }
+      ]
+    },
+    {
+      "name": "code-tabs",
+      "type": "registry:ui",
+      "title": "Code Tabs",
+      "description": "Several files in one block: a strip of names for a code block's header that scrolls rather than shoving the actions off the end, with the arrow keys, Home and End a tab strip is expected to answer.",
+      "dependencies": [
+        "@base-ui/react",
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "registryDependencies": [
+        "https://aiellie.dev/r/actions.json",
+        "https://aiellie.dev/r/code-block.json",
+        "https://aiellie.dev/r/code-icons.json",
+        "https://aiellie.dev/r/highlight.json",
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/code/code-tabs.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/code/code-tabs.tsx"
+        }
+      ]
+    },
+    {
+      "name": "terminal",
+      "type": "registry:ui",
+      "title": "Terminal",
+      "description": "A run rather than a line to run: what was typed, coloured the way the snippet colours it, what came back in the tone it came back in, and how it ended — with the prompt kept out of anything you copy.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/actions.json",
+        "https://aiellie.dev/r/highlight.json",
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/code/terminal.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/code/terminal.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tool-call",
+      "type": "registry:ui",
+      "title": "Tool Call",
+      "description": "A tool being called and what it gave back, folded away behind the one line worth reading without opening it — queued, turning, finished or failed, with the arguments and the result each under their own heading.",
+      "dependencies": [
+        "@base-ui/react",
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "registryDependencies": [
+        "https://aiellie.dev/r/actions.json",
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/tool-call.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/tool-call.tsx"
+        }
+      ]
+    },
+    {
+      "name": "file-tree",
+      "type": "registry:ui",
+      "title": "File Tree",
+      "description": "Which files a change touched and where they sit relative to each other, as a real tree the arrow keys walk — folders that open, marks for added, modified and removed, and one file chosen to be shown.",
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "registryDependencies": [
+        "https://aiellie.dev/r/actions.json",
+        "https://aiellie.dev/r/code-icons.json",
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/code/file-tree.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/code/file-tree.tsx"
+        }
+      ]
+    },
+    {
+      "name": "code-annotation",
+      "type": "registry:ui",
+      "title": "Code Annotation",
+      "description": "A note pinned under the line it is about rather than in prose below that has to name the line again — as a remark, a warning or an error, set in the interface face because a sentence about code is not code.",
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "registryDependencies": [
+        "https://aiellie.dev/r/actions.json",
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/code/code-annotation.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/code/code-annotation.tsx"
+        }
+      ]
+    },
+    {
+      "name": "inline-code",
+      "type": "registry:ui",
+      "title": "Inline Code",
+      "description": "A symbol named in a sentence — sized in em so it comes out a shade smaller than whatever is around it, kept from breaking across a line, and able to copy itself or to lead somewhere.",
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "registryDependencies": [
+        "https://aiellie.dev/r/use-copy-to-clipboard.json",
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/code/inline-code.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/code/inline-code.tsx"
         }
       ]
     },
@@ -93,7 +242,9 @@
         "https://aiellie.dev/r/utils.json"
       ],
       "dependencies": [
-        "@base-ui/react"
+        "@base-ui/react",
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
       ],
       "files": [
         {
@@ -108,6 +259,10 @@
       "type": "registry:ui",
       "title": "Reactions",
       "description": "What a message has collected, counted: a row of tallies where the reader's own is a state of the count rather than a mark of its own, each a real toggle that gives the reaction back when pressed again.",
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
       "registryDependencies": [
         "https://aiellie.dev/r/utils.json"
       ],
@@ -128,7 +283,9 @@
         "https://aiellie.dev/r/utils.json"
       ],
       "dependencies": [
-        "@base-ui/react"
+        "@base-ui/react",
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
       ],
       "files": [
         {
@@ -145,6 +302,7 @@
       "description": "The body of an answer rather than the bubble around it — headings, lists, quotes, links and tables set to read as prose, with code blocks that carry their language and a copy of exactly what is on screen.",
       "registryDependencies": [
         "https://aiellie.dev/r/actions.json",
+        "https://aiellie.dev/r/code-icons.json",
         "https://aiellie.dev/r/highlight.json",
         "https://aiellie.dev/r/use-copy-to-clipboard.json",
         "https://aiellie.dev/r/utils.json"
@@ -166,6 +324,10 @@
       "type": "registry:ui",
       "title": "Message Status",
       "description": "How far a message has got — waiting, gone, arrived, seen, or not sent — as a mark small enough to sit beside a timestamp, with the retry offered on the one state that asks something of the reader.",
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
       "registryDependencies": [
         "https://aiellie.dev/r/utils.json"
       ],
@@ -599,6 +761,10 @@
             "demo": "CodeBlockNumberedDemo"
           },
           {
+            "name": "Brand icon",
+            "demo": "CodeBlockBrandDemo"
+          },
+          {
             "name": "Mono",
             "demo": "CodeBlockMonoDemo"
           },
@@ -613,6 +779,275 @@
           {
             "name": "Files",
             "demo": "CodeBlockTabsDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "code-tabs-demo",
+      "type": "registry:example",
+      "title": "Code Tabs",
+      "description": "Several files under one header, the strip scrolling rather than pushing the actions off the block, each tab's badge turning into the cross that shuts it, and the copy action always handed the file that is actually showing.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/code-tabs.json",
+        "https://aiellie.dev/r/code-block.json"
+      ],
+      "files": [
+        {
+          "path": "examples/coding/code-tabs.tsx",
+          "type": "registry:example",
+          "target": "examples/coding/code-tabs.tsx"
+        }
+      ],
+      "categories": [
+        "coding"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Files",
+            "demo": "CodeTabsDemo"
+          },
+          {
+            "name": "Bare",
+            "demo": "CodeTabsBareDemo"
+          },
+          {
+            "name": "Mono",
+            "demo": "CodeTabsMonoDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "code-diff-demo",
+      "type": "registry:example",
+      "title": "Code Diff",
+      "description": "What a change actually did, from the unified diff that describes it — with the count in the header, numbered down both sides, side by side where the room is worth spending, and in weight rather than colour where it is not.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/code-diff.json",
+        "https://aiellie.dev/r/code-block.json"
+      ],
+      "files": [
+        {
+          "path": "examples/coding/code-diff.tsx",
+          "type": "registry:example",
+          "target": "examples/coding/code-diff.tsx"
+        }
+      ],
+      "categories": [
+        "coding"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Unified",
+            "demo": "CodeDiffDemo"
+          },
+          {
+            "name": "No numbers",
+            "demo": "CodeDiffBareDemo"
+          },
+          {
+            "name": "Split",
+            "demo": "CodeDiffSplitDemo"
+          },
+          {
+            "name": "Mono",
+            "demo": "CodeDiffMonoDemo"
+          }
+        ],
+        "wide": true
+      }
+    },
+    {
+      "name": "terminal-demo",
+      "type": "registry:example",
+      "title": "Terminal",
+      "description": "A command and what came back — a clean run, a run that failed and says so in the tone it failed in, and a run still going with the caret holding the end of the line.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/terminal.json",
+        "https://aiellie.dev/r/code-block.json"
+      ],
+      "files": [
+        {
+          "path": "examples/coding/terminal.tsx",
+          "type": "registry:example",
+          "target": "examples/coding/terminal.tsx"
+        }
+      ],
+      "categories": [
+        "coding"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Run",
+            "demo": "TerminalDemo"
+          },
+          {
+            "name": "Failed",
+            "demo": "TerminalFailedDemo"
+          },
+          {
+            "name": "Running",
+            "demo": "TerminalRunningDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "tool-call-demo",
+      "type": "registry:example",
+      "title": "Tool Call",
+      "description": "A tool call folded behind its summary — open, as a run of three in four different states, failed, and driven from outside so a transcript can unfold the call it just finished.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/tool-call.json"
+      ],
+      "files": [
+        {
+          "path": "examples/coding/tool-call.tsx",
+          "type": "registry:example",
+          "target": "examples/coding/tool-call.tsx"
+        }
+      ],
+      "categories": [
+        "coding"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Open",
+            "demo": "ToolCallDemo"
+          },
+          {
+            "name": "A run",
+            "demo": "ToolCallRunDemo"
+          },
+          {
+            "name": "Failed",
+            "demo": "ToolCallFailedDemo"
+          },
+          {
+            "name": "Controlled",
+            "demo": "ToolCallControlledDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "file-tree-demo",
+      "type": "registry:example",
+      "title": "File Tree",
+      "description": "The files a change touched, marked added, modified or removed — on its own, driving a block beside it, or with nothing marked at all for a tree that is showing a project rather than a change.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/file-tree.json",
+        "https://aiellie.dev/r/code-block.json"
+      ],
+      "files": [
+        {
+          "path": "examples/coding/file-tree.tsx",
+          "type": "registry:example",
+          "target": "examples/coding/file-tree.tsx"
+        }
+      ],
+      "categories": [
+        "coding"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Changes",
+            "demo": "FileTreeDemo"
+          },
+          {
+            "name": "Driving a block",
+            "demo": "FileTreeSelectionDemo"
+          },
+          {
+            "name": "Plain",
+            "demo": "FileTreePlainDemo"
+          }
+        ],
+        "wide": true
+      }
+    },
+    {
+      "name": "code-annotation-demo",
+      "type": "registry:example",
+      "title": "Code Annotation",
+      "description": "A note under the line it is about — as a remark, a warning or an error, and as one the reader can be done with.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/code-annotation.json",
+        "https://aiellie.dev/r/code-block.json"
+      ],
+      "files": [
+        {
+          "path": "examples/coding/code-annotation.tsx",
+          "type": "registry:example",
+          "target": "examples/coding/code-annotation.tsx"
+        }
+      ],
+      "categories": [
+        "coding"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Warning",
+            "demo": "CodeAnnotationDemo"
+          },
+          {
+            "name": "Tones",
+            "demo": "CodeAnnotationTonesDemo"
+          },
+          {
+            "name": "Dismissable",
+            "demo": "CodeAnnotationDismissDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "inline-code-demo",
+      "type": "registry:example",
+      "title": "Inline Code",
+      "description": "A symbol named in a sentence — plain, copying itself, leading somewhere, and set at three sizes to show it takes the size of whatever it sits among.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/inline-code.json"
+      ],
+      "files": [
+        {
+          "path": "examples/coding/inline-code.tsx",
+          "type": "registry:example",
+          "target": "examples/coding/inline-code.tsx"
+        }
+      ],
+      "categories": [
+        "coding"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "In prose",
+            "demo": "InlineCodeDemo"
+          },
+          {
+            "name": "Copying",
+            "demo": "InlineCodeCopyDemo"
+          },
+          {
+            "name": "Linking",
+            "demo": "InlineCodeLinkDemo"
+          },
+          {
+            "name": "Scale",
+            "demo": "InlineCodeScaleDemo"
           }
         ],
         "wide": false
@@ -1237,14 +1672,30 @@
       ]
     },
     {
-      "name": "highlight",
+      "name": "code-icons",
       "type": "registry:lib",
-      "title": "Highlight",
-      "description": "The scanner and palette every code element shares: a one-pass tokenizer, the colour each token kind takes, and the badge that names a file's language.",
+      "title": "Code Icons",
+      "description": "The badge a file or a language wears, in two sets — the interface one drawn in currentColor from Hugeicons, and the brand one in each language's own colours — behind one lookup keyed by extension and by language name alike.",
       "dependencies": [
         "@hugeicons/core-free-icons",
         "@hugeicons/react"
       ],
+      "registryDependencies": [
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "lib/code-icons.tsx",
+          "type": "registry:lib",
+          "target": "lib/code-icons.tsx"
+        }
+      ]
+    },
+    {
+      "name": "highlight",
+      "type": "registry:lib",
+      "title": "Highlight",
+      "description": "The scanner and palette every code element shares: a one-pass tokenizer and the colour each token kind takes, with no dependency of its own — the language badge is `code-icons`.",
       "files": [
         {
           "path": "lib/highlight.ts",

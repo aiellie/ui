@@ -1,0 +1,39 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "code-tabs-demo",
+  "title": "Code Tabs",
+  "description": "Several files under one header, the strip scrolling rather than pushing the actions off the block, each tab's badge turning into the cross that shuts it, and the copy action always handed the file that is actually showing.",
+  "registryDependencies": [
+    "https://aiellie.dev/r/code-tabs.json",
+    "https://aiellie.dev/r/code-block.json"
+  ],
+  "files": [
+    {
+      "path": "examples/coding/code-tabs.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport {\n  CodeBlock,\n  CodeBlockActions,\n  CodeBlockBody,\n  CodeBlockCopy,\n  CodeBlockDownload,\n  CodeBlockHeader,\n} from \"@/components/aiellie-ui/code/code-block\"\nimport {\n  CodeTabs,\n  CodeTabsList,\n  CodeTabsPanel,\n  CodeTabsTab,\n} from \"@/components/aiellie-ui/code/code-tabs\"\n\nconst FILES = [\n  {\n    name: \"copy.ts\",\n    code: `export async function copy(value: string) {\n  if (!navigator.clipboard) return false\n\n  await navigator.clipboard.writeText(value)\n  return true\n}`,\n  },\n  {\n    name: \"copy.css\",\n    code: `[data-slot=\"code-block-action\"] {\n  color: color-mix(in oklch, currentColor 45%, transparent);\n  transition: color 150ms;\n}\n\n[data-slot=\"code-block-action\"]:hover {\n  color: currentColor;\n}`,\n  },\n  {\n    name: \"read.ts\",\n    code: `export async function read() {\n  // Reading asks for a permission that writing does not.\n  const state = await navigator.permissions.query({\n    name: \"clipboard-read\",\n  })\n\n  return state.granted ? navigator.clipboard.readText() : null\n}`,\n  },\n]\n\n/**\n * The value is held here rather than inside the tabs, because the copy action\n * in the same header has to be handed the file that is actually showing —\n * picking a file and changing what copy copies are one event.\n */\nfunction useFile() {\n  const [name, setName] = React.useState(FILES[0].name)\n  const file = FILES.find((entry) => entry.name === name) ?? FILES[0]\n\n  return { name, setName, file }\n}\n\nexport function CodeTabsDemo() {\n  const [open, setOpen] = React.useState(FILES.map((file) => file.name))\n  const [name, setName] = React.useState(FILES[0].name)\n\n  const shown = FILES.filter((file) => open.includes(file.name))\n  const file = shown.find((entry) => entry.name === name) ?? shown[0]\n\n  const close = (closing: string) => {\n    const left = open.filter((entry) => entry !== closing)\n    setOpen(left)\n    /* Closing the file that was showing has to hand the selection somewhere,\n       or the strip is left pointing at a panel that is no longer mounted. */\n    if (closing === name && left.length) setName(left[0])\n  }\n\n  if (!file) {\n    return (\n      <button\n        type=\"button\"\n        onClick={() => {\n          setOpen(FILES.map((entry) => entry.name))\n          setName(FILES[0].name)\n        }}\n        className=\"rounded-full border border-dashed border-border px-3 py-1.5 font-mono text-[11px] text-muted-foreground transition-colors duration-150 hover:text-foreground motion-reduce:transition-none\"\n      >\n        All closed — reopen\n      </button>\n    )\n  }\n\n  return (\n    <CodeTabs\n      value={file.name}\n      onValueChange={(value) => setName(value as string)}\n    >\n      <CodeBlock>\n        <CodeBlockHeader className=\"py-1.5\">\n          <CodeTabsList>\n            {shown.map((entry) => (\n              <CodeTabsTab\n                key={entry.name}\n                value={entry.name}\n                onClose={() => close(entry.name)}\n              >\n                {entry.name}\n              </CodeTabsTab>\n            ))}\n          </CodeTabsList>\n          <CodeBlockActions>\n            <CodeBlockCopy code={file.code} />\n          </CodeBlockActions>\n        </CodeBlockHeader>\n        {shown.map((entry) => (\n          <CodeTabsPanel key={entry.name} value={entry.name}>\n            <CodeBlockBody code={entry.code} />\n          </CodeTabsPanel>\n        ))}\n      </CodeBlock>\n    </CodeTabs>\n  )\n}\n\n/**\n * The strip with nothing on it but names. `icon={null}` is the escape for a\n * card where every file is the same language and the badges would say the\n * same thing five times.\n */\nexport function CodeTabsBareDemo() {\n  const { name, setName, file } = useFile()\n\n  return (\n    <CodeTabs value={name} onValueChange={(value) => setName(value as string)}>\n      <CodeBlock>\n        <CodeBlockHeader className=\"py-1.5\">\n          <CodeTabsList>\n            {FILES.map((entry) => (\n              <CodeTabsTab key={entry.name} value={entry.name} icon={null}>\n                {entry.name}\n              </CodeTabsTab>\n            ))}\n          </CodeTabsList>\n          <CodeBlockActions>\n            <CodeBlockCopy code={file.code} />\n          </CodeBlockActions>\n        </CodeBlockHeader>\n        {FILES.map((entry) => (\n          <CodeTabsPanel key={entry.name} value={entry.name}>\n            <CodeBlockBody code={entry.code} />\n          </CodeTabsPanel>\n        ))}\n      </CodeBlock>\n    </CodeTabs>\n  )\n}\n\n/**\n * The interface set instead of the brand one, for a header that would rather\n * its badges went quiet with the rest of the text than announce a language.\n */\nexport function CodeTabsMonoDemo() {\n  const { name, setName, file } = useFile()\n  const shown = FILES.slice(0, 2)\n\n  return (\n    <CodeTabs value={name} onValueChange={(value) => setName(value as string)}>\n      <CodeBlock>\n        <CodeBlockHeader className=\"py-1.5\">\n          <CodeTabsList>\n            {shown.map((entry) => (\n              <CodeTabsTab key={entry.name} value={entry.name} icon=\"mono\">\n                {entry.name}\n              </CodeTabsTab>\n            ))}\n          </CodeTabsList>\n          <CodeBlockActions>\n            <CodeBlockCopy code={file.code} />\n            <CodeBlockDownload code={file.code} filename={file.name} />\n          </CodeBlockActions>\n        </CodeBlockHeader>\n        {shown.map((entry) => (\n          <CodeTabsPanel key={entry.name} value={entry.name}>\n            <CodeBlockBody code={entry.code} lineNumbers />\n          </CodeTabsPanel>\n        ))}\n      </CodeBlock>\n    </CodeTabs>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/coding/code-tabs.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Files",
+        "demo": "CodeTabsDemo"
+      },
+      {
+        "name": "Bare",
+        "demo": "CodeTabsBareDemo"
+      },
+      {
+        "name": "Mono",
+        "demo": "CodeTabsMonoDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "coding"
+  ],
+  "type": "registry:example"
+}

@@ -20,12 +20,27 @@ export const lib: Registry["items"] = [
     ],
   },
   {
+    name: "code-icons",
+    type: "registry:lib",
+    title: "Code Icons",
+    description:
+      "The badge a file or a language wears, in two sets — the interface one drawn in currentColor from Hugeicons, and the brand one in each language's own colours — behind one lookup keyed by extension and by language name alike.",
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    registryDependencies: ["utils"],
+    files: [
+      {
+        path: "lib/code-icons.tsx",
+        type: "registry:lib",
+        target: "lib/code-icons.tsx",
+      },
+    ],
+  },
+  {
     name: "highlight",
     type: "registry:lib",
     title: "Highlight",
     description:
-      "The scanner and palette every code element shares: a one-pass tokenizer, the colour each token kind takes, and the badge that names a file's language.",
-    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+      "The scanner and palette every code element shares: a one-pass tokenizer and the colour each token kind takes, with no dependency of its own — the language badge is `code-icons`.",
     files: [
       {
         path: "lib/highlight.ts",

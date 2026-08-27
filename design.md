@@ -192,13 +192,26 @@ glyph.
 
 ## Icons
 
-**A primitive draws its own.** The tick on a chosen menu row and the chevron on
-a submenu are inline SVG. A menu should not drag an icon set into a project that
-already has one.
+**Always Hugeicons.** `@hugeicons/core-free-icons` with `@hugeicons/react`, per
+`components.json` — in primitives, elements and demos alike. Never a hand-drawn
+inline SVG: one icon set drawn one way is the whole point of having one, and a
+path written by hand is a glyph nobody can restyle, resize or swap.
 
-**Elements and demos use Hugeicons,** per `components.json`, passed as children
-rather than named by a prop, so a consumer can swap the set without the
-component knowing.
+**Except a brand mark, which is not a glyph.** The language logos in
+`lib/code-icons` are the one set of paths written by hand here, and the reason
+is that a logo has no shape to choose: the TypeScript square is that blue, the
+React atom is that cyan, and no icon set is going to supply them. A mark is
+only allowed in when it identifies something outside this registry and arrives
+in colours that are not ours to pick. Everything else — ticks, chevrons,
+folders, crosses, spinners — comes from Hugeicons, always. Marks live in
+`code-icons` and nowhere else, so the exception cannot spread by being
+convenient.
+
+**Passed as children, not named by a prop.** `<MenuItem><HugeiconsIcon
+icon={TrashIcon} />Delete</MenuItem>` keeps the choice with the caller, so a
+consumer can put their own set in without the component knowing. Declare
+`@hugeicons/core-free-icons` and `@hugeicons/react` in the item's
+`dependencies` and the build will check you did.
 
 **Size icons from the container.**
 `[&_svg:not([class*='size-'])]:size-4` on the row means a menu can be written as

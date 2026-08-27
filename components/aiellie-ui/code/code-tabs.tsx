@@ -2,10 +2,11 @@
 
 import * as React from "react"
 import { Tabs } from "@base-ui/react/tabs"
+import { Cancel01Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 
-import { mono } from "@/components/aiellie-ui/actions"
-import { iconFor } from "@/lib/highlight"
+import { iconSwap, mono } from "@/components/aiellie-ui/actions"
+import { codeIconFrom, type CodeIconSet } from "@/lib/code-icons"
 import { cn } from "@/lib/utils"
 
 /**
@@ -62,51 +63,141 @@ export const codeTab = cn(
   mono,
   "shrink-0 cursor-pointer rounded-full px-2 py-1 whitespace-nowrap outline-none transition-[background-color,color,scale] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] focus-visible:ring-1 focus-visible:ring-foreground/20 active:scale-[0.94] motion-reduce:transition-none",
   "text-foreground/35 hover:text-foreground/70",
-  "data-selected:bg-foreground/[0.06] data-selected:text-foreground/90 dark:data-selected:bg-foreground/[0.09]"
+  /* Keyed off `aria-selected` rather than a data attribute: that is the state
+     the tab actually announces, so a hand-rolled tab wearing this class gets
+     the look by being accessible rather than by remembering a second flag. */
+  "aria-selected:bg-foreground/[0.06] aria-selected:text-foreground/90 dark:aria-selected:bg-foreground/[0.09]"
 )
 
 /**
- * One file in the strip. No badge by default, unlike `CodeBlockTitle`: a
- * header showing one name has room for a glyph beside it, and a header showing
- * five does not — a badge on each is most of the width the names need. Pass
- * `icon` where it earns the room, or `icon="derive"` to take it from the name.
+ * The two halves of the badge slot. `iconSwap` carries the timing and the
+ * blur; what differs from the copy button's version is that the state is a
+ * hover rather than a prop, so the classes have to be written out under the
+ * group variants instead of picked between.
+ *
+ * Focus counts as well as hover: a keyboard never hovers anything, and a
+ * close that only answers the mouse cannot be reached at all.
+ */
+const badgeResting = cn(
+  iconSwap,
+  "scale-100 opacity-100 blur-none",
+  "group-hover/tab:scale-[0.25] group-hover/tab:opacity-0 group-hover/tab:blur-[4px]",
+  "group-focus-within/tab:scale-[0.25] group-focus-within/tab:opacity-0 group-focus-within/tab:blur-[4px]"
+)
+
+const badgeHovered = cn(
+  iconSwap,
+  /* Reveal by opacity, never by mounting: the slot keeps its width either way,
+     so a tab does not change size under the pointer that is reaching for it.
+     `pointer-events-none` keeps the invisible half from taking the click. */
+  "pointer-events-none scale-[0.25] opacity-0 blur-[4px]",
+  "group-hover/tab:pointer-events-auto group-hover/tab:scale-100 group-hover/tab:opacity-100 group-hover/tab:blur-none",
+  "group-focus-within/tab:pointer-events-auto group-focus-within/tab:scale-100 group-focus-within/tab:opacity-100 group-focus-within/tab:blur-none"
+)
+
+/**
+ * One file in the strip, wearing the badge its name earns. A strip of files is
+ * scanned rather than read — the eye is hunting for the CSS one — and a glyph
+ * is what it finds first, so the badge is on by default and the strip scrolls
+ * when the names outgrow the header.
+ *
+ * `icon` takes a set name to derive from — `"brand"` by default, since a strip
+ * is where colour pays for itself, `"mono"` for the interface glyph — an icon
+ * of your own, or `null` for the strip that really is better bare.
+ *
+ * The badge is also the slot the close control swaps into on hover: the glyph
+ * that says what the file is becomes the one that shuts it, in the place the
+ * pointer is already heading. Closing still needs an `onClose`, since a tab
+ * cannot take itself out of a list it does not own.
  */
 function CodeTabsTab({
   icon,
+  onClose,
+  closeLabel,
   children,
   className,
+  onKeyDown,
   ...props
-}: Tabs.Tab.Props & { icon?: React.ReactNode | "derive" }) {
-  /* `iconFor` keys on the extension and on the language name alike, so a tab
-     named `copy.ts` and one named `typescript` land on the same glyph. A name
-     assembled from several children cannot be read that way, so pass the icon
-     itself there. */
-  const badge =
-    icon === "derive" ? (
-      typeof children === "string" ? (
-        <HugeiconsIcon
-          aria-hidden
-          icon={iconFor(children)}
-          className="shrink-0"
-          strokeWidth={2}
-        />
-      ) : null
-    ) : (
-      icon
-    )
+}: Tabs.Tab.Props & {
+  icon?: React.ReactNode | CodeIconSet
+  /** Offered as a cross in the badge slot, and on Delete or Backspace. */
+  onClose?: () => void
+  closeLabel?: string
+}) {
+  const closable = onClose != null
+
+  const badge = codeIconFrom(icon, children, "brand")
+
+  const slot = closable || badge != null
 
   return (
     <Tabs.Tab
       data-slot="code-tabs-tab"
+      /* A `<div>` once there is a close control, because a `<button>` inside a
+         `<button>` is invalid and the inner one stops working. Base UI still
+         puts `role="tab"`, the selection and the arrow-key behaviour on it —
+         `nativeButton` only tells it to stop assuming a native one. */
+      {...(closable ? { render: <div />, nativeButton: false } : null)}
+      onKeyDown={(event) => {
+        onKeyDown?.(event)
+        if (!closable || event.defaultPrevented) return
+        /* The keyboard half of the close. The cross is a pointer affordance —
+           it is `tabIndex={-1}`, since a strip of five files would otherwise
+           cost five tab stops on top of the one the strip already has — so
+           Delete is what a keyboard reaches for, which is what the tabs
+           pattern says it should be. */
+        if (event.key === "Delete" || event.key === "Backspace") {
+          event.preventDefault()
+          onClose()
+        }
+      }}
       className={cn(
         codeTab,
-        badge != null &&
-          "flex items-center gap-1.5 [&_svg:not([class*='size-'])]:size-3",
+        "group/tab",
+        slot && "flex items-center gap-1.5 [&_svg:not([class*='size-'])]:size-3",
         className
       )}
       {...props}
     >
-      {badge}
+      {slot && (
+        <span className="grid size-3 shrink-0 place-items-center">
+          {/* Only a closable tab's badge gets out of the way — with nothing to
+              swap in, fading it on hover would just make the tab flicker. */}
+          <span
+            aria-hidden
+            className={closable ? badgeResting : "[grid-area:1/1]"}
+          >
+            {badge}
+          </span>
+          {closable && (
+            <button
+              type="button"
+              data-slot="code-tabs-close"
+              tabIndex={-1}
+              aria-label={
+                closeLabel ??
+                (typeof children === "string" ? `Close ${children}` : "Close tab")
+              }
+              onClick={(event) => {
+                /* The tab is listening for this click too, and closing a file
+                   is not a request to open it first. */
+                event.stopPropagation()
+                onClose()
+              }}
+              className={cn(
+                badgeHovered,
+                "grid cursor-pointer place-items-center rounded-sm text-foreground/50 outline-none hover:text-foreground focus-visible:text-foreground"
+              )}
+            >
+              <HugeiconsIcon
+                aria-hidden
+                icon={Cancel01Icon}
+                strokeWidth={2.5}
+              />
+            </button>
+          )}
+        </span>
+      )}
       {children}
     </Tabs.Tab>
   )
