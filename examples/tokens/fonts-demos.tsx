@@ -1,4 +1,3 @@
-import type { DemoVariant } from "@/components/aiellie-ui/demos-switcher"
 import { fontFamilies, fontWeights, typeScale } from "@/lib/fonts"
 import { cn } from "@/lib/utils"
 
@@ -69,10 +68,6 @@ function WeightsDemo() {
   )
 }
 
-const fontsVariants: DemoVariant[] = [
-  { name: "Families", demo: FamiliesDemo },
-  { name: "Scale", demo: ScaleDemo },
-  { name: "Weights", demo: WeightsDemo },
-]
-
-export { fontsVariants }
+// Which tab shows which of these is settled by `meta.variants` on the
+// `fonts-demo` registry item.
+export { FamiliesDemo, ScaleDemo, WeightsDemo }
