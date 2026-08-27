@@ -1,4 +1,4 @@
-import { ElementsSections } from "./components/elements-sections"
+import { ElementsBrowser } from "./components/elements-browser"
 import { ElementsHeader } from "./components/elements-header"
 
 export default function Page() {
@@ -7,7 +7,7 @@ export default function Page() {
       <header className="flex flex-col gap-1">
         <ElementsHeader />
       </header>
-      <ElementsSections />
+      <ElementsBrowser />
     </div>
   )
 }

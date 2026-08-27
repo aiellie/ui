@@ -77,10 +77,11 @@ failing, so check the dev console when a card doesn't appear.
 
 - **Which page it appears on.** `"tokens"` → `/tokens`; anything else, or nothing at all,
   → `/elements`. See `tokenExamples` / `elementExamples` in `registry/_demos.ts`.
-- **Which section it appears under.** `lib/categories.ts` names the categories and their
-  order and icon; `app/(main)/components/examples-sections.tsx` groups by them. An example
-  falls into the **first** category it carries, so it can't appear twice; one matching no
-  visible category lands in a trailing ungrouped section.
+- **Which sidebar item it appears under.** `lib/categories.ts` names the categories and
+  their order and icon; `app/(main)/components/examples-browser.tsx` builds the rail from
+  them and shows one category's grid at a time — a category with nothing in it gets no
+  item. An example falls into the **first** category it carries, so it can't appear twice;
+  one matching no visible category lands in a trailing "Other" item.
 
 ### RSC boundary
 
@@ -89,8 +90,8 @@ passed from a Server Component to a Client Component**. It throws
 `Functions cannot be passed directly to Client Components`.
 
 Pages are Server Components. Each one therefore has a thin `"use client"` wrapper
-(`elements-sections.tsx`, `tokens-sections.tsx`) that imports its own list from
-`registry/_demos.ts` inside the client bundle and renders `<ExamplesSections>` with it.
+(`elements-browser.tsx`, `tokens-browser.tsx`) that imports its own list from
+`registry/_demos.ts` inside the client bundle and renders `<ExamplesBrowser>` with it.
 Keep that shape: don't "simplify" it by lifting the list into the page.
 
 ## Adding a component and its demo

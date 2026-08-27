@@ -1,4 +1,4 @@
-import { TokensSections } from "./components/tokens-sections"
+import { TokensBrowser } from "./components/tokens-browser"
 import { TokensHeader } from "./components/tokens-header"
 
 export default function Page() {
@@ -7,7 +7,7 @@ export default function Page() {
       <header className="flex flex-col gap-1">
         <TokensHeader />
       </header>
-      <TokensSections />
+      <TokensBrowser />
     </div>
   )
 }
