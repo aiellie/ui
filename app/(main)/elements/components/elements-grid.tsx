@@ -41,10 +41,10 @@ const demos: Demo[] = [
 ]
 
 /** Every demo, laid out in one responsive grid. Add new demos to `demos`. */
-function ExamplesGrid({ className, ...props }: React.ComponentProps<"div">) {
+function ElementsGrid({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
-      data-slot="examples-grid"
+      data-slot="elements-grid"
       className={cn("grid items-start gap-8 md:grid-cols-2", className)}
       {...props}
     >
@@ -65,4 +65,4 @@ function ExamplesGrid({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
-export { ExamplesGrid }
+export { ElementsGrid }
