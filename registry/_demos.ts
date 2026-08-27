@@ -46,6 +46,7 @@ type Example = {
   title: string
   description: string
   icon: IconSvgElement
+  categories: string[]
   installCommand: string
   demoInstallCommand: string
   variants: DemoVariant[]
@@ -105,6 +106,7 @@ const examplesWithDemos: Example[] = examples.flatMap((item) => {
       title: item.title ?? item.name,
       description: item.description ?? "",
       icon: demos.icon,
+      categories: item.categories ?? [],
       installCommand: installCommandFor(elementOf(item)),
       demoInstallCommand: installCommandFor(item.name),
       variants,
@@ -113,5 +115,20 @@ const examplesWithDemos: Example[] = examples.flatMap((item) => {
   ]
 })
 
-export { examplesWithDemos }
+/**
+ * Tokens have a page of their own, so the elements grid is everything else.
+ * Which page an example lands on is decided by the `categories` on its registry
+ * item and nowhere else — a new demo needs no change here or on either page,
+ * and one with no category is an element, which is the useful default.
+ */
+const tokensCategory = "tokens"
+
+function isToken(example: Example) {
+  return example.categories.includes(tokensCategory)
+}
+
+const tokenExamples = examplesWithDemos.filter(isToken)
+const elementExamples = examplesWithDemos.filter((example) => !isToken(example))
+
+export { examplesWithDemos, tokenExamples, elementExamples }
 export type { Example }

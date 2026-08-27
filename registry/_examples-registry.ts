@@ -8,7 +8,9 @@ import type { Registry } from "shadcn/schema"
  * against this registry once it is published; the build step maps them to
  * `<homepage>/r/<name>.json` URLs.
  *
- * This list is also the elements grid, in this order. `meta.variants` names the
+ * This list is also the grids, in this order, with `categories` deciding which
+ * page each item lands on: "tokens" puts it on `/tokens`, anything else — or
+ * nothing at all — leaves it on `/elements`. `meta.variants` names the
  * demo exports behind each tab; `registry/_demos.ts` holds the components
  * themselves, since a function can't be serialized into registry.json. A demo
  * whose tabs are generated from data has no export names to list, so it carries
@@ -31,7 +33,7 @@ export const examples: Registry["items"] = [
     ],
     categories: ["tokens"],
     meta: {
-      wide: true,
+      wide: false,
     },
   },
   {

@@ -1,41 +1,18 @@
 "use client"
 
-import { DemoCard } from "@/components/aiellie-ui/demo-card"
-import { DemosSwitcher } from "@/components/aiellie-ui/demos-switcher"
-import { cn } from "@/lib/utils"
-import { examplesWithDemos } from "@/registry/_demos"
+import { ExamplesGrid } from "@/app/(main)/components/examples-grid"
+import { elementExamples } from "@/registry/_demos"
 
 /**
- * Every example in the registry, laid out in one responsive grid. Add a demo by
- * adding its item to `registry/_examples-registry.ts` and its components to
- * `registry/_demos.ts` — nothing here needs to change.
+ * Every example that isn't a token, in registry order. The list is imported
+ * here rather than handed down from the page because a variant carries its
+ * demo *component*, and a function can't cross into a client component — so
+ * the data has to be pulled in on this side of the boundary.
  */
-function ElementsGrid({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="elements-grid"
-      className={cn("grid items-start gap-8 md:grid-cols-2", className)}
-      {...props}
-    >
-      {examplesWithDemos.map((example, index) => (
-        <DemoCard
-          key={example.name}
-          href={example.href}
-          index={index + 1}
-          title={example.title}
-          description={example.description}
-          icon={example.icon}
-          wide={example.wide}
-        >
-          <DemosSwitcher
-            variants={example.variants}
-            installCommand={example.installCommand}
-            demoInstallCommand={example.demoInstallCommand}
-          />
-        </DemoCard>
-      ))}
-    </div>
-  )
+function ElementsGrid(
+  props: Omit<React.ComponentProps<typeof ExamplesGrid>, "examples">
+) {
+  return <ExamplesGrid examples={elementExamples} {...props} />
 }
 
 export { ElementsGrid }
