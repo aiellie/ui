@@ -36,9 +36,10 @@ const modes = [
 const itemClass = cn(
   ghostButton,
   "size-7 cursor-pointer rounded-lg text-muted-foreground ease-[cubic-bezier(0.23,1,0.32,1)] hover:text-foreground",
-  "data-[active=true]:bg-accent data-[active=true]:text-accent-foreground",
-  "data-[active=true]:hover:bg-accent data-[active=true]:hover:text-accent-foreground",
-  "dark:data-[active=true]:hover:bg-accent"
+  "data-[active=true]:bg-accent/5 data-[active=true]:text-accent",
+  "data-[active=true]:hover:bg-accent/5 data-[active=true]:hover:text-accent",
+  "dark:data-[active=true]:bg-accent dark:data-[active=true]:text-accent-foreground",
+  "dark:data-[active=true]:hover:bg-accent dark:data-[active=true]:hover:text-accent-foreground"
 )
 
 /**
