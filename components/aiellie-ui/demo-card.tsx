@@ -58,12 +58,14 @@ function DemoCard({
       ref={rootRef}
       data-slot="demo-card"
       className={cn(
-        "flex min-w-0 flex-col",
+        /* Named so `DemoToolbar` can hang its reveal off the whole card —
+           frame and caption both — rather than the preview box alone. */
+        "group/demo-card flex min-w-0 flex-col",
         wide && "md:col-span-2",
         className
       )}
     >
-      <div className="relative flex h-[360px] items-center justify-center overflow-hidden rounded-[20px] border bg-dotted p-6 md:p-10">
+      <div className="relative flex h-[360px] items-center justify-center overflow-hidden rounded-2xl border bg-dotted p-6 md:p-10">
         {mounted ? (
           <div className="flex h-full min-h-0 w-full items-center justify-center">
             {children}

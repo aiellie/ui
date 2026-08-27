@@ -30,6 +30,37 @@ import {
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard"
 import { cn } from "@/lib/utils"
 
+/**
+ * Inside a `DemoCard` the toolbar is an affordance rather than furniture: it
+ * keeps out of the demo's way until the card is hovered. The hiding is scoped
+ * to the card, so a toolbar anywhere else — a detail route, where it is the way
+ * back — is untouched, and to pointers that can hover, since on a touch screen
+ * nothing would ever bring it back.
+ *
+ * It holds as well while a control inside it has focus, so tabbing to it isn't
+ * chasing something invisible, and while its menu is open, since that popup is
+ * portalled out of the card and hovering it is no longer hovering the card.
+ *
+ * Every rule that reveals outranks the one that hides: `group-*` and `has-*`
+ * each add a pseudo-class, where the `:where()` behind `in-*` counts for
+ * nothing. So the cascade doesn't come down to the order Tailwind emitted them
+ * in.
+ *
+ * `animate-none` because the pill's entrance animation fills forwards, and
+ * would otherwise settle over the hidden state — it has nothing to slide in
+ * for while it is invisible anyway. The fade is set as a bare property since
+ * `duration-*` feeds that same entrance, and this shouldn't quicken it where
+ * it still plays.
+ */
+const revealedOnCardHover = cn(
+  "pointer-fine:in-[[data-slot=demo-card]]:animate-none",
+  "pointer-fine:in-[[data-slot=demo-card]]:opacity-0",
+  "transition-opacity ease-out [transition-duration:200ms] motion-reduce:transition-none",
+  "group-hover/demo-card:opacity-100",
+  "group-focus-within/demo-card:opacity-100",
+  "has-[[data-popup-open]]:opacity-100"
+)
+
 type DemoToolbarProps = {
   variants: string[]
   active: number
@@ -96,7 +127,10 @@ function DemoToolbar({
   )
 
   return (
-    <FloatingToolbar aria-label={title ?? "Demo"} className={className}>
+    <FloatingToolbar
+      aria-label={title ?? "Demo"}
+      className={cn(revealedOnCardHover, className)}
+    >
       {backHref ? (
         <FloatingToolbarButton tooltip="Back" render={<Link href={backHref} />}>
           <HugeiconsIcon
