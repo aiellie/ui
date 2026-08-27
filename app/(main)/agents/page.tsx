@@ -1,4 +1,4 @@
-import { Robot01Icon } from "@hugeicons/core-free-icons"
+import { MachineRobotIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 
 export default function Page() {
@@ -8,7 +8,7 @@ export default function Page() {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="flex items-center gap-2 text-lg font-medium">
-              <HugeiconsIcon icon={Robot01Icon} className="size-4.5" />
+              <HugeiconsIcon icon={MachineRobotIcon} className="size-4.5" />
               Agents
             </h1>
           </div>

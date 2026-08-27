@@ -262,21 +262,10 @@ const examplesWithDemos: Example[] = examples.flatMap((item) => {
 })
 
 /**
- * Tokens have a page of their own, so the elements grid is everything else.
- * Which page an example lands on is decided by the `categories` on its registry
- * item and nowhere else — a new demo needs no change on either page, and one
- * with no category is an element, which is the useful default. The only thing
- * to keep in step is the set below: a token category named in
- * `lib/categories.ts` but missing here quietly shows up under /elements.
+ * Every example goes to `/design` and the rail there sorts them out, so there
+ * is no split to keep in step here: where one lands is decided by the
+ * `categories` on its registry item, against the sections `lib/categories.ts`
+ * names, and nowhere else.
  */
-const tokenCategories = new Set(["colors", "typography"])
-
-function isToken(example: Example) {
-  return example.categories.some((slug) => tokenCategories.has(slug))
-}
-
-const tokenExamples = examplesWithDemos.filter(isToken)
-const elementExamples = examplesWithDemos.filter((example) => !isToken(example))
-
-export { examplesWithDemos, tokenExamples, elementExamples }
+export { examplesWithDemos }
 export type { Example }

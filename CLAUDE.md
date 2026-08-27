@@ -73,15 +73,22 @@ failing, so check the dev console when a card doesn't appear.
 
 ### Categories drive the site
 
-`categories` on an example decides two things, and nothing else does:
+Every example lives on one page, `/design`, and `categories` decides where in its
+sidebar it lands — nothing else does.
 
-- **Which page it appears on.** `"tokens"` → `/tokens`; anything else, or nothing at all,
-  → `/elements`. See `tokenExamples` / `elementExamples` in `registry/_demos.ts`.
-- **Which sidebar item it appears under.** `lib/categories.ts` names the categories and
-  their order and icon; `app/(main)/components/examples-browser.tsx` builds the rail from
-  them and shows one category's grid at a time — a category with nothing in it gets no
-  item. An example falls into the **first** category it carries, so it can't appear twice;
-  one matching no visible category lands in a trailing "Other" item.
+`lib/categories.ts` is the whole of it: `registrySections` names the labels the rail
+stands its items under (Elements, Tokens) and their order, and `registryCategories` names
+the categories, their order, icon, and the `section` each belongs to.
+`app/(main)/components/examples-browser.tsx` builds the rail from the two and shows one
+category's grid at a time.
+
+- An example falls into the **first** category it carries, so it can't appear twice.
+- One matching no visible category lands in a trailing "Other" item rather than going
+  missing, in a run of its own under no label.
+- A category with nothing in it gets no item, and a section whose categories are all
+  empty gets no label: the rail shows what the page has, not what the registry could
+  name. So a new category is two edits — `lib/categories.ts`, and `categories` on the
+  example — and no page needs touching.
 
 ### RSC boundary
 
@@ -89,10 +96,10 @@ failing, so check the dev console when a card doesn't appear.
 passed from a Server Component to a Client Component**. It throws
 `Functions cannot be passed directly to Client Components`.
 
-Pages are Server Components. Each one therefore has a thin `"use client"` wrapper
-(`elements-browser.tsx`, `tokens-browser.tsx`) that imports its own list from
-`registry/_demos.ts` inside the client bundle and renders `<ExamplesBrowser>` with it.
-Keep that shape: don't "simplify" it by lifting the list into the page.
+`/design` is a Server Component. It therefore has a thin `"use client"` wrapper
+(`design-browser.tsx`) that imports `examplesWithDemos` from `registry/_demos.ts` inside
+the client bundle and renders `<ExamplesBrowser>` with it. Keep that shape: don't
+"simplify" it by lifting the list into the page.
 
 ## Adding a component and its demo
 
