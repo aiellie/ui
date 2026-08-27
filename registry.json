@@ -26,6 +26,23 @@
       ]
     },
     {
+      "name": "suggestions",
+      "type": "registry:ui",
+      "title": "Suggestions",
+      "description": "A row of prompts the reader can act on rather than read: each one a bubble drawn as a dashed outline while it is still an offer, tinted once it is picked, with the row holding the selection for one or for several.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/bubble.json",
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/suggestions.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/suggestions.tsx"
+        }
+      ]
+    },
+    {
       "name": "actions",
       "type": "registry:component",
       "title": "Actions",
@@ -177,6 +194,64 @@
       ]
     },
     {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "Base UI's button in the elements' sizes and emphases, including the square icon sizes the toolbars and the scroller sit on.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "dependencies": [
+        "@base-ui/react",
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "components/ui/button.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/button.tsx"
+        }
+      ]
+    },
+    {
+      "name": "message",
+      "type": "registry:ui",
+      "title": "Message",
+      "description": "The frame a message sits in — avatar, header, body and footer — laid out from either side, with the avatar lifting itself to stay level with the bubble when a footer is present.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/ui/message.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/message.tsx"
+        }
+      ]
+    },
+    {
+      "name": "message-scroller",
+      "type": "registry:ui",
+      "title": "Message Scroller",
+      "description": "A conversation viewport that stays pinned to the newest message while you are at the bottom and lets go the moment you scroll up, with a button that carries you back down.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/utils.json",
+        "https://aiellie.dev/r/button.json"
+      ],
+      "dependencies": [
+        "@shadcn/react",
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "files": [
+        {
+          "path": "components/ui/message-scroller.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/message-scroller.tsx"
+        }
+      ]
+    },
+    {
       "name": "colors-demo",
       "type": "registry:example",
       "title": "Colors",
@@ -194,7 +269,7 @@
         }
       ],
       "categories": [
-        "tokens"
+        "colors"
       ],
       "meta": {
         "wide": false
@@ -217,7 +292,7 @@
         }
       ],
       "categories": [
-        "tokens"
+        "typography"
       ],
       "meta": {
         "variants": [
@@ -312,6 +387,148 @@
           {
             "name": "Reactions",
             "demo": "BubbleReactionsDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "message-demo",
+      "type": "registry:example",
+      "title": "Message",
+      "description": "The frame around a bubble — who said it, when, and which side it belongs on — including the ghost case where the frame gets out of the way of the prose.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/message.json",
+        "https://aiellie.dev/r/bubble.json"
+      ],
+      "files": [
+        {
+          "path": "examples/messages/message.tsx",
+          "type": "registry:example",
+          "target": "examples/messages/message.tsx"
+        }
+      ],
+      "categories": [
+        "messages"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Default",
+            "demo": "MessageDemo"
+          },
+          {
+            "name": "Header and footer",
+            "demo": "MessageMetaDemo"
+          },
+          {
+            "name": "Ghost",
+            "demo": "MessageGhostDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "message-scroller-demo",
+      "type": "registry:example",
+      "title": "Message Scroller",
+      "description": "A thread that holds the newest message in view until you scroll away from it, appends without yanking the viewport, and can be driven from outside by the hook.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/message-scroller.json",
+        "https://aiellie.dev/r/message.json",
+        "https://aiellie.dev/r/bubble.json",
+        "https://aiellie.dev/r/button.json",
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "examples/messages/message-scroller.tsx",
+          "type": "registry:example",
+          "target": "examples/messages/message-scroller.tsx"
+        }
+      ],
+      "categories": [
+        "messages"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Anchoring turns",
+            "demo": "MessageScrollerAnchoringDemo"
+          },
+          {
+            "name": "Group chat",
+            "demo": "MessageScrollerGroupChatDemo"
+          },
+          {
+            "name": "Keeping context",
+            "demo": "MessageScrollerContextDemo"
+          },
+          {
+            "name": "Live edge",
+            "demo": "MessageScrollerLiveEdgeDemo"
+          },
+          {
+            "name": "Saved threads",
+            "demo": "MessageScrollerSavedThreadDemo"
+          },
+          {
+            "name": "Earlier messages",
+            "demo": "MessageScrollerHistoryDemo"
+          },
+          {
+            "name": "Animated",
+            "demo": "MessageScrollerAnimatedDemo"
+          },
+          {
+            "name": "Jumping",
+            "demo": "MessageScrollerJumpDemo"
+          },
+          {
+            "name": "Reader position",
+            "demo": "MessageScrollerPositionDemo"
+          },
+          {
+            "name": "Scroll state",
+            "demo": "MessageScrollerScrollStateDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "suggestions-demo",
+      "type": "registry:example",
+      "title": "Suggestions",
+      "description": "Prompts offered as dashed bubbles and tinted once picked — as a run of pills, as a list, or picked to be sent.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/suggestions.json",
+        "https://aiellie.dev/r/bubble.json"
+      ],
+      "files": [
+        {
+          "path": "examples/messages/suggestions.tsx",
+          "type": "registry:example",
+          "target": "examples/messages/suggestions.tsx"
+        }
+      ],
+      "categories": [
+        "messages"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Pills",
+            "demo": "SuggestionsDemo"
+          },
+          {
+            "name": "List",
+            "demo": "SuggestionsListDemo"
+          },
+          {
+            "name": "Sending",
+            "demo": "SuggestionsControlledDemo"
           }
         ],
         "wide": false

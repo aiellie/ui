@@ -1,0 +1,39 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "suggestions-demo",
+  "title": "Suggestions",
+  "description": "Prompts offered as dashed bubbles and tinted once picked — as a run of pills, as a list, or picked to be sent.",
+  "registryDependencies": [
+    "https://aiellie.dev/r/suggestions.json",
+    "https://aiellie.dev/r/bubble.json"
+  ],
+  "files": [
+    {
+      "path": "examples/messages/suggestions.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport { Suggestions } from \"@/components/aiellie-ui/suggestions\"\nimport { Bubble, BubbleContent, BubbleGroup } from \"@/components/ui/bubble\"\n\nconst prompts = [\"Summarise this\", \"Draft a reply\", \"What changed?\"]\n\nexport function SuggestionsDemo() {\n  const [selected, setSelected] = React.useState<string | null>(null)\n\n  return (\n    <Suggestions\n      suggestions={prompts}\n      selectedSuggestion={selected}\n      onSuggestion={setSelected}\n    />\n  )\n}\n\nexport function SuggestionsListDemo() {\n  const [selected, setSelected] = React.useState<string | null>(\n    \"Draft a reply for me to send\"\n  )\n\n  return (\n    <Suggestions\n      variant=\"list\"\n      suggestions={[\n        \"Summarise this thread\",\n        \"Draft a reply for me to send\",\n        \"What changed since Tuesday?\",\n      ]}\n      selectedSuggestion={selected}\n      onSuggestion={setSelected}\n    />\n  )\n}\n\n/**\n * The reason a suggestion is a button and not a chip: picking one is meant to\n * do something. Sending swaps the prompts for a fresh set, and the bumped\n * `cycle` replays the stagger so the new ones arrive rather than appear.\n */\nexport function SuggestionsControlledDemo() {\n  const [sent, setSent] = React.useState<string | null>(null)\n  const [cycle, setCycle] = React.useState(0)\n\n  return (\n    <div className=\"flex w-full max-w-sm flex-col items-end gap-3\">\n      {sent ? (\n        <BubbleGroup className=\"w-full\">\n          <Bubble align=\"end\">\n            <BubbleContent>{sent}</BubbleContent>\n          </Bubble>\n        </BubbleGroup>\n      ) : null}\n      <Suggestions\n        cycle={cycle}\n        suggestions={sent ? [\"Start over\"] : prompts}\n        selectedSuggestion={null}\n        onSuggestion={(suggestion) => {\n          setSent(suggestion === \"Start over\" ? null : suggestion)\n          setCycle((previous) => previous + 1)\n        }}\n      />\n    </div>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/messages/suggestions.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Pills",
+        "demo": "SuggestionsDemo"
+      },
+      {
+        "name": "List",
+        "demo": "SuggestionsListDemo"
+      },
+      {
+        "name": "Sending",
+        "demo": "SuggestionsControlledDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "messages"
+  ],
+  "type": "registry:example"
+}

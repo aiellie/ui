@@ -1,0 +1,39 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "message-demo",
+  "title": "Message",
+  "description": "The frame around a bubble — who said it, when, and which side it belongs on — including the ghost case where the frame gets out of the way of the prose.",
+  "registryDependencies": [
+    "https://aiellie.dev/r/message.json",
+    "https://aiellie.dev/r/bubble.json"
+  ],
+  "files": [
+    {
+      "path": "examples/messages/message.tsx",
+      "content": "\"use client\";\n\nimport { Bubble, BubbleContent } from \"@/components/ui/bubble\";\nimport {\n  Message,\n  MessageAvatar,\n  MessageContent,\n  MessageFooter,\n  MessageGroup,\n  MessageHeader,\n} from \"@/components/ui/message\";\n\nexport function MessageDemo() {\n  return (\n    <MessageGroup className=\"w-full max-w-md\">\n      <Message align=\"end\">\n        <MessageAvatar className=\"size-8 text-xs font-medium\">EL</MessageAvatar>\n        <MessageContent>\n          <Bubble align=\"end\">\n            <BubbleContent>How did the migration land?</BubbleContent>\n          </Bubble>\n        </MessageContent>\n      </Message>\n      <Message>\n        <MessageAvatar className=\"size-8 text-xs font-medium\">AI</MessageAvatar>\n        <MessageContent>\n          <Bubble variant=\"muted\">\n            <BubbleContent>\n              Cleanly — every route moved over and the old adapter is gone.\n            </BubbleContent>\n          </Bubble>\n        </MessageContent>\n      </Message>\n    </MessageGroup>\n  );\n}\n\nexport function MessageMetaDemo() {\n  return (\n    <MessageGroup className=\"w-full max-w-md\">\n      <Message align=\"end\">\n        <MessageAvatar className=\"size-8 text-xs font-medium\">EL</MessageAvatar>\n        <MessageContent>\n          <MessageHeader>You</MessageHeader>\n          <Bubble align=\"end\">\n            <BubbleContent>Ship it behind the flag.</BubbleContent>\n          </Bubble>\n          <MessageFooter>Sent 9:41</MessageFooter>\n        </MessageContent>\n      </Message>\n      <Message>\n        <MessageAvatar className=\"size-8 text-xs font-medium\">AI</MessageAvatar>\n        <MessageContent>\n          <MessageHeader>Assistant</MessageHeader>\n          <Bubble variant=\"muted\">\n            <BubbleContent>Flag is live for 10% of traffic.</BubbleContent>\n          </Bubble>\n          <MessageFooter>9:41 · 1.2s</MessageFooter>\n        </MessageContent>\n      </Message>\n    </MessageGroup>\n  );\n}\n\nexport function MessageGhostDemo() {\n  return (\n    <MessageGroup className=\"w-full max-w-md\">\n      <Message align=\"end\">\n        <MessageAvatar className=\"size-8 text-xs font-medium\">EL</MessageAvatar>\n        <MessageContent>\n          <Bubble align=\"end\">\n            <BubbleContent>Why did the build get slower?</BubbleContent>\n          </Bubble>\n        </MessageContent>\n      </Message>\n      <Message>\n        <MessageContent>\n          <Bubble variant=\"ghost\">\n            <BubbleContent>\n              The type-check step stopped being cached, so it re-runs from\n              scratch on every commit. Restoring the cache key brings it back\n              under a minute.\n            </BubbleContent>\n          </Bubble>\n        </MessageContent>\n      </Message>\n    </MessageGroup>\n  );\n}",
+      "type": "registry:example",
+      "target": "examples/messages/message.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Default",
+        "demo": "MessageDemo"
+      },
+      {
+        "name": "Header and footer",
+        "demo": "MessageMetaDemo"
+      },
+      {
+        "name": "Ghost",
+        "demo": "MessageGhostDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "messages"
+  ],
+  "type": "registry:example"
+}

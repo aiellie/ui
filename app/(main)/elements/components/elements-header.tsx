@@ -1,6 +1,8 @@
 import { AiElementsIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
+import { elementExamples } from "@/registry/_demos";
+
 export function ElementsHeader() {
   return (
     <div>
@@ -9,7 +11,9 @@ export function ElementsHeader() {
           <HugeiconsIcon icon={AiElementsIcon} className="size-4.5" />
           Elements
         </h1>
-
+        <span className="ms-auto font-mono text-[11px] tracking-tight text-foreground/30 tabular-nums">
+          {String(elementExamples.length).padStart(2, "0")}
+        </span>
       </div>
       <p className="text-foreground/50 mt-1.5 max-w-md text-[13.5px] leading-relaxed">
         Small, composable pieces for AI interfaces — streaming, waiting, and

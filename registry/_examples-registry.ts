@@ -31,7 +31,7 @@ export const examples: Registry["items"] = [
         target: "examples/tokens/colors-demos.tsx",
       },
     ],
-    categories: ["tokens"],
+    categories: ["colors"],
     meta: {
       wide: false,
     },
@@ -50,7 +50,7 @@ export const examples: Registry["items"] = [
         target: "examples/tokens/fonts-demos.tsx",
       },
     ],
-    categories: ["tokens"],
+    categories: ["typography"],
     meta: {
       variants: [
         { name: "Families", demo: "FamiliesDemo" },
@@ -105,6 +105,91 @@ export const examples: Registry["items"] = [
         { name: "Default", demo: "BubbleDemo" },
         { name: "Variants", demo: "BubbleVariantsDemo" },
         { name: "Reactions", demo: "BubbleReactionsDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "message-demo",
+    type: "registry:example",
+    title: "Message",
+    description:
+      "The frame around a bubble — who said it, when, and which side it belongs on — including the ghost case where the frame gets out of the way of the prose.",
+    registryDependencies: ["message", "bubble"],
+    files: [
+      {
+        path: "examples/messages/message.tsx",
+        type: "registry:example",
+        target: "examples/messages/message.tsx",
+      },
+    ],
+    categories: ["messages"],
+    meta: {
+      variants: [
+        { name: "Default", demo: "MessageDemo" },
+        { name: "Header and footer", demo: "MessageMetaDemo" },
+        { name: "Ghost", demo: "MessageGhostDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "message-scroller-demo",
+    type: "registry:example",
+    title: "Message Scroller",
+    description:
+      "A thread that holds the newest message in view until you scroll away from it, appends without yanking the viewport, and can be driven from outside by the hook.",
+    registryDependencies: [
+      "message-scroller",
+      "message",
+      "bubble",
+      "button",
+      "utils",
+    ],
+    files: [
+      {
+        path: "examples/messages/message-scroller.tsx",
+        type: "registry:example",
+        target: "examples/messages/message-scroller.tsx",
+      },
+    ],
+    categories: ["messages"],
+    meta: {
+      variants: [
+        { name: "Anchoring turns", demo: "MessageScrollerAnchoringDemo" },
+        { name: "Group chat", demo: "MessageScrollerGroupChatDemo" },
+        { name: "Keeping context", demo: "MessageScrollerContextDemo" },
+        { name: "Live edge", demo: "MessageScrollerLiveEdgeDemo" },
+        { name: "Saved threads", demo: "MessageScrollerSavedThreadDemo" },
+        { name: "Earlier messages", demo: "MessageScrollerHistoryDemo" },
+        { name: "Animated", demo: "MessageScrollerAnimatedDemo" },
+        { name: "Jumping", demo: "MessageScrollerJumpDemo" },
+        { name: "Reader position", demo: "MessageScrollerPositionDemo" },
+        { name: "Scroll state", demo: "MessageScrollerScrollStateDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "suggestions-demo",
+    type: "registry:example",
+    title: "Suggestions",
+    description:
+      "Prompts offered as dashed bubbles and tinted once picked — as a run of pills, as a list, or picked to be sent.",
+    registryDependencies: ["suggestions", "bubble"],
+    files: [
+      {
+        path: "examples/messages/suggestions.tsx",
+        type: "registry:example",
+        target: "examples/messages/suggestions.tsx",
+      },
+    ],
+    categories: ["messages"],
+    meta: {
+      variants: [
+        { name: "Pills", demo: "SuggestionsDemo" },
+        { name: "List", demo: "SuggestionsListDemo" },
+        { name: "Sending", demo: "SuggestionsControlledDemo" },
       ],
       wide: false,
     },

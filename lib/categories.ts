@@ -1,5 +1,6 @@
 import {
-    AiElementsIcon,
+    ColorsIcon,
+    AiContentGenerator02Icon,
     SquareTerminalIcon,
     MessageSquareDotIcon,
   } from "@hugeicons/core-free-icons";
@@ -14,10 +15,16 @@ import {
   
   export const registryCategories: RegistryCategory[] = [
     {
-      name: "Tokens",
-      slug: "tokens",
+      name: "Colors",
+      slug: "colors",
       hidden: false,
-      icon: AiElementsIcon,
+      icon: ColorsIcon,
+    },
+    {
+      name: "Typography",
+      slug: "typography",
+      hidden: false,
+      icon: AiContentGenerator02Icon,
     },
     {
       name: "Coding",

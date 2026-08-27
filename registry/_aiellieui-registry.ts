@@ -25,4 +25,19 @@ export const aiellieui: Registry["items"] = [
       },
     ],
   },
+  {
+    name: "suggestions",
+    type: "registry:ui",
+    title: "Suggestions",
+    description:
+      "A row of prompts the reader can act on rather than read: each one a bubble drawn as a dashed outline while it is still an offer, tinted once it is picked, with the row holding the selection for one or for several.",
+    registryDependencies: ["bubble", "utils"],
+    files: [
+      {
+        path: "components/aiellie-ui/suggestions.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/suggestions.tsx",
+      },
+    ],
+  },
 ]

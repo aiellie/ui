@@ -1,6 +1,9 @@
 import type { ComponentType } from "react"
 import {
+  BubbleChatSparkIcon,
+  MessageMultiple01Icon,
   MessageSquareDotIcon,
+  ScrollVerticalIcon,
   PaintBoardIcon,
   SourceCodeIcon,
   TextFontIcon,
@@ -11,6 +14,9 @@ import type { RegistryItem } from "shadcn/schema"
 import type { DemoVariant } from "@/components/aiellie-ui/demos-switcher"
 import * as codeSnippetDemos from "@/examples/code/code-snippet"
 import * as bubbleDemos from "@/examples/messages/bubble"
+import * as messageDemos from "@/examples/messages/message"
+import * as messageScrollerDemos from "@/examples/messages/message-scroller"
+import * as suggestionsDemos from "@/examples/messages/suggestions"
 import * as fontsDemos from "@/examples/tokens/fonts-demos"
 import { colorsVariants } from "@/examples/tokens/colors-demos"
 
@@ -42,6 +48,18 @@ const exampleDemos: Record<string, ExampleDemos> = {
   "bubble-demo": {
     icon: MessageSquareDotIcon,
     components: { ...bubbleDemos },
+  },
+  "message-demo": {
+    icon: MessageMultiple01Icon,
+    components: { ...messageDemos },
+  },
+  "message-scroller-demo": {
+    icon: ScrollVerticalIcon,
+    components: { ...messageScrollerDemos },
+  },
+  "suggestions-demo": {
+    icon: BubbleChatSparkIcon,
+    components: { ...suggestionsDemos },
   },
 }
 
@@ -138,13 +156,15 @@ const examplesWithDemos: Example[] = examples.flatMap((item) => {
 /**
  * Tokens have a page of their own, so the elements grid is everything else.
  * Which page an example lands on is decided by the `categories` on its registry
- * item and nowhere else — a new demo needs no change here or on either page,
- * and one with no category is an element, which is the useful default.
+ * item and nowhere else — a new demo needs no change on either page, and one
+ * with no category is an element, which is the useful default. The only thing
+ * to keep in step is the set below: a token category named in
+ * `lib/categories.ts` but missing here quietly shows up under /elements.
  */
-const tokensCategory = "tokens"
+const tokenCategories = new Set(["colors", "typography"])
 
 function isToken(example: Example) {
-  return example.categories.includes(tokensCategory)
+  return example.categories.some((slug) => tokenCategories.has(slug))
 }
 
 const tokenExamples = examplesWithDemos.filter(isToken)
