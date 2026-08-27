@@ -39,4 +39,19 @@ export const ui: Registry["items"] = [
       },
     ],
   },
+  {
+    name: "bubble",
+    type: "registry:ui",
+    title: "Bubble",
+    description: "A bubble is a container for a message.",
+    registryDependencies: ["utils"],
+    dependencies: ["@base-ui/react", "class-variance-authority"],
+    files: [
+      {
+        path: "components/ui/bubble.tsx",
+        type: "registry:ui",
+        target: "components/ui/bubble.tsx",
+      },
+    ],
+  },
 ]

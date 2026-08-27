@@ -1,5 +1,6 @@
 import type { ComponentType } from "react"
 import {
+  MessageSquareDotIcon,
   PaintBoardIcon,
   SourceCodeIcon,
   TextFontIcon,
@@ -9,6 +10,7 @@ import type { RegistryItem } from "shadcn/schema"
 
 import type { DemoVariant } from "@/components/aiellie-ui/demos-switcher"
 import * as codeSnippetDemos from "@/examples/code/code-snippet"
+import * as bubbleDemos from "@/examples/messages/bubble"
 import * as fontsDemos from "@/examples/tokens/fonts-demos"
 import { colorsVariants } from "@/examples/tokens/colors-demos"
 
@@ -36,6 +38,10 @@ const exampleDemos: Record<string, ExampleDemos> = {
   "code-snippet-demo": {
     icon: SourceCodeIcon,
     components: { ...codeSnippetDemos },
+  },
+  "bubble-demo": {
+    icon: MessageSquareDotIcon,
+    components: { ...bubbleDemos },
   },
 }
 
@@ -88,16 +94,30 @@ function namedVariants(
 }
 
 /**
+ * Registering an item and building it is only half of an example: without the
+ * demos above it has nothing to render, and would otherwise go missing from the
+ * grid without saying so. Dev builds say so.
+ */
+function dropped(name: string, reason: string): [] {
+  if (process.env.NODE_ENV !== "production") {
+    console.warn(`[registry] No card for ${name} — ${reason}.`)
+  }
+  return []
+}
+
+/**
  * Every example that has something to show, in registry order — the grid reads
  * this and nothing else. An item with no entry in `exampleDemos`, or whose
  * named exports have all gone missing, is dropped rather than rendered empty.
  */
 const examplesWithDemos: Example[] = examples.flatMap((item) => {
   const demos = exampleDemos[item.name]
-  if (!demos) return []
+  if (!demos) return dropped(item.name, "it has no entry in exampleDemos")
 
   const variants = demos.variants ?? namedVariants(item.meta, demos.components)
-  if (!variants.length) return []
+  if (!variants.length) {
+    return dropped(item.name, "none of its meta.variants name a real export")
+  }
 
   return [
     {

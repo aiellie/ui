@@ -86,4 +86,27 @@ export const examples: Registry["items"] = [
       wide: false,
     },
   },
+  {
+    name: "bubble-demo",
+    type: "registry:example",
+    title: "Bubble",
+    description: "A bubble is a container for a message.",
+    registryDependencies: ["bubble"],
+    files: [
+      {
+        path: "examples/messages/bubble.tsx",
+        type: "registry:example",
+        target: "examples/messages/bubble.tsx",
+      },
+    ],
+    categories: ["messages"],
+    meta: {
+      variants: [
+        { name: "Default", demo: "BubbleDemo" },
+        { name: "Variants", demo: "BubbleVariantsDemo" },
+        { name: "Reactions", demo: "BubbleReactionsDemo" },
+      ],
+      wide: false,
+    },
+  },
 ]

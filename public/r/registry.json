@@ -157,6 +157,26 @@
       ]
     },
     {
+      "name": "bubble",
+      "type": "registry:ui",
+      "title": "Bubble",
+      "description": "A bubble is a container for a message.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "dependencies": [
+        "@base-ui/react",
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "components/ui/bubble.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/bubble.tsx"
+        }
+      ]
+    },
+    {
       "name": "colors-demo",
       "type": "registry:example",
       "title": "Colors",
@@ -256,6 +276,42 @@
           {
             "name": "Highlighted",
             "demo": "InstallCommandHighlightedDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "bubble-demo",
+      "type": "registry:example",
+      "title": "Bubble",
+      "description": "A bubble is a container for a message.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/bubble.json"
+      ],
+      "files": [
+        {
+          "path": "examples/messages/bubble.tsx",
+          "type": "registry:example",
+          "target": "examples/messages/bubble.tsx"
+        }
+      ],
+      "categories": [
+        "messages"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Default",
+            "demo": "BubbleDemo"
+          },
+          {
+            "name": "Variants",
+            "demo": "BubbleVariantsDemo"
+          },
+          {
+            "name": "Reactions",
+            "demo": "BubbleReactionsDemo"
           }
         ],
         "wide": false
