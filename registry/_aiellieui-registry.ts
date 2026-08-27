@@ -72,17 +72,32 @@ export const aiellieui: Registry["items"] = [
     ],
   },
   {
-    name: "typing-bubble",
+    name: "streaming-text",
     type: "registry:ui",
-    title: "Typing Bubble",
+    title: "Streaming Text",
+    description:
+      "Text that arrives a piece at a time — from a model streaming tokens or typed out from a string already in hand — each piece fading in as it lands, with a caret holding the place the next one will take.",
+    registryDependencies: ["utils"],
+    files: [
+      {
+        path: "components/aiellie-ui/streaming-text.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/streaming-text.tsx",
+      },
+    ],
+  },
+  {
+    name: "typing-indicator",
+    type: "registry:ui",
+    title: "Typing Indicator",
     description:
       "The bubble that stands in for a message not written yet — dots waving in the place the answer will take, announced as words rather than read out as punctuation.",
     registryDependencies: ["bubble", "utils"],
     files: [
       {
-        path: "components/aiellie-ui/typing-bubble.tsx",
+        path: "components/aiellie-ui/typing-indicator.tsx",
         type: "registry:ui",
-        target: "components/aiellie-ui/typing-bubble.tsx",
+        target: "components/aiellie-ui/typing-indicator.tsx",
       },
     ],
   },

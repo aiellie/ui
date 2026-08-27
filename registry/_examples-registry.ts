@@ -195,25 +195,49 @@ export const examples: Registry["items"] = [
     },
   },
   {
-    name: "typing-bubble-demo",
+    name: "streaming-text-demo",
     type: "registry:example",
-    title: "Typing Bubble",
+    title: "Streaming Text",
     description:
-      "The stand-in for an answer still being written — a bubble holding its place, the dots alone, a line saying who is typing, or the caret a streamed answer starts at.",
-    registryDependencies: ["typing-bubble", "bubble", "message"],
+      "An answer typed out from a string in hand, the same words arriving as tokens instead, and the typing bubble handing over to the stream at the first of them.",
+    registryDependencies: ["streaming-text", "typing-indicator", "bubble"],
     files: [
       {
-        path: "examples/messages/typing-bubble.tsx",
+        path: "examples/messages/streaming-text.tsx",
         type: "registry:example",
-        target: "examples/messages/typing-bubble.tsx",
+        target: "examples/messages/streaming-text.tsx",
       },
     ],
     categories: ["messages"],
     meta: {
       variants: [
-        { name: "Default", demo: "TypingBubbleDemo" },
-        { name: "Kinds", demo: "TypingBubbleVariantsDemo" },
-        { name: "In a thread", demo: "TypingBubbleFlowDemo" },
+        { name: "Typed out", demo: "StreamingTextDemo" },
+        { name: "Tokens", demo: "StreamingTextTokensDemo" },
+        { name: "From typing", demo: "StreamingTextWithTypingDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "typing-indicator-demo",
+    type: "registry:example",
+    title: "Typing Indicator",
+    description:
+      "The stand-in for an answer still being written — a bubble holding its place, the dots alone, a line saying who is typing, or the caret a streamed answer starts at.",
+    registryDependencies: ["typing-indicator", "bubble", "message"],
+    files: [
+      {
+        path: "examples/messages/typing-indicator.tsx",
+        type: "registry:example",
+        target: "examples/messages/typing-indicator.tsx",
+      },
+    ],
+    categories: ["messages"],
+    meta: {
+      variants: [
+        { name: "Default", demo: "TypingIndicatorDemo" },
+        { name: "Kinds", demo: "TypingIndicatorVariantsDemo" },
+        { name: "In a thread", demo: "TypingIndicatorFlowDemo" },
       ],
       wide: false,
     },

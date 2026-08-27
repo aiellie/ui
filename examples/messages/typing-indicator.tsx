@@ -2,7 +2,7 @@
 
 import * as React from "react"
 
-import { TypingBubble } from "@/components/aiellie-ui/typing-bubble"
+import { TypingIndicator } from "@/components/aiellie-ui/typing-indicator"
 import { Bubble, BubbleContent, BubbleGroup } from "@/components/ui/bubble"
 import {
   Message,
@@ -22,13 +22,13 @@ function Avatar() {
   )
 }
 
-export function TypingBubbleDemo() {
+export function TypingIndicatorDemo() {
   return (
     <BubbleGroup className="w-full max-w-sm">
       <Bubble align="end">
         <BubbleContent>Can you summarise the thread for me?</BubbleContent>
       </Bubble>
-      <TypingBubble />
+      <TypingIndicator />
     </BubbleGroup>
   )
 }
@@ -39,13 +39,13 @@ export function TypingBubbleDemo() {
  * assistant whose prose is not bubbled, the line says who is typing, and the
  * caret is where a streamed answer will start appearing.
  */
-export function TypingBubbleVariantsDemo() {
+export function TypingIndicatorVariantsDemo() {
   return (
     <div className="flex w-full max-w-sm flex-col gap-5">
-      <TypingBubble />
-      <TypingBubble variant="ghost" />
-      <TypingBubble variant="label" label="Ellie is typing" />
-      <TypingBubble variant="caret" label="Ellie is answering" />
+      <TypingIndicator />
+      <TypingIndicator variant="ghost" />
+      <TypingIndicator variant="label" label="Ellie is typing" />
+      <TypingIndicator variant="caret" label="Ellie is answering" />
     </div>
   )
 }
@@ -54,7 +54,7 @@ export function TypingBubbleVariantsDemo() {
  * The thread as it actually runs: the avatar is already in place, and the
  * bubble under it fills in rather than the row jumping when the words arrive.
  */
-export function TypingBubbleFlowDemo() {
+export function TypingIndicatorFlowDemo() {
   const [typing, setTyping] = React.useState(true)
 
   React.useEffect(() => {
@@ -78,7 +78,7 @@ export function TypingBubbleFlowDemo() {
         <Avatar />
         <MessageContent>
           {typing ? (
-            <TypingBubble label="Ellie is typing" />
+            <TypingIndicator label="Ellie is typing" />
           ) : (
             <Bubble variant="muted">
               <BubbleContent>{answer}</BubbleContent>

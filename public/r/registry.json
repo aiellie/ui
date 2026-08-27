@@ -80,9 +80,25 @@
       ]
     },
     {
-      "name": "typing-bubble",
+      "name": "streaming-text",
       "type": "registry:ui",
-      "title": "Typing Bubble",
+      "title": "Streaming Text",
+      "description": "Text that arrives a piece at a time — from a model streaming tokens or typed out from a string already in hand — each piece fading in as it lands, with a caret holding the place the next one will take.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/streaming-text.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/streaming-text.tsx"
+        }
+      ]
+    },
+    {
+      "name": "typing-indicator",
+      "type": "registry:ui",
+      "title": "Typing Indicator",
       "description": "The bubble that stands in for a message not written yet — dots waving in the place the answer will take, announced as words rather than read out as punctuation.",
       "registryDependencies": [
         "https://aiellie.dev/r/bubble.json",
@@ -90,9 +106,9 @@
       ],
       "files": [
         {
-          "path": "components/aiellie-ui/typing-bubble.tsx",
+          "path": "components/aiellie-ui/typing-indicator.tsx",
           "type": "registry:ui",
-          "target": "components/aiellie-ui/typing-bubble.tsx"
+          "target": "components/aiellie-ui/typing-indicator.tsx"
         }
       ]
     },
@@ -673,20 +689,58 @@
       }
     },
     {
-      "name": "typing-bubble-demo",
+      "name": "streaming-text-demo",
       "type": "registry:example",
-      "title": "Typing Bubble",
+      "title": "Streaming Text",
+      "description": "An answer typed out from a string in hand, the same words arriving as tokens instead, and the typing bubble handing over to the stream at the first of them.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/streaming-text.json",
+        "https://aiellie.dev/r/typing-indicator.json",
+        "https://aiellie.dev/r/bubble.json"
+      ],
+      "files": [
+        {
+          "path": "examples/messages/streaming-text.tsx",
+          "type": "registry:example",
+          "target": "examples/messages/streaming-text.tsx"
+        }
+      ],
+      "categories": [
+        "messages"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Typed out",
+            "demo": "StreamingTextDemo"
+          },
+          {
+            "name": "Tokens",
+            "demo": "StreamingTextTokensDemo"
+          },
+          {
+            "name": "From typing",
+            "demo": "StreamingTextWithTypingDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "typing-indicator-demo",
+      "type": "registry:example",
+      "title": "Typing Indicator",
       "description": "The stand-in for an answer still being written — a bubble holding its place, the dots alone, a line saying who is typing, or the caret a streamed answer starts at.",
       "registryDependencies": [
-        "https://aiellie.dev/r/typing-bubble.json",
+        "https://aiellie.dev/r/typing-indicator.json",
         "https://aiellie.dev/r/bubble.json",
         "https://aiellie.dev/r/message.json"
       ],
       "files": [
         {
-          "path": "examples/messages/typing-bubble.tsx",
+          "path": "examples/messages/typing-indicator.tsx",
           "type": "registry:example",
-          "target": "examples/messages/typing-bubble.tsx"
+          "target": "examples/messages/typing-indicator.tsx"
         }
       ],
       "categories": [
@@ -696,15 +750,15 @@
         "variants": [
           {
             "name": "Default",
-            "demo": "TypingBubbleDemo"
+            "demo": "TypingIndicatorDemo"
           },
           {
             "name": "Kinds",
-            "demo": "TypingBubbleVariantsDemo"
+            "demo": "TypingIndicatorVariantsDemo"
           },
           {
             "name": "In a thread",
-            "demo": "TypingBubbleFlowDemo"
+            "demo": "TypingIndicatorFlowDemo"
           }
         ],
         "wide": false

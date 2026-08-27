@@ -5,7 +5,7 @@ import * as React from "react"
 import { Bubble, BubbleContent } from "@/components/ui/bubble"
 import { cn } from "@/lib/utils"
 
-export interface TypingBubbleProps extends Omit<
+export interface TypingIndicatorProps extends Omit<
   React.ComponentProps<"div">,
   "children"
 > {
@@ -26,7 +26,7 @@ const dots = [0, 1, 2]
 function Dots({ className }: { className?: string }) {
   return (
     <span
-      data-slot="typing-bubble-dots"
+      data-slot="typing-indicator-dots"
       aria-hidden="true"
       className={cn("flex items-center gap-1", className)}
     >
@@ -62,15 +62,15 @@ function Dots({ className }: { className?: string }) {
  * The dots are decoration and the label is the message: a screen reader is told
  * someone is typing rather than read three full stops.
  */
-export function TypingBubble({
+export function TypingIndicator({
   variant = "bubble",
   align = "start",
   label = "Typing",
   className,
   ...props
-}: TypingBubbleProps) {
+}: TypingIndicatorProps) {
   const announcement = (
-    <span data-slot="typing-bubble-label" className="sr-only">
+    <span data-slot="typing-indicator-label" className="sr-only">
       {label}
     </span>
   )
@@ -78,7 +78,7 @@ export function TypingBubble({
   if (variant === "bubble") {
     return (
       <Bubble
-        data-slot="typing-bubble"
+        data-slot="typing-indicator"
         data-variant-type="bubble"
         variant="muted"
         align={align}
@@ -99,7 +99,7 @@ export function TypingBubble({
 
   return (
     <div
-      data-slot="typing-bubble"
+      data-slot="typing-indicator"
       data-variant-type={variant}
       data-align={align}
       role="status"
@@ -118,7 +118,7 @@ export function TypingBubble({
         // lands where the caret already was.
         <span
           aria-hidden="true"
-          data-slot="typing-bubble-caret"
+          data-slot="typing-indicator-caret"
           className="inline-block h-4 w-2 animate-pulse rounded-[2px] bg-current align-text-bottom motion-reduce:animate-none"
           style={{ animationDuration: "1.1s" }}
         />

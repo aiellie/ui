@@ -1,0 +1,40 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "streaming-text-demo",
+  "title": "Streaming Text",
+  "description": "An answer typed out from a string in hand, the same words arriving as tokens instead, and the typing bubble handing over to the stream at the first of them.",
+  "registryDependencies": [
+    "https://aiellie.dev/r/streaming-text.json",
+    "https://aiellie.dev/r/typing-indicator.json",
+    "https://aiellie.dev/r/bubble.json"
+  ],
+  "files": [
+    {
+      "path": "examples/messages/streaming-text.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport {\n  StreamingText,\n  type StreamingSegment,\n} from \"@/components/aiellie-ui/streaming-text\"\nimport { TypingIndicator } from \"@/components/aiellie-ui/typing-indicator\"\nimport { Bubble, BubbleContent, BubbleGroup } from \"@/components/ui/bubble\"\n\n/** Prose with two things set in the mono face, since that is the awkward case. */\nconst answer: StreamingSegment[] = [\n  \"Three people debated the rollout date and settled on shipping behind\",\n  { text: \"rollout.tuesday\", mono: true },\n  \"next week. Marta wanted it held until the migration lands, so it ships dark and goes on for staff first — run\",\n  { text: \"pnpm flags:list\", mono: true },\n  \"to see where it stands.\",\n]\n\nexport function StreamingTextDemo() {\n  const [run, setRun] = React.useState(0)\n\n  const again = React.useCallback(() => {\n    setTimeout(() => setRun((previous) => previous + 1), 2600)\n  }, [])\n\n  return (\n    <BubbleGroup className=\"w-full max-w-sm\">\n      <Bubble align=\"end\">\n        <BubbleContent>What did they decide?</BubbleContent>\n      </Bubble>\n      <Bubble variant=\"muted\">\n        <BubbleContent>\n          <StreamingText\n            key={run}\n            mode=\"typewriter\"\n            segments={answer}\n            speed={9}\n            onComplete={again}\n          />\n        </BubbleContent>\n      </Bubble>\n    </BubbleGroup>\n  )\n}\n\n/**\n * What a real stream looks like: the count climbs as tokens land, the newest\n * words arrive tinted and cool to the body colour behind them.\n */\nexport function StreamingTextTokensDemo() {\n  const total = React.useMemo(\n    () =>\n      answer.reduce(\n        (sum, segment) =>\n          sum +\n          (typeof segment === \"string\" ? segment : segment.text).split(/\\s+/)\n            .length,\n        0\n      ),\n    []\n  )\n  const [count, setCount] = React.useState(0)\n\n  React.useEffect(() => {\n    const id = setInterval(() => {\n      setCount((previous) => (previous >= total ? 0 : previous + 1))\n    }, 130)\n    return () => clearInterval(id)\n  }, [total])\n\n  return (\n    <BubbleGroup className=\"w-full max-w-sm\">\n      <Bubble variant=\"muted\">\n        <BubbleContent>\n          <StreamingText\n            segments={answer}\n            count={count}\n            streaming={count < total}\n            className=\"min-h-28\"\n          />\n        </BubbleContent>\n      </Bubble>\n    </BubbleGroup>\n  )\n}\n\n/**\n * The pair as they are actually used: the indicator holds the place while\n * nothing has arrived, and hands over to the stream at the first token.\n */\nexport function StreamingTextWithTypingDemo() {\n  const [tick, setTick] = React.useState(0)\n\n  React.useEffect(() => {\n    const id = setInterval(() => setTick((previous) => previous + 1), 140)\n    return () => clearInterval(id)\n  }, [])\n\n  // A beat of nothing before the first token, which is the part the indicator\n  // exists for, then round again.\n  const cycle = tick % 60\n  const arrived = Math.max(0, cycle - 8)\n\n  return (\n    <BubbleGroup className=\"w-full max-w-sm\">\n      <Bubble align=\"end\">\n        <BubbleContent>What did they decide?</BubbleContent>\n      </Bubble>\n      {arrived === 0 ? (\n        <TypingIndicator label=\"Ellie is typing\" />\n      ) : (\n        <Bubble variant=\"muted\">\n          <BubbleContent>\n            <StreamingText\n              segments={answer}\n              count={arrived}\n              streaming={cycle < 56}\n            />\n          </BubbleContent>\n        </Bubble>\n      )}\n    </BubbleGroup>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/messages/streaming-text.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Typed out",
+        "demo": "StreamingTextDemo"
+      },
+      {
+        "name": "Tokens",
+        "demo": "StreamingTextTokensDemo"
+      },
+      {
+        "name": "From typing",
+        "demo": "StreamingTextWithTypingDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "messages"
+  ],
+  "type": "registry:example"
+}
