@@ -1,16 +1,9 @@
-import { Geist, Geist_Mono } from "next/font/google"
-
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import { cn } from "@/lib/utils";
-
-const geist = Geist({subsets:['latin'],variable:'--font-sans'})
-
-const fontMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-})
-
+import { ThemeToggle } from "@/components/theme-toggle"
+import { fontVariables } from "@/lib/fonts"
+import { cn } from "@/lib/utils"
+    
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -20,10 +13,12 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn("antialiased", fontMono.variable, "font-sans", geist.variable)}
+      className={cn("font-sans antialiased", fontVariables)}
     >
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>{children}
+        <ThemeToggle className="fixed right-4 bottom-4 z-50" />
+        </ThemeProvider>
       </body>
     </html>
   )
