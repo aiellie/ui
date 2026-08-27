@@ -14,61 +14,6 @@ import type { Registry } from "shadcn/schema"
  */
 export const examples: Registry["items"] = [
   {
-    name: "colors-demo",
-    type: "registry:example",
-    title: "Colors",
-    description:
-      "Semantic tokens from globals.css. Every swatch follows the active theme.",
-    registryDependencies: ["utils"],
-    files: [
-      {
-        path: "examples/tokens/colors-demos.tsx",
-        type: "registry:example",
-        target: "examples/tokens/colors-demos.tsx",
-      },
-      {
-        path: "lib/colors.ts",
-        type: "registry:lib",
-        target: "lib/colors.ts",
-      },
-    ],
-    categories: ["tokens"],
-    meta: {
-      // No `variants`: the tabs follow `colorGroups`, so there are no export
-      // names to list — `_demos.ts` hands over the generated list instead.
-      wide: false,
-    },
-  },
-  {
-    name: "fonts-demo",
-    type: "registry:example",
-    title: "Fonts",
-    description:
-      "Geist for the interface, JetBrains Mono for code. Sizes and weights follow the Tailwind scale.",
-    registryDependencies: ["utils"],
-    files: [
-      {
-        path: "examples/tokens/fonts-demos.tsx",
-        type: "registry:example",
-        target: "examples/tokens/fonts-demos.tsx",
-      },
-      {
-        path: "lib/fonts.ts",
-        type: "registry:lib",
-        target: "lib/fonts.ts",
-      },
-    ],
-    categories: ["tokens"],
-    meta: {
-      variants: [
-        { name: "Families", demo: "FamiliesDemo" },
-        { name: "Scale", demo: "ScaleDemo" },
-        { name: "Weights", demo: "WeightsDemo" },
-      ],
-      wide: false,
-    },
-  },
-  {
     name: "code-snippet-demo",
     type: "registry:example",
     title: "Code Snippet",

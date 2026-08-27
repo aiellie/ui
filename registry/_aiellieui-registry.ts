@@ -15,7 +15,7 @@ export const aiellieui: Registry["items"] = [
     title: "Code Snippet",
     description:
       "The line that installs a thing, under tabs for the package manager running it — npx, pnpm dlx, bunx, or yarn dlx — or under tabs of your own, or under none at all, coloured like code on request, with a copy action handed exactly the line on screen.",
-    registryDependencies: ["utils", "surface-tokens", "highlight"],
+    registryDependencies: ["actions", "highlight"],
     files: [
       {
         path: "components/aiellie-ui/code/code-snippet.tsx",
