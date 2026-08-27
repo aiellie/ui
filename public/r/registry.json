@@ -43,6 +43,85 @@
       ]
     },
     {
+      "name": "timestamps",
+      "type": "registry:ui",
+      "title": "Timestamps",
+      "description": "When a message was sent, phrased the way a reader would say it — just now, half four, Tuesday — inline under a bubble or ruled across the thread as the divider a new day starts with, and kept honest on an interval.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/marker.json",
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/timestamps.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/timestamps.tsx"
+        }
+      ]
+    },
+    {
+      "name": "menu",
+      "type": "registry:ui",
+      "title": "Menu",
+      "description": "Base UI's menu with this registry's surface on it — a glass popup, rows that take an icon and a word, ticked rows, groups, rules, shortcuts and submenus — so anything that needs a menu styles none of it again.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/actions.json",
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/menu.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/menu.tsx"
+        }
+      ]
+    },
+    {
+      "name": "message-context-menu",
+      "type": "registry:ui",
+      "title": "Message Context Menu",
+      "description": "The menu a message answers a right click — or a long press — with: the reactions that can be put on it across the top, and everything that can be done to it under them.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/menu.json",
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/message-context-menu.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/message-context-menu.tsx"
+        }
+      ]
+    },
+    {
+      "name": "message-actions",
+      "type": "registry:ui",
+      "title": "Message Actions",
+      "description": "The controls that belong to one message — copy, rate, retry — each an icon under a tooltip, with everything rarer folded into a menu at the end of the row, and the whole row held back until the message is hovered.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/actions.json",
+        "https://aiellie.dev/r/menu.json",
+        "https://aiellie.dev/r/tooltip.json",
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/message-actions.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/message-actions.tsx"
+        }
+      ]
+    },
+    {
       "name": "actions",
       "type": "registry:component",
       "title": "Actions",
@@ -210,6 +289,26 @@
           "path": "components/ui/button.tsx",
           "type": "registry:ui",
           "target": "components/ui/button.tsx"
+        }
+      ]
+    },
+    {
+      "name": "marker",
+      "type": "registry:ui",
+      "title": "Marker",
+      "description": "A line across a thread rather than a message in it — a day, an unread point, a note about what happened — drawn plain, ruled off, or with the rules running out to either side of it.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "dependencies": [
+        "@base-ui/react",
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "components/ui/marker.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/marker.tsx"
         }
       ]
     },
@@ -529,6 +628,122 @@
           {
             "name": "Sending",
             "demo": "SuggestionsControlledDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "message-context-menu-demo",
+      "type": "registry:example",
+      "title": "Message Context Menu",
+      "description": "A thread where every message answers a right click with its reactions and its actions, and wears the reaction it was given.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/message-context-menu.json",
+        "https://aiellie.dev/r/menu.json",
+        "https://aiellie.dev/r/bubble.json"
+      ],
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "files": [
+        {
+          "path": "examples/messages/message-context-menu.tsx",
+          "type": "registry:example",
+          "target": "examples/messages/message-context-menu.tsx"
+        }
+      ],
+      "categories": [
+        "messages"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Default",
+            "demo": "MessageContextMenuDemo"
+          },
+          {
+            "name": "Reactions only",
+            "demo": "MessageContextMenuReactionsDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "timestamps-demo",
+      "type": "registry:example",
+      "title": "Timestamps",
+      "description": "Stamps under the bubbles they belong to and ruled across the thread between days, in every phrasing the formatter has.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/timestamps.json",
+        "https://aiellie.dev/r/bubble.json"
+      ],
+      "files": [
+        {
+          "path": "examples/messages/timestamps.tsx",
+          "type": "registry:example",
+          "target": "examples/messages/timestamps.tsx"
+        }
+      ],
+      "categories": [
+        "messages"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "In a thread",
+            "demo": "TimestampsDemo"
+          },
+          {
+            "name": "Beside",
+            "demo": "TimestampsAsideDemo"
+          },
+          {
+            "name": "Variants",
+            "demo": "TimestampsVariantsDemo"
+          },
+          {
+            "name": "Relative",
+            "demo": "TimestampsRelativeDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "message-actions-demo",
+      "type": "registry:example",
+      "title": "Message Actions",
+      "description": "Copy, rate and retry under their tooltips, the rest behind a menu, and the row appearing only for the message under the pointer.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/message-actions.json",
+        "https://aiellie.dev/r/bubble.json"
+      ],
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "files": [
+        {
+          "path": "examples/messages/message-actions.tsx",
+          "type": "registry:example",
+          "target": "examples/messages/message-actions.tsx"
+        }
+      ],
+      "categories": [
+        "messages"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Default",
+            "demo": "MessageActionsDemo"
+          },
+          {
+            "name": "On hover",
+            "demo": "MessageActionsOnHoverDemo"
           }
         ],
         "wide": false

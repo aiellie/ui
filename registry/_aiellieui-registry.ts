@@ -40,4 +40,67 @@ export const aiellieui: Registry["items"] = [
       },
     ],
   },
+  {
+    name: "timestamps",
+    type: "registry:ui",
+    title: "Timestamps",
+    description:
+      "When a message was sent, phrased the way a reader would say it — just now, half four, Tuesday — inline under a bubble or ruled across the thread as the divider a new day starts with, and kept honest on an interval.",
+    registryDependencies: ["marker", "utils"],
+    files: [
+      {
+        path: "components/aiellie-ui/timestamps.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/timestamps.tsx",
+      },
+    ],
+  },
+  {
+    name: "menu",
+    type: "registry:ui",
+    title: "Menu",
+    description:
+      "Base UI's menu with this registry's surface on it — a glass popup, rows that take an icon and a word, ticked rows, groups, rules, shortcuts and submenus — so anything that needs a menu styles none of it again.",
+    registryDependencies: ["actions", "utils"],
+    dependencies: ["@base-ui/react"],
+    files: [
+      {
+        path: "components/aiellie-ui/menu.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/menu.tsx",
+      },
+    ],
+  },
+  {
+    name: "message-context-menu",
+    type: "registry:ui",
+    title: "Message Context Menu",
+    description:
+      "The menu a message answers a right click — or a long press — with: the reactions that can be put on it across the top, and everything that can be done to it under them.",
+    registryDependencies: ["menu", "utils"],
+    dependencies: ["@base-ui/react"],
+    files: [
+      {
+        path: "components/aiellie-ui/message-context-menu.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/message-context-menu.tsx",
+      },
+    ],
+  },
+  {
+    name: "message-actions",
+    type: "registry:ui",
+    title: "Message Actions",
+    description:
+      "The controls that belong to one message — copy, rate, retry — each an icon under a tooltip, with everything rarer folded into a menu at the end of the row, and the whole row held back until the message is hovered.",
+    registryDependencies: ["actions", "menu", "tooltip", "utils"],
+    dependencies: ["@base-ui/react"],
+    files: [
+      {
+        path: "components/aiellie-ui/message-actions.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/message-actions.tsx",
+      },
+    ],
+  },
 ]

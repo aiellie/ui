@@ -1,6 +1,9 @@
 import type { ComponentType } from "react"
 import {
   BubbleChatSparkIcon,
+  CursorMagicSelection02Icon,
+  Comment01Icon,
+  Clock01Icon,
   MessageMultiple01Icon,
   MessageSquareDotIcon,
   ScrollVerticalIcon,
@@ -15,8 +18,11 @@ import type { DemoVariant } from "@/components/aiellie-ui/demos-switcher"
 import * as codeSnippetDemos from "@/examples/code/code-snippet"
 import * as bubbleDemos from "@/examples/messages/bubble"
 import * as messageDemos from "@/examples/messages/message"
+import * as messageActionsDemos from "@/examples/messages/message-actions"
+import * as messageContextMenuDemos from "@/examples/messages/message-context-menu"
 import * as messageScrollerDemos from "@/examples/messages/message-scroller"
 import * as suggestionsDemos from "@/examples/messages/suggestions"
+import * as timestampsDemos from "@/examples/messages/timestamps"
 import * as fontsDemos from "@/examples/tokens/fonts-demos"
 import { colorsVariants } from "@/examples/tokens/colors-demos"
 
@@ -60,6 +66,18 @@ const exampleDemos: Record<string, ExampleDemos> = {
   "suggestions-demo": {
     icon: BubbleChatSparkIcon,
     components: { ...suggestionsDemos },
+  },
+  "message-actions-demo": {
+    icon: Comment01Icon,
+    components: { ...messageActionsDemos },
+  },
+  "message-context-menu-demo": {
+    icon: CursorMagicSelection02Icon,
+    components: { ...messageContextMenuDemos },
+  },
+  "timestamps-demo": {
+    icon: Clock01Icon,
+    components: { ...timestampsDemos },
   },
 }
 

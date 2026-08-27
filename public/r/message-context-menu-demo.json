@@ -1,0 +1,40 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "message-context-menu-demo",
+  "title": "Message Context Menu",
+  "description": "A thread where every message answers a right click with its reactions and its actions, and wears the reaction it was given.",
+  "dependencies": [
+    "@hugeicons/core-free-icons",
+    "@hugeicons/react"
+  ],
+  "registryDependencies": [
+    "https://aiellie.dev/r/message-context-menu.json",
+    "https://aiellie.dev/r/menu.json",
+    "https://aiellie.dev/r/bubble.json"
+  ],
+  "files": [
+    {
+      "path": "examples/messages/message-context-menu.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport {\n  Bookmark02Icon,\n  Copy01Icon,\n  MessageSquareReplyIcon,\n  PencilEdit02Icon,\n  PinIcon,\n  TrashIcon,\n} from \"@hugeicons/core-free-icons\"\nimport { HugeiconsIcon } from \"@hugeicons/react\"\n\nimport {\n  MenuItem,\n  MenuSeparator,\n  MenuShortcut,\n} from \"@/components/aiellie-ui/menu\"\nimport {\n  MessageContextMenu,\n  MessageContextMenuContent,\n  MessageContextMenuTrigger,\n  MessageReactionPicker,\n} from \"@/components/aiellie-ui/message-context-menu\"\nimport {\n  Bubble,\n  BubbleContent,\n  BubbleGroup,\n  BubbleReactions,\n} from \"@/components/ui/bubble\"\n\ntype Turn = {\n  id: string\n  text: string\n  align: \"start\" | \"end\"\n  variant: \"muted\" | \"default\"\n}\n\nconst thread: Turn[] = [\n  {\n    id: \"a\",\n    text: \"Three people debated the rollout date and settled on shipping behind a flag next Tuesday.\",\n    align: \"start\",\n    variant: \"muted\",\n  },\n  {\n    id: \"b\",\n    text: \"That works — I'll let the team know.\",\n    align: \"end\",\n    variant: \"default\",\n  },\n]\n\n/**\n * Right click a message — or press and hold it on a touch screen, which Base UI\n * treats as the same gesture — for the things that can be done to it, with the\n * reactions across the top where they can be picked in one movement.\n */\nexport function MessageContextMenuDemo() {\n  const [reactions, setReactions] = React.useState<\n    Record<string, string | null>\n  >({ a: \"👍\" })\n\n  return (\n    <BubbleGroup className=\"w-full max-w-sm gap-4\">\n      {thread.map((turn) => (\n        <MessageContextMenu key={turn.id}>\n          <MessageContextMenuTrigger\n            className={turn.align === \"end\" ? \"self-end\" : undefined}\n          >\n            <Bubble variant={turn.variant} align={turn.align}>\n              <BubbleContent>{turn.text}</BubbleContent>\n              {reactions[turn.id] ? (\n                <BubbleReactions\n                  align={turn.align}\n                  role=\"img\"\n                  aria-label={`Reaction: ${reactions[turn.id]}`}\n                >\n                  <span>{reactions[turn.id]}</span>\n                </BubbleReactions>\n              ) : null}\n            </Bubble>\n          </MessageContextMenuTrigger>\n\n          <MessageContextMenuContent>\n            <MessageReactionPicker\n              value={reactions[turn.id] ?? null}\n              onValueChange={(value) =>\n                setReactions((previous) => ({ ...previous, [turn.id]: value }))\n              }\n            />\n            <MenuSeparator />\n            <MenuItem>\n              <HugeiconsIcon icon={MessageSquareReplyIcon} />\n              Reply\n              <MenuShortcut>⌘R</MenuShortcut>\n            </MenuItem>\n            <MenuItem>\n              <HugeiconsIcon icon={Copy01Icon} />\n              Copy text\n              <MenuShortcut>⌘C</MenuShortcut>\n            </MenuItem>\n            {turn.align === \"end\" ? (\n              <MenuItem>\n                <HugeiconsIcon icon={PencilEdit02Icon} />\n                Edit\n              </MenuItem>\n            ) : null}\n            <MenuItem>\n              <HugeiconsIcon icon={PinIcon} />\n              Pin to thread\n            </MenuItem>\n            <MenuItem>\n              <HugeiconsIcon icon={Bookmark02Icon} />\n              Save to notes\n            </MenuItem>\n            <MenuSeparator />\n            <MenuItem variant=\"destructive\">\n              <HugeiconsIcon icon={TrashIcon} />\n              Delete\n            </MenuItem>\n          </MessageContextMenuContent>\n        </MessageContextMenu>\n      ))}\n    </BubbleGroup>\n  )\n}\n\n/**\n * The picker on its own, for the cases where reactions are the whole menu — a\n * thread where nothing else can be done to a message that has already been sent.\n */\nexport function MessageContextMenuReactionsDemo() {\n  const [reaction, setReaction] = React.useState<string | null>(null)\n\n  return (\n    <MessageContextMenu>\n      <MessageContextMenuTrigger>\n        <Bubble variant=\"muted\">\n          <BubbleContent>\n            Right click for the reactions, and nothing else.\n          </BubbleContent>\n          {reaction ? (\n            <BubbleReactions role=\"img\" aria-label={`Reaction: ${reaction}`}>\n              <span>{reaction}</span>\n            </BubbleReactions>\n          ) : null}\n        </Bubble>\n      </MessageContextMenuTrigger>\n      <MessageContextMenuContent className=\"min-w-0\">\n        <MessageReactionPicker value={reaction} onValueChange={setReaction} />\n      </MessageContextMenuContent>\n    </MessageContextMenu>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/messages/message-context-menu.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Default",
+        "demo": "MessageContextMenuDemo"
+      },
+      {
+        "name": "Reactions only",
+        "demo": "MessageContextMenuReactionsDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "messages"
+  ],
+  "type": "registry:example"
+}

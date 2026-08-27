@@ -71,6 +71,22 @@ export const ui: Registry["items"] = [
     ],
   },
   {
+    name: "marker",
+    type: "registry:ui",
+    title: "Marker",
+    description:
+      "A line across a thread rather than a message in it — a day, an unread point, a note about what happened — drawn plain, ruled off, or with the rules running out to either side of it.",
+    registryDependencies: ["utils"],
+    dependencies: ["@base-ui/react", "class-variance-authority"],
+    files: [
+      {
+        path: "components/ui/marker.tsx",
+        type: "registry:ui",
+        target: "components/ui/marker.tsx",
+      },
+    ],
+  },
+  {
     name: "message",
     type: "registry:ui",
     title: "Message",

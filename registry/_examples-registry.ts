@@ -194,4 +194,77 @@ export const examples: Registry["items"] = [
       wide: false,
     },
   },
+  {
+    name: "message-context-menu-demo",
+    type: "registry:example",
+    title: "Message Context Menu",
+    description:
+      "A thread where every message answers a right click with its reactions and its actions, and wears the reaction it was given.",
+    registryDependencies: ["message-context-menu", "menu", "bubble"],
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    files: [
+      {
+        path: "examples/messages/message-context-menu.tsx",
+        type: "registry:example",
+        target: "examples/messages/message-context-menu.tsx",
+      },
+    ],
+    categories: ["messages"],
+    meta: {
+      variants: [
+        { name: "Default", demo: "MessageContextMenuDemo" },
+        { name: "Reactions only", demo: "MessageContextMenuReactionsDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "timestamps-demo",
+    type: "registry:example",
+    title: "Timestamps",
+    description:
+      "Stamps under the bubbles they belong to and ruled across the thread between days, in every phrasing the formatter has.",
+    registryDependencies: ["timestamps", "bubble"],
+    files: [
+      {
+        path: "examples/messages/timestamps.tsx",
+        type: "registry:example",
+        target: "examples/messages/timestamps.tsx",
+      },
+    ],
+    categories: ["messages"],
+    meta: {
+      variants: [
+        { name: "In a thread", demo: "TimestampsDemo" },
+        { name: "Beside", demo: "TimestampsAsideDemo" },
+        { name: "Variants", demo: "TimestampsVariantsDemo" },
+        { name: "Relative", demo: "TimestampsRelativeDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "message-actions-demo",
+    type: "registry:example",
+    title: "Message Actions",
+    description:
+      "Copy, rate and retry under their tooltips, the rest behind a menu, and the row appearing only for the message under the pointer.",
+    registryDependencies: ["message-actions", "bubble"],
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    files: [
+      {
+        path: "examples/messages/message-actions.tsx",
+        type: "registry:example",
+        target: "examples/messages/message-actions.tsx",
+      },
+    ],
+    categories: ["messages"],
+    meta: {
+      variants: [
+        { name: "Default", demo: "MessageActionsDemo" },
+        { name: "On hover", demo: "MessageActionsOnHoverDemo" },
+      ],
+      wide: false,
+    },
+  },
 ]

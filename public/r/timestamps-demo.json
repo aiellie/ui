@@ -1,0 +1,43 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "timestamps-demo",
+  "title": "Timestamps",
+  "description": "Stamps under the bubbles they belong to and ruled across the thread between days, in every phrasing the formatter has.",
+  "registryDependencies": [
+    "https://aiellie.dev/r/timestamps.json",
+    "https://aiellie.dev/r/bubble.json"
+  ],
+  "files": [
+    {
+      "path": "examples/messages/timestamps.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport { Timestamp, TimestampRow } from \"@/components/aiellie-ui/timestamps\"\nimport { Bubble, BubbleContent, BubbleGroup } from \"@/components/ui/bubble\"\n\nconst MINUTE = 60_000\nconst HOUR = 3_600_000\nconst DAY = 86_400_000\n\n/** One moment per mount, so the demos read consistently while they are open. */\nfunction useMountedAt() {\n  return React.useState(() => Date.now())[0]\n}\n\nexport function TimestampsDemo() {\n  const now = useMountedAt()\n\n  return (\n    <BubbleGroup className=\"w-full max-w-sm gap-3\">\n      <Timestamp variant=\"separator\" date={now - DAY} format=\"day\" />\n      <Bubble variant=\"muted\">\n        <BubbleContent>\n          The rollout is behind a flag until Tuesday.\n        </BubbleContent>\n      </Bubble>\n      <Timestamp date={now - DAY} format=\"time\" className=\"ps-1\" />\n      <Timestamp variant=\"separator\" date={now} format=\"day\" />\n      <Bubble align=\"end\">\n        <BubbleContent>Any change to that?</BubbleContent>\n      </Bubble>\n      <Timestamp\n        date={now - 4 * MINUTE}\n        format=\"relative\"\n        live\n        className=\"justify-end pe-1\"\n      />\n    </BubbleGroup>\n  )\n}\n\n/**\n * The stamp beside the message rather than under it, and only once the message\n * is hovered — the time is worth having to hand and not worth reading every\n * line of the thread through.\n */\nexport function TimestampsAsideDemo() {\n  const now = useMountedAt()\n\n  return (\n    <div className=\"flex w-full max-w-sm flex-col gap-3\">\n      <TimestampRow>\n        <Bubble variant=\"muted\">\n          <BubbleContent>Shipping behind a flag on Tuesday.</BubbleContent>\n        </Bubble>\n        <Timestamp\n          date={now - 3 * HOUR}\n          format=\"time\"\n          placement=\"side\"\n          showOnHover\n        />\n      </TimestampRow>\n      <TimestampRow align=\"end\">\n        <Bubble align=\"end\">\n          <BubbleContent>Any change to that?</BubbleContent>\n        </Bubble>\n        <Timestamp\n          date={now - 4 * MINUTE}\n          format=\"relative\"\n          placement=\"side\"\n          showOnHover\n          live\n        />\n      </TimestampRow>\n    </div>\n  )\n}\n\nexport function TimestampsVariantsDemo() {\n  const now = useMountedAt()\n\n  return (\n    <div className=\"flex w-full max-w-sm flex-col gap-5\">\n      <Timestamp date={now - 2 * HOUR} />\n      <Timestamp variant=\"separator\" date={now - 2 * DAY} format=\"day\" />\n      <Timestamp variant=\"border\" date={now - 9 * DAY} format=\"datetime\" />\n    </div>\n  )\n}\n\n/**\n * `live` re-stamps on an interval, so a stamp that says \"just now\" stops saying\n * it. The ages here are fixed; only the phrasing moves.\n */\nexport function TimestampsRelativeDemo() {\n  const now = useMountedAt()\n\n  const ages = [\n    { label: \"Seconds\", date: now - 10_000 },\n    { label: \"Minutes\", date: now - 12 * MINUTE },\n    { label: \"Hours\", date: now - 5 * HOUR },\n    { label: \"Days\", date: now - 3 * DAY },\n    { label: \"Weeks\", date: now - 24 * DAY },\n  ]\n\n  return (\n    <div className=\"flex w-full max-w-sm flex-col gap-3\">\n      {ages.map((age) => (\n        <div key={age.label} className=\"flex items-baseline justify-between\">\n          <span className=\"text-sm\">{age.label}</span>\n          <Timestamp\n            date={age.date}\n            format=\"relative\"\n            live\n            className=\"w-auto\"\n          />\n        </div>\n      ))}\n    </div>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/messages/timestamps.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "In a thread",
+        "demo": "TimestampsDemo"
+      },
+      {
+        "name": "Beside",
+        "demo": "TimestampsAsideDemo"
+      },
+      {
+        "name": "Variants",
+        "demo": "TimestampsVariantsDemo"
+      },
+      {
+        "name": "Relative",
+        "demo": "TimestampsRelativeDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "messages"
+  ],
+  "type": "registry:example"
+}
