@@ -1,5 +1,6 @@
 import {
     AiElementsIcon,
+    SquareTerminalIcon,
     MessageSquareDotIcon,
   } from "@hugeicons/core-free-icons";
   import type { IconSvgElement } from "@hugeicons/react";
@@ -17,6 +18,12 @@ import {
       slug: "ui",
       hidden: false,
       icon: AiElementsIcon,
+    },
+    {
+      name: "Coding",
+      slug: "coding",
+      hidden: false,
+      icon: SquareTerminalIcon,
     },
     {
       name: "Messages",
