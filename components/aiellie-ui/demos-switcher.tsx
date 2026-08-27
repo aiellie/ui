@@ -13,6 +13,8 @@ interface DemoVariant {
 function DemosSwitcher({
   variants,
   href,
+  installCommand,
+  demoInstallCommand,
   backHref,
   fullscreenHref,
   fullscreen,
@@ -21,6 +23,8 @@ function DemosSwitcher({
 }: {
   variants: DemoVariant[]
   href?: string
+  installCommand?: string
+  demoInstallCommand?: string
   backHref?: string
   fullscreenHref?: string
   fullscreen?: boolean
@@ -53,6 +57,8 @@ function DemosSwitcher({
         active={active}
         onActiveChange={setActive}
         href={href}
+        installCommand={installCommand}
+        demoInstallCommand={demoInstallCommand}
         backHref={backHref}
         fullscreenHref={fullscreenHref}
         fullscreen={fullscreen}

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "demos-switcher",
+  "title": "Demos Switcher",
+  "description": "Holds a list of variants and shows one, with the toolbar that picks between them — the piece that turns a set of demos into a single card.",
+  "registryDependencies": [
+    "https://aiellie.dev/r/demo-toolbar.json",
+    "https://aiellie.dev/r/utils.json"
+  ],
+  "files": [
+    {
+      "path": "components/aiellie-ui/demos-switcher.tsx",
+      "content": "\"use client\"\n\nimport { useState, type ComponentType } from \"react\"\n\nimport { DemoToolbar } from \"@/components/aiellie-ui/demo-toolbar\"\nimport { cn } from \"@/lib/utils\"\n\ninterface DemoVariant {\n  name: string\n  demo: ComponentType\n}\n\nfunction DemosSwitcher({\n  variants,\n  href,\n  installCommand,\n  demoInstallCommand,\n  backHref,\n  fullscreenHref,\n  fullscreen,\n  title,\n  className,\n}: {\n  variants: DemoVariant[]\n  href?: string\n  installCommand?: string\n  demoInstallCommand?: string\n  backHref?: string\n  fullscreenHref?: string\n  fullscreen?: boolean\n  title?: string\n  className?: string\n}) {\n  const [active, setActive] = useState(0)\n  const variant = variants[active] ?? variants[0]\n\n  if (!variant) return null\n\n  return (\n    // Deliberately not `relative`: the toolbar's `absolute bottom-3` is meant to\n    // anchor to the card's own preview box, so it floats near the frame's edge\n    // rather than inside the box's padding.\n    <div\n      className={cn(\n        \"flex h-full min-h-0 w-full items-center justify-center\",\n        className\n      )}\n    >\n      <div\n        key={active}\n        className=\"flex h-full min-h-0 w-full animate-in items-center justify-center duration-300 fill-mode-both zoom-in-95 fade-in motion-reduce:animate-none\"\n      >\n        <variant.demo />\n      </div>\n      <DemoToolbar\n        variants={variants.map((item) => item.name)}\n        active={active}\n        onActiveChange={setActive}\n        href={href}\n        installCommand={installCommand}\n        demoInstallCommand={demoInstallCommand}\n        backHref={backHref}\n        fullscreenHref={fullscreenHref}\n        fullscreen={fullscreen}\n        title={title}\n        className=\"absolute bottom-3 z-20\"\n      />\n    </div>\n  )\n}\n\nexport { DemosSwitcher }\nexport type { DemoVariant }\n",
+      "type": "registry:component",
+      "target": "components/aiellie-ui/demos-switcher.tsx"
+    }
+  ],
+  "type": "registry:component"
+}

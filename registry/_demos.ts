@@ -13,6 +13,7 @@ import * as fontsDemos from "@/examples/tokens/fonts-demos"
 import { colorsVariants } from "@/examples/tokens/colors-demos"
 
 import { examples } from "./_examples-registry"
+import { registry } from "./_registry"
 
 /**
  * The half of an example that can't be serialized into registry.json: the demo
@@ -45,8 +46,27 @@ type Example = {
   title: string
   description: string
   icon: IconSvgElement
+  installCommand: string
+  demoInstallCommand: string
   variants: DemoVariant[]
   wide: boolean
+}
+
+const homepage = registry.homepage.replace(/\/+$/, "")
+
+/** The line that installs one registry item, as a card's toolbar copies it. */
+function installCommandFor(name: string) {
+  return `npx shadcn@latest add ${homepage}/r/${name}.json`
+}
+
+/**
+ * The element a card is showing, which is what its toolbar installs under
+ * "Component": a demo's first registry dependency is the thing it demos —
+ * `code-snippet-demo` → `code-snippet`. "With demo" installs the item itself,
+ * example file and all.
+ */
+function elementOf(item: RegistryItem) {
+  return item.registryDependencies?.[0] ?? item.name
 }
 
 /** The name is the item's, minus the suffix: `colors-demo` → `/examples/colors`. */
@@ -85,6 +105,8 @@ const examplesWithDemos: Example[] = examples.flatMap((item) => {
       title: item.title ?? item.name,
       description: item.description ?? "",
       icon: demos.icon,
+      installCommand: installCommandFor(elementOf(item)),
+      demoInstallCommand: installCommandFor(item.name),
       variants,
       wide: Boolean(item.meta?.wide),
     },

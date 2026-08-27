@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { Menu as MenuPrimitive } from "@base-ui/react/menu"
 import { Separator as SeparatorPrimitive } from "@base-ui/react/separator"
 import { useRender } from "@base-ui/react/use-render"
 
@@ -39,7 +40,7 @@ function FloatingToolbar({
         aria-label={ariaLabel}
         className={cn(
           floating,
-          "flex w-fit animate-in items-center gap-0.5 rounded-xl border-border/40 p-0.5 shadow-xl backdrop-blur-xl duration-500 ease-out fill-mode-both fade-in slide-in-from-bottom-2 motion-reduce:animate-none",
+          "flex w-fit animate-in items-center gap-0.5 rounded-xl border-border/40 p-0 shadow-lg backdrop-blur-xl duration-500 ease-out fill-mode-both fade-in slide-in-from-bottom-2 motion-reduce:animate-none",
           className
         )}
         {...props}
@@ -125,6 +126,100 @@ function FloatingToolbarButton({
   return withTooltip(button, tooltip, side)
 }
 
+/**
+ * A control in the pill that opens a menu instead of acting on click — for one
+ * action with more than one target, like a copy that has two lines to offer.
+ */
+function FloatingToolbarMenu(props: MenuPrimitive.Root.Props) {
+  return <MenuPrimitive.Root data-slot="floating-toolbar-menu" {...props} />
+}
+
+/**
+ * The control itself, styled like `FloatingToolbarButton` and carrying the same
+ * tooltip. Base UI merges the trigger through the tooltip's own trigger, so the
+ * one element is both without either losing its behaviour.
+ */
+function FloatingToolbarMenuTrigger({
+  tooltip,
+  side = "top",
+  className,
+  children,
+  "aria-label": ariaLabel,
+  ...props
+}: MenuPrimitive.Trigger.Props & {
+  tooltip?: React.ReactNode
+  side?: TooltipSide
+}) {
+  const trigger = (
+    <MenuPrimitive.Trigger
+      data-slot="floating-toolbar-menu-trigger"
+      aria-label={labelFrom(tooltip, ariaLabel)}
+      className={cn(floatingToolbarItem, "size-7", className)}
+      {...props}
+    >
+      {children}
+    </MenuPrimitive.Trigger>
+  )
+
+  return withTooltip(trigger, tooltip, side)
+}
+
+function FloatingToolbarMenuContent({
+  className,
+  side = "top",
+  sideOffset = 6,
+  align = "center",
+  alignOffset = 0,
+  children,
+  ...props
+}: MenuPrimitive.Popup.Props &
+  Pick<
+    MenuPrimitive.Positioner.Props,
+    "align" | "alignOffset" | "side" | "sideOffset"
+  >) {
+  return (
+    <MenuPrimitive.Portal>
+      <MenuPrimitive.Positioner
+        align={align}
+        alignOffset={alignOffset}
+        side={side}
+        sideOffset={sideOffset}
+        className="isolate z-50"
+      >
+        <MenuPrimitive.Popup
+          data-slot="floating-toolbar-menu-content"
+          className={cn(
+            floating,
+            "min-w-32 origin-(--transform-origin) rounded-xl border-border/40 p-1 shadow-xl backdrop-blur-xl transition-[opacity,scale] duration-150 ease-out data-closed:scale-95 data-closed:opacity-0 data-starting-style:scale-95 data-starting-style:opacity-0 motion-reduce:transition-none",
+            className
+          )}
+          {...props}
+        >
+          {children}
+        </MenuPrimitive.Popup>
+      </MenuPrimitive.Positioner>
+    </MenuPrimitive.Portal>
+  )
+}
+
+function FloatingToolbarMenuItem({
+  className,
+  ...props
+}: MenuPrimitive.Item.Props) {
+  return (
+    <MenuPrimitive.Item
+      data-slot="floating-toolbar-menu-item"
+      className={cn(
+        floatingToolbarItem,
+        "w-full justify-start px-2 py-1.5 text-[11px] font-medium select-none",
+        "data-highlighted:bg-foreground/[0.06] data-highlighted:text-foreground dark:data-highlighted:bg-foreground/[0.09]",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
 function FloatingToolbarTabs({
   className,
   "aria-label": ariaLabel = "Variant",
@@ -191,6 +286,10 @@ function FloatingToolbarTab({
 export {
   FloatingToolbar,
   FloatingToolbarButton,
+  FloatingToolbarMenu,
+  FloatingToolbarMenuContent,
+  FloatingToolbarMenuItem,
+  FloatingToolbarMenuTrigger,
   FloatingToolbarSeparator,
   FloatingToolbarTab,
   FloatingToolbarTabs,

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "fonts",
+  "title": "Fonts",
+  "description": "The two families the elements are set in, loaded and bound to their CSS variables, alongside the weights and the type scale they are used at.",
+  "registryDependencies": [
+    "https://aiellie.dev/r/utils.json"
+  ],
+  "files": [
+    {
+      "path": "lib/fonts.ts",
+      "content": "import { Geist, JetBrains_Mono } from \"next/font/google\"\n\nimport { cn } from \"@/lib/utils\"\n\nconst fontSans = Geist({\n  subsets: [\"latin\"],\n  variable: \"--font-sans\",\n})\n\nconst fontMono = JetBrains_Mono({\n  subsets: [\"latin\"],\n  variable: \"--font-jetbrains-mono\",\n})\n\n/** Every font variable, ready to drop on the <html> element. */\nconst fontVariables = cn(fontSans.variable, fontMono.variable)\n\ntype FontFamily = {\n  name: string\n  /** What the family is for. */\n  role: string\n  /** The CSS custom property next/font writes the family into. */\n  cssVar: string\n  /** Full family utility, written out so Tailwind detects the class. */\n  className: string\n  sample: string\n}\n\nconst fontFamilies: FontFamily[] = [\n  {\n    name: \"Geist\",\n    role: \"Interface and body copy\",\n    cssVar: \"--font-sans\",\n    className: \"font-sans\",\n    sample: \"The quick brown fox jumps over the lazy dog\",\n  },\n  {\n    name: \"JetBrains Mono\",\n    role: \"Code, tokens and tabular numerals\",\n    cssVar: \"--font-jetbrains-mono\",\n    className: \"font-mono\",\n    sample: \"const ui = { ready: true } 0123456789\",\n  },\n]\n\ntype TypeStep = {\n  /** Full size utility, written out so Tailwind detects the class. */\n  className: string\n  size: string\n  lineHeight: string\n}\n\nconst typeScale: TypeStep[] = [\n  { className: \"text-xs\", size: \"12px\", lineHeight: \"16px\" },\n  { className: \"text-sm\", size: \"14px\", lineHeight: \"20px\" },\n  { className: \"text-base\", size: \"16px\", lineHeight: \"24px\" },\n  { className: \"text-lg\", size: \"18px\", lineHeight: \"28px\" },\n  { className: \"text-xl\", size: \"20px\", lineHeight: \"28px\" },\n  { className: \"text-2xl\", size: \"24px\", lineHeight: \"32px\" },\n  { className: \"text-3xl\", size: \"30px\", lineHeight: \"36px\" },\n  { className: \"text-4xl\", size: \"36px\", lineHeight: \"40px\" },\n]\n\ntype FontWeight = {\n  name: string\n  /** Full weight utility, written out so Tailwind detects the class. */\n  className: string\n  value: number\n}\n\nconst fontWeights: FontWeight[] = [\n  { name: \"Light\", className: \"font-light\", value: 300 },\n  { name: \"Regular\", className: \"font-normal\", value: 400 },\n  { name: \"Medium\", className: \"font-medium\", value: 500 },\n  { name: \"Semibold\", className: \"font-semibold\", value: 600 },\n  { name: \"Bold\", className: \"font-bold\", value: 700 },\n]\n\nexport {\n  fontFamilies,\n  fontMono,\n  fontSans,\n  fontVariables,\n  fontWeights,\n  typeScale,\n}\nexport type { FontFamily, FontWeight, TypeStep }\n",
+      "type": "registry:lib",
+      "target": "lib/fonts.ts"
+    }
+  ],
+  "type": "registry:lib"
+}

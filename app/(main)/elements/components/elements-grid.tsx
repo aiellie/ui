@@ -27,7 +27,11 @@ function ElementsGrid({ className, ...props }: React.ComponentProps<"div">) {
           icon={example.icon}
           wide={example.wide}
         >
-          <DemosSwitcher variants={example.variants} />
+          <DemosSwitcher
+            variants={example.variants}
+            installCommand={example.installCommand}
+            demoInstallCommand={example.demoInstallCommand}
+          />
         </DemoCard>
       ))}
     </div>

@@ -1,4 +1,4 @@
-import type { Registry } from "shadcn/schema";
+import type { Registry } from "shadcn/schema"
 
 /**
  * Registry item definitions for hooks, used to build registry.json
@@ -19,4 +19,4 @@ export const hooks: Registry["items"] = [
       },
     ],
   },
-];
+]

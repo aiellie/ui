@@ -1,0 +1,341 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "aiellie-ui",
+  "homepage": "https://aiellie.dev",
+  "items": [
+    {
+      "name": "code-snippet",
+      "type": "registry:ui",
+      "title": "Code Snippet",
+      "description": "The line that installs a thing, under tabs for the package manager running it — npx, pnpm dlx, bunx, or yarn dlx — or under tabs of your own, or under none at all, coloured like code on request, with a copy action handed exactly the line on screen.",
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "registryDependencies": [
+        "https://aiellie.dev/r/actions.json",
+        "https://aiellie.dev/r/highlight.json",
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/code/code-snippet.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/code/code-snippet.tsx"
+        }
+      ]
+    },
+    {
+      "name": "actions",
+      "type": "registry:component",
+      "title": "Actions",
+      "description": "The class strings every element shares — surfaces, pressable buttons, the icon and label swaps — kept in one place so a card and a toolbar agree on what a press looks like.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/actions.tsx",
+          "type": "registry:component",
+          "target": "components/aiellie-ui/actions.tsx"
+        }
+      ]
+    },
+    {
+      "name": "floating-toolbar",
+      "type": "registry:component",
+      "title": "Floating Toolbar",
+      "description": "A pill of controls that hovers over what it acts on: buttons, tabs and separators, each with a tooltip, all sharing the same press and focus treatment.",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [
+        "https://aiellie.dev/r/actions.json",
+        "https://aiellie.dev/r/tooltip.json",
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/floating-toolbar.tsx",
+          "type": "registry:component",
+          "target": "components/aiellie-ui/floating-toolbar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "demo-card",
+      "type": "registry:component",
+      "title": "Demo Card",
+      "description": "The frame an example is shown in: a numbered header carrying its glyph, title and description, and a stage below for whatever is being demonstrated.",
+      "dependencies": [
+        "@hugeicons/react"
+      ],
+      "registryDependencies": [
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/demo-card.tsx",
+          "type": "registry:component",
+          "target": "components/aiellie-ui/demo-card.tsx"
+        }
+      ]
+    },
+    {
+      "name": "demo-toolbar",
+      "type": "registry:component",
+      "title": "Demo Toolbar",
+      "description": "The floating toolbar an example carries: a tab per variant, the line that installs it, and the way back, out to the source, or into fullscreen.",
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "registryDependencies": [
+        "https://aiellie.dev/r/actions.json",
+        "https://aiellie.dev/r/floating-toolbar.json",
+        "https://aiellie.dev/r/use-copy-to-clipboard.json",
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/demo-toolbar.tsx",
+          "type": "registry:component",
+          "target": "components/aiellie-ui/demo-toolbar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "demos-switcher",
+      "type": "registry:component",
+      "title": "Demos Switcher",
+      "description": "Holds a list of variants and shows one, with the toolbar that picks between them — the piece that turns a set of demos into a single card.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/demo-toolbar.json",
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/demos-switcher.tsx",
+          "type": "registry:component",
+          "target": "components/aiellie-ui/demos-switcher.tsx"
+        }
+      ]
+    },
+    {
+      "name": "kbd",
+      "type": "registry:ui",
+      "title": "Kbd",
+      "description": "A key as it is printed on a keyboard, sized to sit inline in a sentence without pushing the line height around.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/ui/kbd.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/kbd.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tooltip",
+      "type": "registry:ui",
+      "title": "Tooltip",
+      "description": "Base UI's tooltip with the elements' surface on it: a provider, a trigger, and a panel that keeps to the side it was given.",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/ui/tooltip.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/tooltip.tsx"
+        }
+      ]
+    },
+    {
+      "name": "colors-demo",
+      "type": "registry:example",
+      "title": "Colors",
+      "description": "Every colour token the elements draw from, a group at a time, each swatch over a dotted backdrop so a translucent token reads as translucent rather than as an empty box.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/colors.json",
+        "https://aiellie.dev/r/demos-switcher.json",
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "examples/tokens/colors-demos.tsx",
+          "type": "registry:example",
+          "target": "examples/tokens/colors-demos.tsx"
+        }
+      ],
+      "categories": [
+        "tokens"
+      ],
+      "meta": {
+        "wide": true
+      }
+    },
+    {
+      "name": "fonts-demo",
+      "type": "registry:example",
+      "title": "Fonts",
+      "description": "The two families the elements are set in, the weights they are used at, and the type scale they step through — each shown at the size it is actually rendered.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/fonts.json",
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "examples/tokens/fonts-demos.tsx",
+          "type": "registry:example",
+          "target": "examples/tokens/fonts-demos.tsx"
+        }
+      ],
+      "categories": [
+        "tokens"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Families",
+            "demo": "FamiliesDemo"
+          },
+          {
+            "name": "Scale",
+            "demo": "ScaleDemo"
+          },
+          {
+            "name": "Weights",
+            "demo": "WeightsDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "code-snippet-demo",
+      "type": "registry:example",
+      "title": "Code Snippet",
+      "description": "A code snippet with tabs for the package manager running it — npx, pnpm dlx, bunx, or yarn dlx — or under tabs of your own, or under none at all, coloured like code on request, with a copy action handed exactly the line on screen.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/code-snippet.json"
+      ],
+      "files": [
+        {
+          "path": "examples/code/code-snippet.tsx",
+          "type": "registry:example",
+          "target": "examples/code/code-snippet.tsx"
+        }
+      ],
+      "categories": [
+        "coding"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Command",
+            "demo": "CodeSnippetDemo"
+          },
+          {
+            "name": "Several",
+            "demo": "InstallCommandSeveralDemo"
+          },
+          {
+            "name": "No tabs",
+            "demo": "InstallCommandBareDemo"
+          },
+          {
+            "name": "Custom tabs",
+            "demo": "InstallCommandTabsDemo"
+          },
+          {
+            "name": "Highlighted",
+            "demo": "InstallCommandHighlightedDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "utils",
+      "type": "registry:lib",
+      "title": "Utils",
+      "description": "Utility functions for the elements.",
+      "dependencies": [
+        "clsx",
+        "tailwind-merge"
+      ],
+      "files": [
+        {
+          "path": "lib/utils.ts",
+          "type": "registry:lib",
+          "target": "lib/utils.ts"
+        }
+      ]
+    },
+    {
+      "name": "highlight",
+      "type": "registry:lib",
+      "title": "Highlight",
+      "description": "The scanner and palette every code element shares: a one-pass tokenizer, the colour each token kind takes, and the badge that names a file's language.",
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "files": [
+        {
+          "path": "lib/highlight.ts",
+          "type": "registry:lib",
+          "target": "lib/highlight.ts"
+        }
+      ]
+    },
+    {
+      "name": "colors",
+      "type": "registry:lib",
+      "title": "Colors",
+      "description": "Every colour token the elements draw from, grouped the way they are meant to be read, each one carrying the CSS variable behind it and the class that paints with it.",
+      "files": [
+        {
+          "path": "lib/colors.ts",
+          "type": "registry:lib",
+          "target": "lib/colors.ts"
+        }
+      ]
+    },
+    {
+      "name": "fonts",
+      "type": "registry:lib",
+      "title": "Fonts",
+      "description": "The two families the elements are set in, loaded and bound to their CSS variables, alongside the weights and the type scale they are used at.",
+      "registryDependencies": [
+        "https://aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "lib/fonts.ts",
+          "type": "registry:lib",
+          "target": "lib/fonts.ts"
+        }
+      ]
+    },
+    {
+      "name": "use-copy-to-clipboard",
+      "type": "registry:hook",
+      "title": "useCopyToClipboard",
+      "description": "Writes text to the clipboard and reports it for a moment after, so a button can swap to a tick without keeping a timer of its own.",
+      "files": [
+        {
+          "path": "hooks/use-copy-to-clipboard.ts",
+          "type": "registry:hook",
+          "target": "hooks/use-copy-to-clipboard.ts"
+        }
+      ]
+    }
+  ]
+}

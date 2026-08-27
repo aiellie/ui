@@ -4,15 +4,60 @@ import type { Registry } from "shadcn/schema"
  * Registry item definitions for the elements, used to build registry.json
  * (https://ui.shadcn.com/docs/registry/getting-started).
  *
- * Local item names in registryDependencies ("surface-tokens", "range") resolve
+ * Local item names in registryDependencies ("colors", "code-snippet") resolve
  * against this registry once it is published; the build step maps them to
  * `<homepage>/r/<name>.json` URLs.
  *
  * This list is also the elements grid, in this order. `meta.variants` names the
  * demo exports behind each tab; `registry/_demos.ts` holds the components
- * themselves, since a function can't be serialized into registry.json.
+ * themselves, since a function can't be serialized into registry.json. A demo
+ * whose tabs are generated from data has no export names to list, so it carries
+ * no `meta.variants` and `_demos.ts` supplies the variants instead.
  */
 export const examples: Registry["items"] = [
+  {
+    name: "colors-demo",
+    type: "registry:example",
+    title: "Colors",
+    description:
+      "Every colour token the elements draw from, a group at a time, each swatch over a dotted backdrop so a translucent token reads as translucent rather than as an empty box.",
+    registryDependencies: ["colors", "demos-switcher", "utils"],
+    files: [
+      {
+        path: "examples/tokens/colors-demos.tsx",
+        type: "registry:example",
+        target: "examples/tokens/colors-demos.tsx",
+      },
+    ],
+    categories: ["tokens"],
+    meta: {
+      wide: true,
+    },
+  },
+  {
+    name: "fonts-demo",
+    type: "registry:example",
+    title: "Fonts",
+    description:
+      "The two families the elements are set in, the weights they are used at, and the type scale they step through — each shown at the size it is actually rendered.",
+    registryDependencies: ["fonts", "utils"],
+    files: [
+      {
+        path: "examples/tokens/fonts-demos.tsx",
+        type: "registry:example",
+        target: "examples/tokens/fonts-demos.tsx",
+      },
+    ],
+    categories: ["tokens"],
+    meta: {
+      variants: [
+        { name: "Families", demo: "FamiliesDemo" },
+        { name: "Scale", demo: "ScaleDemo" },
+        { name: "Weights", demo: "WeightsDemo" },
+      ],
+      wide: false,
+    },
+  },
   {
     name: "code-snippet-demo",
     type: "registry:example",
