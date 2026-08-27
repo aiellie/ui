@@ -14,8 +14,8 @@ import {
   
   export const registryCategories: RegistryCategory[] = [
     {
-      name: "UI",
-      slug: "ui",
+      name: "Tokens",
+      slug: "tokens",
       hidden: false,
       icon: AiElementsIcon,
     },

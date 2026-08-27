@@ -8,8 +8,8 @@ import {
   DemosSwitcher,
   type DemoVariant,
 } from "@/components/aiellie-ui/demos-switcher"
-import { colorsVariants } from "@/examples/colors-demos"
-import { fontsVariants } from "@/examples/fonts-demos"
+import { colorsVariants } from "@/examples/tokens/colors-demos"
+import { fontsVariants } from "@/examples/tokens/fonts-demos"
 import { cn } from "@/lib/utils"
 
 type Demo = {
