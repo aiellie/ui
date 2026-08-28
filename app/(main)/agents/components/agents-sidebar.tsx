@@ -79,8 +79,8 @@ function AgentsSidebar({ value, onValueChange }: AgentsSidebarProps) {
             onKeyDown={(event) => {
               if (event.key === "Escape" && query !== "") setQuery("")
             }}
-            placeholder="Search agents"
-            aria-label="Search agents"
+            placeholder="Search..."
+            aria-label="Search..."
             className="min-w-0 flex-1 bg-transparent text-[12.5px] text-foreground outline-none placeholder:text-muted-foreground/70"
           />
           <Menu>

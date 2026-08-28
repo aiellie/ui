@@ -725,9 +725,9 @@
       ],
       "files": [
         {
-          "path": "components/aiellie-ui/agents/prompt-menu.tsx",
+          "path": "components/aiellie-ui/composer/prompt-menu.tsx",
           "type": "registry:ui",
-          "target": "components/aiellie-ui/agents/prompt-menu.tsx"
+          "target": "components/aiellie-ui/composer/prompt-menu.tsx"
         }
       ]
     },
@@ -2561,13 +2561,13 @@
       ],
       "files": [
         {
-          "path": "examples/agents/prompt-menu.tsx",
+          "path": "examples/composer/prompt-menu.tsx",
           "type": "registry:example",
-          "target": "examples/agents/prompt-menu.tsx"
+          "target": "examples/composer/prompt-menu.tsx"
         }
       ],
       "categories": [
-        "agents"
+        "composer"
       ],
       "meta": {
         "variants": [

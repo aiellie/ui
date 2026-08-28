@@ -613,9 +613,9 @@ export const aiellieui: Registry["items"] = [
     dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
     files: [
       {
-        path: "components/aiellie-ui/agents/prompt-menu.tsx",
+        path: "components/aiellie-ui/composer/prompt-menu.tsx",
         type: "registry:ui",
-        target: "components/aiellie-ui/agents/prompt-menu.tsx",
+        target: "components/aiellie-ui/composer/prompt-menu.tsx",
       },
     ],
   },

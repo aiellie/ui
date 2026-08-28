@@ -11,7 +11,7 @@ import {
   PromptMenu,
   PromptMenuContent,
   PromptMenuTrigger,
-} from "@/components/aiellie-ui/agents/prompt-menu"
+} from "@/components/aiellie-ui/composer/prompt-menu"
 import {
   MessageInput,
   MessageInputField,

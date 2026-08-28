@@ -1021,12 +1021,12 @@ export const examples: Registry["items"] = [
     dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
     files: [
       {
-        path: "examples/agents/prompt-menu.tsx",
+        path: "examples/composer/prompt-menu.tsx",
         type: "registry:example",
-        target: "examples/agents/prompt-menu.tsx",
+        target: "examples/composer/prompt-menu.tsx",
       },
     ],
-    categories: ["agents"],
+    categories: ["composer"],
     meta: {
       variants: [
         { name: "Default", demo: "PromptMenuDemo" },
