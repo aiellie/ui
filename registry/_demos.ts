@@ -21,7 +21,6 @@ import {
   SwipeDown01Icon,
   MessageSquareDotIcon,
   BubbleChatTemporaryIcon,
-  PaintBoardIcon,
   SourceCodeIcon,
   FileCodeIcon,
   GitCompareIcon,
@@ -31,14 +30,11 @@ import {
   Message01Icon,
   CodeSquareIcon,
   Tag01Icon,
-  TextFontIcon,
   AiSwapIcon,
   Wrench01Icon,
   ShieldKeyIcon,
   SignalFull01Icon,
   QuillWrite01Icon,
-  HighlighterIcon,
-  ContrastIcon,
   LayoutBottomIcon,
   Attachment01Icon,
   UserCircle02Icon,
@@ -47,7 +43,6 @@ import type { IconSvgElement } from "@hugeicons/react"
 import type { RegistryItem } from "shadcn/schema"
 
 import type { DemoVariant } from "@/components/aiellie-ui/demos-switcher"
-import { sectionFor } from "@/lib/categories"
 import { fullscreenHrefFor, hrefFor, slugFor } from "@/registry/_paths"
 import * as codeAnnotationDemos from "@/examples/coding/code-annotation"
 import * as composerDemos from "@/examples/composer/composer"
@@ -87,10 +82,6 @@ import * as typingIndicatorDemos from "@/examples/messages/typing-indicator"
 import * as messageScrollerDemos from "@/examples/messages/message-scroller"
 import * as suggestionsDemos from "@/examples/messages/suggestions"
 import * as timestampsDemos from "@/examples/messages/timestamps"
-import * as codeHighlightDemos from "@/examples/tokens/code-highlight"
-import * as fontsDemos from "@/examples/tokens/fonts-demos"
-import * as themeDemos from "@/examples/tokens/theme"
-import { colorsVariants } from "@/examples/tokens/colors-demos"
 
 import { examples } from "./_examples-registry"
 import { registry } from "./_registry"
@@ -111,16 +102,6 @@ type ExampleDemos = {
 }
 
 const exampleDemos: Record<string, ExampleDemos> = {
-  "colors-demo": { icon: PaintBoardIcon, variants: colorsVariants },
-  "fonts-demo": { icon: TextFontIcon, components: { ...fontsDemos } },
-  "code-highlight-demo": {
-    icon: HighlighterIcon,
-    components: { ...codeHighlightDemos },
-  },
-  "theme-demo": {
-    icon: ContrastIcon,
-    components: { ...themeDemos },
-  },
   "code-block-demo": {
     icon: FileCodeIcon,
     components: { ...codeBlockDemos },
@@ -348,7 +329,7 @@ const examplesWithDemos: Example[] = examples.flatMap((item) => {
   return [
     {
       name: item.name,
-      href: hrefFor(item.name, item.categories ?? []),
+      href: hrefFor(item.name),
       fullscreenHref: fullscreenHrefFor(item.name),
       title: item.title ?? item.name,
       description: item.description ?? "",
@@ -362,22 +343,5 @@ const examplesWithDemos: Example[] = examples.flatMap((item) => {
   ]
 })
 
-/**
- * The two pages' lists. Which one an example lands on is decided by the
- * `categories` on its registry item, against the sections `lib/categories.ts`
- * names, and nowhere else — so a new demo needs no change on either page, and
- * moving one between them is an edit to its `categories` alone.
- *
- * One matching no visible category is an element, which is the useful default:
- * a demo is a component until something says otherwise, and it shows up in the
- * "Other" run at the foot of that page's rail rather than going missing.
- */
-const tokenExamples = examplesWithDemos.filter(
-  (example) => sectionFor(example.categories) === "tokens"
-)
-const elementExamples = examplesWithDemos.filter(
-  (example) => sectionFor(example.categories) !== "tokens"
-)
-
-export { examplesWithDemos, elementExamples, tokenExamples, slugFor }
+export { examplesWithDemos, slugFor }
 export type { Example }

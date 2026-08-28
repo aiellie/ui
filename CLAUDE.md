@@ -73,46 +73,40 @@ failing, so check the dev console when a card doesn't appear.
 
 ### Categories drive the site
 
-An example's `categories` decide which page it lands on and where in that page's
+Every example is read under `/elements`, and its `categories` decide where in that page's
 sidebar it sits — nothing else does.
 
-`lib/categories.ts` is the whole of it: `SectionSlug` is the two pages, `registryCategories`
-names the categories, their order, icon, and the `section` each belongs to, and
-`sectionFor` reads a set of slugs back into a section. `registry/_demos.ts` splits the
-examples on that: `tokenExamples` for `/design`, `elementExamples` — everything else —
-for `/elements`. `app/(main)/components/examples-browser.tsx` is the one browser both
-pages render, given their own list.
+`lib/categories.ts` is the whole of it: `registryCategories` names the categories, their
+order, and icon. `app/(main)/components/examples-browser.tsx` is the browser the page
+renders, given `examplesWithDemos`.
 
-The rail lists **every example the page has**, each under the label of the category it
-fell into, and the one being read gets the stage beside it — a category is a divider in
-the rail, not a page of cards.
+The rail lists **every example there is**, each under the label of the category it fell
+into, and the one being read gets the stage beside it — a category is a divider in the
+rail, not a page of cards.
 
-Each item is a URL of its own: `registry/_paths.ts` turns a name and its categories into
-one (`bubble-demo` in `chat` → `/elements/bubble`), and it is the only place that
-happens, so the rail's links, a card's caption and the routes that answer them cannot
-drift. The bare `/elements` and `/design` redirect to the first item rather than being a
-second address for it.
+Each item is a URL of its own: `registry/_paths.ts` turns a name into one (`bubble-demo`
+→ `/elements/bubble`), and it is the only place that happens, so the rail's links, a
+card's caption and the routes that answer them cannot drift. The bare `/elements`
+redirects to the first item rather than being a second address for it.
 
-That is why the browser lives in each section's **layout**, not its page: a layout is
+That is why the browser lives in the section's **layout**, not its page: a layout is
 what Next keeps mounted across a navigation within it, which is what holds the rail's
 scroll position and the width it was dragged to. The layout hands the panel group the
-fixed frame it needs (`h-[calc(100svh-var(--header-height))]`) the way `/agents` does —
-given the document's height the panels would grow with the page instead of splitting it,
+fixed frame it needs (`h-[calc(100svh-var(--header-height))]`, set by the `(main)`
+layout) — given the document's height the panels would grow with the page instead of splitting it,
 and the handle would have nothing to move. Dragged past its minimum the rail collapses to
 a strip of glyphs, its items becoming `TooltipIconButton`s.
 
-The rail's header holds a search field and a filter menu of the page's own categories,
-drawn like a pane's header on `/agents`; collapsed, where there is no room for a field,
+The rail's header holds a search field and a filter menu of the categories the page has,
+in a row that stays while the list under it scrolls; collapsed, where there is no room for a field,
 the search becomes a button that opens the same field in a popover. Both narrow the
 **rail** and nothing else: the card keeps the number it has in its whole category, and
 the example you are reading stays on the stage even when a filter has taken it out of the
 list.
 
 - An example falls into the **first** category it carries, in the rail's order.
-  `sectionFor` walks that same order, so the page it goes to and the label it lands
-  under can't disagree.
 - One matching no visible category lands in a trailing "Other" run rather than going
-  missing — and, having named no section, on `/elements`, which is the useful default.
+  missing.
 - A category with nothing in it gets no run at all: the rail shows what the page has,
   not what the registry could name. So a new category is two edits —
   `lib/categories.ts`, and `categories` on the example — and no page needs touching.
@@ -123,13 +117,12 @@ list.
 passed from a Server Component to a Client Component**. It throws
 `Functions cannot be passed directly to Client Components`.
 
-The routes under `/design` and `/elements` are Server Components. Each section therefore
-has a thin `"use client"` file (`design-browser.tsx`, `elements-browser.tsx`) holding
-both halves: the browser the layout wraps its children in, and the card the `[name]` page
-renders. Both import their list — `tokenExamples`, `elementExamples` — from
-`registry/_demos.ts` inside the client bundle, so a resolved `Example` never crosses the
-boundary; the page hands over a slug and that side looks it up. Keep that shape: don't
-"simplify" it by lifting the list into the page.
+The routes under `/elements` are Server Components. The section therefore has a thin
+`"use client"` file (`elements-browser.tsx`) holding both halves: the browser the layout
+wraps its children in, and the card the `[name]` page renders. Both import
+`examplesWithDemos` from `registry/_demos.ts` inside the client bundle, so a resolved
+`Example` never crosses the boundary; the page hands over a slug and that side looks it
+up. Keep that shape: don't "simplify" it by lifting the list into the page.
 
 The `[name]` pages match slugs against `registry/_examples-registry.ts` instead — the
 plain data, with no demo components hanging off it — which is all `generateStaticParams`

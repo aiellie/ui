@@ -9,7 +9,7 @@ import { ElementsBrowser } from "./components/elements-browser"
  * A panel group divides a frame, so it needs one: given the document's height
  * the panels would grow with the page instead of splitting it, and the handle
  * would have nothing to move. `--header-height` is set by the layout above,
- * the same way /agents measures against it.
+ * which names it once so this measurement does not restate it.
  */
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (

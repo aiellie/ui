@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation"
 
 import { examples } from "@/registry/_examples-registry"
-import { firstItemIn, hrefFor } from "@/registry/_paths"
+import { firstItem, hrefFor } from "@/registry/_paths"
 
 /**
  * Every example is read at a URL of its own, so the bare route sends you to the
@@ -10,8 +10,8 @@ import { firstItemIn, hrefFor } from "@/registry/_paths"
  * categories, and `registry/_demos.ts` would drag every demo component in.
  */
 export default function Page() {
-  const first = firstItemIn(examples, "elements")
+  const first = firstItem(examples)
   if (!first) return null
 
-  redirect(hrefFor(first.name, first.categories ?? []))
+  redirect(hrefFor(first.name))
 }

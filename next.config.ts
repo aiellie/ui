@@ -14,13 +14,17 @@ const nextConfig: NextConfig = {
   },
 
   /**
-   * The tokens live under `/design` now, alongside nothing else — `/elements`
-   * is a page of its own again. The old route is kept as a redirect so the
-   * links already out there — a card's install line is not the only thing
-   * people copy — still land somewhere.
+   * Every example is read under `/elements` now; the tokens and the page that
+   * showed them are gone. The old routes are kept as redirects so the links
+   * already out there — a card's install line is not the only thing people
+   * copy — still land somewhere.
    */
   async redirects() {
-    return [{ source: "/tokens", destination: "/design", permanent: true }]
+    return [
+      { source: "/design", destination: "/elements", permanent: true },
+      { source: "/design/:slug", destination: "/elements", permanent: true },
+      { source: "/tokens", destination: "/elements", permanent: true },
+    ]
   },
 }
 

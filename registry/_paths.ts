@@ -1,11 +1,6 @@
 import type { RegistryItem } from "shadcn/schema"
 
-import {
-  pathFor,
-  registryCategories,
-  sectionFor,
-  type SectionSlug,
-} from "@/lib/categories"
+import { registryCategories } from "@/lib/categories"
 
 /**
  * The one place a registry item's name is turned into a URL. Kept apart from
@@ -15,24 +10,26 @@ import {
  * drift.
  */
 
-/** The name is the item's, minus the suffix: `colors-demo` → `colors`. */
+/** Every example is read under this one. */
+export const basePath = "/elements"
+
+/** The name is the item's, minus the suffix: `bubble-demo` → `bubble`. */
 export function slugFor(name: string) {
   return name.replace(/-demo$/, "")
 }
 
 /**
- * Where an example is read: the page its categories put it on, and its own
- * slug under that — `bubble-demo` in `chat` → `/elements/bubble`. It is what
- * the rail links to and what a card's caption points at, so the two agree by
+ * Where an example is read: `bubble-demo` → `/elements/bubble`. It is what the
+ * rail links to and what a card's caption points at, so the two agree by
  * construction.
  */
-export function hrefFor(name: string, categories: string[]) {
-  return `${pathFor(categories)}/${slugFor(name)}`
+export function hrefFor(name: string) {
+  return `${basePath}/${slugFor(name)}`
 }
 
 /**
  * The route that hands one example the whole viewport, which the toolbar's
- * fullscreen button opens: `colors-demo` → `/demo/colors`. The page under
+ * fullscreen button opens: `bubble-demo` → `/demo/bubble`. The page under
  * `app/demo/[name]` resolves the slug back with `slugFor`.
  */
 export function fullscreenHrefFor(name: string) {
@@ -41,26 +38,20 @@ export function fullscreenHrefFor(name: string) {
 
 /**
  * The example the rail stands first under its first label, which is where a
- * bare `/elements` or `/design` sends you. It walks the categories in the
- * rail's order rather than the registry's, so the address you land on is the
- * item the rail lights — the two orders are not the same, and the registry's is
- * the wrong one to answer with.
+ * bare `/elements` sends you. It walks the categories in the rail's order
+ * rather than the registry's, so the address you land on is the item the rail
+ * lights — the two orders are not the same, and the registry's is the wrong one
+ * to answer with.
  */
-export function firstItemIn(items: RegistryItem[], section: SectionSlug) {
-  const inSection = items.filter(
-    (item) => (sectionFor(item.categories ?? []) ?? "elements") === section
-  )
-
+export function firstItem(items: RegistryItem[]) {
   for (const category of registryCategories) {
-    if (category.hidden || category.section !== section) continue
+    if (category.hidden) continue
 
-    const found = inSection.find((item) =>
-      item.categories?.includes(category.slug)
-    )
+    const found = items.find((item) => item.categories?.includes(category.slug))
     if (found) return found
   }
 
-  /* Nothing named a category of this section's, so what is left is the rail's
-     trailing "Other" run — still this page's, and still first in it. */
-  return inSection[0]
+  /* Nothing named a visible category, so what is left is the rail's trailing
+     "Other" run — still first in it. */
+  return items[0]
 }

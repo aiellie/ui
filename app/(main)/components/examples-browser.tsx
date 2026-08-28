@@ -323,9 +323,8 @@ function ExampleCard({
  * The two are a resizable group rather than a fixed column and the rest,
  * because the reading shifts: a long list wants the names wide enough to read
  * whole, a demo wants everything the window has. It divides a frame the page
- * gives it, the same way `/agents` does — given the document's height the
- * panels would grow with the page instead of splitting it, and the handle would
- * have nothing to move.
+ * gives it — given the document's height the panels would grow with the page
+ * instead of splitting it, and the handle would have nothing to move.
  */
 function ExamplesBrowser({
   examples,
@@ -436,8 +435,8 @@ function ExamplesBrowser({
             the shape, and the header is a row rather than the whole column. */}
         <div ref={measure} className="flex h-full flex-col">
           {/* The search and the filter sit in a header of the rail's own,
-              drawn like a pane's on /agents so the two read as one system.
-              Collapsed there is no room for a field, so the row keeps the
+              a header of its own, a row that stays while the list under it
+              scrolls. Collapsed there is no room for a field, so the row keeps the
               filter alone: it is the same control it was, it still says when
               something is hidden, and a rail you cannot read is not one you
               would be searching. */}
@@ -702,7 +701,10 @@ function ExamplesBrowser({
                   <button
                     type="button"
                     onClick={clearAll}
-                    className={cn(navButton, "w-auto text-foreground/60 border-border border")}
+                    className={cn(
+                      navButton,
+                      "w-auto border border-border text-foreground/60"
+                    )}
                   >
                     {clearLabel}
                   </button>
