@@ -40,7 +40,7 @@
         "demo": "ChatCardEmptyDemo"
       }
     ],
-    "wide": false
+    "wide": true
   },
   "categories": [
     "messages"

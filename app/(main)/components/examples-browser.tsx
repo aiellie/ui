@@ -141,6 +141,7 @@ function ExamplesGrid({ examples }: { examples: Example[] }) {
             variants={example.variants}
             installCommand={example.installCommand}
             demoInstallCommand={example.demoInstallCommand}
+            fullscreenHref={example.fullscreenHref}
           />
         </DemoCard>
       ))}

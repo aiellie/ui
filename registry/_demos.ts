@@ -41,6 +41,7 @@ import {
   ContrastIcon,
   LayoutBottomIcon,
   Attachment01Icon,
+  UserCircle02Icon,
 } from "@hugeicons/core-free-icons"
 import type { IconSvgElement } from "@hugeicons/react"
 import type { RegistryItem } from "shadcn/schema"
@@ -59,6 +60,7 @@ import * as codeSnippetDemos from "@/examples/coding/code-snippet"
 import * as bubbleDemos from "@/examples/messages/bubble"
 import * as messageDemos from "@/examples/messages/message"
 import * as chatCardDemos from "@/examples/messages/chat-card"
+import * as chatAvatarDemos from "@/examples/messages/chat-avatar"
 import * as messageActionsDemos from "@/examples/messages/message-actions"
 import * as emptyStateDemos from "@/examples/composer/empty-state"
 import * as attachmentsDemos from "@/examples/composer/attachments"
@@ -217,6 +219,10 @@ const exampleDemos: Record<string, ExampleDemos> = {
     icon: ChatBotIcon,
     components: { ...chatCardDemos },
   },
+  "chat-avatar-demo": {
+    icon: UserCircle02Icon,
+    components: { ...chatAvatarDemos },
+  },
   "message-actions-demo": {
     icon: Comment01Icon,
     components: { ...messageActionsDemos },
@@ -271,6 +277,7 @@ const exampleDemos: Record<string, ExampleDemos> = {
 type Example = {
   name: string
   href: string
+  fullscreenHref: string
   title: string
   description: string
   icon: IconSvgElement
@@ -298,9 +305,24 @@ function elementOf(item: RegistryItem) {
   return item.registryDependencies?.[0] ?? item.name
 }
 
-/** The name is the item's, minus the suffix: `colors-demo` → `/examples/colors`. */
+/** The name is the item's, minus the suffix: `colors-demo` → `colors`. */
+function slugFor(name: string) {
+  return name.replace(/-demo$/, "")
+}
+
+/** Where a card's caption points: `colors-demo` → `/examples/colors`. */
 function hrefFor(name: string) {
-  return `/examples/${name.replace(/-demo$/, "")}`
+  return `/examples/${slugFor(name)}`
+}
+
+/**
+ * The route that hands one example the whole viewport, which the toolbar's
+ * fullscreen button opens: `colors-demo` → `/demo/colors`. The page under
+ * `app/demo/[name]` resolves the slug back with `slugFor`, so the link and what
+ * answers it are the one convention rather than two that can drift.
+ */
+function fullscreenHrefFor(name: string) {
+  return `/demo/${slugFor(name)}`
 }
 
 /** Tabs in the order `meta.variants` lists them, skipping any missing export. */
@@ -345,6 +367,7 @@ const examplesWithDemos: Example[] = examples.flatMap((item) => {
     {
       name: item.name,
       href: hrefFor(item.name),
+      fullscreenHref: fullscreenHrefFor(item.name),
       title: item.title ?? item.name,
       description: item.description ?? "",
       icon: demos.icon,
@@ -363,5 +386,5 @@ const examplesWithDemos: Example[] = examples.flatMap((item) => {
  * `categories` on its registry item, against the sections `lib/categories.ts`
  * names, and nowhere else.
  */
-export { examplesWithDemos }
+export { examplesWithDemos, slugFor }
 export type { Example }

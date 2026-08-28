@@ -477,6 +477,26 @@ export const aiellieui: Registry["items"] = [
     ],
   },
   {
+    name: "chat-avatar",
+    type: "registry:ui",
+    title: "Chat Avatar",
+    description:
+      "Whose thread this is, said at the top of the thread rather than in a bar across it: a portrait and a name that hold their place while the messages scroll behind the glass and thin out under it — one face, or a group's overlapped, with the controls that share the bar kept off the centre line.",
+    registryDependencies: ["utils"],
+    dependencies: [
+      "@base-ui/react",
+      "@hugeicons/core-free-icons",
+      "@hugeicons/react",
+    ],
+    files: [
+      {
+        path: "components/aiellie-ui/chat-avatar.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/chat-avatar.tsx",
+      },
+    ],
+  },
+  {
     name: "empty-state",
     type: "registry:ui",
     title: "Empty State",

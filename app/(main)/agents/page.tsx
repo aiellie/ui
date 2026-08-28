@@ -1,23 +1,15 @@
-import { MachineRobotIcon } from "@hugeicons/core-free-icons"
-import { HugeiconsIcon } from "@hugeicons/react"
+import { AgentsWorkspace } from "./components/agents-workspace"
 
+/**
+ * The workspace takes the window rather than sitting in a column of its own.
+ * A panel group divides a frame, so it needs one: given the document's height
+ * the panels would grow with the page instead of splitting it, and the handles
+ * would have nothing to move. `--header-height` is set by the layout.
+ */
 export default function Page() {
   return (
-    <div className="mx-auto w-full max-w-6xl px-4 py-10 md:px-6">
-      <header className="flex flex-col gap-1">
-        <div>
-          <div className="flex items-center gap-2">
-            <h1 className="flex items-center gap-2 text-lg font-medium">
-              <HugeiconsIcon icon={MachineRobotIcon} className="size-4.5" />
-              Agents
-            </h1>
-          </div>
-          <p className="mt-1.5 max-w-md text-[13.5px] leading-relaxed text-foreground/50">
-            Longer-running surfaces — plans, tool calls, and the traces they
-            leave behind.
-          </p>
-        </div>
-      </header>
+    <div className="h-[calc(100svh-var(--header-height))] overflow-hidden">
+      <AgentsWorkspace />
     </div>
   )
 }

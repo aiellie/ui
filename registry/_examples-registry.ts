@@ -1095,4 +1095,36 @@ export const examples: Registry["items"] = [
       wide: true,
     },
   },
+  {
+    name: "chat-avatar-demo",
+    type: "registry:example",
+    title: "Chat Avatar",
+    description:
+      "The header as a floating cluster: a portrait and a name held at the top of the thread, with the messages running behind the glass and thinning out under it — one face, a group's overlapped, and the plain version for a thread with nothing in it yet.",
+    registryDependencies: [
+      "chat-avatar",
+      "chat-card",
+      "message-input",
+      "timestamps",
+      "tooltip-icon-button",
+      "bubble",
+    ],
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    files: [
+      {
+        path: "examples/messages/chat-avatar.tsx",
+        type: "registry:example",
+        target: "examples/messages/chat-avatar.tsx",
+      },
+    ],
+    categories: ["messages"],
+    meta: {
+      variants: [
+        { name: "Default", demo: "ChatAvatarDemo" },
+        { name: "Group", demo: "ChatAvatarGroupDemo" },
+        { name: "Opening", demo: "ChatAvatarOpeningDemo" },
+      ],
+      wide: true,
+    },
+  },
 ]

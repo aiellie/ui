@@ -557,6 +557,27 @@
       ]
     },
     {
+      "name": "chat-avatar",
+      "type": "registry:ui",
+      "title": "Chat Avatar",
+      "description": "Whose thread this is, said at the top of the thread rather than in a bar across it: a portrait and a name that hold their place while the messages scroll behind the glass and thin out under it — one face, or a group's overlapped, with the controls that share the bar kept off the centre line.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "dependencies": [
+        "@base-ui/react",
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/chat-avatar.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/chat-avatar.tsx"
+        }
+      ]
+    },
+    {
       "name": "empty-state",
       "type": "registry:ui",
       "title": "Empty State",
@@ -2571,6 +2592,43 @@
       }
     },
     {
+      "name": "message-actions-demo",
+      "type": "registry:example",
+      "title": "Message Actions",
+      "description": "Copy, rate and retry under their tooltips, the rest behind a menu, and the row appearing only for the message under the pointer.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/message-actions.json",
+        "https://ui.aiellie.dev/r/bubble.json"
+      ],
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "files": [
+        {
+          "path": "examples/messages/message-actions.tsx",
+          "type": "registry:example",
+          "target": "examples/messages/message-actions.tsx"
+        }
+      ],
+      "categories": [
+        "messages"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Default",
+            "demo": "MessageActionsDemo"
+          },
+          {
+            "name": "On hover",
+            "demo": "MessageActionsOnHoverDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
       "name": "chat-card-demo",
       "type": "registry:example",
       "title": "Chat Card",
@@ -2614,16 +2672,20 @@
             "demo": "ChatCardEmptyDemo"
           }
         ],
-        "wide": false
+        "wide": true
       }
     },
     {
-      "name": "message-actions-demo",
+      "name": "chat-avatar-demo",
       "type": "registry:example",
-      "title": "Message Actions",
-      "description": "Copy, rate and retry under their tooltips, the rest behind a menu, and the row appearing only for the message under the pointer.",
+      "title": "Chat Avatar",
+      "description": "The header as a floating cluster: a portrait and a name held at the top of the thread, with the messages running behind the glass and thinning out under it — one face, a group's overlapped, and the plain version for a thread with nothing in it yet.",
       "registryDependencies": [
-        "https://ui.aiellie.dev/r/message-actions.json",
+        "https://ui.aiellie.dev/r/chat-avatar.json",
+        "https://ui.aiellie.dev/r/chat-card.json",
+        "https://ui.aiellie.dev/r/message-input.json",
+        "https://ui.aiellie.dev/r/timestamps.json",
+        "https://ui.aiellie.dev/r/tooltip-icon-button.json",
         "https://ui.aiellie.dev/r/bubble.json"
       ],
       "dependencies": [
@@ -2632,9 +2694,9 @@
       ],
       "files": [
         {
-          "path": "examples/messages/message-actions.tsx",
+          "path": "examples/messages/chat-avatar.tsx",
           "type": "registry:example",
-          "target": "examples/messages/message-actions.tsx"
+          "target": "examples/messages/chat-avatar.tsx"
         }
       ],
       "categories": [
@@ -2644,14 +2706,18 @@
         "variants": [
           {
             "name": "Default",
-            "demo": "MessageActionsDemo"
+            "demo": "ChatAvatarDemo"
           },
           {
-            "name": "On hover",
-            "demo": "MessageActionsOnHoverDemo"
+            "name": "Group",
+            "demo": "ChatAvatarGroupDemo"
+          },
+          {
+            "name": "Opening",
+            "demo": "ChatAvatarOpeningDemo"
           }
         ],
-        "wide": false
+        "wide": true
       }
     },
     {
