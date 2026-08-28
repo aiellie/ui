@@ -92,6 +92,21 @@ export const lib: Registry["items"] = [
     ],
   },
   {
+    name: "instructions",
+    type: "registry:lib",
+    title: "Instructions",
+    description:
+      "The prompts an agent can be stood under — each one a name, the line a menu shows on how it changes the answer, and the words themselves that are handed to the model — kept as plain data so setting a prompt is an entry here and not an interface change.",
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    files: [
+      {
+        path: "lib/instructions.ts",
+        type: "registry:lib",
+        target: "lib/instructions.ts",
+      },
+    ],
+  },
+  {
     name: "fonts",
     type: "registry:lib",
     title: "Fonts",

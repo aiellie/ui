@@ -31,6 +31,7 @@ import {
   Wrench01Icon,
   ShieldKeyIcon,
   SignalFull01Icon,
+  QuillWrite01Icon,
   HighlighterIcon,
   ContrastIcon,
 } from "@hugeicons/core-free-icons"
@@ -56,6 +57,7 @@ import * as modelPickerDemos from "@/examples/composer/model-picker"
 import * as toolPickerDemos from "@/examples/composer/tool-picker"
 import * as approvalModeMenuDemos from "@/examples/composer/approval-mode-menu"
 import * as effortMenuDemos from "@/examples/composer/effort-menu"
+import * as promptMenuDemos from "@/examples/agents/prompt-menu"
 import * as messageContextMenuDemos from "@/examples/messages/message-context-menu"
 import * as messageHighlightToolbarDemos from "@/examples/messages/message-highlight-toolbar"
 import * as messageStatusDemos from "@/examples/messages/message-status"
@@ -176,6 +178,10 @@ const exampleDemos: Record<string, ExampleDemos> = {
   "effort-menu-demo": {
     icon: SignalFull01Icon,
     components: { ...effortMenuDemos },
+  },
+  "prompt-menu-demo": {
+    icon: QuillWrite01Icon,
+    components: { ...promptMenuDemos },
   },
   "message-actions-demo": {
     icon: Comment01Icon,

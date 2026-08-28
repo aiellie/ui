@@ -12,19 +12,43 @@ import type { RuleDoc } from "./rules"
  * restarted. In a production build the pages under this layout are prerendered,
  * so the read happens once at build time regardless and the text is baked into
  * the output — nothing reaches the file system at request time.
+ *
+ * The build warns that it cannot follow a `process.cwd()` join and so traces
+ * the whole repository into its file list. The two ways out are both worse
+ * than the warning: `new URL(…, import.meta.url)` is read as an asset
+ * reference and would publish these files at a public path, and the scoped
+ * form the warning asks for wants them under a subfolder they do not live in.
+ * `outputFileTracingIncludes` in `next.config.ts` names them explicitly, and
+ * since every route here is prerendered there is no function for the wider
+ * trace to weigh down.
  */
 const documents = [
   { name: "claude", file: "CLAUDE.md" },
   { name: "design", file: "DESIGN.md" },
+  { name: "todo", file: "TODO.md" },
 ]
 
 /**
- * Drop the document's own `# title` line. The panel names each document on its
- * tab, and a heading repeating that name immediately under it reads as a
- * mistake rather than as a title.
+ * An HTML comment is a note to whoever edits the file, not to whoever reads
+ * it — `TODO.md` opens with a marker of exactly that kind. Taken out here
+ * rather than in the renderer so the search counts and the rendering agree:
+ * a hit in a comment would otherwise be reported on a tab that then had
+ * nothing to show for it.
  */
-function withoutTitle(source: string) {
-  return source.replace(/^#\s+.*\n+/, "")
+function withoutComments(source: string) {
+  return source.replace(/<!--[\s\S]*?-->\n?/g, "")
+}
+
+/**
+ * Drop the document's own title, but only when the title is the document —
+ * `# CLAUDE.md` under a tab reading CLAUDE.md is a mistake, while `TODO.md`
+ * opens on a heading that is a warning and has to stay. Matching the heading
+ * against the file name is what tells the two apart.
+ */
+function withoutTitle(source: string, file: string) {
+  return source.replace(/^#\s+(.*)\n+/, (whole, title: string) =>
+    title.trim().toLowerCase() === file.toLowerCase() ? "" : whole
+  )
 }
 
 function getRuleDocs(): RuleDoc[] {
@@ -34,14 +58,8 @@ function getRuleDocs(): RuleDoc[] {
     // on disk once they have found the rule they came for.
     title: file,
     source: withoutTitle(
-      readFileSync(
-        // The tracer cannot see through `process.cwd()` and answers by tracing
-        // the entire project into the bundle, which is a great deal of the
-        // repository to carry for two files. `outputFileTracingIncludes` in
-        // `next.config.ts` names them instead, so the trace stays exact.
-        join(/* turbopackIgnore: true */ process.cwd(), file),
-        "utf8"
-      )
+      withoutComments(readFileSync(join(process.cwd(), file), "utf8")),
+      file
     ).trimEnd(),
   }))
 }

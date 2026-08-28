@@ -547,6 +547,29 @@
       ]
     },
     {
+      "name": "prompt-menu",
+      "type": "registry:ui",
+      "title": "Prompt Menu",
+      "description": "Which prompt the agent is stood under, chosen from the composer — the catalogue stood under the group each prompt belongs to, every row carrying the line on how it changes the answer, the way back to none kept as the first row, and the trigger wearing the name of the one in force.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/button.json",
+        "https://ui.aiellie.dev/r/instructions.json",
+        "https://ui.aiellie.dev/r/menu.json",
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/agents/prompt-menu.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/agents/prompt-menu.tsx"
+        }
+      ]
+    },
+    {
       "name": "message-actions",
       "type": "registry:ui",
       "title": "Message Actions",
@@ -2101,6 +2124,54 @@
       }
     },
     {
+      "name": "prompt-menu-demo",
+      "type": "registry:example",
+      "title": "Prompt Menu",
+      "description": "The prompt an agent runs under, picked rather than pasted — each row saying how it changes the answer, the words a choice actually sets, and a catalogue of the project's own handed in whole.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/prompt-menu.json",
+        "https://ui.aiellie.dev/r/message-input.json",
+        "https://ui.aiellie.dev/r/model-picker.json",
+        "https://ui.aiellie.dev/r/instructions.json",
+        "https://ui.aiellie.dev/r/tooltip.json"
+      ],
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "files": [
+        {
+          "path": "examples/agents/prompt-menu.tsx",
+          "type": "registry:example",
+          "target": "examples/agents/prompt-menu.tsx"
+        }
+      ],
+      "categories": [
+        "agents"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Default",
+            "demo": "PromptMenuDemo"
+          },
+          {
+            "name": "Composer",
+            "demo": "PromptMenuComposerDemo"
+          },
+          {
+            "name": "The text",
+            "demo": "PromptMenuTextDemo"
+          },
+          {
+            "name": "Own prompts",
+            "demo": "PromptMenuOwnDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
       "name": "message-actions-demo",
       "type": "registry:example",
       "title": "Message Actions",
@@ -2223,6 +2294,23 @@
           "path": "lib/tools.ts",
           "type": "registry:lib",
           "target": "lib/tools.ts"
+        }
+      ]
+    },
+    {
+      "name": "instructions",
+      "type": "registry:lib",
+      "title": "Instructions",
+      "description": "The prompts an agent can be stood under — each one a name, the line a menu shows on how it changes the answer, and the words themselves that are handed to the model — kept as plain data so setting a prompt is an entry here and not an interface change.",
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "files": [
+        {
+          "path": "lib/instructions.ts",
+          "type": "registry:lib",
+          "target": "lib/instructions.ts"
         }
       ]
     },

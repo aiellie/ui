@@ -461,6 +461,22 @@ export const aiellieui: Registry["items"] = [
     ],
   },
   {
+    name: "prompt-menu",
+    type: "registry:ui",
+    title: "Prompt Menu",
+    description:
+      "Which prompt the agent is stood under, chosen from the composer — the catalogue stood under the group each prompt belongs to, every row carrying the line on how it changes the answer, the way back to none kept as the first row, and the trigger wearing the name of the one in force.",
+    registryDependencies: ["button", "instructions", "menu", "utils"],
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    files: [
+      {
+        path: "components/aiellie-ui/agents/prompt-menu.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/agents/prompt-menu.tsx",
+      },
+    ],
+  },
+  {
     name: "message-actions",
     type: "registry:ui",
     title: "Message Actions",

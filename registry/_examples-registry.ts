@@ -840,6 +840,38 @@ export const examples: Registry["items"] = [
     },
   },
   {
+    name: "prompt-menu-demo",
+    type: "registry:example",
+    title: "Prompt Menu",
+    description:
+      "The prompt an agent runs under, picked rather than pasted — each row saying how it changes the answer, the words a choice actually sets, and a catalogue of the project's own handed in whole.",
+    registryDependencies: [
+      "prompt-menu",
+      "message-input",
+      "model-picker",
+      "instructions",
+      "tooltip",
+    ],
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    files: [
+      {
+        path: "examples/agents/prompt-menu.tsx",
+        type: "registry:example",
+        target: "examples/agents/prompt-menu.tsx",
+      },
+    ],
+    categories: ["agents"],
+    meta: {
+      variants: [
+        { name: "Default", demo: "PromptMenuDemo" },
+        { name: "Composer", demo: "PromptMenuComposerDemo" },
+        { name: "The text", demo: "PromptMenuTextDemo" },
+        { name: "Own prompts", demo: "PromptMenuOwnDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
     name: "message-actions-demo",
     type: "registry:example",
     title: "Message Actions",
