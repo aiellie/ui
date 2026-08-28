@@ -84,11 +84,22 @@ for `/elements`. `app/(main)/components/examples-browser.tsx` is the one browser
 pages render, given their own list.
 
 The rail lists **every example the page has**, each under the label of the category it
-fell into, and the selected one gets the stage beside it — a category is a divider in
-the rail, not a page of cards. The two are a resizable panel group, so each page hands
-it a fixed frame (`h-[calc(100svh-var(--header-height))]`) the way `/agents` does: given
-the document's height the panels grow with the page instead of splitting it, and the
-handle has nothing to move.
+fell into, and the one being read gets the stage beside it — a category is a divider in
+the rail, not a page of cards.
+
+Each item is a URL of its own: `registry/_paths.ts` turns a name and its categories into
+one (`bubble-demo` in `chat` → `/elements/bubble`), and it is the only place that
+happens, so the rail's links, a card's caption and the routes that answer them cannot
+drift. The bare `/elements` and `/design` redirect to the first item rather than being a
+second address for it.
+
+That is why the browser lives in each section's **layout**, not its page: a layout is
+what Next keeps mounted across a navigation within it, which is what holds the rail's
+scroll position and the width it was dragged to. The layout hands the panel group the
+fixed frame it needs (`h-[calc(100svh-var(--header-height))]`) the way `/agents` does —
+given the document's height the panels would grow with the page instead of splitting it,
+and the handle would have nothing to move. Dragged past its minimum the rail collapses to
+a strip of glyphs, its items becoming `TooltipIconButton`s.
 
 - An example falls into the **first** category it carries, in the rail's order.
   `sectionFor` walks that same order, so the page it goes to and the label it lands
@@ -105,11 +116,17 @@ handle has nothing to move.
 passed from a Server Component to a Client Component**. It throws
 `Functions cannot be passed directly to Client Components`.
 
-`/design` and `/elements` are Server Components. Each therefore has a thin `"use client"`
-wrapper (`design-browser.tsx`, `elements-browser.tsx`) that imports its list —
-`tokenExamples`, `elementExamples` — from `registry/_demos.ts` inside the client bundle
-and renders `<ExamplesBrowser>` with it. Keep that shape: don't "simplify" it by lifting
-the list into the page.
+The routes under `/design` and `/elements` are Server Components. Each section therefore
+has a thin `"use client"` file (`design-browser.tsx`, `elements-browser.tsx`) holding
+both halves: the browser the layout wraps its children in, and the card the `[name]` page
+renders. Both import their list — `tokenExamples`, `elementExamples` — from
+`registry/_demos.ts` inside the client bundle, so a resolved `Example` never crosses the
+boundary; the page hands over a slug and that side looks it up. Keep that shape: don't
+"simplify" it by lifting the list into the page.
+
+The `[name]` pages match slugs against `registry/_examples-registry.ts` instead — the
+plain data, with no demo components hanging off it — which is all `generateStaticParams`
+and `notFound` need, and keeps the demo graph out of the server bundle.
 
 ## Adding a component and its demo
 
@@ -168,8 +185,8 @@ card just isn't on the page.
    "Component" install line, with the demo item itself as "With demo". Reordering that
    array silently changes what users copy.
 
-   The `-demo` suffix is also load-bearing: `hrefFor` in `_demos.ts` strips it to build the
-   card's link.
+   The `-demo` suffix is also load-bearing: `slugFor` in `_paths.ts` strips it to build
+   the item's URL, and the `[name]` routes strip it again to match one.
 
 5. **Wire the site half** in `registry/_demos.ts` — import the demos and add the entry:
 

@@ -6,7 +6,7 @@ import { Input as InputPrimitive } from "@base-ui/react/input"
 import { Tabs } from "@base-ui/react/tabs"
 import {
   BlueprintIcon,
-  Book02Icon,
+  AiSearchLinesIcon,
   Cancel01Icon,
   CheckListIcon,
   DocumentCodeIcon,
@@ -137,7 +137,7 @@ function Rules({
         {...props}
       >
         <HugeiconsIcon
-          icon={Book02Icon}
+          icon={AiSearchLinesIcon}
           strokeWidth={1.75}
           className="size-3.5"
         />
@@ -196,7 +196,7 @@ function Rules({
                       )}
                     >
                       <HugeiconsIcon
-                        icon={glyphs[item.name] ?? Book02Icon}
+                        icon={glyphs[item.name] ?? AiSearchLinesIcon}
                         strokeWidth={1.75}
                         className="size-3.5"
                       />

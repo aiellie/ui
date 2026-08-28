@@ -1,17 +1,17 @@
-import { DesignBrowser } from "./components/design-browser"
-import { DesignHeader } from "./components/design-header"
+import { redirect } from "next/navigation"
 
+import { examples } from "@/registry/_examples-registry"
+import { firstItemIn, hrefFor } from "@/registry/_paths"
+
+/**
+ * Every token is read at a URL of its own, so the bare route sends you to the
+ * first one rather than being a second address for it. Matched against the
+ * plain registry: this half of the route only needs the name and its
+ * categories, and `registry/_demos.ts` would drag every demo component in.
+ */
 export default function Page() {
-  return (
-    /* A panel group divides a frame, so it needs one: given the document's
-       height the panels would grow with the page instead of splitting it, and
-       the handle would have nothing to move. `--header-height` is set by the
-       layout, the same way /agents measures against it. */
-    <div className="h-[calc(100svh-var(--header-height))] overflow-hidden">
-      {/*<header className="flex flex-col gap-1">
-        <DesignHeader />
-      </header> */}
-      <DesignBrowser />
-    </div>
-  )
+  const first = firstItemIn(examples, "tokens")
+  if (!first) return null
+
+  redirect(hrefFor(first.name, first.categories ?? []))
 }

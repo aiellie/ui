@@ -3,7 +3,7 @@
 import { notFound } from "next/navigation"
 
 import { DemosSwitcher } from "@/components/aiellie-ui/demos-switcher"
-import { sectionFor } from "@/lib/categories"
+import { pathFor } from "@/lib/categories"
 import { examplesWithDemos, slugFor } from "@/registry/_demos"
 
 /**
@@ -28,9 +28,9 @@ function DemoStage({ slug }: { slug: string }) {
   /* Leaving fullscreen should land on the page the card came from, and the
      example's own categories are what put it there — so the way back is
      derived rather than named, and a demo that changes section takes its exit
-     with it. */
-  const back =
-    sectionFor(example.categories) === "tokens" ? "/design" : "/elements"
+     with it. The page, not the example's own URL: coming back to the rail with
+     the list in front of you is the point of leaving. */
+  const back = pathFor(example.categories)
 
   return (
     <main className="relative flex h-dvh w-full items-center justify-center overflow-hidden bg-dotted p-6 md:p-10">

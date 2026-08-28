@@ -6,7 +6,7 @@ import {
   ChatBotIcon,
   Home01Icon,
   SlashIcon,
-  BubbleChatSparkIcon,
+  BubblesIcon,
   TextIndent01Icon,
   FavouriteIcon,
   QuoteDownIcon,
@@ -18,9 +18,9 @@ import {
   CursorMagicSelection02Icon,
   Comment01Icon,
   Clock01Icon,
-  MessageMultiple01Icon,
+  SwipeDown01Icon,
   MessageSquareDotIcon,
-  ScrollVerticalIcon,
+  BubbleChatTemporaryIcon,
   PaintBoardIcon,
   SourceCodeIcon,
   FileCodeIcon,
@@ -48,6 +48,7 @@ import type { RegistryItem } from "shadcn/schema"
 
 import type { DemoVariant } from "@/components/aiellie-ui/demos-switcher"
 import { sectionFor } from "@/lib/categories"
+import { fullscreenHrefFor, hrefFor, slugFor } from "@/registry/_paths"
 import * as codeAnnotationDemos from "@/examples/coding/code-annotation"
 import * as composerDemos from "@/examples/composer/composer"
 import * as codeBlockDemos from "@/examples/coding/code-block"
@@ -157,19 +158,19 @@ const exampleDemos: Record<string, ExampleDemos> = {
     components: { ...codeSnippetDemos },
   },
   "bubble-demo": {
-    icon: MessageSquareDotIcon,
+    icon: BubblesIcon,
     components: { ...bubbleDemos },
   },
   "message-demo": {
-    icon: MessageMultiple01Icon,
+    icon: MessageSquareDotIcon,
     components: { ...messageDemos },
   },
   "message-scroller-demo": {
-    icon: ScrollVerticalIcon,
+    icon: SwipeDown01Icon,
     components: { ...messageScrollerDemos },
   },
   "suggestions-demo": {
-    icon: BubbleChatSparkIcon,
+    icon: BubbleChatTemporaryIcon,
     components: { ...suggestionsDemos },
   },
   "empty-state-demo": {
@@ -306,26 +307,6 @@ function elementOf(item: RegistryItem) {
   return item.registryDependencies?.[0] ?? item.name
 }
 
-/** The name is the item's, minus the suffix: `colors-demo` → `colors`. */
-function slugFor(name: string) {
-  return name.replace(/-demo$/, "")
-}
-
-/** Where a card's caption points: `colors-demo` → `/examples/colors`. */
-function hrefFor(name: string) {
-  return `/examples/${slugFor(name)}`
-}
-
-/**
- * The route that hands one example the whole viewport, which the toolbar's
- * fullscreen button opens: `colors-demo` → `/demo/colors`. The page under
- * `app/demo/[name]` resolves the slug back with `slugFor`, so the link and what
- * answers it are the one convention rather than two that can drift.
- */
-function fullscreenHrefFor(name: string) {
-  return `/demo/${slugFor(name)}`
-}
-
 /** Tabs in the order `meta.variants` lists them, skipping any missing export. */
 function namedVariants(
   meta: RegistryItem["meta"],
@@ -367,7 +348,7 @@ const examplesWithDemos: Example[] = examples.flatMap((item) => {
   return [
     {
       name: item.name,
-      href: hrefFor(item.name),
+      href: hrefFor(item.name, item.categories ?? []),
       fullscreenHref: fullscreenHrefFor(item.name),
       title: item.title ?? item.name,
       description: item.description ?? "",

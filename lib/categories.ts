@@ -91,3 +91,18 @@ export function sectionFor(slugs: string[]): SectionSlug | null {
   }
   return null
 }
+
+/** The page each section's examples are read on. */
+export const sectionPaths: Record<SectionSlug, string> = {
+  elements: "/elements",
+  tokens: "/design",
+}
+
+/**
+ * The page a set of categories puts something on. Elements is the fallback for
+ * a set naming no visible category, which is the useful default: a demo is a
+ * component until something says otherwise.
+ */
+export function pathFor(slugs: string[]) {
+  return sectionPaths[sectionFor(slugs) ?? "elements"]
+}

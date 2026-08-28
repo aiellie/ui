@@ -1,11 +1,14 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useCallback, useMemo, useState, type ReactNode } from "react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { Layers01Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react"
 
 import { DemoCard } from "@/components/aiellie-ui/demo-card"
 import { DemosSwitcher } from "@/components/aiellie-ui/demos-switcher"
+import { TooltipIconButton } from "@/components/aiellie-ui/tooltip-icon-button"
 import {
   ResizableHandle,
   ResizablePanel,
@@ -14,6 +17,7 @@ import {
 import { registryCategories } from "@/lib/categories"
 import { cn } from "@/lib/utils"
 import type { Example } from "@/registry/_demos"
+import { slugFor } from "@/registry/_paths"
 
 import { navButton } from "./nav-button"
 
@@ -31,6 +35,14 @@ type Item = {
   index: number
 }
 
+/**
+ * The rail's two resting widths, in pixels. Anything between them is a size the
+ * handle passes through rather than settles at, which is what makes a single
+ * comparison enough to know which of the two the rail is in.
+ */
+const RAIL_COLLAPSED = 48
+const RAIL_MIN = 176
+
 /** The hairline only firms up under the pointer, so it reads as a divider first and a control second. */
 const handle = "bg-border/50 transition-colors hover:bg-border active:bg-border"
 
@@ -40,6 +52,12 @@ const handle = "bg-border/50 transition-colors hover:bg-border active:bg-border"
  * own at the foot of the list.
  */
 const ungrouped = { slug: "ungrouped", name: "Other", icon: Layers01Icon }
+
+/** The lit-while-current treatment both shapes of rail item share. */
+const railCurrent = cn(
+  "data-[active=true]:bg-muted data-[active=true]:text-foreground",
+  "data-[active=true]:hover:bg-muted data-[active=true]:hover:text-foreground"
+)
 
 /**
  * The kit's ghost treatment again, re-shaped for a sidebar row: the header
@@ -99,22 +117,42 @@ function groupsFor(examples: Example[]): Group[] {
 }
 
 /**
- * Every rail item in the order the rail draws them, each carrying its place
- * within its own run — so a card is numbered from one inside its category
- * rather than on down the page, the way the grid used to number it.
+ * One example resolved out of the page's list, with the place it holds in its
+ * own run — so a card is numbered from one inside its category rather than on
+ * down the page, the way the grid used to number it.
  */
-function itemsFor(groups: Group[]): Item[] {
-  return groups.flatMap((group) =>
-    group.examples.map((example, index) => ({ example, index: index + 1 }))
-  )
+function itemFor(examples: Example[], slug: string): Item | undefined {
+  for (const group of groupsFor(examples)) {
+    const index = group.examples.findIndex(
+      (example) => slugFor(example.name) === slug
+    )
+    if (index >= 0) return { example: group.examples[index], index: index + 1 }
+  }
 }
 
 /**
- * The selected example, with the stage to itself. One card rather than a grid:
- * the rail names every example the page has now, so picking one is asking to
- * look at that one.
+ * The card for one example, which is what a route under `/elements` or
+ * `/design` puts on the stage. The list is searched here rather than handed the
+ * example, because only this side of the RSC boundary can hold one: a variant
+ * carries its demo *component*, and a function cannot cross it.
+ *
+ * A slug with no card behind it renders nothing rather than throwing — the
+ * route has already turned an unknown one away, so what is left is an example
+ * that is registered but has no demo, which `registry/_demos.ts` drops and
+ * warns about in dev.
  */
-function ExampleStage({ example, index }: Item) {
+function ExampleCard({
+  examples,
+  slug,
+}: {
+  examples: Example[]
+  slug: string
+}) {
+  const item = useMemo(() => itemFor(examples, slug), [examples, slug])
+  if (!item) return null
+
+  const { example, index } = item
+
   return (
     <DemoCard
       href={example.href}
@@ -135,11 +173,16 @@ function ExampleStage({ example, index }: Item) {
 
 /**
  * A page's examples behind a rail of all of them, labelled by the category each
- * fell into, one example on screen at a time. Which examples arrive here is the
- * page's business — `/design` passes the token ones, `/elements` the rest — so
- * a new demo needs an item in `registry/_examples-registry.ts`, its components
- * in `registry/_demos.ts`, a category in `lib/categories.ts` if it carries a
- * new one, and nothing here.
+ * fell into, with the one being read beside it. Which examples arrive here is
+ * the page's business — `/design` passes the token ones, `/elements` the rest —
+ * so a new demo needs an item in `registry/_examples-registry.ts`, its
+ * components in `registry/_demos.ts`, a category in `lib/categories.ts` if it
+ * carries a new one, and nothing here.
+ *
+ * The items are links to real URLs (`/elements/bubble`), so this belongs in a
+ * *layout* rather than a page: a layout is what survives a navigation between
+ * two of them, which is what keeps the rail's scroll position and the width you
+ * dragged it to from being thrown away on every click.
  *
  * The two are a resizable group rather than a fixed column and the rest,
  * because the reading shifts: a long list wants the names wide enough to read
@@ -147,37 +190,79 @@ function ExampleStage({ example, index }: Item) {
  * gives it, the same way `/agents` does — given the document's height the
  * panels would grow with the page instead of splitting it, and the handle would
  * have nothing to move.
- *
- * The selection is state rather than a route: the rail moves within one page,
- * and the card beside it is already client-side.
  */
-function ExamplesBrowser({ examples }: { examples: Example[] }) {
+function ExamplesBrowser({
+  examples,
+  children,
+}: {
+  examples: Example[]
+  children: ReactNode
+}) {
   const groups = useMemo(() => groupsFor(examples), [examples])
-  const items = useMemo(() => itemsFor(groups), [groups])
-  const [selected, setSelected] = useState(() => items[0]?.example.name)
+  const pathname = usePathname()
 
-  /* Falling back keeps the stage filled if the selected name ever goes away —
-     the page's list changing under a selection made against the old one. */
-  const current =
-    items.find((item) => item.example.name === selected) ?? items[0]
+  /* Dragged past its minimum the rail collapses to a strip of glyphs, so what
+     it is showing has to be known here and not just in CSS: the two shapes are
+     different markup, not one restyled.
 
-  if (!current) return null
+     Measured off the rail itself rather than taken from the panel's `onResize`,
+     which reports a drag long after the width it is reporting has been applied
+     — the shape would go on lagging the box it is drawn in. A callback ref
+     rather than an effect, so the observer is attached to whatever node is
+     actually mounted and torn down with it. */
+  const [collapsed, setCollapsed] = useState(false)
+  const measure = useCallback((node: HTMLElement | null) => {
+    if (!node) return
+
+    const observer = new ResizeObserver(([entry]) => {
+      /* The border box, not `contentRect`: the rail's own padding changes with
+         the shape, so the content width would answer a question about the box
+         with a measure of what is left after it. */
+      const width =
+        entry.borderBoxSize?.[0]?.inlineSize ?? entry.contentRect.width
+      setCollapsed(width < RAIL_MIN)
+    })
+
+    observer.observe(node)
+    return () => observer.disconnect()
+  }, [])
 
   return (
     <ResizablePanelGroup orientation="horizontal">
-      {/* The rail is a nav of filters, not of destinations, so the items are
-          buttons marked `aria-current` rather than links — and not tabs, whose
-          role promises arrow-key navigation between them. Each run is a group
-          of its own so its label names the items it stands over, rather than
-          floating above the whole list. */}
-      <ResizablePanel id="examples" defaultSize="20" minSize="14" maxSize="34">
+      {/* The rail is a nav of destinations now, so the items are links marked
+          `aria-current` — a modified click opens one in a tab, and the one you
+          are reading has a URL to send someone. Each run is a group of its own
+          so its label names the items it stands over, rather than floating
+          above the whole list. */}
+      <ResizablePanel
+        id="examples"
+        collapsible
+        collapsedSize={RAIL_COLLAPSED}
+        defaultSize={240}
+        minSize={RAIL_MIN}
+        maxSize={384}
+      >
         {/* The scrolling lives on the nav rather than the panel: a panel is
             left `overflow: visible` by the library, and a rail listing every
             example the page has is taller than the frame. `h-full` is what
-            gives it something to overflow. */}
+            gives it something to overflow.
+
+            `relative` is load-bearing, not decoration. Collapsed, every item
+            carries its name in an `sr-only` span, and `sr-only` is
+            `position: absolute` — with no positioned ancestor those spans hang
+            off the initial containing block, where no `overflow` between here
+            and the page can clip them, and the document grows to the height of
+            a list that is supposed to be scrolling inside this box. Making the
+            rail their containing block puts them back inside what clips
+            them. */}
         <nav
+          ref={measure}
           aria-label="Examples"
-          className="flex h-full flex-col gap-5 overflow-y-auto px-4 py-4"
+          data-collapsed={collapsed}
+          className={cn(
+            "relative flex h-full flex-col gap-5 overflow-x-hidden overflow-y-auto py-4",
+            collapsed ? "items-center px-2" : "px-4"
+          )}
         >
           {groups.map((group) => (
             <div
@@ -186,38 +271,74 @@ function ExamplesBrowser({ examples }: { examples: Example[] }) {
               aria-label={group.name}
               className="flex shrink-0 flex-col gap-0.5"
             >
-              {/* aria-hidden: the run is already named by `aria-label` above,
-                  so the label would only say it twice. */}
-              <span aria-hidden className={sidebarLabel}>
-                <HugeiconsIcon
-                  icon={group.icon}
-                  strokeWidth={2}
-                  className="size-3 shrink-0"
-                />
-                {group.name}
-                <span className="ms-auto ps-2 tracking-tight tabular-nums">
-                  {String(group.examples.length).padStart(2, "0")}
+              {/* aria-hidden either way: the run is already named by
+                  `aria-label` above, so the label would only say it twice.
+                  Collapsed it keeps the glyph alone — the run still has to be
+                  told from the one above it, and the names are on the items'
+                  tooltips by then. */}
+              {collapsed ? (
+                <span
+                  aria-hidden
+                  className="mb-1 flex h-4 items-center justify-center text-foreground/25"
+                >
+                  <HugeiconsIcon
+                    icon={group.icon}
+                    strokeWidth={2}
+                    className="size-3"
+                  />
                 </span>
-              </span>
+              ) : (
+                <span aria-hidden className={sidebarLabel}>
+                  <HugeiconsIcon
+                    icon={group.icon}
+                    strokeWidth={2}
+                    className="size-3 shrink-0"
+                  />
+                  {group.name}
+                  <span className="ms-auto ps-2 tracking-tight tabular-nums">
+                    {String(group.examples.length).padStart(2, "0")}
+                  </span>
+                </span>
+              )}
               {group.examples.map((example) => {
-                const active = example.name === current.example.name
+                const current = pathname === example.href
+                const glyph = (
+                  <HugeiconsIcon
+                    icon={example.icon}
+                    strokeWidth={2}
+                    className="size-3.5 shrink-0"
+                  />
+                )
 
-                return (
-                  <button
+                return collapsed ? (
+                  <TooltipIconButton
                     key={example.name}
-                    type="button"
-                    onClick={() => setSelected(example.name)}
-                    data-active={active}
-                    aria-current={active ? "true" : undefined}
+                    tooltip={example.title}
+                    side="right"
+                    /* The rail item is a link wherever it is drawn, collapsed
+                       or not. `nativeButton={false}` is Base UI being told so:
+                       left true it expects a real `<button>` in `render` and
+                       warns that it is handing an anchor button semantics it
+                       cannot keep. */
+                    render={<Link href={example.href} />}
+                    nativeButton={false}
+                    data-active={current}
+                    aria-current={current ? "page" : undefined}
+                    className={cn("size-7.5 rounded-md", railCurrent)}
+                  >
+                    {glyph}
+                  </TooltipIconButton>
+                ) : (
+                  <Link
+                    key={example.name}
+                    href={example.href}
+                    data-active={current}
+                    aria-current={current ? "page" : undefined}
                     className={sidebarItem}
                   >
-                    <HugeiconsIcon
-                      icon={example.icon}
-                      strokeWidth={2}
-                      className="size-3.5 shrink-0"
-                    />
+                    {glyph}
                     <span className="min-w-0 truncate">{example.title}</span>
-                  </button>
+                  </Link>
                 )
               })}
             </div>
@@ -229,13 +350,14 @@ function ExamplesBrowser({ examples }: { examples: Example[] }) {
 
       <ResizablePanel id="stage" defaultSize="80" minSize="40">
         <div className="h-full overflow-y-auto px-6 py-4">
-          {/* Keyed on the example so switching re-mounts the card and it fades
-              in, rather than the card swapping its contents in place. */}
+          {/* Keyed on the route so moving between examples re-mounts the card
+              and it fades in, rather than the card swapping its contents in
+              place. */}
           <div
-            key={current.example.name}
+            key={pathname}
             className="min-w-0 animate-in duration-300 fade-in motion-reduce:animate-none"
           >
-            <ExampleStage {...current} />
+            {children}
           </div>
         </div>
       </ResizablePanel>
@@ -243,4 +365,4 @@ function ExamplesBrowser({ examples }: { examples: Example[] }) {
   )
 }
 
-export { ExamplesBrowser }
+export { ExamplesBrowser, ExampleCard }
