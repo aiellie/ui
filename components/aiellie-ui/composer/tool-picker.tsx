@@ -152,9 +152,7 @@ function ToolPickerTrigger({
           tooltip="Tools"
           side="top"
           className={cn(
-            // `w-fit` because a Button is `width: auto` and a picker put in a
-            // column would otherwise be stretched the width of the column.
-            "size-7 w-fit rounded-full text-muted-foreground hover:text-foreground",
+            "size-7 rounded-full text-muted-foreground hover:text-foreground",
             className
           )}
         />

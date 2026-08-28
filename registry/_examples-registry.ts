@@ -494,6 +494,52 @@ export const examples: Registry["items"] = [
     },
   },
   {
+    name: "reasoning-demo",
+    type: "registry:example",
+    title: "Reasoning",
+    description:
+      "Thinking unfolding a step at a time and folding itself away when the answer arrives, and the same panel read back from a transcript with the time it took.",
+    registryDependencies: ["reasoning", "bubble"],
+    files: [
+      {
+        path: "examples/messages/reasoning.tsx",
+        type: "registry:example",
+        target: "examples/messages/reasoning.tsx",
+      },
+    ],
+    categories: ["messages"],
+    meta: {
+      variants: [
+        { name: "Thinking", demo: "ReasoningDemo" },
+        { name: "Settled", demo: "ReasoningSettledDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "citations-demo",
+    type: "registry:example",
+    title: "Citations",
+    description:
+      "An answer carrying numbered marks that name their source on hover, with the list of them folded underneath — and the list on its own for an answer that is mostly its sources.",
+    registryDependencies: ["citations", "response", "bubble"],
+    files: [
+      {
+        path: "examples/messages/citations.tsx",
+        type: "registry:example",
+        target: "examples/messages/citations.tsx",
+      },
+    ],
+    categories: ["messages"],
+    meta: {
+      variants: [
+        { name: "In an answer", demo: "CitationsDemo" },
+        { name: "Sources", demo: "CitationsSourcesDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
     name: "response-demo",
     type: "registry:example",
     title: "Response",
@@ -710,6 +756,69 @@ export const examples: Registry["items"] = [
       variants: [
         { name: "Default", demo: "MessageInputDemo" },
         { name: "States", demo: "MessageInputStatesDemo" },
+      ],
+      wide: true,
+    },
+  },
+  {
+    name: "empty-state-demo",
+    type: "registry:example",
+    title: "Empty State",
+    description:
+      "An opening screen with the model and the settings across the top, the greeting under them, and the composer with its prompts — as a strip of chips, and as a column of things to ask.",
+    registryDependencies: [
+      "empty-state",
+      "message-input",
+      "model-picker",
+      "suggestions",
+      "tooltip-icon-button",
+      "kbd",
+    ],
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    files: [
+      {
+        path: "examples/composer/empty-state.tsx",
+        type: "registry:example",
+        target: "examples/composer/empty-state.tsx",
+      },
+    ],
+    categories: ["composer"],
+    meta: {
+      variants: [
+        { name: "Default", demo: "EmptyStateDemo" },
+        { name: "Prompt list", demo: "EmptyStateListDemo" },
+      ],
+      wide: true,
+    },
+  },
+  {
+    name: "attachments-demo",
+    type: "registry:example",
+    title: "Attachments",
+    description:
+      "A mixed set of files with a way back off each one, the same set stood under a composer field, the three things an upload can be doing, and the square form for a row that is mostly pictures.",
+    registryDependencies: [
+      "attachments",
+      "button",
+      "composer",
+      "tooltip",
+      "tooltip-icon-button",
+    ],
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    files: [
+      {
+        path: "examples/composer/attachments.tsx",
+        type: "registry:example",
+        target: "examples/composer/attachments.tsx",
+      },
+    ],
+    categories: ["composer"],
+    meta: {
+      variants: [
+        { name: "Default", demo: "AttachmentsDemo" },
+        { name: "In a composer", demo: "AttachmentsComposerDemo" },
+        { name: "Uploading", demo: "AttachmentsUploadingDemo" },
+        { name: "Tiles", demo: "AttachmentsTilesDemo" },
       ],
       wide: true,
     },
@@ -950,6 +1059,40 @@ export const examples: Registry["items"] = [
         { name: "On hover", demo: "MessageActionsOnHoverDemo" },
       ],
       wide: false,
+    },
+  },
+  {
+    name: "chat-card-demo",
+    type: "registry:example",
+    title: "Chat Card",
+    description:
+      "A whole little chat in one frame — header, thread and composer — following a thread as it arrives, and holding an opening screen when there is nothing in it yet.",
+    registryDependencies: [
+      "chat-card",
+      "empty-state",
+      "message-input",
+      "suggestions",
+      "tooltip-icon-button",
+      "typing-indicator",
+      "bubble",
+      "message",
+    ],
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    files: [
+      {
+        path: "examples/messages/chat-card.tsx",
+        type: "registry:example",
+        target: "examples/messages/chat-card.tsx",
+      },
+    ],
+    categories: ["messages"],
+    meta: {
+      variants: [
+        { name: "Default", demo: "ChatCardDemo" },
+        { name: "Arriving", demo: "ChatCardLiveDemo" },
+        { name: "Empty", demo: "ChatCardEmptyDemo" },
+      ],
+      wide: true,
     },
   },
 ]

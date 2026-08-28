@@ -1,0 +1,36 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "citations-demo",
+  "title": "Citations",
+  "description": "An answer carrying numbered marks that name their source on hover, with the list of them folded underneath — and the list on its own for an answer that is mostly its sources.",
+  "registryDependencies": [
+    "https://ui.aiellie.dev/r/citations.json",
+    "https://ui.aiellie.dev/r/response.json",
+    "https://ui.aiellie.dev/r/bubble.json"
+  ],
+  "files": [
+    {
+      "path": "examples/messages/citations.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport {\n  Citation,\n  SourceItem,\n  Sources,\n  SourcesContent,\n  SourcesTrigger,\n  type Source,\n} from \"@/components/aiellie-ui/citations\"\nimport { Response } from \"@/components/aiellie-ui/response\"\nimport { Bubble, BubbleContent, BubbleGroup } from \"@/components/ui/bubble\"\n\nconst sources: Source[] = [\n  {\n    id: \"notes\",\n    title: \"Rollout notes — week of the 12th\",\n    url: \"https://example.com/notes/rollout\",\n    snippet:\n      \"Ship dark on Tuesday, staff first, everyone once the migration lands.\",\n  },\n  {\n    id: \"thread\",\n    title: \"#launch — Marta on holding the date\",\n    url: \"https://example.com/threads/launch\",\n    origin: \"Slack\",\n    snippet: \"I'd rather hold it than turn it on over a half-finished index.\",\n  },\n  {\n    id: \"flags\",\n    title: \"flags.rollout in production\",\n    url: \"https://example.com/flags/rollout\",\n    origin: \"Dashboard\",\n  },\n]\n\n/** The marks in the prose, and the list they point at underneath it. */\nexport function CitationsDemo() {\n  return (\n    <BubbleGroup className=\"w-full max-w-sm\">\n      <Bubble variant=\"ghost\">\n        <BubbleContent className=\"flex flex-col gap-2\">\n          <Response>\n            {/* The marks sit tight against the word they follow: a newline\n                before one in the source becomes a space in the sentence, and\n                a citation floating off its own clause reads as a footnote to\n                the full stop instead. */}\n            <p>\n              It shipped behind a flag on Tuesday and is on for staff only\n              <Citation source={sources[0]} index={1} />. Marta asked for it to\n              be held until the migration lands\n              <Citation source={sources[1]} index={2} />, which is why{\" \"}\n              <code>flags.rollout</code> still reads <code>staff</code> in\n              production\n              <Citation source={sources[2]} index={3} />.\n            </p>\n          </Response>\n          <Sources>\n            <SourcesTrigger count={sources.length} />\n            <SourcesContent>\n              {sources.map((source, index) => (\n                <SourceItem key={source.id} source={source} index={index + 1} />\n              ))}\n            </SourcesContent>\n          </Sources>\n        </BubbleContent>\n      </Bubble>\n    </BubbleGroup>\n  )\n}\n\n/** The list on its own, open, for an answer that is mostly its sources. */\nexport function CitationsSourcesDemo() {\n  return (\n    <Sources defaultOpen className=\"w-full max-w-sm\">\n      <SourcesTrigger count={sources.length} />\n      <SourcesContent>\n        {sources.map((source, index) => (\n          <SourceItem key={source.id} source={source} index={index + 1} />\n        ))}\n      </SourcesContent>\n    </Sources>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/messages/citations.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "In an answer",
+        "demo": "CitationsDemo"
+      },
+      {
+        "name": "Sources",
+        "demo": "CitationsSourcesDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "messages"
+  ],
+  "type": "registry:example"
+}

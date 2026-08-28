@@ -1,0 +1,50 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "attachments-demo",
+  "title": "Attachments",
+  "description": "A mixed set of files with a way back off each one, the same set stood under a composer field, the three things an upload can be doing, and the square form for a row that is mostly pictures.",
+  "dependencies": [
+    "@hugeicons/core-free-icons",
+    "@hugeicons/react"
+  ],
+  "registryDependencies": [
+    "https://ui.aiellie.dev/r/attachments.json",
+    "https://ui.aiellie.dev/r/button.json",
+    "https://ui.aiellie.dev/r/composer.json",
+    "https://ui.aiellie.dev/r/tooltip.json",
+    "https://ui.aiellie.dev/r/tooltip-icon-button.json"
+  ],
+  "files": [
+    {
+      "path": "examples/composer/attachments.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { Attachment01Icon } from \"@hugeicons/core-free-icons\"\nimport { HugeiconsIcon } from \"@hugeicons/react\"\n\nimport { Attachment, Attachments } from \"@/components/aiellie-ui/attachments\"\nimport {\n  Composer,\n  ComposerField,\n  ComposerInput,\n  ComposerSubmit,\n  ComposerToolbar,\n} from \"@/components/aiellie-ui/composer/composer\"\nimport { TooltipIconButton } from \"@/components/aiellie-ui/tooltip-icon-button\"\nimport { Button } from \"@/components/ui/button\"\nimport { TooltipProvider } from \"@/components/ui/tooltip\"\n\ninterface DemoFile {\n  id: string\n  name: string\n  size: number\n  src?: string\n}\n\n/**\n * Kept short and kept here, as the other composer demos do. The long PDF name\n * is the point of one of them: it is what shows the cut falling on the stem\n * and the extension surviving it.\n */\nconst files: DemoFile[] = [\n  { id: \"brief\", name: \"rollout-brief-final-v3.pdf\", size: 2_340_000 },\n  { id: \"hook\", name: \"use-attachments.ts\", size: 4_812 },\n  { id: \"forecast\", name: \"q3-forecast.xlsx\", size: 118_400 },\n  {\n    id: \"shot\",\n    name: \"empty-state.png\",\n    size: 486_000,\n    src: \"/placeholder.png\",\n  },\n  { id: \"tokens\", name: \"design-tokens.zip\", size: 1_100_000 },\n]\n\n/** The set, minus whatever has been taken off, with a way to put it all back. */\nfunction useRemovable(ids: readonly string[]) {\n  const [kept, setKept] = React.useState<readonly string[]>(ids)\n\n  return {\n    files: files.filter((file) => kept.includes(file.id)),\n    remove: (id: string) =>\n      setKept((current) => current.filter((k) => k !== id)),\n    reset: () => setKept(ids),\n    empty: kept.length === 0,\n  }\n}\n\n/**\n * The row on its own: a mixed set of files, each one able to be taken back off.\n *\n * The badges are worth watching as the set changes — the `.ts` wears the same\n * mark it would wear in a code block header, because it is the code catalogue\n * answering, while the PDF and the archive are the attachment's own.\n */\nexport function AttachmentsDemo() {\n  const {\n    files: kept,\n    remove,\n    reset,\n    empty,\n  } = useRemovable([\"brief\", \"hook\", \"forecast\", \"shot\", \"tokens\"])\n\n  return (\n    <div className=\"flex w-full flex-col items-start gap-4\">\n      <Attachments>\n        {kept.map((file) => (\n          <Attachment\n            key={file.id}\n            name={file.name}\n            size={file.size}\n            src={file.src}\n            onRemove={() => remove(file.id)}\n          />\n        ))}\n      </Attachments>\n\n      {empty ? (\n        <Button variant=\"outline\" size=\"sm\" onClick={reset}>\n          Attach them again\n        </Button>\n      ) : null}\n    </div>\n  )\n}\n\n/**\n * Where they actually live: under the field, above the row that says what the\n * message is being sent with. The composer grows a line taller and the writing\n * keeps the whole of its own.\n */\nexport function AttachmentsComposerDemo() {\n  const { files: kept, remove, reset, empty } = useRemovable([\"brief\", \"shot\"])\n  const [value, setValue] = React.useState(\"\")\n\n  return (\n    <TooltipProvider>\n      <Composer\n        className=\"w-full\"\n        value={value}\n        onValueChange={setValue}\n        onSubmit={() => setValue(\"\")}\n      >\n        <ComposerInput>\n          <ComposerField placeholder=\"Ask about the rollout…\" />\n          <ComposerSubmit />\n        </ComposerInput>\n\n        {empty ? null : (\n          <Attachments className=\"pt-1\">\n            {kept.map((file) => (\n              <Attachment\n                key={file.id}\n                name={file.name}\n                size={file.size}\n                src={file.src}\n                onRemove={() => remove(file.id)}\n              />\n            ))}\n          </Attachments>\n        )}\n\n        <ComposerToolbar>\n          <TooltipIconButton\n            tooltip=\"Attach files\"\n            onClick={reset}\n            className=\"size-8\"\n          >\n            <HugeiconsIcon icon={Attachment01Icon} />\n          </TooltipIconButton>\n        </ComposerToolbar>\n      </Composer>\n    </TooltipProvider>\n  )\n}\n\n/** A climb from nothing to done, restarted whenever the retry is pressed. */\nfunction useClimb(step: number, failAt?: number) {\n  const [progress, setProgress] = React.useState(0)\n  const [failed, setFailed] = React.useState(false)\n\n  React.useEffect(() => {\n    if (failed || progress >= 1) return undefined\n\n    const timer = setTimeout(() => {\n      const next = progress + step\n      if (failAt !== undefined && next >= failAt) setFailed(true)\n      else setProgress(Math.min(1, next))\n    }, 500)\n\n    return () => clearTimeout(timer)\n  }, [progress, step, failAt, failed])\n\n  return {\n    progress,\n    failed,\n    retry: () => {\n      setProgress(0)\n      setFailed(false)\n    },\n  }\n}\n\n/**\n * The three things an upload can be doing, side by side.\n *\n * The middle one has no number against it on purpose: plenty of hosts stream a\n * file without ever saying how much of it has landed, and a chip that invented\n * a percentage for that would be lying. It says an upload is happening and\n * stops there.\n */\nexport function AttachmentsUploadingDemo() {\n  const climbing = useClimb(0.18)\n  const failing = useClimb(0.25, 0.55)\n\n  return (\n    <Attachments>\n      <Attachment\n        name=\"rollout-brief-final-v3.pdf\"\n        size={2_340_000}\n        status={climbing.progress >= 1 ? \"ready\" : \"uploading\"}\n        progress={climbing.progress >= 1 ? undefined : climbing.progress}\n        onRemove={() => climbing.retry()}\n      />\n\n      <Attachment\n        name=\"session-recording.mp4\"\n        size={48_200_000}\n        status=\"uploading\"\n      />\n\n      <Attachment\n        name=\"q3-forecast.xlsx\"\n        size={118_400}\n        status={failing.failed ? \"error\" : \"uploading\"}\n        progress={failing.failed ? undefined : failing.progress}\n        meta={failing.failed ? \"Too large — 25 MB limit\" : undefined}\n        onRetry={failing.retry}\n      />\n    </Attachments>\n  )\n}\n\n/**\n * The square form, for a set that is mostly pictures. The thumbnail is what a\n * reader is scanning here, so it takes the whole tile and the name goes over\n * it — and the one file that has no picture keeps its badge instead rather than\n * leaving a hole in the row.\n */\nexport function AttachmentsTilesDemo() {\n  const climbing = useClimb(0.2)\n  const [opened, setOpened] = React.useState<string | null>(null)\n\n  return (\n    <div className=\"flex w-full flex-col items-start gap-3\">\n      <Attachments>\n        <Attachment\n          variant=\"tile\"\n          name=\"empty-state.png\"\n          size={486_000}\n          src=\"/placeholder.png\"\n          meta=\"1600 × 900\"\n          onOpen={() => setOpened(\"empty-state.png\")}\n          onRemove={() => undefined}\n        />\n        <Attachment\n          variant=\"tile\"\n          name=\"composer-dark.png\"\n          size={512_000}\n          src=\"/placeholder.png\"\n          meta=\"1600 × 900\"\n          onOpen={() => setOpened(\"composer-dark.png\")}\n          onRemove={() => undefined}\n        />\n        <Attachment\n          variant=\"tile\"\n          name=\"rollout-brief.pdf\"\n          size={2_340_000}\n          onOpen={() => setOpened(\"rollout-brief.pdf\")}\n          onRemove={() => undefined}\n        />\n        <Attachment\n          variant=\"tile\"\n          name=\"tool-call.png\"\n          size={704_000}\n          src=\"/placeholder.png\"\n          status={climbing.progress >= 1 ? \"ready\" : \"uploading\"}\n          progress={climbing.progress >= 1 ? undefined : climbing.progress}\n          meta={climbing.progress >= 1 ? \"1600 × 900\" : undefined}\n        />\n      </Attachments>\n\n      {/* Standing in for whatever a real one would open — a lightbox, a new\n          tab, a pane. What is worth seeing here is that the tile answers a\n          click anywhere on it *except* the cross, which is its own control\n          sitting over the one underneath. */}\n      <p className=\"text-[11px] text-muted-foreground\">\n        {opened ? `Opened ${opened}.` : \"Pick a tile to open it.\"}\n      </p>\n    </div>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/composer/attachments.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Default",
+        "demo": "AttachmentsDemo"
+      },
+      {
+        "name": "In a composer",
+        "demo": "AttachmentsComposerDemo"
+      },
+      {
+        "name": "Uploading",
+        "demo": "AttachmentsUploadingDemo"
+      },
+      {
+        "name": "Tiles",
+        "demo": "AttachmentsTilesDemo"
+      }
+    ],
+    "wide": true
+  },
+  "categories": [
+    "composer"
+  ],
+  "type": "registry:example"
+}

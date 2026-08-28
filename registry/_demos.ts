@@ -1,6 +1,10 @@
 import type { ComponentType } from "react"
 import {
   AtIcon,
+  AiBrain01Icon,
+  Link02Icon,
+  ChatBotIcon,
+  Home01Icon,
   SlashIcon,
   BubbleChatSparkIcon,
   TextIndent01Icon,
@@ -36,6 +40,7 @@ import {
   HighlighterIcon,
   ContrastIcon,
   LayoutBottomIcon,
+  Attachment01Icon,
 } from "@hugeicons/core-free-icons"
 import type { IconSvgElement } from "@hugeicons/react"
 import type { RegistryItem } from "shadcn/schema"
@@ -53,7 +58,10 @@ import * as toolCallDemos from "@/examples/coding/tool-call"
 import * as codeSnippetDemos from "@/examples/coding/code-snippet"
 import * as bubbleDemos from "@/examples/messages/bubble"
 import * as messageDemos from "@/examples/messages/message"
+import * as chatCardDemos from "@/examples/messages/chat-card"
 import * as messageActionsDemos from "@/examples/messages/message-actions"
+import * as emptyStateDemos from "@/examples/composer/empty-state"
+import * as attachmentsDemos from "@/examples/composer/attachments"
 import * as mentionsDemos from "@/examples/composer/mentions"
 import * as slashMenuDemos from "@/examples/composer/slash-menu"
 import * as messageInputDemos from "@/examples/composer/message-input"
@@ -67,6 +75,8 @@ import * as messageHighlightToolbarDemos from "@/examples/messages/message-highl
 import * as messageStatusDemos from "@/examples/messages/message-status"
 import * as quotedMessageDemos from "@/examples/messages/quoted-message"
 import * as reactionsDemos from "@/examples/messages/reactions"
+import * as citationsDemos from "@/examples/messages/citations"
+import * as reasoningDemos from "@/examples/messages/reasoning"
 import * as responseDemos from "@/examples/messages/response"
 import * as streamingTextDemos from "@/examples/messages/streaming-text"
 import * as typingIndicatorDemos from "@/examples/messages/typing-indicator"
@@ -159,6 +169,14 @@ const exampleDemos: Record<string, ExampleDemos> = {
     icon: BubbleChatSparkIcon,
     components: { ...suggestionsDemos },
   },
+  "empty-state-demo": {
+    icon: Home01Icon,
+    components: { ...emptyStateDemos },
+  },
+  "attachments-demo": {
+    icon: Attachment01Icon,
+    components: { ...attachmentsDemos },
+  },
   "mentions-demo": {
     icon: AtIcon,
     components: { ...mentionsDemos },
@@ -195,6 +213,10 @@ const exampleDemos: Record<string, ExampleDemos> = {
     icon: QuillWrite01Icon,
     components: { ...promptMenuDemos },
   },
+  "chat-card-demo": {
+    icon: ChatBotIcon,
+    components: { ...chatCardDemos },
+  },
   "message-actions-demo": {
     icon: Comment01Icon,
     components: { ...messageActionsDemos },
@@ -206,6 +228,14 @@ const exampleDemos: Record<string, ExampleDemos> = {
   "quoted-message-demo": {
     icon: QuoteDownIcon,
     components: { ...quotedMessageDemos },
+  },
+  "reasoning-demo": {
+    icon: AiBrain01Icon,
+    components: { ...reasoningDemos },
+  },
+  "citations-demo": {
+    icon: Link02Icon,
+    components: { ...citationsDemos },
   },
   "response-demo": {
     icon: ParagraphIcon,

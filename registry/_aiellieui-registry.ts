@@ -259,6 +259,62 @@ export const aiellieui: Registry["items"] = [
     ],
   },
   {
+    name: "attachments",
+    type: "registry:ui",
+    title: "Attachments",
+    description:
+      "The files a message carries — picked in the composer and still hanging off it once it is sent: the badge the code parts would give the same file, the size the way a file manager writes one, the name cut on its stem so the extension survives, an upload that reports itself, and the way back off.",
+    registryDependencies: ["actions", "code-icons", "utils"],
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    files: [
+      {
+        path: "components/aiellie-ui/attachments.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/attachments.tsx",
+      },
+    ],
+  },
+  {
+    name: "reasoning",
+    type: "registry:ui",
+    title: "Reasoning",
+    description:
+      "The thinking behind an answer, folded away: open while it runs and closed once it is done, counting the seconds it takes and leaving the decision with the reader the moment they disagree with it.",
+    registryDependencies: ["actions", "utils"],
+    dependencies: [
+      "@base-ui/react",
+      "@hugeicons/core-free-icons",
+      "@hugeicons/react",
+    ],
+    files: [
+      {
+        path: "components/aiellie-ui/reasoning.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/reasoning.tsx",
+      },
+    ],
+  },
+  {
+    name: "citations",
+    type: "registry:ui",
+    title: "Citations",
+    description:
+      "Numbered marks in the prose and the sources they point at underneath — the number in the sentence, the name a hover away, and the list folded until somebody wants to check the answer.",
+    registryDependencies: ["actions", "tooltip", "utils"],
+    dependencies: [
+      "@base-ui/react",
+      "@hugeicons/core-free-icons",
+      "@hugeicons/react",
+    ],
+    files: [
+      {
+        path: "components/aiellie-ui/citations.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/citations.tsx",
+      },
+    ],
+  },
+  {
     name: "response",
     type: "registry:ui",
     title: "Response",
@@ -402,6 +458,36 @@ export const aiellieui: Registry["items"] = [
         path: "components/aiellie-ui/composer/slash-menu.tsx",
         type: "registry:ui",
         target: "components/aiellie-ui/composer/slash-menu.tsx",
+      },
+    ],
+  },
+  {
+    name: "chat-card",
+    type: "registry:ui",
+    title: "Chat Card",
+    description:
+      "A chat, framed: a header that stays, a middle that scrolls and follows the newest message until the reader scrolls up, and a foot for the composer that does not move when the thread grows.",
+    registryDependencies: ["utils"],
+    files: [
+      {
+        path: "components/aiellie-ui/chat-card.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/chat-card.tsx",
+      },
+    ],
+  },
+  {
+    name: "empty-state",
+    type: "registry:ui",
+    title: "Empty State",
+    description:
+      "The screen a conversation starts from: what the conversation is set to across the top, the invitation in the middle, and the composer with its prompts beneath — laid out as rows so the field lands in the same place on every screen height.",
+    registryDependencies: ["utils"],
+    files: [
+      {
+        path: "components/aiellie-ui/composer/empty-state.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/composer/empty-state.tsx",
       },
     ],
   },

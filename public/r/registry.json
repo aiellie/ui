@@ -296,6 +296,73 @@
       ]
     },
     {
+      "name": "attachments",
+      "type": "registry:ui",
+      "title": "Attachments",
+      "description": "The files a message carries — picked in the composer and still hanging off it once it is sent: the badge the code parts would give the same file, the size the way a file manager writes one, the name cut on its stem so the extension survives, an upload that reports itself, and the way back off.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/actions.json",
+        "https://ui.aiellie.dev/r/code-icons.json",
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/attachments.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/attachments.tsx"
+        }
+      ]
+    },
+    {
+      "name": "reasoning",
+      "type": "registry:ui",
+      "title": "Reasoning",
+      "description": "The thinking behind an answer, folded away: open while it runs and closed once it is done, counting the seconds it takes and leaving the decision with the reader the moment they disagree with it.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/actions.json",
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "dependencies": [
+        "@base-ui/react",
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/reasoning.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/reasoning.tsx"
+        }
+      ]
+    },
+    {
+      "name": "citations",
+      "type": "registry:ui",
+      "title": "Citations",
+      "description": "Numbered marks in the prose and the sources they point at underneath — the number in the sentence, the name a hover away, and the list folded until somebody wants to check the answer.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/actions.json",
+        "https://ui.aiellie.dev/r/tooltip.json",
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "dependencies": [
+        "@base-ui/react",
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/citations.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/citations.tsx"
+        }
+      ]
+    },
+    {
       "name": "response",
       "type": "registry:ui",
       "title": "Response",
@@ -470,6 +537,38 @@
           "path": "components/aiellie-ui/composer/slash-menu.tsx",
           "type": "registry:ui",
           "target": "components/aiellie-ui/composer/slash-menu.tsx"
+        }
+      ]
+    },
+    {
+      "name": "chat-card",
+      "type": "registry:ui",
+      "title": "Chat Card",
+      "description": "A chat, framed: a header that stays, a middle that scrolls and follows the newest message until the reader scrolls up, and a foot for the composer that does not move when the thread grows.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/chat-card.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/chat-card.tsx"
+        }
+      ]
+    },
+    {
+      "name": "empty-state",
+      "type": "registry:ui",
+      "title": "Empty State",
+      "description": "The screen a conversation starts from: what the conversation is set to across the top, the invitation in the middle, and the composer with its prompts beneath — laid out as rows so the field lands in the same place on every screen height.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/composer/empty-state.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/composer/empty-state.tsx"
         }
       ]
     },
@@ -1674,6 +1773,73 @@
       }
     },
     {
+      "name": "reasoning-demo",
+      "type": "registry:example",
+      "title": "Reasoning",
+      "description": "Thinking unfolding a step at a time and folding itself away when the answer arrives, and the same panel read back from a transcript with the time it took.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/reasoning.json",
+        "https://ui.aiellie.dev/r/bubble.json"
+      ],
+      "files": [
+        {
+          "path": "examples/messages/reasoning.tsx",
+          "type": "registry:example",
+          "target": "examples/messages/reasoning.tsx"
+        }
+      ],
+      "categories": [
+        "messages"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Thinking",
+            "demo": "ReasoningDemo"
+          },
+          {
+            "name": "Settled",
+            "demo": "ReasoningSettledDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "citations-demo",
+      "type": "registry:example",
+      "title": "Citations",
+      "description": "An answer carrying numbered marks that name their source on hover, with the list of them folded underneath — and the list on its own for an answer that is mostly its sources.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/citations.json",
+        "https://ui.aiellie.dev/r/response.json",
+        "https://ui.aiellie.dev/r/bubble.json"
+      ],
+      "files": [
+        {
+          "path": "examples/messages/citations.tsx",
+          "type": "registry:example",
+          "target": "examples/messages/citations.tsx"
+        }
+      ],
+      "categories": [
+        "messages"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "In an answer",
+            "demo": "CitationsDemo"
+          },
+          {
+            "name": "Sources",
+            "demo": "CitationsSourcesDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
       "name": "response-demo",
       "type": "registry:example",
       "title": "Response",
@@ -2015,6 +2181,95 @@
       }
     },
     {
+      "name": "empty-state-demo",
+      "type": "registry:example",
+      "title": "Empty State",
+      "description": "An opening screen with the model and the settings across the top, the greeting under them, and the composer with its prompts — as a strip of chips, and as a column of things to ask.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/empty-state.json",
+        "https://ui.aiellie.dev/r/message-input.json",
+        "https://ui.aiellie.dev/r/model-picker.json",
+        "https://ui.aiellie.dev/r/suggestions.json",
+        "https://ui.aiellie.dev/r/tooltip-icon-button.json",
+        "https://ui.aiellie.dev/r/kbd.json"
+      ],
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "files": [
+        {
+          "path": "examples/composer/empty-state.tsx",
+          "type": "registry:example",
+          "target": "examples/composer/empty-state.tsx"
+        }
+      ],
+      "categories": [
+        "composer"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Default",
+            "demo": "EmptyStateDemo"
+          },
+          {
+            "name": "Prompt list",
+            "demo": "EmptyStateListDemo"
+          }
+        ],
+        "wide": true
+      }
+    },
+    {
+      "name": "attachments-demo",
+      "type": "registry:example",
+      "title": "Attachments",
+      "description": "A mixed set of files with a way back off each one, the same set stood under a composer field, the three things an upload can be doing, and the square form for a row that is mostly pictures.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/attachments.json",
+        "https://ui.aiellie.dev/r/button.json",
+        "https://ui.aiellie.dev/r/composer.json",
+        "https://ui.aiellie.dev/r/tooltip.json",
+        "https://ui.aiellie.dev/r/tooltip-icon-button.json"
+      ],
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "files": [
+        {
+          "path": "examples/composer/attachments.tsx",
+          "type": "registry:example",
+          "target": "examples/composer/attachments.tsx"
+        }
+      ],
+      "categories": [
+        "composer"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Default",
+            "demo": "AttachmentsDemo"
+          },
+          {
+            "name": "In a composer",
+            "demo": "AttachmentsComposerDemo"
+          },
+          {
+            "name": "Uploading",
+            "demo": "AttachmentsUploadingDemo"
+          },
+          {
+            "name": "Tiles",
+            "demo": "AttachmentsTilesDemo"
+          }
+        ],
+        "wide": true
+      }
+    },
+    {
       "name": "mentions-demo",
       "type": "registry:example",
       "title": "Mentions",
@@ -2310,6 +2565,53 @@
           {
             "name": "Own prompts",
             "demo": "PromptMenuOwnDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "chat-card-demo",
+      "type": "registry:example",
+      "title": "Chat Card",
+      "description": "A whole little chat in one frame — header, thread and composer — following a thread as it arrives, and holding an opening screen when there is nothing in it yet.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/chat-card.json",
+        "https://ui.aiellie.dev/r/empty-state.json",
+        "https://ui.aiellie.dev/r/message-input.json",
+        "https://ui.aiellie.dev/r/suggestions.json",
+        "https://ui.aiellie.dev/r/tooltip-icon-button.json",
+        "https://ui.aiellie.dev/r/typing-indicator.json",
+        "https://ui.aiellie.dev/r/bubble.json",
+        "https://ui.aiellie.dev/r/message.json"
+      ],
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "files": [
+        {
+          "path": "examples/messages/chat-card.tsx",
+          "type": "registry:example",
+          "target": "examples/messages/chat-card.tsx"
+        }
+      ],
+      "categories": [
+        "messages"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Default",
+            "demo": "ChatCardDemo"
+          },
+          {
+            "name": "Arriving",
+            "demo": "ChatCardLiveDemo"
+          },
+          {
+            "name": "Empty",
+            "demo": "ChatCardEmptyDemo"
           }
         ],
         "wide": false

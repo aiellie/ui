@@ -1,0 +1,49 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chat-card-demo",
+  "title": "Chat Card",
+  "description": "A whole little chat in one frame — header, thread and composer — following a thread as it arrives, and holding an opening screen when there is nothing in it yet.",
+  "dependencies": [
+    "@hugeicons/core-free-icons",
+    "@hugeicons/react"
+  ],
+  "registryDependencies": [
+    "https://ui.aiellie.dev/r/chat-card.json",
+    "https://ui.aiellie.dev/r/empty-state.json",
+    "https://ui.aiellie.dev/r/message-input.json",
+    "https://ui.aiellie.dev/r/suggestions.json",
+    "https://ui.aiellie.dev/r/tooltip-icon-button.json",
+    "https://ui.aiellie.dev/r/typing-indicator.json",
+    "https://ui.aiellie.dev/r/bubble.json",
+    "https://ui.aiellie.dev/r/message.json"
+  ],
+  "files": [
+    {
+      "path": "examples/messages/chat-card.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { MoreHorizontalIcon, Settings01Icon } from \"@hugeicons/core-free-icons\"\nimport { HugeiconsIcon } from \"@hugeicons/react\"\n\nimport {\n  ChatCard,\n  ChatCardActions,\n  ChatCardDescription,\n  ChatCardFooter,\n  ChatCardHeader,\n  ChatCardThread,\n  ChatCardTitle,\n} from \"@/components/aiellie-ui/chat-card\"\nimport {\n  EmptyState,\n  EmptyStateComposer,\n  EmptyStateContent,\n  EmptyStateDescription,\n  EmptyStateTitle,\n} from \"@/components/aiellie-ui/composer/empty-state\"\nimport {\n  MessageInput,\n  MessageInputField,\n  MessageInputSubmit,\n} from \"@/components/aiellie-ui/composer/message-input\"\nimport { Suggestions } from \"@/components/aiellie-ui/suggestions\"\nimport { TooltipIconButton } from \"@/components/aiellie-ui/tooltip-icon-button\"\nimport { TypingIndicator } from \"@/components/aiellie-ui/typing-indicator\"\nimport { Bubble, BubbleContent } from \"@/components/ui/bubble\"\nimport { MessageAvatar } from \"@/components/ui/message\"\n\ntype Turn = { id: number; from: \"me\" | \"them\"; text: string }\n\nconst opening: Turn[] = [\n  { id: 1, from: \"them\", text: \"Morning — did the flag land?\" },\n  {\n    id: 2,\n    from: \"me\",\n    text: \"It went in behind rollout.tuesday last night.\",\n  },\n  { id: 3, from: \"them\", text: \"And staff first, or everyone?\" },\n]\n\nfunction Turns({ turns }: { turns: Turn[] }) {\n  return (\n    <>\n      {turns.map((turn) => (\n        <Bubble\n          key={turn.id}\n          align={turn.from === \"me\" ? \"end\" : \"start\"}\n          variant={turn.from === \"me\" ? \"default\" : \"muted\"}\n        >\n          <BubbleContent>{turn.text}</BubbleContent>\n        </Bubble>\n      ))}\n    </>\n  )\n}\n\nfunction Header() {\n  return (\n    <ChatCardHeader>\n      <MessageAvatar className=\"size-7 text-[11px] font-medium text-muted-foreground\">\n        E\n      </MessageAvatar>\n      <div className=\"min-w-0\">\n        <ChatCardTitle>Ellie</ChatCardTitle>\n        <ChatCardDescription>Rollout thread</ChatCardDescription>\n      </div>\n      <ChatCardActions>\n        <TooltipIconButton tooltip=\"Settings\">\n          <HugeiconsIcon icon={Settings01Icon} />\n        </TooltipIconButton>\n        <TooltipIconButton tooltip=\"More\">\n          <HugeiconsIcon icon={MoreHorizontalIcon} />\n        </TooltipIconButton>\n      </ChatCardActions>\n    </ChatCardHeader>\n  )\n}\n\n/** A whole little chat: header, thread, composer — written in one place. */\nexport function ChatCardDemo() {\n  const [turns, setTurns] = React.useState(opening)\n  const [value, setValue] = React.useState(\"\")\n\n  return (\n    <ChatCard className=\"max-w-sm\">\n      <Header />\n      <ChatCardThread>\n        <Turns turns={turns} />\n      </ChatCardThread>\n      <ChatCardFooter>\n        <MessageInput\n          value={value}\n          onValueChange={setValue}\n          onSubmit={(message) =>\n            setTurns((previous) => [\n              ...previous,\n              { id: previous.length + 1, from: \"me\", text: message },\n            ])\n          }\n        >\n          <MessageInputField placeholder=\"Reply…\" />\n          <MessageInputSubmit />\n        </MessageInput>\n      </ChatCardFooter>\n    </ChatCard>\n  )\n}\n\n/**\n * The card following a thread that is still arriving: the newest message stays\n * in view, and scrolling up stops it being pulled back.\n */\nexport function ChatCardLiveDemo() {\n  const [turns, setTurns] = React.useState(opening.slice(0, 1))\n  const [typing, setTyping] = React.useState(true)\n\n  const script = React.useMemo(\n    () => [\n      ...opening.slice(1),\n      {\n        id: 4,\n        from: \"me\" as const,\n        text: \"Staff first, everyone on Thursday.\",\n      },\n      { id: 5, from: \"them\" as const, text: \"That works. I'll tell support.\" },\n      {\n        id: 6,\n        from: \"me\" as const,\n        text: \"Thanks — the note is in the rollout doc if they want the detail.\",\n      },\n    ],\n    []\n  )\n\n  React.useEffect(() => {\n    const id = setInterval(() => {\n      setTurns((previous) => {\n        if (previous.length > script.length) return opening.slice(0, 1)\n        const next = script[previous.length - 1]\n        return next ? [...previous, next] : previous\n      })\n      setTyping(true)\n    }, 2200)\n    return () => clearInterval(id)\n  }, [script])\n\n  return (\n    <ChatCard className=\"max-w-sm\">\n      <Header />\n      <ChatCardThread>\n        <Turns turns={turns} />\n        {typing && turns.length <= script.length ? (\n          <TypingIndicator label=\"Ellie is typing\" />\n        ) : null}\n      </ChatCardThread>\n      <ChatCardFooter>\n        <MessageInput>\n          <MessageInputField placeholder=\"Reply…\" />\n          <MessageInputSubmit />\n        </MessageInput>\n      </ChatCardFooter>\n    </ChatCard>\n  )\n}\n\nconst prompts = [\"Summarise the thread\", \"What changed since Friday?\"]\n\n/** The same frame with nothing in it yet, which is what an opening screen is. */\nexport function ChatCardEmptyDemo() {\n  const [value, setValue] = React.useState(\"\")\n\n  return (\n    <ChatCard className=\"max-w-sm\">\n      <Header />\n      <EmptyState className=\"p-3\">\n        <div />\n        <EmptyStateContent>\n          <EmptyStateTitle className=\"text-base\">\n            Nothing here yet\n          </EmptyStateTitle>\n          <EmptyStateDescription className=\"text-xs\">\n            Ask about the rollout, or pick one of these.\n          </EmptyStateDescription>\n          <EmptyStateComposer>\n            <MessageInput value={value} onValueChange={setValue}>\n              <MessageInputField placeholder=\"Ask anything…\" />\n              <MessageInputSubmit />\n            </MessageInput>\n            <Suggestions\n              variant=\"list\"\n              suggestions={prompts}\n              onSuggestion={setValue}\n              selectedSuggestion={prompts.includes(value) ? value : null}\n              className=\"max-w-full self-stretch\"\n            />\n          </EmptyStateComposer>\n        </EmptyStateContent>\n      </EmptyState>\n    </ChatCard>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/messages/chat-card.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Default",
+        "demo": "ChatCardDemo"
+      },
+      {
+        "name": "Arriving",
+        "demo": "ChatCardLiveDemo"
+      },
+      {
+        "name": "Empty",
+        "demo": "ChatCardEmptyDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "messages"
+  ],
+  "type": "registry:example"
+}

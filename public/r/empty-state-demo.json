@@ -1,0 +1,43 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "empty-state-demo",
+  "title": "Empty State",
+  "description": "An opening screen with the model and the settings across the top, the greeting under them, and the composer with its prompts — as a strip of chips, and as a column of things to ask.",
+  "dependencies": [
+    "@hugeicons/core-free-icons",
+    "@hugeicons/react"
+  ],
+  "registryDependencies": [
+    "https://ui.aiellie.dev/r/empty-state.json",
+    "https://ui.aiellie.dev/r/message-input.json",
+    "https://ui.aiellie.dev/r/model-picker.json",
+    "https://ui.aiellie.dev/r/suggestions.json",
+    "https://ui.aiellie.dev/r/tooltip-icon-button.json",
+    "https://ui.aiellie.dev/r/kbd.json"
+  ],
+  "files": [
+    {
+      "path": "examples/composer/empty-state.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport {\n  Clock01Icon,\n  PlusSignIcon,\n  Settings01Icon,\n} from \"@hugeicons/core-free-icons\"\nimport { HugeiconsIcon } from \"@hugeicons/react\"\n\nimport {\n  EmptyState,\n  EmptyStateComposer,\n  EmptyStateContent,\n  EmptyStateDescription,\n  EmptyStateFooter,\n  EmptyStateHeader,\n  EmptyStateHeaderActions,\n  EmptyStateTitle,\n} from \"@/components/aiellie-ui/composer/empty-state\"\nimport {\n  MessageInput,\n  MessageInputField,\n  MessageInputSubmit,\n} from \"@/components/aiellie-ui/composer/message-input\"\nimport {\n  ModelPicker,\n  ModelPickerContent,\n  ModelPickerTrigger,\n} from \"@/components/aiellie-ui/composer/model-picker\"\nimport { Suggestions } from \"@/components/aiellie-ui/suggestions\"\nimport { TooltipIconButton } from \"@/components/aiellie-ui/tooltip-icon-button\"\nimport { Kbd } from \"@/components/ui/kbd\"\n\nconst prompts = [\n  \"Summarise the thread\",\n  \"What changed since Friday?\",\n  \"Draft the release note\",\n  \"Explain the rollout plan\",\n]\n\n/**\n * The opening screen: what the conversation is set to across the top, the\n * invitation in the middle, and the prompts under the field for anyone who\n * would rather pick than write.\n */\nexport function EmptyStateDemo() {\n  const [value, setValue] = React.useState(\"\")\n  const [model, setModel] = React.useState(\"claude-sonnet-5\")\n  const [sent, setSent] = React.useState<string | null>(null)\n\n  return (\n    <EmptyState className=\"min-h-[26rem]\">\n      <EmptyStateHeader>\n        <ModelPicker value={model} onValueChange={setModel}>\n          <ModelPickerTrigger />\n          <ModelPickerContent />\n        </ModelPicker>\n        <EmptyStateHeaderActions>\n          <TooltipIconButton tooltip=\"History\">\n            <HugeiconsIcon icon={Clock01Icon} />\n          </TooltipIconButton>\n          <TooltipIconButton tooltip=\"Settings\">\n            <HugeiconsIcon icon={Settings01Icon} />\n          </TooltipIconButton>\n          <TooltipIconButton tooltip=\"New chat\">\n            <HugeiconsIcon icon={PlusSignIcon} />\n          </TooltipIconButton>\n        </EmptyStateHeaderActions>\n      </EmptyStateHeader>\n\n      <EmptyStateContent>\n        <EmptyStateTitle>Where would you like to start?</EmptyStateTitle>\n        <EmptyStateDescription>\n          {sent\n            ? `Sent “${sent}”. Ask something else, or pick one of the prompts.`\n            : \"Ask about the rollout, the thread, or anything else in the project.\"}\n        </EmptyStateDescription>\n\n        <EmptyStateComposer>\n          <MessageInput\n            value={value}\n            onValueChange={setValue}\n            onSubmit={setSent}\n          >\n            <MessageInputField placeholder=\"Ask anything…\" />\n            <MessageInputSubmit />\n          </MessageInput>\n          <Suggestions\n            // Three that fit rather than four that scroll: on an opening\n            // screen the prompts are meant to be read at a glance, and a strip\n            // with one cut off at the edge reads as a mistake.\n            suggestions={prompts.slice(0, 3)}\n            // Picking fills the field rather than sending: a prompt is a\n            // starting point, and the reader may want to change it first.\n            onSuggestion={setValue}\n            selectedSuggestion={prompts.includes(value) ? value : null}\n            className=\"max-w-full justify-center-safe\"\n          />\n        </EmptyStateComposer>\n      </EmptyStateContent>\n\n      <EmptyStateFooter>\n        <span>\n          <Kbd>⏎</Kbd> to send\n        </span>\n      </EmptyStateFooter>\n    </EmptyState>\n  )\n}\n\n/**\n * The same screen with the prompts as a column rather than a strip, which is\n * what a wider opening screen tends to want: the choices read as a list of\n * things to ask instead of a row of chips.\n */\nexport function EmptyStateListDemo() {\n  const [value, setValue] = React.useState(\"\")\n\n  return (\n    <EmptyState className=\"min-h-[26rem]\">\n      <EmptyStateHeader>\n        <span className=\"text-xs font-medium text-muted-foreground\">\n          New conversation\n        </span>\n        <EmptyStateHeaderActions>\n          <TooltipIconButton tooltip=\"Settings\">\n            <HugeiconsIcon icon={Settings01Icon} />\n          </TooltipIconButton>\n        </EmptyStateHeaderActions>\n      </EmptyStateHeader>\n\n      <EmptyStateContent>\n        <EmptyStateTitle>Good afternoon, Ellie</EmptyStateTitle>\n        <EmptyStateDescription>\n          Pick up where the thread left off, or start somewhere new.\n        </EmptyStateDescription>\n\n        <EmptyStateComposer className=\"max-w-sm\">\n          <MessageInput value={value} onValueChange={setValue}>\n            <MessageInputField placeholder=\"Ask anything…\" />\n            <MessageInputSubmit />\n          </MessageInput>\n          <Suggestions\n            variant=\"list\"\n            suggestions={prompts.slice(0, 3)}\n            onSuggestion={setValue}\n            selectedSuggestion={prompts.includes(value) ? value : null}\n            className=\"max-w-full self-stretch\"\n          />\n        </EmptyStateComposer>\n      </EmptyStateContent>\n    </EmptyState>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/composer/empty-state.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Default",
+        "demo": "EmptyStateDemo"
+      },
+      {
+        "name": "Prompt list",
+        "demo": "EmptyStateListDemo"
+      }
+    ],
+    "wide": true
+  },
+  "categories": [
+    "composer"
+  ],
+  "type": "registry:example"
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "reasoning-demo",
+  "title": "Reasoning",
+  "description": "Thinking unfolding a step at a time and folding itself away when the answer arrives, and the same panel read back from a transcript with the time it took.",
+  "registryDependencies": [
+    "https://ui.aiellie.dev/r/reasoning.json",
+    "https://ui.aiellie.dev/r/bubble.json"
+  ],
+  "files": [
+    {
+      "path": "examples/messages/reasoning.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport {\n  Reasoning,\n  ReasoningContent,\n  ReasoningStep,\n  ReasoningTrigger,\n} from \"@/components/aiellie-ui/reasoning\"\nimport { Bubble, BubbleContent, BubbleGroup } from \"@/components/ui/bubble\"\n\nconst steps = [\n  \"The question is about the rollout date, so the flag state is what matters.\",\n  \"rollout.tuesday is on for staff and off for everyone else.\",\n  \"The migration is the blocker on turning it on more widely.\",\n  \"So: shipped, but only staff can see it until Thursday.\",\n]\n\n/** Thinking as it happens: open while it runs, folded away once it is done. */\nexport function ReasoningDemo() {\n  const [shown, setShown] = React.useState(0)\n\n  React.useEffect(() => {\n    const id = setInterval(() => {\n      setShown((previous) => (previous > steps.length + 3 ? 0 : previous + 1))\n    }, 1200)\n    return () => clearInterval(id)\n  }, [])\n\n  const thinking = shown <= steps.length\n\n  return (\n    <BubbleGroup className=\"w-full max-w-sm\">\n      <Bubble align=\"end\">\n        <BubbleContent>Did the rollout ship?</BubbleContent>\n      </Bubble>\n      <div className=\"flex flex-col gap-1\">\n        <Reasoning thinking={thinking}>\n          <ReasoningTrigger />\n          <ReasoningContent>\n            {steps.slice(0, shown).map((step) => (\n              <ReasoningStep key={step}>{step}</ReasoningStep>\n            ))}\n          </ReasoningContent>\n        </Reasoning>\n        {!thinking ? (\n          <Bubble variant=\"muted\">\n            <BubbleContent>\n              It shipped behind a flag on Tuesday — staff only until the\n              migration lands on Thursday.\n            </BubbleContent>\n          </Bubble>\n        ) : null}\n      </div>\n    </BubbleGroup>\n  )\n}\n\n/**\n * A transcript being read back rather than watched: the duration is known, so\n * it is given rather than counted, and the panel starts folded.\n */\nexport function ReasoningSettledDemo() {\n  return (\n    <div className=\"flex w-full max-w-sm flex-col gap-3\">\n      <Reasoning duration={4}>\n        <ReasoningTrigger />\n        <ReasoningContent>\n          {steps.map((step) => (\n            <ReasoningStep key={step}>{step}</ReasoningStep>\n          ))}\n        </ReasoningContent>\n      </Reasoning>\n      <Reasoning duration={41} defaultOpen>\n        <ReasoningTrigger />\n        <ReasoningContent>\n          {steps.slice(0, 2).map((step) => (\n            <ReasoningStep key={step}>{step}</ReasoningStep>\n          ))}\n        </ReasoningContent>\n      </Reasoning>\n    </div>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/messages/reasoning.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Thinking",
+        "demo": "ReasoningDemo"
+      },
+      {
+        "name": "Settled",
+        "demo": "ReasoningSettledDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "messages"
+  ],
+  "type": "registry:example"
+}
