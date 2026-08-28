@@ -29,6 +29,8 @@ import {
   TextFontIcon,
   AiSwapIcon,
   Wrench01Icon,
+  ShieldKeyIcon,
+  SignalFull01Icon,
 } from "@hugeicons/core-free-icons"
 import type { IconSvgElement } from "@hugeicons/react"
 import type { RegistryItem } from "shadcn/schema"
@@ -50,6 +52,8 @@ import * as mentionsDemos from "@/examples/composer/mentions"
 import * as messageInputDemos from "@/examples/composer/message-input"
 import * as modelPickerDemos from "@/examples/composer/model-picker"
 import * as toolPickerDemos from "@/examples/composer/tool-picker"
+import * as approvalModeMenuDemos from "@/examples/composer/approval-mode-menu"
+import * as effortMenuDemos from "@/examples/composer/effort-menu"
 import * as messageContextMenuDemos from "@/examples/messages/message-context-menu"
 import * as messageHighlightToolbarDemos from "@/examples/messages/message-highlight-toolbar"
 import * as messageStatusDemos from "@/examples/messages/message-status"
@@ -152,6 +156,14 @@ const exampleDemos: Record<string, ExampleDemos> = {
   "tool-picker-demo": {
     icon: Wrench01Icon,
     components: { ...toolPickerDemos },
+  },
+  "approval-mode-menu-demo": {
+    icon: ShieldKeyIcon,
+    components: { ...approvalModeMenuDemos },
+  },
+  "effort-menu-demo": {
+    icon: SignalFull01Icon,
+    components: { ...effortMenuDemos },
   },
   "message-actions-demo": {
     icon: Comment01Icon,

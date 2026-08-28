@@ -504,6 +504,49 @@
       ]
     },
     {
+      "name": "approval-mode-menu",
+      "type": "registry:ui",
+      "title": "Approval Mode Menu",
+      "description": "How much rope the agent is given, chosen from the composer — auto, manual, accept edits, plan and full access, each row carrying the line on what running under it means, and the one that never stops to ask set apart and drawn as the danger it is, on the row and on the trigger both.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/button.json",
+        "https://ui.aiellie.dev/r/menu.json",
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/composer/approval-mode-menu.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/composer/approval-mode-menu.tsx"
+        }
+      ]
+    },
+    {
+      "name": "effort-menu",
+      "type": "registry:ui",
+      "title": "Effort Menu",
+      "description": "How hard the model is asked to think, set from the composer — a ladder of six named rungs on a slider rather than a list of rows, because low and ultra are the two ends of one thing and not two options, and a trigger of bars that fill to the rung so a composer says how hard it is thinking without being opened.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/button.json",
+        "https://ui.aiellie.dev/r/menu.json",
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/composer/effort-menu.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/composer/effort-menu.tsx"
+        }
+      ]
+    },
+    {
       "name": "message-actions",
       "type": "registry:ui",
       "title": "Message Actions",
@@ -1843,6 +1886,10 @@
           {
             "name": "Plan",
             "demo": "ModelPickerPlanDemo"
+          },
+          {
+            "name": "Icons",
+            "demo": "ModelPickerBrandDemo"
           }
         ],
         "wide": false
@@ -1883,6 +1930,85 @@
           {
             "name": "All",
             "demo": "ToolPickerAllDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "approval-mode-menu-demo",
+      "type": "registry:example",
+      "title": "Approval Mode Menu",
+      "description": "How much a run may do without being asked again, set from the composer — five modes, each saying what it means before it is taken, and the one that never asks turning the control red so a session left in it says so unopened.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/approval-mode-menu.json",
+        "https://ui.aiellie.dev/r/message-input.json",
+        "https://ui.aiellie.dev/r/model-picker.json",
+        "https://ui.aiellie.dev/r/tooltip.json"
+      ],
+      "files": [
+        {
+          "path": "examples/composer/approval-mode-menu.tsx",
+          "type": "registry:example",
+          "target": "examples/composer/approval-mode-menu.tsx"
+        }
+      ],
+      "categories": [
+        "composer"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Default",
+            "demo": "ApprovalModeMenuDemo"
+          },
+          {
+            "name": "Composer",
+            "demo": "ApprovalModeMenuComposerDemo"
+          },
+          {
+            "name": "Full access",
+            "demo": "ApprovalModeMenuFullAccessDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "effort-menu-demo",
+      "type": "registry:example",
+      "title": "Effort Menu",
+      "description": "How hard the model should think, set from the composer — a slider whose stops are named so the ladder need not be guessed at, and a trigger of bars that fill as it moves.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/effort-menu.json",
+        "https://ui.aiellie.dev/r/message-input.json",
+        "https://ui.aiellie.dev/r/model-picker.json",
+        "https://ui.aiellie.dev/r/tool-picker.json",
+        "https://ui.aiellie.dev/r/tooltip.json"
+      ],
+      "files": [
+        {
+          "path": "examples/composer/effort-menu.tsx",
+          "type": "registry:example",
+          "target": "examples/composer/effort-menu.tsx"
+        }
+      ],
+      "categories": [
+        "composer"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Default",
+            "demo": "EffortMenuDemo"
+          },
+          {
+            "name": "Composer",
+            "demo": "EffortMenuComposerDemo"
+          },
+          {
+            "name": "Ladder",
+            "demo": "EffortMenuLadderDemo"
           }
         ],
         "wide": false

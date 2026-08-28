@@ -429,6 +429,38 @@ export const aiellieui: Registry["items"] = [
     ],
   },
   {
+    name: "approval-mode-menu",
+    type: "registry:ui",
+    title: "Approval Mode Menu",
+    description:
+      "How much rope the agent is given, chosen from the composer — auto, manual, accept edits, plan and full access, each row carrying the line on what running under it means, and the one that never stops to ask set apart and drawn as the danger it is, on the row and on the trigger both.",
+    registryDependencies: ["button", "menu", "utils"],
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    files: [
+      {
+        path: "components/aiellie-ui/composer/approval-mode-menu.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/composer/approval-mode-menu.tsx",
+      },
+    ],
+  },
+  {
+    name: "effort-menu",
+    type: "registry:ui",
+    title: "Effort Menu",
+    description:
+      "How hard the model is asked to think, set from the composer — a ladder of six named rungs on a slider rather than a list of rows, because low and ultra are the two ends of one thing and not two options, and a trigger of bars that fill to the rung so a composer says how hard it is thinking without being opened.",
+    registryDependencies: ["button", "menu", "utils"],
+    dependencies: ["@base-ui/react"],
+    files: [
+      {
+        path: "components/aiellie-ui/composer/effort-menu.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/composer/effort-menu.tsx",
+      },
+    ],
+  },
+  {
     name: "message-actions",
     type: "registry:ui",
     title: "Message Actions",

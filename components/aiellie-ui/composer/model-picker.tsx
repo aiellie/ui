@@ -20,6 +20,7 @@ import {
   MenuSubTrigger,
   MenuTrigger,
 } from "@/components/aiellie-ui/menu"
+import type { ModelIconSet } from "@/components/icons/model-icons"
 import {
   CapabilityIcon,
   ModelIcon,
@@ -62,6 +63,7 @@ type ModelPickerContextValue = {
   setValue: (id: string) => void
   models: Model[]
   plan: ModelTier
+  icons: ModelIconSet | undefined
 }
 
 const ModelPickerContext = React.createContext<
@@ -90,6 +92,16 @@ type ModelPickerProps = Omit<React.ComponentProps<typeof Menu>, "children"> & {
    * "what else is there?", which is the question that makes someone upgrade.
    */
   plan?: ModelTier
+  /**
+   * Forces every mark into one set. Left off — which is the usual case — the
+   * models come out in colour and the houses in plain ink: the model is what
+   * is being picked, and the house is the heading it sits under. Colour on
+   * both would have the headings competing with the rows they label.
+   *
+   * `mono` for a composer that wants no colour in it at all; `brand` for a
+   * settings page where each house is the row rather than the label.
+   */
+  icons?: ModelIconSet
   children?: React.ReactNode
 }
 
@@ -105,6 +117,7 @@ function ModelPicker({
   onValueChange,
   models = defaultModels,
   plan = "pro",
+  icons,
   open: openProp,
   onOpenChange,
   children,
@@ -141,8 +154,8 @@ function ModelPicker({
   )
 
   const context = React.useMemo(
-    () => ({ value, setValue, models, plan }),
-    [value, setValue, models, plan]
+    () => ({ value, setValue, models, plan, icons }),
+    [value, setValue, models, plan, icons]
   )
 
   return (
@@ -176,7 +189,7 @@ function ModelPickerTrigger({
   showIcon = true,
   ...props
 }: React.ComponentProps<typeof MenuTrigger> & { showIcon?: boolean }) {
-  const { value, models } = useModelPickerContext("ModelPickerTrigger")
+  const { value, models, icons } = useModelPickerContext("ModelPickerTrigger")
   const model = findModel(value, models)
 
   return (
@@ -205,6 +218,7 @@ function ModelPickerTrigger({
             <ModelIcon
               model={model.id}
               provider={model.provider}
+              set={icons}
               className="size-3.5 opacity-70"
             />
           ) : null}
@@ -366,12 +380,22 @@ function ModelBadge({ className, ...props }: React.ComponentProps<"span">) {
 /** What a row keeps back: what the model is for, and how much it holds. */
 function ModelPickerDetail({ model }: { model: Model }) {
   return (
-    <div data-slot="model-picker-detail" className="w-56 p-2">
+    /* Sized to its own content rather than to a fixed width, so the one line
+       below decides how wide the panel is. Capped, because a catalogue with one
+       runaway description in it should not get one panel twice the width of the
+       rest. */
+    <div
+      data-slot="model-picker-detail"
+      className="w-max max-w-[min(20rem,calc(100vw-2rem))] p-2"
+    >
       {model.badge ? (
         <ModelBadge className="mb-2">{model.badge}</ModelBadge>
       ) : null}
 
-      <p className="text-xs leading-relaxed font-normal text-muted-foreground">
+      {/* One line. The description is a label for the model, not a paragraph
+          about it — wrapped over three lines it stops being something you take
+          in on the way past, which is the only moment a hover panel gets. */}
+      <p className="truncate text-xs leading-relaxed font-normal text-muted-foreground">
         {model.description}
       </p>
 
@@ -422,7 +446,8 @@ function ModelPickerItem({
   className,
   ...props
 }: React.ComponentProps<typeof MenuSubTrigger> & { model: Model }) {
-  const { value, setValue, plan } = useModelPickerContext("ModelPickerItem")
+  const { value, setValue, plan, icons } =
+    useModelPickerContext("ModelPickerItem")
   const locked = !canUseModel(model, plan)
   const chosen = value === model.id
 
@@ -465,6 +490,7 @@ function ModelPickerItem({
         <ModelIcon
           model={model.id}
           provider={model.provider}
+          set={icons}
           className="size-3.5 shrink-0 text-foreground/80"
         />
 
@@ -532,7 +558,7 @@ function ModelPickerContent({
   searchable = true,
   ...props
 }: React.ComponentProps<typeof MenuContent> & { searchable?: boolean }) {
-  const { models } = useModelPickerContext("ModelPickerContent")
+  const { models, icons } = useModelPickerContext("ModelPickerContent")
   const [query, setQuery] = React.useState("")
 
   React.useEffect(() => () => setQuery(""), [])
@@ -574,7 +600,11 @@ function ModelPickerContent({
             groups.map(({ provider, models: grouped }) => (
               <MenuGroup key={provider.id}>
                 <MenuGroupLabel className="flex items-center gap-1.5">
-                  <ProviderIcon provider={provider.id} className="size-3" />
+                  <ProviderIcon
+                    provider={provider.id}
+                    set={icons}
+                    className="size-3"
+                  />
                   {provider.name}
                 </MenuGroupLabel>
                 {grouped.map((model) => (

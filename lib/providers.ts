@@ -169,6 +169,13 @@ const providers: Provider[] = [
     url: "https://together.ai",
   },
   {
+    id: "vercel",
+    name: "Vercel",
+    kind: "platform",
+    description: "One gateway across the labs, and v0 of its own.",
+    url: "https://vercel.com/ai-gateway",
+  },
+  {
     id: "openrouter",
     name: "OpenRouter",
     kind: "platform",

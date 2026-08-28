@@ -1,0 +1,42 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "effort-menu-demo",
+  "title": "Effort Menu",
+  "description": "How hard the model should think, set from the composer — a slider whose stops are named so the ladder need not be guessed at, and a trigger of bars that fill as it moves.",
+  "registryDependencies": [
+    "https://ui.aiellie.dev/r/effort-menu.json",
+    "https://ui.aiellie.dev/r/message-input.json",
+    "https://ui.aiellie.dev/r/model-picker.json",
+    "https://ui.aiellie.dev/r/tool-picker.json",
+    "https://ui.aiellie.dev/r/tooltip.json"
+  ],
+  "files": [
+    {
+      "path": "examples/composer/effort-menu.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport type { Effort } from \"@/components/aiellie-ui/composer/effort-menu\"\nimport {\n  EffortMenu,\n  EffortMenuContent,\n  EffortMenuTrigger,\n  efforts,\n  findEffort,\n} from \"@/components/aiellie-ui/composer/effort-menu\"\nimport {\n  MessageInput,\n  MessageInputField,\n  MessageInputSubmit,\n} from \"@/components/aiellie-ui/composer/message-input\"\nimport {\n  ModelPicker,\n  ModelPickerContent,\n  ModelPickerTrigger,\n} from \"@/components/aiellie-ui/composer/model-picker\"\nimport {\n  ToolPicker,\n  ToolPickerContent,\n  ToolPickerTrigger,\n} from \"@/components/aiellie-ui/composer/tool-picker\"\nimport { TooltipProvider } from \"@/components/ui/tooltip\"\n\n/**\n * The setting on its own: six bars that fill as the slider moves, and a slider\n * whose stops are named so the ladder does not have to be guessed at.\n */\nexport function EffortMenuDemo() {\n  const [effort, setEffort] = React.useState(\"high\")\n\n  return (\n    <div className=\"flex w-full max-w-sm flex-col gap-2\">\n      <EffortMenu value={effort} onValueChange={setEffort}>\n        <EffortMenuTrigger />\n        <EffortMenuContent />\n      </EffortMenu>\n      <p className=\"ps-1 text-xs text-muted-foreground\">\n        {findEffort(effort)?.name} — rung{\" \"}\n        {efforts.findIndex((rung) => rung.id === effort) + 1} of{\" \"}\n        {efforts.length}.\n      </p>\n    </div>\n  )\n}\n\n/**\n * Where it belongs: on the row a composer keeps for the things a message is\n * sent *with*. Three questions asked of the same message — what is answering,\n * what it may reach for, and how hard it should think — and effort is the one\n * whose control says its answer without being opened.\n */\nexport function EffortMenuComposerDemo() {\n  const [effort, setEffort] = React.useState(\"medium\")\n  const [tools, setTools] = React.useState<string[]>([\"read\", \"grep\"])\n  const [model, setModel] = React.useState(\"claude-opus-5\")\n  const [sent, setSent] = React.useState<string | null>(null)\n\n  return (\n    <TooltipProvider>\n      <div className=\"flex w-full max-w-sm flex-col gap-2\">\n        <MessageInput\n          className=\"flex-col items-stretch gap-1 rounded-2xl border border-border/60 bg-background p-1.5 dark:bg-popover\"\n          onSubmit={(message) => setSent(message)}\n        >\n          <MessageInputField\n            placeholder=\"Ask it something hard…\"\n            className=\"h-9 border-transparent bg-transparent px-2 focus-visible:border-transparent\"\n          />\n          <div className=\"flex items-center gap-1\">\n            <EffortMenu value={effort} onValueChange={setEffort}>\n              <EffortMenuTrigger />\n              <EffortMenuContent side=\"top\" />\n            </EffortMenu>\n            <ToolPicker value={tools} onValueChange={setTools}>\n              <ToolPickerTrigger />\n              <ToolPickerContent side=\"top\" />\n            </ToolPicker>\n            <ModelPicker value={model} onValueChange={setModel}>\n              <ModelPickerTrigger />\n              <ModelPickerContent side=\"top\" />\n            </ModelPicker>\n            <MessageInputSubmit className=\"ms-auto size-7\" />\n          </div>\n        </MessageInput>\n        <p className=\"ps-1 text-xs text-muted-foreground\">\n          {sent\n            ? `Sent on ${findEffort(effort)?.name.toLowerCase()} effort.`\n            : `Thinking ${findEffort(effort)?.name.toLowerCase()}, with ${tools.length} ${tools.length === 1 ? \"tool\" : \"tools\"}.`}\n        </p>\n      </div>\n    </TooltipProvider>\n  )\n}\n\n/**\n * A ladder of three, to show that the glyph is not a picture of six bars. The\n * bar count is the catalogue's length and the fill is its index, so a shorter\n * ladder is a shorter icon — no class, no variant, nothing to keep in step.\n *\n * The name rides on the trigger here as well, which is what a ladder nobody\n * has seen before wants: three bars out of three says \"the top\" only once you\n * know how many there are.\n */\nconst budgets: Effort[] = [\n  {\n    id: \"draft\",\n    name: \"Draft\",\n    description: \"First thing that works. For a shape you are still moving.\",\n  },\n  {\n    id: \"review\",\n    name: \"Review\",\n    description: \"Checked once through, the way a second pair of eyes would.\",\n  },\n  {\n    id: \"ship\",\n    name: \"Ship\",\n    description: \"Everything it has, for the version somebody else will read.\",\n  },\n]\n\nexport function EffortMenuLadderDemo() {\n  const [effort, setEffort] = React.useState(\"review\")\n\n  return (\n    <div className=\"flex w-full max-w-sm flex-col gap-2\">\n      <EffortMenu efforts={budgets} value={effort} onValueChange={setEffort}>\n        <EffortMenuTrigger showLabel />\n        <EffortMenuContent />\n      </EffortMenu>\n      <p className=\"ps-1 text-xs text-muted-foreground\">\n        {findEffort(effort, budgets)?.description}\n      </p>\n    </div>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/composer/effort-menu.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Default",
+        "demo": "EffortMenuDemo"
+      },
+      {
+        "name": "Composer",
+        "demo": "EffortMenuComposerDemo"
+      },
+      {
+        "name": "Ladder",
+        "demo": "EffortMenuLadderDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "composer"
+  ],
+  "type": "registry:example"
+}

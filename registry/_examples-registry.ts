@@ -694,6 +694,7 @@ export const examples: Registry["items"] = [
         { name: "Default", demo: "ModelPickerDemo" },
         { name: "Composer", demo: "ModelPickerComposerDemo" },
         { name: "Plan", demo: "ModelPickerPlanDemo" },
+        { name: "Icons", demo: "ModelPickerBrandDemo" },
       ],
       wide: false,
     },
@@ -724,6 +725,65 @@ export const examples: Registry["items"] = [
         { name: "Default", demo: "ToolPickerDemo" },
         { name: "Composer", demo: "ToolPickerComposerDemo" },
         { name: "All", demo: "ToolPickerAllDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "approval-mode-menu-demo",
+    type: "registry:example",
+    title: "Approval Mode Menu",
+    description:
+      "How much a run may do without being asked again, set from the composer — five modes, each saying what it means before it is taken, and the one that never asks turning the control red so a session left in it says so unopened.",
+    registryDependencies: [
+      "approval-mode-menu",
+      "message-input",
+      "model-picker",
+      "tooltip",
+    ],
+    files: [
+      {
+        path: "examples/composer/approval-mode-menu.tsx",
+        type: "registry:example",
+        target: "examples/composer/approval-mode-menu.tsx",
+      },
+    ],
+    categories: ["composer"],
+    meta: {
+      variants: [
+        { name: "Default", demo: "ApprovalModeMenuDemo" },
+        { name: "Composer", demo: "ApprovalModeMenuComposerDemo" },
+        { name: "Full access", demo: "ApprovalModeMenuFullAccessDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "effort-menu-demo",
+    type: "registry:example",
+    title: "Effort Menu",
+    description:
+      "How hard the model should think, set from the composer — a slider whose stops are named so the ladder need not be guessed at, and a trigger of bars that fill as it moves.",
+    registryDependencies: [
+      "effort-menu",
+      "message-input",
+      "model-picker",
+      "tool-picker",
+      "tooltip",
+    ],
+    files: [
+      {
+        path: "examples/composer/effort-menu.tsx",
+        type: "registry:example",
+        target: "examples/composer/effort-menu.tsx",
+      },
+    ],
+    categories: ["composer"],
+    meta: {
+      variants: [
+        { name: "Default", demo: "EffortMenuDemo" },
+        { name: "Composer", demo: "EffortMenuComposerDemo" },
+        { name: "Ladder", demo: "EffortMenuLadderDemo" },
       ],
       wide: false,
     },
