@@ -394,8 +394,15 @@ export const aiellieui: Registry["items"] = [
     type: "registry:ui",
     title: "Model Picker",
     description:
-      "Which model is answering, and the choosing of another one — the catalogue stood under the house each model comes from, every row saying what its model is for, what it can do and how much it holds, and the ones above the plan shown locked rather than left out.",
-    registryDependencies: ["button", "menu", "model-icons", "models", "utils"],
+      "Which model is answering, and the choosing of another one — the catalogue stood under the house each model comes from, searchable, each row carrying its model's mark and the marks for what it can do, with what it is for and how much it holds a hover away, and the ones above the plan shown locked rather than left out.",
+    registryDependencies: [
+      "button",
+      "menu",
+      "model-icons",
+      "models",
+      "tooltip",
+      "utils",
+    ],
     dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
     files: [
       {

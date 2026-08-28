@@ -3,6 +3,7 @@
 import * as React from "react"
 import {
   ArrowDown01Icon,
+  Cancel01Icon,
   Search01Icon,
   SquareLock01Icon,
   Tick02Icon,
@@ -25,6 +26,11 @@ import {
   ProviderIcon,
 } from "@/components/icons/model-icons"
 import { Button } from "@/components/ui/button"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import type { Model, ModelTier } from "@/lib/models"
 import {
   canUseModel,
@@ -226,16 +232,20 @@ function ModelPickerSearch({
   onValueChange,
   className,
   placeholder = "Search models…",
+  clearLabel = "Clear search",
   ...props
 }: Omit<React.ComponentProps<"input">, "value" | "onChange"> & {
   value: string
   onValueChange: (value: string) => void
+  clearLabel?: React.ReactNode
 }) {
+  const inputRef = React.useRef<HTMLInputElement>(null)
+
   return (
     <div
       data-slot="model-picker-search"
       className={cn(
-        "-mx-1 -mt-1 mb-1 flex shrink-0 items-center gap-2 border-b border-border/60 px-3 py-2",
+        "-mx-1 -mt-1 mb-1 flex shrink-0 items-center gap-2 border-b border-border/60 py-1.5 ps-3 pe-1.5",
         className
       )}
     >
@@ -246,6 +256,7 @@ function ModelPickerSearch({
         className="size-3.5 shrink-0 text-muted-foreground/70"
       />
       <input
+        ref={inputRef}
         type="text"
         autoComplete="off"
         spellCheck={false}
@@ -263,11 +274,47 @@ function ModelPickerSearch({
         className="w-full bg-transparent text-xs text-foreground outline-none placeholder:text-muted-foreground/70"
         {...props}
       />
+
+      {/* Disabled rather than hidden while the field is empty: a control that
+          comes and goes shifts the field's end as you type, and the first
+          character would move the thing you were about to aim at. */}
+      <Tooltip>
+        <TooltipTrigger
+          render={
+            <button
+              type="button"
+              data-slot="model-picker-clear"
+              aria-label="Clear search"
+              disabled={!value}
+              onClick={(event) => {
+                // The menu closes on a press that reaches it, and this one is
+                // about the field rather than about choosing anything.
+                event.stopPropagation()
+                onValueChange("")
+                inputRef.current?.focus()
+              }}
+              className="flex size-5 shrink-0 items-center justify-center rounded-md text-muted-foreground/70 transition-colors outline-none hover:bg-foreground/[0.06] hover:text-foreground focus-visible:ring-1 focus-visible:ring-foreground/20 disabled:pointer-events-none disabled:opacity-30 motion-reduce:transition-none dark:hover:bg-foreground/[0.09]"
+            />
+          }
+        >
+          <HugeiconsIcon
+            aria-hidden
+            icon={Cancel01Icon}
+            strokeWidth={2}
+            className="size-3"
+          />
+        </TooltipTrigger>
+        <TooltipContent>{clearLabel}</TooltipContent>
+      </Tooltip>
     </div>
   )
 }
 
-/** The marks a row carries for what its model can do, read out as one list. */
+/**
+ * A run of marks for what a model can do, read out as one list. Not used by the
+ * rows any more — they carry a name and nothing else — but still exported, for
+ * a composer that wants the marks somewhere of its own.
+ */
 function ModelCapabilities({
   capabilities,
   className,
@@ -336,8 +383,11 @@ function ModelPickerDetail({ model }: { model: Model }) {
 }
 
 /**
- * One model: its name, and the marks for what it can do. Clicking it chooses
- * the model; resting on it opens what the row left out.
+ * One model: its mark and its name, and nothing else. What it can do, what it
+ * is for and how much it holds are all a hover away — a row of capability
+ * glyphs answers "what can this do?" only for someone who already knows what
+ * each glyph means, and costs every other reader the scannability of the list.
+ * Clicking chooses the model; resting on it opens what the row left out.
  *
  * It is a submenu trigger rather than a radio item, so the radio semantics have
  * to be put back by hand — `aria-current` rather than `aria-checked`, since a
@@ -388,6 +438,16 @@ function ModelPickerItem({
         className={cn("gap-2 pe-1.5", className)}
         {...props}
       >
+        {/* The model's own mark, not its house's — `model-icons` resolves the
+            family first, so Qwen3 Max under Alibaba wears Qwen. Drawn at full
+            strength while the capability marks stay muted, so the row reads as
+            one identity followed by a set of attributes. */}
+        <ModelIcon
+          model={model.id}
+          provider={model.provider}
+          className="size-3.5 shrink-0 text-foreground/80"
+        />
+
         <span className="truncate text-foreground">{model.name}</span>
 
         {model.badge ? (
@@ -405,19 +465,14 @@ function ModelPickerItem({
           />
         ) : null}
 
-        <ModelCapabilities
-          capabilities={model.capabilities}
-          className="ms-auto ps-2"
-        />
-
         {/* The space is held either way, so a tick appearing does not shunt
-            the marks beside it sideways. */}
+            the row's contents sideways. */}
         <HugeiconsIcon
           aria-hidden
           icon={Tick02Icon}
           strokeWidth={2}
           className={cn(
-            "size-3.5 shrink-0 text-foreground",
+            "ms-auto size-3.5 shrink-0 text-foreground",
             !chosen && "opacity-0"
           )}
         />

@@ -138,6 +138,7 @@ const MODEL_ICONS: Record<string, IconSvgElement> = {
   gemini: GoogleGeminiIcon,
   gemma: GoogleGeminiIcon,
   llama: MetaIcon,
+  muse: MetaIcon,
   deepseek: DeepseekIcon,
   grok: Grok02Icon,
   mistral: MistralIcon,
@@ -165,8 +166,8 @@ const CAPABILITY_ICONS: Record<ModelCapability, IconSvgElement> = {
 
 /**
  * The family a model id or name belongs to: the leading run of letters,
- * lowercased. `claude-opus-5` → `claude`, `GPT-5.2 mini` → `gpt`,
- * `qwen3-max` → `qwen`. A name that starts with something other than a letter
+ * lowercased. `claude-opus-5` → `claude`, `GPT-5.6 Luna` → `gpt`,
+ * `qwen3.8-max` → `qwen`. A name that starts with something other than a letter
  * has no family to find, and falls through to the provider.
  */
 function familyOf(nameOrId: string) {
