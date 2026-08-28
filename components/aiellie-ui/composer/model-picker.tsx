@@ -212,7 +212,7 @@ function ModelPickerTrigger({
           <HugeiconsIcon
             aria-hidden
             icon={ArrowDown01Icon}
-            strokeWidth={2}
+            strokeWidth={1.75}
             className="size-3 opacity-60"
           />
         </>
@@ -252,7 +252,7 @@ function ModelPickerSearch({
       <HugeiconsIcon
         aria-hidden
         icon={Search01Icon}
-        strokeWidth={2}
+        strokeWidth={1.75}
         className="size-3.5 shrink-0 text-muted-foreground/70"
       />
       <input
@@ -300,7 +300,7 @@ function ModelPickerSearch({
           <HugeiconsIcon
             aria-hidden
             icon={Cancel01Icon}
-            strokeWidth={2}
+            strokeWidth={1.75}
             className="size-3"
           />
         </TooltipTrigger>
@@ -345,10 +345,32 @@ function ModelCapabilities({
   )
 }
 
+/**
+ * The word a model wears over its name — "New", "Preview". Defined once
+ * because the row and the detail panel both show it, and a badge that drifts
+ * between the two reads as two different things rather than one repeated.
+ */
+function ModelBadge({ className, ...props }: React.ComponentProps<"span">) {
+  return (
+    <span
+      data-slot="model-badge"
+      className={cn(
+        "shrink-0 rounded-full bg-accent/[0.05] px-1.5 py-px text-[10px] leading-4 font-medium text-accent dark:bg-foreground/[0.09]",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
 /** What a row keeps back: what the model is for, and how much it holds. */
 function ModelPickerDetail({ model }: { model: Model }) {
   return (
     <div data-slot="model-picker-detail" className="w-56 p-2">
+      {model.badge ? (
+        <ModelBadge className="mb-2">{model.badge}</ModelBadge>
+      ) : null}
+
       <p className="text-xs leading-relaxed font-normal text-muted-foreground">
         {model.description}
       </p>
@@ -439,40 +461,41 @@ function ModelPickerItem({
         {...props}
       >
         {/* The model's own mark, not its house's — `model-icons` resolves the
-            family first, so Qwen3 Max under Alibaba wears Qwen. Drawn at full
-            strength while the capability marks stay muted, so the row reads as
-            one identity followed by a set of attributes. */}
+            family first, so Qwen3 Max under Alibaba wears Qwen. */}
         <ModelIcon
           model={model.id}
           provider={model.provider}
           className="size-3.5 shrink-0 text-foreground/80"
         />
 
-        <span className="truncate text-foreground">{model.name}</span>
+        {/* The name and what qualifies it, taking the row's slack between
+            them. `flex-1` here rather than an auto margin on the tick: the
+            chevron `menu` appends already carries `ms-auto`, and two auto
+            margins split the free space between them — which would strand the
+            tick halfway rather than against the arrow. */}
+        <span className="flex min-w-0 flex-1 items-center gap-1.5">
+          <span className="truncate text-foreground">{model.name}</span>
 
-        {model.badge ? (
-          <span className="shrink-0 rounded-full bg-foreground/[0.06] px-1.5 py-px text-[10px] leading-4 font-medium text-foreground/70 dark:bg-foreground/[0.09]">
-            {model.badge}
-          </span>
-        ) : null}
+          {model.badge ? <ModelBadge>{model.badge}</ModelBadge> : null}
 
-        {locked ? (
-          <HugeiconsIcon
-            icon={SquareLock01Icon}
-            strokeWidth={2}
-            className="size-3 shrink-0 text-muted-foreground/70"
-            aria-label="Not on this plan"
-          />
-        ) : null}
+          {locked ? (
+            <HugeiconsIcon
+              icon={SquareLock01Icon}
+              strokeWidth={1.75}
+              className="size-3 shrink-0 text-muted-foreground/70"
+              aria-label="Not on this plan"
+            />
+          ) : null}
+        </span>
 
         {/* The space is held either way, so a tick appearing does not shunt
-            the row's contents sideways. */}
+            the arrow beside it sideways. */}
         <HugeiconsIcon
           aria-hidden
           icon={Tick02Icon}
-          strokeWidth={2}
+          strokeWidth={1.75}
           className={cn(
-            "ms-auto size-3.5 shrink-0 text-foreground",
+            "size-3.5 shrink-0 text-foreground",
             !chosen && "opacity-0"
           )}
         />
@@ -568,6 +591,7 @@ function ModelPickerContent({
 }
 
 export {
+  ModelBadge,
   ModelCapabilities,
   ModelPicker,
   ModelPickerContent,

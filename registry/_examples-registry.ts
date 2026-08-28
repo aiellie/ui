@@ -666,7 +666,7 @@ export const examples: Registry["items"] = [
         { name: "Default", demo: "MessageInputDemo" },
         { name: "States", demo: "MessageInputStatesDemo" },
       ],
-      wide: false,
+      wide: true,
     },
   },
   {

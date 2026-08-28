@@ -29,7 +29,7 @@
         "demo": "MessageInputStatesDemo"
       }
     ],
-    "wide": false
+    "wide": true
   },
   "categories": [
     "composer"
