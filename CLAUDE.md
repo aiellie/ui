@@ -76,25 +76,28 @@ failing, so check the dev console when a card doesn't appear.
 An example's `categories` decide which page it lands on and where in that page's
 sidebar it sits — nothing else does.
 
-`lib/categories.ts` is the whole of it: `registrySections` names the two sections
-(Elements, Tokens), `registryCategories` names the categories, their order, icon, and
-the `section` each belongs to, and `sectionFor` reads a set of slugs back into a section.
-`registry/_demos.ts` splits the examples on that: `tokenExamples` for `/design`,
-`elementExamples` — everything else — for `/elements`.
-`app/(main)/components/examples-browser.tsx` is the one browser both pages render, given
-their own list; it builds the rail and shows one category's grid at a time.
+`lib/categories.ts` is the whole of it: `SectionSlug` is the two pages, `registryCategories`
+names the categories, their order, icon, and the `section` each belongs to, and
+`sectionFor` reads a set of slugs back into a section. `registry/_demos.ts` splits the
+examples on that: `tokenExamples` for `/design`, `elementExamples` — everything else —
+for `/elements`. `app/(main)/components/examples-browser.tsx` is the one browser both
+pages render, given their own list.
+
+The rail lists **every example the page has**, each under the label of the category it
+fell into, and the selected one gets the stage beside it — a category is a divider in
+the rail, not a page of cards. The two are a resizable panel group, so each page hands
+it a fixed frame (`h-[calc(100svh-var(--header-height))]`) the way `/agents` does: given
+the document's height the panels grow with the page instead of splitting it, and the
+handle has nothing to move.
 
 - An example falls into the **first** category it carries, in the rail's order.
-  `sectionFor` walks that same order, so the page it goes to and the rail item it lands
+  `sectionFor` walks that same order, so the page it goes to and the label it lands
   under can't disagree.
-- One matching no visible category lands in a trailing "Other" item rather than going
-  missing, in a run of its own under no label — and, having named no section, on
-  `/elements`, which is the useful default.
-- A category with nothing in it gets no item, and a section whose categories are all
-  empty gets no label — as does the lone section on a one-section page, since the nav
-  already names it. The rail shows what the page has, not what the registry could name.
-  So a new category is two edits — `lib/categories.ts`, and `categories` on the example —
-  and no page needs touching.
+- One matching no visible category lands in a trailing "Other" run rather than going
+  missing — and, having named no section, on `/elements`, which is the useful default.
+- A category with nothing in it gets no run at all: the rail shows what the page has,
+  not what the registry could name. So a new category is two edits —
+  `lib/categories.ts`, and `categories` on the example — and no page needs touching.
 
 ### RSC boundary
 

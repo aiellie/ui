@@ -6,39 +6,38 @@ import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react"
 
 import { DemoCard } from "@/components/aiellie-ui/demo-card"
 import { DemosSwitcher } from "@/components/aiellie-ui/demos-switcher"
-import { Separator } from "@/components/ui/separator"
 import {
-  registryCategories,
-  registrySections,
-  type SectionSlug,
-} from "@/lib/categories"
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable"
+import { registryCategories } from "@/lib/categories"
 import { cn } from "@/lib/utils"
 import type { Example } from "@/registry/_demos"
 
 import { navButton } from "./nav-button"
 
-/** One item in the rail: a category, and the examples that fell into it. */
+/** A run of rail items under one label: a category, and what fell into it. */
 type Group = {
   slug: string
   name: string
   icon: IconSvgElement
-  section: SectionSlug | null
   examples: Example[]
 }
 
-/** A run of rail items under one label — a section's, or none. */
-type Run = {
-  key: string
-  label: string | null
-  groups: Group[]
+/** One rail item, with the place it holds in the run it is standing in. */
+type Item = {
+  example: Example
+  index: number
 }
 
-const dashed = "border-t border-dashed border-border bg-transparent"
+/** The hairline only firms up under the pointer, so it reads as a divider first and a control second. */
+const handle = "bg-border/50 transition-colors hover:bg-border active:bg-border"
 
 /**
  * The bucket for an example whose categories name nothing visible. Its slug is
- * never a category's, so the two can't collide in the rail, and it belongs to
- * no section — it is a run of its own at the foot of the list.
+ * never a category's, so the two can't collide in the rail — it is a run of its
+ * own at the foot of the list.
  */
 const ungrouped = { slug: "ungrouped", name: "Other", icon: Layers01Icon }
 
@@ -46,14 +45,20 @@ const ungrouped = { slug: "ungrouped", name: "Other", icon: Layers01Icon }
  * The kit's ghost treatment again, re-shaped for a sidebar row: the header
  * nav's own button, stretched to the rail's width and set left. It keeps that
  * button's selected pill, so the two navs read as one system.
- *
- * Below `md` the rail is a scrolling row instead, where a stretched item would
- * be wrong — hence `md:w-full` rather than `w-full`.
  */
 const sidebarItem = cn(
   navButton,
-  "h-7.5 shrink-0 justify-start px-2 text-[13px] font-normal md:w-full"
+  "h-7.5 w-full shrink-0 justify-start px-2 text-[13px] font-normal"
 )
+
+/**
+ * The label a run stands under. The same mono-uppercase treatment the sections
+ * once had, since it is doing the same job one rung further down: it names the
+ * run rather than being something to press, so it takes the category's glyph
+ * at a smaller, dimmer size than the items and carries their count.
+ */
+const sidebarLabel =
+  "mb-1 flex shrink-0 items-center gap-1.5 px-2 font-mono text-[10px] tracking-[0.08em] text-foreground/30 uppercase"
 
 /**
  * The page's examples split into the categories `lib/categories.ts` names, in
@@ -62,8 +67,8 @@ const sidebarItem = cn(
  * category is kept in a group of its own rather than going missing, which is
  * the same reason `registry/_demos.ts` warns instead of dropping.
  *
- * A category holding nothing gets no rail item: the sidebar shows what the page
- * has, not everything the registry could name.
+ * A category holding nothing gets no run at all: the sidebar shows what the
+ * page has, not everything the registry could name.
  */
 function groupsFor(examples: Example[]): Group[] {
   const taken = new Set<string>()
@@ -83,172 +88,158 @@ function groupsFor(examples: Example[]): Group[] {
       slug: category.slug,
       name: category.name,
       icon: category.icon,
-      section: category.section,
       examples: items,
     })
   }
 
   const rest = examples.filter((example) => !taken.has(example.name))
-  if (rest.length) groups.push({ ...ungrouped, section: null, examples: rest })
+  if (rest.length) groups.push({ ...ungrouped, examples: rest })
 
   return groups
 }
 
 /**
- * The rail as it is drawn: the sections `lib/categories.ts` names, in its
- * order, each holding the categories that named it, with the sectionless bucket
- * last under no label at all. An empty section is left out rather than left
- * standing as a heading over nothing.
+ * Every rail item in the order the rail draws them, each carrying its place
+ * within its own run — so a card is numbered from one inside its category
+ * rather than on down the page, the way the grid used to number it.
  */
-function runsFor(groups: Group[]): Run[] {
-  const runs: Run[] = registrySections.map((section) => ({
-    key: section.slug,
-    label: section.name,
-    groups: groups.filter((group) => group.section === section.slug),
-  }))
-
-  runs.push({
-    key: "ungrouped",
-    label: null,
-    groups: groups.filter((group) => group.section === null),
-  })
-
-  return runs.filter((run) => run.groups.length > 0)
-}
-
-/**
- * The cards of the selected category, in the order the registry lists them.
- * Numbered from one within the category rather than on down the page, since a
- * category is now all that is on screen at a time.
- */
-function ExamplesGrid({ examples }: { examples: Example[] }) {
-  return (
-    <div
-      data-slot="examples-grid"
-      className="grid items-start gap-x-6 gap-y-12 md:grid-cols-2"
-    >
-      {examples.map((example, index) => (
-        <DemoCard
-          key={example.name}
-          href={example.href}
-          index={index + 1}
-          title={example.title}
-          description={example.description}
-          icon={example.icon}
-          wide={example.wide}
-        >
-          <DemosSwitcher
-            variants={example.variants}
-            installCommand={example.installCommand}
-            demoInstallCommand={example.demoInstallCommand}
-            fullscreenHref={example.fullscreenHref}
-          />
-        </DemoCard>
-      ))}
-    </div>
+function itemsFor(groups: Group[]): Item[] {
+  return groups.flatMap((group) =>
+    group.examples.map((example, index) => ({ example, index: index + 1 }))
   )
 }
 
 /**
- * A page's examples behind a rail of the categories they fall into, one
- * category's grid at a time. Which examples arrive here is the page's business
- * — `/design` passes the token ones, `/elements` the rest — so a new demo needs
- * an item in `registry/_examples-registry.ts`, its components in
- * `registry/_demos.ts`, a category in `lib/categories.ts` if it carries a new
- * one, and nothing here.
+ * The selected example, with the stage to itself. One card rather than a grid:
+ * the rail names every example the page has now, so picking one is asking to
+ * look at that one.
+ */
+function ExampleStage({ example, index }: Item) {
+  return (
+    <DemoCard
+      href={example.href}
+      index={index}
+      title={example.title}
+      description={example.description}
+      icon={example.icon}
+    >
+      <DemosSwitcher
+        variants={example.variants}
+        installCommand={example.installCommand}
+        demoInstallCommand={example.demoInstallCommand}
+        fullscreenHref={example.fullscreenHref}
+      />
+    </DemoCard>
+  )
+}
+
+/**
+ * A page's examples behind a rail of all of them, labelled by the category each
+ * fell into, one example on screen at a time. Which examples arrive here is the
+ * page's business — `/design` passes the token ones, `/elements` the rest — so
+ * a new demo needs an item in `registry/_examples-registry.ts`, its components
+ * in `registry/_demos.ts`, a category in `lib/categories.ts` if it carries a
+ * new one, and nothing here.
+ *
+ * The two are a resizable group rather than a fixed column and the rest,
+ * because the reading shifts: a long list wants the names wide enough to read
+ * whole, a demo wants everything the window has. It divides a frame the page
+ * gives it, the same way `/agents` does — given the document's height the
+ * panels would grow with the page instead of splitting it, and the handle would
+ * have nothing to move.
  *
  * The selection is state rather than a route: the rail moves within one page,
- * and the cards under it are already client-side.
+ * and the card beside it is already client-side.
  */
 function ExamplesBrowser({ examples }: { examples: Example[] }) {
-  const runs = useMemo(() => runsFor(groupsFor(examples)), [examples])
-  const groups = useMemo(() => runs.flatMap((run) => run.groups), [runs])
-  const [selected, setSelected] = useState(() => groups[0]?.slug)
+  const groups = useMemo(() => groupsFor(examples), [examples])
+  const items = useMemo(() => itemsFor(groups), [groups])
+  const [selected, setSelected] = useState(() => items[0]?.example.name)
 
-  /* A section's label only tells you anything when there is another section to
-     tell it from. A page holding one names it in the nav and the heading
-     already, so the rail drops the label rather than saying it a third time
-     over every item it has. */
-  const labelled = runs.length > 1
-
-  /* Falling back keeps the grid filled if the selected slug ever goes away —
+  /* Falling back keeps the stage filled if the selected name ever goes away —
      the page's list changing under a selection made against the old one. */
-  const group = groups.find((item) => item.slug === selected) ?? groups[0]
+  const current =
+    items.find((item) => item.example.name === selected) ?? items[0]
 
-  if (!group) return null
+  if (!current) return null
 
   return (
-    <div className="mt-0">
-      {/*<Separator className={dashed} />*/}
-      <div className="mt-0 flex flex-col gap-6 md:flex-row md:gap-10">
-        {/* The rail is a nav of filters, not of destinations, so the items are
-            buttons marked `aria-current` rather than links — and not tabs,
-            whose role promises arrow-key navigation between them. Each run is
-            a group of its own so its label names the items it stands over,
-            rather than floating above the whole list. */}
+    <ResizablePanelGroup orientation="horizontal">
+      {/* The rail is a nav of filters, not of destinations, so the items are
+          buttons marked `aria-current` rather than links — and not tabs, whose
+          role promises arrow-key navigation between them. Each run is a group
+          of its own so its label names the items it stands over, rather than
+          floating above the whole list. */}
+      <ResizablePanel id="examples" defaultSize="20" minSize="14" maxSize="34">
+        {/* The scrolling lives on the nav rather than the panel: a panel is
+            left `overflow: visible` by the library, and a rail listing every
+            example the page has is taller than the frame. `h-full` is what
+            gives it something to overflow. */}
         <nav
-          aria-label="Categories"
-          className="-mx-4 px-4 md:mx-0 md:w-44 md:shrink-0 md:px-0"
+          aria-label="Examples"
+          className="flex h-full flex-col gap-5 overflow-y-auto px-4 py-4"
         >
-          {/* Sticky only from `md` up: as a row above the grid it would sit
-              over the cards it scrolls past, having no ground of its own to
-              hide them behind. `top-15` clears the sticky site header. */}
-          <div className="flex gap-3 overflow-x-auto pb-1 md:sticky md:top-15 md:flex-col md:gap-5 md:overflow-visible md:pb-0">
-            {runs.map((run) => (
-              <div
-                key={run.key}
-                role="group"
-                aria-label={labelled ? (run.label ?? undefined) : undefined}
-                className="flex shrink-0 items-center gap-1 md:flex-col md:items-stretch md:gap-0.5"
-              >
-                {labelled && run.label ? (
-                  /* aria-hidden: the run is already named by `aria-label`
-                     above, so the heading would only say it twice. */
-                  <span
-                    aria-hidden
-                    className="shrink-0 px-2 font-mono text-[10px] tracking-[0.08em] text-foreground/30 uppercase md:mb-1"
-                  >
-                    {run.label}
-                  </span>
-                ) : null}
-                {run.groups.map((item) => {
-                  const current = item.slug === group.slug
+          {groups.map((group) => (
+            <div
+              key={group.slug}
+              role="group"
+              aria-label={group.name}
+              className="flex shrink-0 flex-col gap-0.5"
+            >
+              {/* aria-hidden: the run is already named by `aria-label` above,
+                  so the label would only say it twice. */}
+              <span aria-hidden className={sidebarLabel}>
+                <HugeiconsIcon
+                  icon={group.icon}
+                  strokeWidth={2}
+                  className="size-3 shrink-0"
+                />
+                {group.name}
+                <span className="ms-auto ps-2 tracking-tight tabular-nums">
+                  {String(group.examples.length).padStart(2, "0")}
+                </span>
+              </span>
+              {group.examples.map((example) => {
+                const active = example.name === current.example.name
 
-                  return (
-                    <button
-                      key={item.slug}
-                      type="button"
-                      onClick={() => setSelected(item.slug)}
-                      data-active={current}
-                      aria-current={current ? "true" : undefined}
-                      className={sidebarItem}
-                    >
-                      <HugeiconsIcon
-                        icon={item.icon}
-                        strokeWidth={2}
-                        className="size-3.5 shrink-0"
-                      />
-                      {item.name}
-                      <span className="ms-auto ps-2 font-mono text-[11px] tracking-tight text-foreground/30 tabular-nums">
-                        {String(item.examples.length).padStart(2, "0")}
-                      </span>
-                    </button>
-                  )
-                })}
-              </div>
-            ))}
-          </div>
+                return (
+                  <button
+                    key={example.name}
+                    type="button"
+                    onClick={() => setSelected(example.name)}
+                    data-active={active}
+                    aria-current={active ? "true" : undefined}
+                    className={sidebarItem}
+                  >
+                    <HugeiconsIcon
+                      icon={example.icon}
+                      strokeWidth={2}
+                      className="size-3.5 shrink-0"
+                    />
+                    <span className="min-w-0 truncate">{example.title}</span>
+                  </button>
+                )
+              })}
+            </div>
+          ))}
         </nav>
-        {/* Keyed on the category so switching re-mounts the grid and it fades
-            in, rather than the cards swapping their contents in place. */}
-        <div
-          key={group.slug}
-          className="min-w-0 flex-1 animate-in duration-300 fade-in motion-reduce:animate-none"
-        >
-          <ExamplesGrid examples={group.examples} />
+      </ResizablePanel>
+
+      <ResizableHandle withHandle className={handle} />
+
+      <ResizablePanel id="stage" defaultSize="80" minSize="40">
+        <div className="h-full overflow-y-auto px-6 py-4">
+          {/* Keyed on the example so switching re-mounts the card and it fades
+              in, rather than the card swapping its contents in place. */}
+          <div
+            key={current.example.name}
+            className="min-w-0 animate-in duration-300 fade-in motion-reduce:animate-none"
+          >
+            <ExampleStage {...current} />
+          </div>
         </div>
-      </div>
-    </div>
+      </ResizablePanel>
+    </ResizablePanelGroup>
   )
 }
 

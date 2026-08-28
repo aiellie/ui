@@ -1,6 +1,5 @@
 import {
   ColorsIcon,
-  TextFontIcon,
   AiContentGenerator02Icon,
   SquareTerminalIcon,
   MessageSquareDotIcon,
@@ -10,29 +9,12 @@ import {
 import type { IconSvgElement } from "@hugeicons/react"
 
 /**
- * The two halves of the design page: the elements themselves, and the values
- * they are built from. A section is a label over a run of categories in the
- * rail and nothing more — it holds no examples of its own, so an example is
- * placed by its category and lands in whichever section that category names.
+ * The two pages: the elements themselves, and the values they are built from.
+ * A section is the page a category's examples go to and nothing more — it
+ * holds no examples of its own, so an example is placed by its category and
+ * lands on whichever page that category names.
  */
 export type SectionSlug = "elements" | "tokens"
-
-export interface RegistrySection {
-  name: string
-  slug: SectionSlug
-}
-
-/** The rail's labels, in the order it shows them. */
-export const registrySections: RegistrySection[] = [
-  {
-    name: "Elements",
-    slug: "elements",
-  },
-  {
-    name: "Tokens",
-    slug: "tokens",
-  },
-]
 
 export interface RegistryCategory {
   name: string
@@ -43,9 +25,9 @@ export interface RegistryCategory {
 }
 
 /**
- * Every category an example can carry. Grouped here the way the rail groups
- * them, so the file reads in the order the sidebar does — though it is
- * `section` that decides where a category lands, not its place in this list.
+ * Every category an example can carry, in the order the rail stands them in —
+ * each one a label over the examples that fell into it. Which page it stands
+ * on is `section`, not its place in this list.
  */
 export const registryCategories: RegistryCategory[] = [
   {
