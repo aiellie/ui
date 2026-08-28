@@ -102,7 +102,7 @@ export const MessageInput = ({
  * match rather than guessing at these values.
  */
 export const messageInputField =
-  "h-8 w-full min-w-0 flex-1 rounded-lg border border-input bg-transparent px-2.5 py-0.5 text-base outline-none transition-[background-color,border-color] duration-150 placeholder:text-muted-foreground focus-visible:border-ring disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 motion-reduce:transition-none md:text-sm dark:bg-input/30 dark:disabled:bg-input/80"
+  "h-8 w-full min-w-0 flex-1 rounded-lg border border-input bg-transparent px-2.5 py-0.5 text-base outline-none transition-[background-color,border-color] duration-150 placeholder:text-sm placeholder:text-muted-foreground focus-visible:border-ring disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 motion-reduce:transition-none md:text-sm dark:bg-input/30 dark:disabled:bg-input/80"
 
 export type MessageInputFieldProps = Omit<
   InputPrimitive.Props,
