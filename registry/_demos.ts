@@ -1,6 +1,8 @@
 import type { ComponentType } from "react"
 import {
+  AtIcon,
   BubbleChatSparkIcon,
+  TextIndent01Icon,
   FavouriteIcon,
   QuoteDownIcon,
   ParagraphIcon,
@@ -25,6 +27,8 @@ import {
   CodeSquareIcon,
   Tag01Icon,
   TextFontIcon,
+  AiSwapIcon,
+  Wrench01Icon,
 } from "@hugeicons/core-free-icons"
 import type { IconSvgElement } from "@hugeicons/react"
 import type { RegistryItem } from "shadcn/schema"
@@ -42,6 +46,10 @@ import * as codeSnippetDemos from "@/examples/coding/code-snippet"
 import * as bubbleDemos from "@/examples/messages/bubble"
 import * as messageDemos from "@/examples/messages/message"
 import * as messageActionsDemos from "@/examples/messages/message-actions"
+import * as mentionsDemos from "@/examples/composer/mentions"
+import * as messageInputDemos from "@/examples/composer/message-input"
+import * as modelPickerDemos from "@/examples/composer/model-picker"
+import * as toolPickerDemos from "@/examples/composer/tool-picker"
 import * as messageContextMenuDemos from "@/examples/messages/message-context-menu"
 import * as messageHighlightToolbarDemos from "@/examples/messages/message-highlight-toolbar"
 import * as messageStatusDemos from "@/examples/messages/message-status"
@@ -128,6 +136,22 @@ const exampleDemos: Record<string, ExampleDemos> = {
   "suggestions-demo": {
     icon: BubbleChatSparkIcon,
     components: { ...suggestionsDemos },
+  },
+  "mentions-demo": {
+    icon: AtIcon,
+    components: { ...mentionsDemos },
+  },
+  "message-input-demo": {
+    icon: TextIndent01Icon,
+    components: { ...messageInputDemos },
+  },
+  "model-picker-demo": {
+    icon: AiSwapIcon,
+    components: { ...modelPickerDemos },
+  },
+  "tool-picker-demo": {
+    icon: Wrench01Icon,
+    components: { ...toolPickerDemos },
   },
   "message-actions-demo": {
     icon: Comment01Icon,

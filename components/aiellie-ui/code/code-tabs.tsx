@@ -6,7 +6,7 @@ import { Cancel01Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 
 import { iconSwap, mono } from "@/components/aiellie-ui/actions"
-import { codeIconFrom, type CodeIconSet } from "@/lib/code-icons"
+import { codeIconFrom, type CodeIconSet } from "@/components/icons/code-icons"
 import { cn } from "@/lib/utils"
 
 /**

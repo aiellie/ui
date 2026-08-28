@@ -1,0 +1,42 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tool-picker-demo",
+  "title": "Tool Picker",
+  "description": "What the answer may reach for, turned on and off from the composer — a wrench carrying the count, and a list that says what each tool does before asking whether it should be on.",
+  "registryDependencies": [
+    "https://ui.aiellie.dev/r/tool-picker.json",
+    "https://ui.aiellie.dev/r/message-input.json",
+    "https://ui.aiellie.dev/r/model-picker.json",
+    "https://ui.aiellie.dev/r/tools.json",
+    "https://ui.aiellie.dev/r/tooltip.json"
+  ],
+  "files": [
+    {
+      "path": "examples/composer/tool-picker.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport {\n  MessageInput,\n  MessageInputField,\n  MessageInputSubmit,\n} from \"@/components/aiellie-ui/composer/message-input\"\nimport {\n  ModelPicker,\n  ModelPickerContent,\n  ModelPickerTrigger,\n} from \"@/components/aiellie-ui/composer/model-picker\"\nimport {\n  ToolPicker,\n  ToolPickerContent,\n  ToolPickerTrigger,\n} from \"@/components/aiellie-ui/composer/tool-picker\"\nimport { TooltipProvider } from \"@/components/ui/tooltip\"\nimport { findTool, tools } from \"@/lib/tools\"\n\n/**\n * The choice on its own: a wrench that carries the count, and a list that says\n * what each tool does before asking whether it should be on.\n */\nexport function ToolPickerDemo() {\n  const [chosen, setChosen] = React.useState<string[]>([\"read\", \"grep\"])\n\n  return (\n    <div className=\"flex w-full max-w-sm flex-col gap-2\">\n      <ToolPicker value={chosen} onValueChange={setChosen}>\n        <ToolPickerTrigger />\n        <ToolPickerContent />\n      </ToolPicker>\n      <p className=\"ps-1 text-xs text-muted-foreground\">\n        {chosen.length\n          ? chosen.map((id) => findTool(id)?.id ?? id).join(\", \")\n          : \"No tools — it can only answer.\"}\n      </p>\n    </div>\n  )\n}\n\n/**\n * Where it belongs: on the row a composer keeps for the things a message is\n * sent *with*, next to the model, since the two are the same decision asked\n * twice — what is answering, and what it may reach for while it does.\n */\nexport function ToolPickerComposerDemo() {\n  const [chosen, setChosen] = React.useState<string[]>([\"bash\", \"read\", \"edit\"])\n  const [model, setModel] = React.useState(\"claude-opus-5\")\n  const [sent, setSent] = React.useState<string | null>(null)\n\n  return (\n    <TooltipProvider>\n      <div className=\"flex w-full max-w-sm flex-col gap-2\">\n        <MessageInput\n          className=\"flex-col items-stretch gap-1 rounded-2xl border border-border/60 bg-background p-1.5 dark:bg-popover\"\n          onSubmit={(message) => setSent(message)}\n        >\n          <MessageInputField\n            placeholder=\"Ask it to do something…\"\n            className=\"h-9 border-transparent bg-transparent px-2 focus-visible:border-transparent\"\n          />\n          <div className=\"flex items-center gap-1\">\n            <ToolPicker value={chosen} onValueChange={setChosen}>\n              <ToolPickerTrigger />\n              <ToolPickerContent side=\"top\" />\n            </ToolPicker>\n            <ModelPicker value={model} onValueChange={setModel}>\n              <ModelPickerTrigger />\n              <ModelPickerContent side=\"top\" />\n            </ModelPicker>\n            <MessageInputSubmit className=\"ms-auto size-7\" />\n          </div>\n        </MessageInput>\n        <p className=\"ps-1 text-xs text-muted-foreground\">\n          {sent\n            ? `Sent with ${chosen.length} ${chosen.length === 1 ? \"tool\" : \"tools\"}.`\n            : `${chosen.length} of ${tools.length} tools on.`}\n        </p>\n      </div>\n    </TooltipProvider>\n  )\n}\n\n/**\n * The other starting point: everything on, and the picker used to take things\n * away. An agent is usually given the whole set and then narrowed — a run that\n * should not be touching the filesystem is one where `write` and `edit` come\n * off, rather than one where the other six have to be found and switched on.\n */\nexport function ToolPickerAllDemo() {\n  const [chosen, setChosen] = React.useState<string[]>(\n    tools.map((tool) => tool.id)\n  )\n  const off = tools.filter((tool) => !chosen.includes(tool.id))\n\n  return (\n    <div className=\"flex w-full max-w-sm flex-col gap-2\">\n      <ToolPicker value={chosen} onValueChange={setChosen}>\n        <ToolPickerTrigger />\n        <ToolPickerContent />\n      </ToolPicker>\n      <p className=\"ps-1 text-xs text-muted-foreground\">\n        {off.length\n          ? `Held back: ${off.map((tool) => tool.id).join(\", \")}.`\n          : \"Everything on.\"}\n      </p>\n    </div>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/composer/tool-picker.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Default",
+        "demo": "ToolPickerDemo"
+      },
+      {
+        "name": "Composer",
+        "demo": "ToolPickerComposerDemo"
+      },
+      {
+        "name": "All",
+        "demo": "ToolPickerAllDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "composer"
+  ],
+  "type": "registry:example"
+}

@@ -53,7 +53,11 @@ export const aiellieui: Registry["items"] = [
     title: "Code Tabs",
     description:
       "Several files in one block: a strip of names for a code block's header that scrolls rather than shoving the actions off the end, with the arrow keys, Home and End a tab strip is expected to answer.",
-    dependencies: ["@base-ui/react", "@hugeicons/core-free-icons", "@hugeicons/react"],
+    dependencies: [
+      "@base-ui/react",
+      "@hugeicons/core-free-icons",
+      "@hugeicons/react",
+    ],
     registryDependencies: [
       "actions",
       "code-block",
@@ -90,7 +94,11 @@ export const aiellieui: Registry["items"] = [
     title: "Tool Call",
     description:
       "A tool being called and what it gave back, folded away behind the one line worth reading without opening it — queued, turning, finished or failed, with the arguments and the result each under their own heading.",
-    dependencies: ["@base-ui/react", "@hugeicons/core-free-icons", "@hugeicons/react"],
+    dependencies: [
+      "@base-ui/react",
+      "@hugeicons/core-free-icons",
+      "@hugeicons/react",
+    ],
     registryDependencies: ["actions", "utils"],
     files: [
       {
@@ -201,7 +209,11 @@ export const aiellieui: Registry["items"] = [
     description:
       "Base UI's menu with this registry's surface on it — a glass popup, rows that take an icon and a word, ticked rows, groups, rules, shortcuts and submenus — so anything that needs a menu styles none of it again.",
     registryDependencies: ["actions", "utils"],
-    dependencies: ["@base-ui/react", "@hugeicons/core-free-icons", "@hugeicons/react"],
+    dependencies: [
+      "@base-ui/react",
+      "@hugeicons/core-free-icons",
+      "@hugeicons/react",
+    ],
     files: [
       {
         path: "components/aiellie-ui/menu.tsx",
@@ -233,7 +245,11 @@ export const aiellieui: Registry["items"] = [
     description:
       "The message a reply is about, kept to an excerpt above the reply itself — a rule on the start edge to say the words are borrowed, a way back to the original, and a way to call the quote off before it is sent.",
     registryDependencies: ["utils"],
-    dependencies: ["@base-ui/react", "@hugeicons/core-free-icons", "@hugeicons/react"],
+    dependencies: [
+      "@base-ui/react",
+      "@hugeicons/core-free-icons",
+      "@hugeicons/react",
+    ],
     files: [
       {
         path: "components/aiellie-ui/quoted-message.tsx",
@@ -339,6 +355,69 @@ export const aiellieui: Registry["items"] = [
         path: "components/aiellie-ui/message-context-menu.tsx",
         type: "registry:ui",
         target: "components/aiellie-ui/message-context-menu.tsx",
+      },
+    ],
+  },
+  {
+    name: "mentions",
+    type: "registry:ui",
+    title: "Mentions",
+    description:
+      "The menu an at sign opens: the people and agents a message can name, filtered as it is typed, moved through with the arrows and taken with Enter — leaving Enter to send the message when the menu is not open.",
+    registryDependencies: ["actions", "utils"],
+    files: [
+      {
+        path: "components/aiellie-ui/composer/mentions.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/composer/mentions.tsx",
+      },
+    ],
+  },
+  {
+    name: "message-input",
+    type: "registry:ui",
+    title: "Message Input",
+    description:
+      "The field a message is written in, with one control at the end of it: voice while the field is empty, send once there is something to send, and stop while an answer is coming.",
+    registryDependencies: ["button", "input", "tooltip", "utils"],
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react", "ai"],
+    files: [
+      {
+        path: "components/aiellie-ui/composer/message-input.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/composer/message-input.tsx",
+      },
+    ],
+  },
+  {
+    name: "model-picker",
+    type: "registry:ui",
+    title: "Model Picker",
+    description:
+      "Which model is answering, and the choosing of another one — the catalogue stood under the house each model comes from, every row saying what its model is for, what it can do and how much it holds, and the ones above the plan shown locked rather than left out.",
+    registryDependencies: ["button", "menu", "model-icons", "models", "utils"],
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    files: [
+      {
+        path: "components/aiellie-ui/composer/model-picker.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/composer/model-picker.tsx",
+      },
+    ],
+  },
+  {
+    name: "tool-picker",
+    type: "registry:ui",
+    title: "Tool Picker",
+    description:
+      "Which tools the answer may reach for, chosen from the composer — the catalogue stood under the group each tool belongs to, every row saying what a call to it does, and the wrench that opens it carrying the count of the ones that are on.",
+    registryDependencies: ["button", "menu", "tools", "utils"],
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    files: [
+      {
+        path: "components/aiellie-ui/composer/tool-picker.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/composer/tool-picker.tsx",
       },
     ],
   },

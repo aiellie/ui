@@ -26,7 +26,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard"
-import { codeIconFrom, type CodeIconSet } from "@/lib/code-icons"
+import { codeIconFrom, type CodeIconSet } from "@/components/icons/code-icons"
 import { TOKEN_PALETTES, tokenize, type TokenPalette } from "@/lib/highlight"
 import { cn } from "@/lib/utils"
 

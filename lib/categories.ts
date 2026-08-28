@@ -1,5 +1,6 @@
 import {
   ColorsIcon,
+  TextFontIcon,
   AiContentGenerator02Icon,
   SquareTerminalIcon,
   MessageSquareDotIcon,
@@ -45,6 +46,13 @@ export interface RegistryCategory {
  * `section` that decides where a category lands, not its place in this list.
  */
 export const registryCategories: RegistryCategory[] = [
+  {
+    name: "Composer",
+    slug: "composer",
+    section: "elements",
+    hidden: false,
+    icon: TextFontIcon,
+  },
   {
     name: "Coding",
     slug: "coding",

@@ -20,22 +20,6 @@ export const lib: Registry["items"] = [
     ],
   },
   {
-    name: "code-icons",
-    type: "registry:lib",
-    title: "Code Icons",
-    description:
-      "The badge a file or a language wears, in two sets — the interface one drawn in currentColor from Hugeicons, and the brand one in each language's own colours — behind one lookup keyed by extension and by language name alike.",
-    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
-    registryDependencies: ["utils"],
-    files: [
-      {
-        path: "lib/code-icons.tsx",
-        type: "registry:lib",
-        target: "lib/code-icons.tsx",
-      },
-    ],
-  },
-  {
     name: "highlight",
     type: "registry:lib",
     title: "Highlight",
@@ -60,6 +44,50 @@ export const lib: Registry["items"] = [
         path: "lib/colors.ts",
         type: "registry:lib",
         target: "lib/colors.ts",
+      },
+    ],
+  },
+  {
+    name: "providers",
+    type: "registry:lib",
+    title: "Providers",
+    description:
+      "The houses a model can come from — the major labs from models.dev alongside the platforms that serve other people's models — as plain data, with the mark each one wears kept in `model-icons`.",
+    files: [
+      {
+        path: "lib/providers.ts",
+        type: "registry:lib",
+        target: "lib/providers.ts",
+      },
+    ],
+  },
+  {
+    name: "models",
+    type: "registry:lib",
+    title: "Models",
+    description:
+      "The catalogue a model picker reads — every model on offer with the house it comes from, what it is for, what it can do and how much it holds, alongside the tier order that decides what a plan reaches.",
+    registryDependencies: ["providers"],
+    files: [
+      {
+        path: "lib/models.ts",
+        type: "registry:lib",
+        target: "lib/models.ts",
+      },
+    ],
+  },
+  {
+    name: "tools",
+    type: "registry:lib",
+    title: "Tools",
+    description:
+      "The tools an agent can be handed — a shell, the filesystem, the two ways of finding a file and the two of reaching the web — each with the name it is called by, a line on what a call does, and the glyph it wears.",
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    files: [
+      {
+        path: "lib/tools.ts",
+        type: "registry:lib",
+        target: "lib/tools.ts",
       },
     ],
   },

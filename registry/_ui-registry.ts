@@ -71,6 +71,21 @@ export const ui: Registry["items"] = [
     ],
   },
   {
+    name: "input",
+    type: "registry:ui",
+    title: "Input",
+    description: "A single-line text field.",
+    registryDependencies: ["utils"],
+    dependencies: ["@base-ui/react"],
+    files: [
+      {
+        path: "components/ui/input.tsx",
+        type: "registry:ui",
+        target: "components/ui/input.tsx",
+      },
+    ],
+  },
+  {
     name: "marker",
     type: "registry:ui",
     title: "Marker",

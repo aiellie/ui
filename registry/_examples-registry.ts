@@ -612,6 +612,123 @@ export const examples: Registry["items"] = [
     },
   },
   {
+    name: "mentions-demo",
+    type: "registry:example",
+    title: "Mentions",
+    description:
+      "An at sign in the message input opening the people and agents it can name, with the example lists it draws them from.",
+    registryDependencies: ["mentions", "message-input", "tooltip"],
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    files: [
+      {
+        path: "examples/composer/mentions.tsx",
+        type: "registry:example",
+        target: "examples/composer/mentions.tsx",
+      },
+      {
+        path: "examples/composer/users.ts",
+        type: "registry:example",
+        target: "examples/composer/users.ts",
+      },
+      {
+        path: "examples/composer/agents.ts",
+        type: "registry:example",
+        target: "examples/composer/agents.ts",
+      },
+    ],
+    categories: ["composer"],
+    meta: {
+      variants: [
+        { name: "People and agents", demo: "MentionsDemo" },
+        { name: "Agents only", demo: "MentionsAgentsDemo" },
+      ],
+      wide: true,
+    },
+  },
+  {
+    name: "message-input-demo",
+    type: "registry:example",
+    title: "Message Input",
+    description:
+      "A message being written and sent, with the control at the end of the field changing between voice, send and stop as the field and the answer do.",
+    registryDependencies: ["message-input", "tooltip"],
+    dependencies: ["ai"],
+    files: [
+      {
+        path: "examples/composer/message-input.tsx",
+        type: "registry:example",
+        target: "examples/composer/message-input.tsx",
+      },
+    ],
+    categories: ["composer"],
+    meta: {
+      variants: [
+        { name: "Default", demo: "MessageInputDemo" },
+        { name: "States", demo: "MessageInputStatesDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "model-picker-demo",
+    type: "registry:example",
+    title: "Model Picker",
+    description:
+      "The model a message is being written to, changed from the composer rather than from a settings page — each row saying what its model is for, and the ones the plan does not reach shown locked rather than hidden.",
+    registryDependencies: [
+      "model-picker",
+      "message-input",
+      "models",
+      "tooltip",
+    ],
+    files: [
+      {
+        path: "examples/composer/model-picker.tsx",
+        type: "registry:example",
+        target: "examples/composer/model-picker.tsx",
+      },
+    ],
+    categories: ["composer"],
+    meta: {
+      variants: [
+        { name: "Default", demo: "ModelPickerDemo" },
+        { name: "Composer", demo: "ModelPickerComposerDemo" },
+        { name: "Plan", demo: "ModelPickerPlanDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "tool-picker-demo",
+    type: "registry:example",
+    title: "Tool Picker",
+    description:
+      "What the answer may reach for, turned on and off from the composer — a wrench carrying the count, and a list that says what each tool does before asking whether it should be on.",
+    registryDependencies: [
+      "tool-picker",
+      "message-input",
+      "model-picker",
+      "tools",
+      "tooltip",
+    ],
+    files: [
+      {
+        path: "examples/composer/tool-picker.tsx",
+        type: "registry:example",
+        target: "examples/composer/tool-picker.tsx",
+      },
+    ],
+    categories: ["composer"],
+    meta: {
+      variants: [
+        { name: "Default", demo: "ToolPickerDemo" },
+        { name: "Composer", demo: "ToolPickerComposerDemo" },
+        { name: "All", demo: "ToolPickerAllDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
     name: "message-actions-demo",
     type: "registry:example",
     title: "Message Actions",

@@ -9,7 +9,7 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react"
 
 import { mono, paper } from "@/components/aiellie-ui/actions"
-import { CodeIcon, type CodeIconSet } from "@/lib/code-icons"
+import { CodeIcon, type CodeIconSet } from "@/components/icons/code-icons"
 import { cn } from "@/lib/utils"
 
 export type FileStatus = "added" | "modified" | "removed"

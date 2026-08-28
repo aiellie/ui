@@ -415,6 +415,94 @@
       ]
     },
     {
+      "name": "mentions",
+      "type": "registry:ui",
+      "title": "Mentions",
+      "description": "The menu an at sign opens: the people and agents a message can name, filtered as it is typed, moved through with the arrows and taken with Enter — leaving Enter to send the message when the menu is not open.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/actions.json",
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/composer/mentions.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/composer/mentions.tsx"
+        }
+      ]
+    },
+    {
+      "name": "message-input",
+      "type": "registry:ui",
+      "title": "Message Input",
+      "description": "The field a message is written in, with one control at the end of it: voice while the field is empty, send once there is something to send, and stop while an answer is coming.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/button.json",
+        "https://ui.aiellie.dev/r/input.json",
+        "https://ui.aiellie.dev/r/tooltip.json",
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react",
+        "ai"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/composer/message-input.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/composer/message-input.tsx"
+        }
+      ]
+    },
+    {
+      "name": "model-picker",
+      "type": "registry:ui",
+      "title": "Model Picker",
+      "description": "Which model is answering, and the choosing of another one — the catalogue stood under the house each model comes from, every row saying what its model is for, what it can do and how much it holds, and the ones above the plan shown locked rather than left out.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/button.json",
+        "https://ui.aiellie.dev/r/menu.json",
+        "https://ui.aiellie.dev/r/model-icons.json",
+        "https://ui.aiellie.dev/r/models.json",
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/composer/model-picker.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/composer/model-picker.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tool-picker",
+      "type": "registry:ui",
+      "title": "Tool Picker",
+      "description": "Which tools the answer may reach for, chosen from the composer — the catalogue stood under the group each tool belongs to, every row saying what a call to it does, and the wrench that opens it carrying the count of the ones that are on.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/button.json",
+        "https://ui.aiellie.dev/r/menu.json",
+        "https://ui.aiellie.dev/r/tools.json",
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/composer/tool-picker.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/composer/tool-picker.tsx"
+        }
+      ]
+    },
+    {
       "name": "message-actions",
       "type": "registry:ui",
       "title": "Message Actions",
@@ -604,6 +692,25 @@
           "path": "components/ui/button.tsx",
           "type": "registry:ui",
           "target": "components/ui/button.tsx"
+        }
+      ]
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "title": "Input",
+      "description": "A single-line text field.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "files": [
+        {
+          "path": "components/ui/input.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/input.tsx"
         }
       ]
     },
@@ -1618,6 +1725,169 @@
       }
     },
     {
+      "name": "mentions-demo",
+      "type": "registry:example",
+      "title": "Mentions",
+      "description": "An at sign in the message input opening the people and agents it can name, with the example lists it draws them from.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/mentions.json",
+        "https://ui.aiellie.dev/r/message-input.json",
+        "https://ui.aiellie.dev/r/tooltip.json"
+      ],
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "files": [
+        {
+          "path": "examples/composer/mentions.tsx",
+          "type": "registry:example",
+          "target": "examples/composer/mentions.tsx"
+        },
+        {
+          "path": "examples/composer/users.ts",
+          "type": "registry:example",
+          "target": "examples/composer/users.ts"
+        },
+        {
+          "path": "examples/composer/agents.ts",
+          "type": "registry:example",
+          "target": "examples/composer/agents.ts"
+        }
+      ],
+      "categories": [
+        "composer"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "People and agents",
+            "demo": "MentionsDemo"
+          },
+          {
+            "name": "Agents only",
+            "demo": "MentionsAgentsDemo"
+          }
+        ],
+        "wide": true
+      }
+    },
+    {
+      "name": "message-input-demo",
+      "type": "registry:example",
+      "title": "Message Input",
+      "description": "A message being written and sent, with the control at the end of the field changing between voice, send and stop as the field and the answer do.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/message-input.json",
+        "https://ui.aiellie.dev/r/tooltip.json"
+      ],
+      "dependencies": [
+        "ai"
+      ],
+      "files": [
+        {
+          "path": "examples/composer/message-input.tsx",
+          "type": "registry:example",
+          "target": "examples/composer/message-input.tsx"
+        }
+      ],
+      "categories": [
+        "composer"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Default",
+            "demo": "MessageInputDemo"
+          },
+          {
+            "name": "States",
+            "demo": "MessageInputStatesDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "model-picker-demo",
+      "type": "registry:example",
+      "title": "Model Picker",
+      "description": "The model a message is being written to, changed from the composer rather than from a settings page — each row saying what its model is for, and the ones the plan does not reach shown locked rather than hidden.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/model-picker.json",
+        "https://ui.aiellie.dev/r/message-input.json",
+        "https://ui.aiellie.dev/r/models.json",
+        "https://ui.aiellie.dev/r/tooltip.json"
+      ],
+      "files": [
+        {
+          "path": "examples/composer/model-picker.tsx",
+          "type": "registry:example",
+          "target": "examples/composer/model-picker.tsx"
+        }
+      ],
+      "categories": [
+        "composer"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Default",
+            "demo": "ModelPickerDemo"
+          },
+          {
+            "name": "Composer",
+            "demo": "ModelPickerComposerDemo"
+          },
+          {
+            "name": "Plan",
+            "demo": "ModelPickerPlanDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "tool-picker-demo",
+      "type": "registry:example",
+      "title": "Tool Picker",
+      "description": "What the answer may reach for, turned on and off from the composer — a wrench carrying the count, and a list that says what each tool does before asking whether it should be on.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/tool-picker.json",
+        "https://ui.aiellie.dev/r/message-input.json",
+        "https://ui.aiellie.dev/r/model-picker.json",
+        "https://ui.aiellie.dev/r/tools.json",
+        "https://ui.aiellie.dev/r/tooltip.json"
+      ],
+      "files": [
+        {
+          "path": "examples/composer/tool-picker.tsx",
+          "type": "registry:example",
+          "target": "examples/composer/tool-picker.tsx"
+        }
+      ],
+      "categories": [
+        "composer"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Default",
+            "demo": "ToolPickerDemo"
+          },
+          {
+            "name": "Composer",
+            "demo": "ToolPickerComposerDemo"
+          },
+          {
+            "name": "All",
+            "demo": "ToolPickerAllDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
       "name": "message-actions-demo",
       "type": "registry:example",
       "title": "Message Actions",
@@ -1672,26 +1942,6 @@
       ]
     },
     {
-      "name": "code-icons",
-      "type": "registry:lib",
-      "title": "Code Icons",
-      "description": "The badge a file or a language wears, in two sets — the interface one drawn in currentColor from Hugeicons, and the brand one in each language's own colours — behind one lookup keyed by extension and by language name alike.",
-      "dependencies": [
-        "@hugeicons/core-free-icons",
-        "@hugeicons/react"
-      ],
-      "registryDependencies": [
-        "https://ui.aiellie.dev/r/utils.json"
-      ],
-      "files": [
-        {
-          "path": "lib/code-icons.tsx",
-          "type": "registry:lib",
-          "target": "lib/code-icons.tsx"
-        }
-      ]
-    },
-    {
       "name": "highlight",
       "type": "registry:lib",
       "title": "Highlight",
@@ -1714,6 +1964,52 @@
           "path": "lib/colors.ts",
           "type": "registry:lib",
           "target": "lib/colors.ts"
+        }
+      ]
+    },
+    {
+      "name": "providers",
+      "type": "registry:lib",
+      "title": "Providers",
+      "description": "The houses a model can come from — the major labs from models.dev alongside the platforms that serve other people's models — as plain data, with the mark each one wears kept in `model-icons`.",
+      "files": [
+        {
+          "path": "lib/providers.ts",
+          "type": "registry:lib",
+          "target": "lib/providers.ts"
+        }
+      ]
+    },
+    {
+      "name": "models",
+      "type": "registry:lib",
+      "title": "Models",
+      "description": "The catalogue a model picker reads — every model on offer with the house it comes from, what it is for, what it can do and how much it holds, alongside the tier order that decides what a plan reaches.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/providers.json"
+      ],
+      "files": [
+        {
+          "path": "lib/models.ts",
+          "type": "registry:lib",
+          "target": "lib/models.ts"
+        }
+      ]
+    },
+    {
+      "name": "tools",
+      "type": "registry:lib",
+      "title": "Tools",
+      "description": "The tools an agent can be handed — a shell, the filesystem, the two ways of finding a file and the two of reaching the web — each with the name it is called by, a line on what a call does, and the glyph it wears.",
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "files": [
+        {
+          "path": "lib/tools.ts",
+          "type": "registry:lib",
+          "target": "lib/tools.ts"
         }
       ]
     },
@@ -1743,6 +2039,47 @@
           "path": "hooks/use-copy-to-clipboard.ts",
           "type": "registry:hook",
           "target": "hooks/use-copy-to-clipboard.ts"
+        }
+      ]
+    },
+    {
+      "name": "code-icons",
+      "type": "registry:component",
+      "title": "Code Icons",
+      "description": "The badge a file or a language wears, in two sets — the interface one drawn in currentColor from Hugeicons, and the brand one in each language's own colours — behind one lookup keyed by extension and by language name alike.",
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/icons/code-icons.tsx",
+          "type": "registry:component",
+          "target": "components/icons/code-icons.tsx"
+        }
+      ]
+    },
+    {
+      "name": "model-icons",
+      "type": "registry:component",
+      "title": "Model Icons",
+      "description": "The mark a provider, a model or a capability wears — Hugeicons' brand set behind one lookup keyed by provider id and by model family, so a name like `claude-opus-5` finds Claude's mark and an unknown one still finds a glyph.",
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/models.json",
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/icons/model-icons.tsx",
+          "type": "registry:component",
+          "target": "components/icons/model-icons.tsx"
         }
       ]
     }
