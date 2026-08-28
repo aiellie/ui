@@ -89,7 +89,7 @@ function AgentsWorkspace() {
 
       <ResizableHandle withHandle className={handle} />
 
-      <ResizablePanel id="run" defaultSize="56" minSize="30" style={pane}>
+      <ResizablePanel id="run" defaultSize="82" minSize="30" style={pane}>
         <Pane icon={MessageSquareDotIcon} title="Run">
           <Empty>Pick a session to read it.</Empty>
         </Pane>
@@ -97,9 +97,15 @@ function AgentsWorkspace() {
 
       <ResizableHandle withHandle className={handle} />
 
+      {/* Shut on arrival. The trace is what you go looking for once something
+          in the run reads oddly, so it earns its width on being asked for
+          rather than holding a quarter of the page open against the chance.
+          `collapsible` is what makes 0 a resting size rather than a violation
+          of `minSize` — dragging it back out snaps to the minimum. */}
       <ResizablePanel
         id="trace"
-        defaultSize="26"
+        collapsible
+        defaultSize="0"
         minSize="16"
         maxSize="40"
         style={pane}
