@@ -47,6 +47,7 @@ import type { IconSvgElement } from "@hugeicons/react"
 import type { RegistryItem } from "shadcn/schema"
 
 import type { DemoVariant } from "@/components/aiellie-ui/demos-switcher"
+import { sectionFor } from "@/lib/categories"
 import * as codeAnnotationDemos from "@/examples/coding/code-annotation"
 import * as composerDemos from "@/examples/composer/composer"
 import * as codeBlockDemos from "@/examples/coding/code-block"
@@ -381,10 +382,21 @@ const examplesWithDemos: Example[] = examples.flatMap((item) => {
 })
 
 /**
- * Every example goes to `/design` and the rail there sorts them out, so there
- * is no split to keep in step here: where one lands is decided by the
+ * The two pages' lists. Which one an example lands on is decided by the
  * `categories` on its registry item, against the sections `lib/categories.ts`
- * names, and nowhere else.
+ * names, and nowhere else — so a new demo needs no change on either page, and
+ * moving one between them is an edit to its `categories` alone.
+ *
+ * One matching no visible category is an element, which is the useful default:
+ * a demo is a component until something says otherwise, and it shows up in the
+ * "Other" run at the foot of that page's rail rather than going missing.
  */
-export { examplesWithDemos, slugFor }
+const tokenExamples = examplesWithDemos.filter(
+  (example) => sectionFor(example.categories) === "tokens"
+)
+const elementExamples = examplesWithDemos.filter(
+  (example) => sectionFor(example.categories) !== "tokens"
+)
+
+export { examplesWithDemos, elementExamples, tokenExamples, slugFor }
 export type { Example }

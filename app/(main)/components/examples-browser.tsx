@@ -150,11 +150,12 @@ function ExamplesGrid({ examples }: { examples: Example[] }) {
 }
 
 /**
- * Every example behind a rail of the categories they fall into, labelled by
- * section, one category's grid at a time. What arrives here is the whole
- * registry: a new demo needs an item in `registry/_examples-registry.ts`, its
- * components in `registry/_demos.ts`, a category in `lib/categories.ts` if it
- * carries a new one, and nothing here.
+ * A page's examples behind a rail of the categories they fall into, one
+ * category's grid at a time. Which examples arrive here is the page's business
+ * — `/design` passes the token ones, `/elements` the rest — so a new demo needs
+ * an item in `registry/_examples-registry.ts`, its components in
+ * `registry/_demos.ts`, a category in `lib/categories.ts` if it carries a new
+ * one, and nothing here.
  *
  * The selection is state rather than a route: the rail moves within one page,
  * and the cards under it are already client-side.
@@ -163,6 +164,12 @@ function ExamplesBrowser({ examples }: { examples: Example[] }) {
   const runs = useMemo(() => runsFor(groupsFor(examples)), [examples])
   const groups = useMemo(() => runs.flatMap((run) => run.groups), [runs])
   const [selected, setSelected] = useState(() => groups[0]?.slug)
+
+  /* A section's label only tells you anything when there is another section to
+     tell it from. A page holding one names it in the nav and the heading
+     already, so the rail drops the label rather than saying it a third time
+     over every item it has. */
+  const labelled = runs.length > 1
 
   /* Falling back keeps the grid filled if the selected slug ever goes away —
      the page's list changing under a selection made against the old one. */
@@ -191,10 +198,10 @@ function ExamplesBrowser({ examples }: { examples: Example[] }) {
               <div
                 key={run.key}
                 role="group"
-                aria-label={run.label ?? undefined}
+                aria-label={labelled ? (run.label ?? undefined) : undefined}
                 className="flex shrink-0 items-center gap-1 md:flex-col md:items-stretch md:gap-0.5"
               >
-                {run.label ? (
+                {labelled && run.label ? (
                   /* aria-hidden: the run is already named by `aria-label`
                      above, so the heading would only say it twice. */
                   <span

@@ -73,22 +73,28 @@ failing, so check the dev console when a card doesn't appear.
 
 ### Categories drive the site
 
-Every example lives on one page, `/design`, and `categories` decides where in its
-sidebar it lands — nothing else does.
+An example's `categories` decide which page it lands on and where in that page's
+sidebar it sits — nothing else does.
 
-`lib/categories.ts` is the whole of it: `registrySections` names the labels the rail
-stands its items under (Elements, Tokens) and their order, and `registryCategories` names
-the categories, their order, icon, and the `section` each belongs to.
-`app/(main)/components/examples-browser.tsx` builds the rail from the two and shows one
-category's grid at a time.
+`lib/categories.ts` is the whole of it: `registrySections` names the two sections
+(Elements, Tokens), `registryCategories` names the categories, their order, icon, and
+the `section` each belongs to, and `sectionFor` reads a set of slugs back into a section.
+`registry/_demos.ts` splits the examples on that: `tokenExamples` for `/design`,
+`elementExamples` — everything else — for `/elements`.
+`app/(main)/components/examples-browser.tsx` is the one browser both pages render, given
+their own list; it builds the rail and shows one category's grid at a time.
 
-- An example falls into the **first** category it carries, so it can't appear twice.
+- An example falls into the **first** category it carries, in the rail's order.
+  `sectionFor` walks that same order, so the page it goes to and the rail item it lands
+  under can't disagree.
 - One matching no visible category lands in a trailing "Other" item rather than going
-  missing, in a run of its own under no label.
+  missing, in a run of its own under no label — and, having named no section, on
+  `/elements`, which is the useful default.
 - A category with nothing in it gets no item, and a section whose categories are all
-  empty gets no label: the rail shows what the page has, not what the registry could
-  name. So a new category is two edits — `lib/categories.ts`, and `categories` on the
-  example — and no page needs touching.
+  empty gets no label — as does the lone section on a one-section page, since the nav
+  already names it. The rail shows what the page has, not what the registry could name.
+  So a new category is two edits — `lib/categories.ts`, and `categories` on the example —
+  and no page needs touching.
 
 ### RSC boundary
 
@@ -96,10 +102,11 @@ category's grid at a time.
 passed from a Server Component to a Client Component**. It throws
 `Functions cannot be passed directly to Client Components`.
 
-`/design` is a Server Component. It therefore has a thin `"use client"` wrapper
-(`design-browser.tsx`) that imports `examplesWithDemos` from `registry/_demos.ts` inside
-the client bundle and renders `<ExamplesBrowser>` with it. Keep that shape: don't
-"simplify" it by lifting the list into the page.
+`/design` and `/elements` are Server Components. Each therefore has a thin `"use client"`
+wrapper (`design-browser.tsx`, `elements-browser.tsx`) that imports its list —
+`tokenExamples`, `elementExamples` — from `registry/_demos.ts` inside the client bundle
+and renders `<ExamplesBrowser>` with it. Keep that shape: don't "simplify" it by lifting
+the list into the page.
 
 ## Adding a component and its demo
 

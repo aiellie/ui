@@ -350,7 +350,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/bubble.tsx",
       },
     ],
-    categories: ["messages"],
+    categories: ["chat"],
     meta: {
       variants: [
         { name: "Default", demo: "BubbleDemo" },
@@ -374,7 +374,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/message.tsx",
       },
     ],
-    categories: ["messages"],
+    categories: ["chat"],
     meta: {
       variants: [
         { name: "Default", demo: "MessageDemo" },
@@ -404,7 +404,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/message-scroller.tsx",
       },
     ],
-    categories: ["messages"],
+    categories: ["chat"],
     meta: {
       variants: [
         { name: "Anchoring turns", demo: "MessageScrollerAnchoringDemo" },
@@ -435,7 +435,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/suggestions.tsx",
       },
     ],
-    categories: ["messages"],
+    categories: ["chat"],
     meta: {
       variants: [
         { name: "Pills", demo: "SuggestionsDemo" },
@@ -459,7 +459,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/reactions.tsx",
       },
     ],
-    categories: ["messages"],
+    categories: ["chat"],
     meta: {
       variants: [
         { name: "Default", demo: "ReactionsDemo" },
@@ -483,7 +483,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/quoted-message.tsx",
       },
     ],
-    categories: ["messages"],
+    categories: ["chat"],
     meta: {
       variants: [
         { name: "In a reply", demo: "QuotedMessageDemo" },
@@ -507,7 +507,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/reasoning.tsx",
       },
     ],
-    categories: ["messages"],
+    categories: ["chat"],
     meta: {
       variants: [
         { name: "Thinking", demo: "ReasoningDemo" },
@@ -530,7 +530,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/citations.tsx",
       },
     ],
-    categories: ["messages"],
+    categories: ["chat"],
     meta: {
       variants: [
         { name: "In an answer", demo: "CitationsDemo" },
@@ -553,7 +553,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/response.tsx",
       },
     ],
-    categories: ["messages"],
+    categories: ["chat"],
     meta: {
       variants: [
         { name: "Prose", demo: "ResponseDemo" },
@@ -577,7 +577,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/message-status.tsx",
       },
     ],
-    categories: ["messages"],
+    categories: ["chat"],
     meta: {
       variants: [
         { name: "Travelling", demo: "MessageStatusDemo" },
@@ -601,7 +601,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/streaming-text.tsx",
       },
     ],
-    categories: ["messages"],
+    categories: ["chat"],
     meta: {
       variants: [
         { name: "Typed out", demo: "StreamingTextDemo" },
@@ -625,7 +625,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/typing-indicator.tsx",
       },
     ],
-    categories: ["messages"],
+    categories: ["chat"],
     meta: {
       variants: [
         { name: "Default", demo: "TypingIndicatorDemo" },
@@ -650,7 +650,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/message-highlight-toolbar.tsx",
       },
     ],
-    categories: ["messages"],
+    categories: ["chat"],
     meta: {
       variants: [
         { name: "One message", demo: "MessageHighlightToolbarDemo" },
@@ -674,7 +674,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/message-context-menu.tsx",
       },
     ],
-    categories: ["messages"],
+    categories: ["chat"],
     meta: {
       variants: [
         { name: "Default", demo: "MessageContextMenuDemo" },
@@ -697,7 +697,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/timestamps.tsx",
       },
     ],
-    categories: ["messages"],
+    categories: ["chat"],
     meta: {
       variants: [
         { name: "In a thread", demo: "TimestampsDemo" },
@@ -730,7 +730,7 @@ export const examples: Registry["items"] = [
         target: "examples/composer/composer.tsx",
       },
     ],
-    categories: ["composer"],
+    categories: ["chat"],
     meta: {
       variants: [{ name: "Default", demo: "ComposerDemo" }],
       wide: true,
@@ -751,7 +751,7 @@ export const examples: Registry["items"] = [
         target: "examples/composer/message-input.tsx",
       },
     ],
-    categories: ["composer"],
+    categories: ["chat"],
     meta: {
       variants: [
         { name: "Default", demo: "MessageInputDemo" },
@@ -782,7 +782,7 @@ export const examples: Registry["items"] = [
         target: "examples/composer/empty-state.tsx",
       },
     ],
-    categories: ["composer"],
+    categories: ["chat"],
     meta: {
       variants: [
         { name: "Default", demo: "EmptyStateDemo" },
@@ -812,7 +812,7 @@ export const examples: Registry["items"] = [
         target: "examples/composer/attachments.tsx",
       },
     ],
-    categories: ["composer"],
+    categories: ["chat"],
     meta: {
       variants: [
         { name: "Default", demo: "AttachmentsDemo" },
@@ -848,7 +848,7 @@ export const examples: Registry["items"] = [
         target: "examples/composer/agents.ts",
       },
     ],
-    categories: ["composer"],
+    categories: ["chat"],
     meta: {
       variants: [
         { name: "People and agents", demo: "MentionsDemo" },
@@ -877,7 +877,7 @@ export const examples: Registry["items"] = [
         target: "examples/composer/commands.ts",
       },
     ],
-    categories: ["composer"],
+    categories: ["chat"],
     meta: {
       variants: [
         { name: "Commands", demo: "SlashMenuDemo" },
@@ -905,7 +905,7 @@ export const examples: Registry["items"] = [
         target: "examples/composer/model-picker.tsx",
       },
     ],
-    categories: ["composer"],
+    categories: ["chat"],
     meta: {
       variants: [
         { name: "Default", demo: "ModelPickerDemo" },
@@ -936,7 +936,7 @@ export const examples: Registry["items"] = [
         target: "examples/composer/tool-picker.tsx",
       },
     ],
-    categories: ["composer"],
+    categories: ["chat"],
     meta: {
       variants: [
         { name: "Default", demo: "ToolPickerDemo" },
@@ -965,7 +965,7 @@ export const examples: Registry["items"] = [
         target: "examples/composer/approval-mode-menu.tsx",
       },
     ],
-    categories: ["composer"],
+    categories: ["chat"],
     meta: {
       variants: [
         { name: "Default", demo: "ApprovalModeMenuDemo" },
@@ -995,7 +995,7 @@ export const examples: Registry["items"] = [
         target: "examples/composer/effort-menu.tsx",
       },
     ],
-    categories: ["composer"],
+    categories: ["chat"],
     meta: {
       variants: [
         { name: "Default", demo: "EffortMenuDemo" },
@@ -1026,7 +1026,7 @@ export const examples: Registry["items"] = [
         target: "examples/composer/prompt-menu.tsx",
       },
     ],
-    categories: ["composer"],
+    categories: ["chat"],
     meta: {
       variants: [
         { name: "Default", demo: "PromptMenuDemo" },
@@ -1052,7 +1052,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/message-actions.tsx",
       },
     ],
-    categories: ["messages"],
+    categories: ["chat"],
     meta: {
       variants: [
         { name: "Default", demo: "MessageActionsDemo" },
@@ -1085,7 +1085,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/chat-card.tsx",
       },
     ],
-    categories: ["messages"],
+    categories: ["chat"],
     meta: {
       variants: [
         { name: "Default", demo: "ChatCardDemo" },
@@ -1117,7 +1117,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/chat-avatar.tsx",
       },
     ],
-    categories: ["messages"],
+    categories: ["chat"],
     meta: {
       variants: [
         { name: "Default", demo: "ChatAvatarDemo" },

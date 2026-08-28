@@ -5,6 +5,7 @@ import {
   SquareTerminalIcon,
   MessageSquareDotIcon,
   CodeIcon,
+  BubbleChatSparkIcon,
 } from "@hugeicons/core-free-icons"
 import type { IconSvgElement } from "@hugeicons/react"
 
@@ -48,11 +49,11 @@ export interface RegistryCategory {
  */
 export const registryCategories: RegistryCategory[] = [
   {
-    name: "Composer",
-    slug: "composer",
+    name: "Chat",
+    slug: "chat",
     section: "elements",
     hidden: false,
-    icon: TextFontIcon,
+    icon: BubbleChatSparkIcon,
   },
   {
     name: "Coding",
@@ -90,3 +91,21 @@ export const registryCategories: RegistryCategory[] = [
     icon: CodeIcon,
   },
 ]
+
+/**
+ * The section a set of categories places something in, or `null` when none of
+ * them names a visible category.
+ *
+ * The slugs are read in the rail's order rather than the order they were
+ * written in, which is the same order `groupsFor` places a card in — so the
+ * page an example goes to and the rail item it lands under can never disagree
+ * about which of its categories won. Hidden categories place nothing: one is
+ * left out of the rail, so it cannot pull an example onto a page either.
+ */
+export function sectionFor(slugs: string[]): SectionSlug | null {
+  for (const category of registryCategories) {
+    if (category.hidden) continue
+    if (slugs.includes(category.slug)) return category.section
+  }
+  return null
+}

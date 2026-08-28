@@ -1,23 +1,23 @@
-import { AiDrawingIcon } from "@hugeicons/core-free-icons"
+import { AiElementsIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 
-import { tokenExamples } from "@/registry/_demos"
+import { elementExamples } from "@/registry/_demos"
 
-export function DesignHeader() {
+export function ElementsHeader() {
   return (
     <div>
       <div className="flex items-center gap-2">
         <h1 className="flex items-center gap-2 text-lg font-medium">
-          <HugeiconsIcon icon={AiDrawingIcon} className="size-4.5" />
-          Design
+          <HugeiconsIcon icon={AiElementsIcon} className="size-4.5" />
+          Elements
         </h1>
         <span className="ms-auto font-mono text-[11px] tracking-tight text-foreground/30 tabular-nums">
-          {String(tokenExamples.length).padStart(2, "0")}
+          {String(elementExamples.length).padStart(2, "0")}
         </span>
       </div>
       <p className="mt-1.5 max-w-md text-[13.5px] leading-relaxed text-foreground/50">
-        The values every element is built from — the colours they are painted
-        in, the type they are set in, and how code is lit inside them.
+        Small, composable pieces for AI interfaces — streaming, waiting, and the
+        surfaces they sit on.
       </p>
     </div>
   )

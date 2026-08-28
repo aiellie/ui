@@ -3,15 +3,17 @@
 import {
   Home02Icon,
   AiDrawingIcon,
+  AiElementsIcon,
   MachineRobotIcon,
   AiSwapIcon,
 } from "@hugeicons/core-free-icons"
-  import { ThemeToggle } from "@/components/theme-toggle"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { NavButton, type NavPage } from "./nav-button"
 import { Rules, type RuleDoc } from "./rules"
 
 const pages: NavPage[] = [
   { href: "/", label: "Home", icon: Home02Icon },
+  { href: "/elements", label: "Elements", icon: AiElementsIcon },
   { href: "/design", label: "Design", icon: AiDrawingIcon },
   { href: "/agents", label: "Agents", icon: MachineRobotIcon },
   { href: "/playground", label: "Playground", icon: AiSwapIcon },
