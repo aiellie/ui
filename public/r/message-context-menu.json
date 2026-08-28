@@ -7,8 +7,8 @@
     "@base-ui/react"
   ],
   "registryDependencies": [
-    "https://aiellie.dev/r/menu.json",
-    "https://aiellie.dev/r/utils.json"
+    "https://ui.aiellie.dev/r/menu.json",
+    "https://ui.aiellie.dev/r/utils.json"
   ],
   "files": [
     {

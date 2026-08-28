@@ -4,8 +4,8 @@
   "title": "Timestamps",
   "description": "When a message was sent, phrased the way a reader would say it — just now, half four, Tuesday — inline under a bubble or ruled across the thread as the divider a new day starts with, and kept honest on an interval.",
   "registryDependencies": [
-    "https://aiellie.dev/r/marker.json",
-    "https://aiellie.dev/r/utils.json"
+    "https://ui.aiellie.dev/r/marker.json",
+    "https://ui.aiellie.dev/r/utils.json"
   ],
   "files": [
     {

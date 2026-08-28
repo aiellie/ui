@@ -4,7 +4,7 @@
   "title": "Kbd",
   "description": "A key as it is printed on a keyboard, sized to sit inline in a sentence without pushing the line height around.",
   "registryDependencies": [
-    "https://aiellie.dev/r/utils.json"
+    "https://ui.aiellie.dev/r/utils.json"
   ],
   "files": [
     {

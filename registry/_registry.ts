@@ -10,6 +10,6 @@ import { ui } from "./_ui-registry"
 export const registry: Registry = {
   $schema: "https://ui.shadcn.com/schema/registry.json",
   name: "aiellie-ui",
-  homepage: "https://aiellie.dev",
+  homepage: "https://ui.aiellie.dev",
   items: [...aiellieui, ...components, ...ui, ...examples, ...lib, ...hooks],
 }

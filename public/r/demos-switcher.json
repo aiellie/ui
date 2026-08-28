@@ -4,8 +4,8 @@
   "title": "Demos Switcher",
   "description": "Holds a list of variants and shows one, with the toolbar that picks between them — the piece that turns a set of demos into a single card.",
   "registryDependencies": [
-    "https://aiellie.dev/r/demo-toolbar.json",
-    "https://aiellie.dev/r/utils.json"
+    "https://ui.aiellie.dev/r/demo-toolbar.json",
+    "https://ui.aiellie.dev/r/utils.json"
   ],
   "files": [
     {

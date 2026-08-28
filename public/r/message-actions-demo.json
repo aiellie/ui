@@ -8,8 +8,8 @@
     "@hugeicons/react"
   ],
   "registryDependencies": [
-    "https://aiellie.dev/r/message-actions.json",
-    "https://aiellie.dev/r/bubble.json"
+    "https://ui.aiellie.dev/r/message-actions.json",
+    "https://ui.aiellie.dev/r/bubble.json"
   ],
   "files": [
     {

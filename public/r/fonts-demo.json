@@ -4,8 +4,8 @@
   "title": "Fonts",
   "description": "The two families the elements are set in, the weights they are used at, and the type scale they step through — each shown at the size it is actually rendered.",
   "registryDependencies": [
-    "https://aiellie.dev/r/fonts.json",
-    "https://aiellie.dev/r/utils.json"
+    "https://ui.aiellie.dev/r/fonts.json",
+    "https://ui.aiellie.dev/r/utils.json"
   ],
   "files": [
     {

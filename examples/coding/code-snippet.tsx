@@ -7,28 +7,28 @@ import {
   type PackageManager,
 } from "@/components/aiellie-ui/code/code-snippet";
 
-const COMMAND = "shadcn@latest add https://aiellie.dev/r/code-block.json";
+const COMMAND = "shadcn@latest add https://ui.aiellie.dev/r/code-block.json";
 
 const SEVERAL =
-  "shadcn@latest add https://aiellie.dev/r/message-scroller.json https://aiellie.dev/r/message.json";
+  "shadcn@latest add https://ui.aiellie.dev/r/message-scroller.json https://ui.aiellie.dev/r/message.json";
 
 /** No manager to pick from, so the line arrives with its runner already on it. */
-const BARE = "npx shadcn@latest add https://aiellie.dev/r/install-command.json";
+const BARE = "npx shadcn@latest add https://ui.aiellie.dev/r/install-command.json";
 
 /** Carries a flag and a version, so every kind of token has something to show. */
 const HIGHLIGHTED =
-  "shadcn@latest add --overwrite https://aiellie.dev/r/install-command.json";
+  "shadcn@latest add --overwrite https://ui.aiellie.dev/r/install-command.json";
 
 /** Tabs that differ by more than a runner, which is what custom tabs are for. */
 const TABS: readonly CodeSnippetTab[] = [
   {
     name: "cli",
-    command: "npx shadcn@latest add https://aiellie.dev/r/code-block.json",
+    command: "npx shadcn@latest add https://ui.aiellie.dev/r/code-block.json",
   },
   { name: "manual", command: "npm i @hugeicons/react clsx tailwind-merge" },
   {
     name: "tokens",
-    command: "npx shadcn@latest add https://aiellie.dev/r/surface-tokens.json",
+    command: "npx shadcn@latest add https://ui.aiellie.dev/r/surface-tokens.json",
   },
 ];
 

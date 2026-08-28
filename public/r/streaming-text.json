@@ -4,7 +4,7 @@
   "title": "Streaming Text",
   "description": "Text that arrives a piece at a time — from a model streaming tokens or typed out from a string already in hand — each piece fading in as it lands, with a caret holding the place the next one will take.",
   "registryDependencies": [
-    "https://aiellie.dev/r/utils.json"
+    "https://ui.aiellie.dev/r/utils.json"
   ],
   "files": [
     {

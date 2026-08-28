@@ -4,8 +4,8 @@
   "title": "Quoted Message",
   "description": "A reply carrying what it replies to, the quote as a way back to the original, and the quote waiting above something not sent yet.",
   "registryDependencies": [
-    "https://aiellie.dev/r/quoted-message.json",
-    "https://aiellie.dev/r/bubble.json"
+    "https://ui.aiellie.dev/r/quoted-message.json",
+    "https://ui.aiellie.dev/r/bubble.json"
   ],
   "files": [
     {

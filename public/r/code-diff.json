@@ -4,10 +4,10 @@
   "title": "Code Diff",
   "description": "What changed, from the unified diff the tool that changed it wrote — tinted by row and marked in the gutter, with the code inside still coloured as code, read as one sequence or with before and after side by side.",
   "registryDependencies": [
-    "https://aiellie.dev/r/actions.json",
-    "https://aiellie.dev/r/code-block.json",
-    "https://aiellie.dev/r/highlight.json",
-    "https://aiellie.dev/r/utils.json"
+    "https://ui.aiellie.dev/r/actions.json",
+    "https://ui.aiellie.dev/r/code-block.json",
+    "https://ui.aiellie.dev/r/highlight.json",
+    "https://ui.aiellie.dev/r/utils.json"
   ],
   "files": [
     {

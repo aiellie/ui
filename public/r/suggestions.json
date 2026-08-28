@@ -4,8 +4,8 @@
   "title": "Suggestions",
   "description": "A row of prompts the reader can act on rather than read: each one a bubble drawn as a dashed outline while it is still an offer, tinted once it is picked, with the row holding the selection for one or for several.",
   "registryDependencies": [
-    "https://aiellie.dev/r/bubble.json",
-    "https://aiellie.dev/r/utils.json"
+    "https://ui.aiellie.dev/r/bubble.json",
+    "https://ui.aiellie.dev/r/utils.json"
   ],
   "files": [
     {

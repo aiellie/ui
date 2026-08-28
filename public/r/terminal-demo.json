@@ -4,8 +4,8 @@
   "title": "Terminal",
   "description": "A command and what came back — a clean run, a run that failed and says so in the tone it failed in, and a run still going with the caret holding the end of the line.",
   "registryDependencies": [
-    "https://aiellie.dev/r/terminal.json",
-    "https://aiellie.dev/r/code-block.json"
+    "https://ui.aiellie.dev/r/terminal.json",
+    "https://ui.aiellie.dev/r/code-block.json"
   ],
   "files": [
     {

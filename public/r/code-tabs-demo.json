@@ -4,8 +4,8 @@
   "title": "Code Tabs",
   "description": "Several files under one header, the strip scrolling rather than pushing the actions off the block, each tab's badge turning into the cross that shuts it, and the copy action always handed the file that is actually showing.",
   "registryDependencies": [
-    "https://aiellie.dev/r/code-tabs.json",
-    "https://aiellie.dev/r/code-block.json"
+    "https://ui.aiellie.dev/r/code-tabs.json",
+    "https://ui.aiellie.dev/r/code-block.json"
   ],
   "files": [
     {

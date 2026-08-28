@@ -4,9 +4,9 @@
   "title": "Reactions",
   "description": "A counted row under a message, the picker and the tally wired together as two halves of one thing, and both sides of a thread including the row with nothing on it yet.",
   "registryDependencies": [
-    "https://aiellie.dev/r/reactions.json",
-    "https://aiellie.dev/r/message-context-menu.json",
-    "https://aiellie.dev/r/bubble.json"
+    "https://ui.aiellie.dev/r/reactions.json",
+    "https://ui.aiellie.dev/r/message-context-menu.json",
+    "https://ui.aiellie.dev/r/bubble.json"
   ],
   "files": [
     {

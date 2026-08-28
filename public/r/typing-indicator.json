@@ -4,8 +4,8 @@
   "title": "Typing Indicator",
   "description": "The bubble that stands in for a message not written yet — dots waving in the place the answer will take, announced as words rather than read out as punctuation.",
   "registryDependencies": [
-    "https://aiellie.dev/r/bubble.json",
-    "https://aiellie.dev/r/utils.json"
+    "https://ui.aiellie.dev/r/bubble.json",
+    "https://ui.aiellie.dev/r/utils.json"
   ],
   "files": [
     {

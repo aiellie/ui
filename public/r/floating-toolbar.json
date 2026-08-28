@@ -7,9 +7,9 @@
     "@base-ui/react"
   ],
   "registryDependencies": [
-    "https://aiellie.dev/r/actions.json",
-    "https://aiellie.dev/r/tooltip.json",
-    "https://aiellie.dev/r/utils.json"
+    "https://ui.aiellie.dev/r/actions.json",
+    "https://ui.aiellie.dev/r/tooltip.json",
+    "https://ui.aiellie.dev/r/utils.json"
   ],
   "files": [
     {

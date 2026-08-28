@@ -8,7 +8,7 @@
     "class-variance-authority"
   ],
   "registryDependencies": [
-    "https://aiellie.dev/r/utils.json"
+    "https://ui.aiellie.dev/r/utils.json"
   ],
   "files": [
     {

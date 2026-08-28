@@ -4,11 +4,11 @@
   "title": "Message Scroller",
   "description": "A thread that holds the newest message in view until you scroll away from it, appends without yanking the viewport, and can be driven from outside by the hook.",
   "registryDependencies": [
-    "https://aiellie.dev/r/message-scroller.json",
-    "https://aiellie.dev/r/message.json",
-    "https://aiellie.dev/r/bubble.json",
-    "https://aiellie.dev/r/button.json",
-    "https://aiellie.dev/r/utils.json"
+    "https://ui.aiellie.dev/r/message-scroller.json",
+    "https://ui.aiellie.dev/r/message.json",
+    "https://ui.aiellie.dev/r/bubble.json",
+    "https://ui.aiellie.dev/r/button.json",
+    "https://ui.aiellie.dev/r/utils.json"
   ],
   "files": [
     {

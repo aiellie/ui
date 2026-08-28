@@ -4,7 +4,7 @@
   "title": "Fonts",
   "description": "The two families the elements are set in, loaded and bound to their CSS variables, alongside the weights and the type scale they are used at.",
   "registryDependencies": [
-    "https://aiellie.dev/r/utils.json"
+    "https://ui.aiellie.dev/r/utils.json"
   ],
   "files": [
     {

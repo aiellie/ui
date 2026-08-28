@@ -4,8 +4,8 @@
   "title": "Code Annotation",
   "description": "A note under the line it is about — as a remark, a warning or an error, and as one the reader can be done with.",
   "registryDependencies": [
-    "https://aiellie.dev/r/code-annotation.json",
-    "https://aiellie.dev/r/code-block.json"
+    "https://ui.aiellie.dev/r/code-annotation.json",
+    "https://ui.aiellie.dev/r/code-block.json"
   ],
   "files": [
     {

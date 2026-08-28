@@ -4,8 +4,8 @@
   "title": "Code Diff",
   "description": "What a change actually did, from the unified diff that describes it — with the count in the header, numbered down both sides, side by side where the room is worth spending, and in weight rather than colour where it is not.",
   "registryDependencies": [
-    "https://aiellie.dev/r/code-diff.json",
-    "https://aiellie.dev/r/code-block.json"
+    "https://ui.aiellie.dev/r/code-diff.json",
+    "https://ui.aiellie.dev/r/code-block.json"
   ],
   "files": [
     {

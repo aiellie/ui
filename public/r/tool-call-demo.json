@@ -4,7 +4,7 @@
   "title": "Tool Call",
   "description": "A tool call folded behind its summary — open, as a run of three in four different states, failed, and driven from outside so a transcript can unfold the call it just finished.",
   "registryDependencies": [
-    "https://aiellie.dev/r/tool-call.json"
+    "https://ui.aiellie.dev/r/tool-call.json"
   ],
   "files": [
     {

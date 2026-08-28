@@ -4,8 +4,8 @@
   "title": "Message",
   "description": "The frame around a bubble — who said it, when, and which side it belongs on — including the ghost case where the frame gets out of the way of the prose.",
   "registryDependencies": [
-    "https://aiellie.dev/r/message.json",
-    "https://aiellie.dev/r/bubble.json"
+    "https://ui.aiellie.dev/r/message.json",
+    "https://ui.aiellie.dev/r/bubble.json"
   ],
   "files": [
     {

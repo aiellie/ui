@@ -65,7 +65,7 @@ failing, so check the dev console when a card doesn't appear.
 - **Rewrites bare `registryDependencies` names to URLs.** A bare name is otherwise looked
   up in _shadcn/ui's own_ registry (`styles/<style>/<name>.json`), so `"actions"` would
   404 for consumers and `"utils"` would silently install shadcn/ui's. Write bare local
-  names and let the build rewrite them — never hand-write `https://aiellie.dev/r/…`.
+  names and let the build rewrite them — never hand-write `https://ui.aiellie.dev/r/…`.
   Names with a scope, path, protocol, or leading dot pass through untouched.
 - **Checks every file's imports against the item's declared dependencies.** A `@/` import
   with no matching `registryDependencies` entry, or a bare package with no `dependencies`

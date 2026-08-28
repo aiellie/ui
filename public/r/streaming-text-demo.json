@@ -4,9 +4,9 @@
   "title": "Streaming Text",
   "description": "An answer typed out from a string in hand, the same words arriving as tokens instead, and the typing bubble handing over to the stream at the first of them.",
   "registryDependencies": [
-    "https://aiellie.dev/r/streaming-text.json",
-    "https://aiellie.dev/r/typing-indicator.json",
-    "https://aiellie.dev/r/bubble.json"
+    "https://ui.aiellie.dev/r/streaming-text.json",
+    "https://ui.aiellie.dev/r/typing-indicator.json",
+    "https://ui.aiellie.dev/r/bubble.json"
   ],
   "files": [
     {

@@ -8,9 +8,9 @@
     "@hugeicons/react"
   ],
   "registryDependencies": [
-    "https://aiellie.dev/r/message-context-menu.json",
-    "https://aiellie.dev/r/menu.json",
-    "https://aiellie.dev/r/bubble.json"
+    "https://ui.aiellie.dev/r/message-context-menu.json",
+    "https://ui.aiellie.dev/r/menu.json",
+    "https://ui.aiellie.dev/r/bubble.json"
   ],
   "files": [
     {

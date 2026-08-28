@@ -4,8 +4,8 @@
   "title": "Timestamps",
   "description": "Stamps under the bubbles they belong to and ruled across the thread between days, in every phrasing the formatter has.",
   "registryDependencies": [
-    "https://aiellie.dev/r/timestamps.json",
-    "https://aiellie.dev/r/bubble.json"
+    "https://ui.aiellie.dev/r/timestamps.json",
+    "https://ui.aiellie.dev/r/bubble.json"
   ],
   "files": [
     {

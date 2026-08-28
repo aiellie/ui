@@ -8,11 +8,11 @@
     "@hugeicons/react"
   ],
   "registryDependencies": [
-    "https://aiellie.dev/r/actions.json",
-    "https://aiellie.dev/r/code-icons.json",
-    "https://aiellie.dev/r/highlight.json",
-    "https://aiellie.dev/r/use-copy-to-clipboard.json",
-    "https://aiellie.dev/r/utils.json"
+    "https://ui.aiellie.dev/r/actions.json",
+    "https://ui.aiellie.dev/r/code-icons.json",
+    "https://ui.aiellie.dev/r/highlight.json",
+    "https://ui.aiellie.dev/r/use-copy-to-clipboard.json",
+    "https://ui.aiellie.dev/r/utils.json"
   ],
   "files": [
     {

@@ -4,9 +4,9 @@
   "title": "Message Status",
   "description": "A message travelling from sending to read beside its timestamp, every state at rest, and the failed one offering the retry.",
   "registryDependencies": [
-    "https://aiellie.dev/r/message-status.json",
-    "https://aiellie.dev/r/timestamps.json",
-    "https://aiellie.dev/r/bubble.json"
+    "https://ui.aiellie.dev/r/message-status.json",
+    "https://ui.aiellie.dev/r/timestamps.json",
+    "https://ui.aiellie.dev/r/bubble.json"
   ],
   "files": [
     {

@@ -4,7 +4,7 @@
   "title": "Bubble",
   "description": "A bubble is a container for a message.",
   "registryDependencies": [
-    "https://aiellie.dev/r/bubble.json"
+    "https://ui.aiellie.dev/r/bubble.json"
   ],
   "files": [
     {

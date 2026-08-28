@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "aiellie-ui",
-  "homepage": "https://aiellie.dev",
+  "homepage": "https://ui.aiellie.dev",
   "items": [
     {
       "name": "code-block",
@@ -13,12 +13,12 @@
         "@hugeicons/react"
       ],
       "registryDependencies": [
-        "https://aiellie.dev/r/actions.json",
-        "https://aiellie.dev/r/code-icons.json",
-        "https://aiellie.dev/r/highlight.json",
-        "https://aiellie.dev/r/tooltip.json",
-        "https://aiellie.dev/r/use-copy-to-clipboard.json",
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/actions.json",
+        "https://ui.aiellie.dev/r/code-icons.json",
+        "https://ui.aiellie.dev/r/highlight.json",
+        "https://ui.aiellie.dev/r/tooltip.json",
+        "https://ui.aiellie.dev/r/use-copy-to-clipboard.json",
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "files": [
         {
@@ -34,10 +34,10 @@
       "title": "Code Diff",
       "description": "What changed, from the unified diff the tool that changed it wrote — tinted by row and marked in the gutter, with the code inside still coloured as code, read as one sequence or with before and after side by side.",
       "registryDependencies": [
-        "https://aiellie.dev/r/actions.json",
-        "https://aiellie.dev/r/code-block.json",
-        "https://aiellie.dev/r/highlight.json",
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/actions.json",
+        "https://ui.aiellie.dev/r/code-block.json",
+        "https://ui.aiellie.dev/r/highlight.json",
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "files": [
         {
@@ -58,11 +58,11 @@
         "@hugeicons/react"
       ],
       "registryDependencies": [
-        "https://aiellie.dev/r/actions.json",
-        "https://aiellie.dev/r/code-block.json",
-        "https://aiellie.dev/r/code-icons.json",
-        "https://aiellie.dev/r/highlight.json",
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/actions.json",
+        "https://ui.aiellie.dev/r/code-block.json",
+        "https://ui.aiellie.dev/r/code-icons.json",
+        "https://ui.aiellie.dev/r/highlight.json",
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "files": [
         {
@@ -78,9 +78,9 @@
       "title": "Terminal",
       "description": "A run rather than a line to run: what was typed, coloured the way the snippet colours it, what came back in the tone it came back in, and how it ended — with the prompt kept out of anything you copy.",
       "registryDependencies": [
-        "https://aiellie.dev/r/actions.json",
-        "https://aiellie.dev/r/highlight.json",
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/actions.json",
+        "https://ui.aiellie.dev/r/highlight.json",
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "files": [
         {
@@ -101,8 +101,8 @@
         "@hugeicons/react"
       ],
       "registryDependencies": [
-        "https://aiellie.dev/r/actions.json",
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/actions.json",
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "files": [
         {
@@ -122,9 +122,9 @@
         "@hugeicons/react"
       ],
       "registryDependencies": [
-        "https://aiellie.dev/r/actions.json",
-        "https://aiellie.dev/r/code-icons.json",
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/actions.json",
+        "https://ui.aiellie.dev/r/code-icons.json",
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "files": [
         {
@@ -144,8 +144,8 @@
         "@hugeicons/react"
       ],
       "registryDependencies": [
-        "https://aiellie.dev/r/actions.json",
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/actions.json",
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "files": [
         {
@@ -165,8 +165,8 @@
         "@hugeicons/react"
       ],
       "registryDependencies": [
-        "https://aiellie.dev/r/use-copy-to-clipboard.json",
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/use-copy-to-clipboard.json",
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "files": [
         {
@@ -186,9 +186,9 @@
         "@hugeicons/react"
       ],
       "registryDependencies": [
-        "https://aiellie.dev/r/actions.json",
-        "https://aiellie.dev/r/highlight.json",
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/actions.json",
+        "https://ui.aiellie.dev/r/highlight.json",
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "files": [
         {
@@ -204,8 +204,8 @@
       "title": "Suggestions",
       "description": "A row of prompts the reader can act on rather than read: each one a bubble drawn as a dashed outline while it is still an offer, tinted once it is picked, with the row holding the selection for one or for several.",
       "registryDependencies": [
-        "https://aiellie.dev/r/bubble.json",
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/bubble.json",
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "files": [
         {
@@ -221,8 +221,8 @@
       "title": "Timestamps",
       "description": "When a message was sent, phrased the way a reader would say it — just now, half four, Tuesday — inline under a bubble or ruled across the thread as the divider a new day starts with, and kept honest on an interval.",
       "registryDependencies": [
-        "https://aiellie.dev/r/marker.json",
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/marker.json",
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "files": [
         {
@@ -238,8 +238,8 @@
       "title": "Menu",
       "description": "Base UI's menu with this registry's surface on it — a glass popup, rows that take an icon and a word, ticked rows, groups, rules, shortcuts and submenus — so anything that needs a menu styles none of it again.",
       "registryDependencies": [
-        "https://aiellie.dev/r/actions.json",
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/actions.json",
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "dependencies": [
         "@base-ui/react",
@@ -264,7 +264,7 @@
         "@hugeicons/react"
       ],
       "registryDependencies": [
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "files": [
         {
@@ -280,7 +280,7 @@
       "title": "Quoted Message",
       "description": "The message a reply is about, kept to an excerpt above the reply itself — a rule on the start edge to say the words are borrowed, a way back to the original, and a way to call the quote off before it is sent.",
       "registryDependencies": [
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "dependencies": [
         "@base-ui/react",
@@ -301,11 +301,11 @@
       "title": "Response",
       "description": "The body of an answer rather than the bubble around it — headings, lists, quotes, links and tables set to read as prose, with code blocks that carry their language and a copy of exactly what is on screen.",
       "registryDependencies": [
-        "https://aiellie.dev/r/actions.json",
-        "https://aiellie.dev/r/code-icons.json",
-        "https://aiellie.dev/r/highlight.json",
-        "https://aiellie.dev/r/use-copy-to-clipboard.json",
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/actions.json",
+        "https://ui.aiellie.dev/r/code-icons.json",
+        "https://ui.aiellie.dev/r/highlight.json",
+        "https://ui.aiellie.dev/r/use-copy-to-clipboard.json",
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "dependencies": [
         "@hugeicons/core-free-icons",
@@ -329,7 +329,7 @@
         "@hugeicons/react"
       ],
       "registryDependencies": [
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "files": [
         {
@@ -345,7 +345,7 @@
       "title": "Streaming Text",
       "description": "Text that arrives a piece at a time — from a model streaming tokens or typed out from a string already in hand — each piece fading in as it lands, with a caret holding the place the next one will take.",
       "registryDependencies": [
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "files": [
         {
@@ -361,8 +361,8 @@
       "title": "Typing Indicator",
       "description": "The bubble that stands in for a message not written yet — dots waving in the place the answer will take, announced as words rather than read out as punctuation.",
       "registryDependencies": [
-        "https://aiellie.dev/r/bubble.json",
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/bubble.json",
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "files": [
         {
@@ -378,10 +378,10 @@
       "title": "Message Highlight Toolbar",
       "description": "A pill that appears over selected text in a message — reply to it, have it explained, edit it, or file it away — reading the selection out of context so an action can be dropped in without the toolbar knowing what it does.",
       "registryDependencies": [
-        "https://aiellie.dev/r/actions.json",
-        "https://aiellie.dev/r/menu.json",
-        "https://aiellie.dev/r/tooltip.json",
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/actions.json",
+        "https://ui.aiellie.dev/r/menu.json",
+        "https://ui.aiellie.dev/r/tooltip.json",
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "dependencies": [
         "@base-ui/react"
@@ -400,8 +400,8 @@
       "title": "Message Context Menu",
       "description": "The menu a message answers a right click — or a long press — with: the reactions that can be put on it across the top, and everything that can be done to it under them.",
       "registryDependencies": [
-        "https://aiellie.dev/r/menu.json",
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/menu.json",
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "dependencies": [
         "@base-ui/react"
@@ -420,10 +420,10 @@
       "title": "Message Actions",
       "description": "The controls that belong to one message — copy, rate, retry — each an icon under a tooltip, with everything rarer folded into a menu at the end of the row, and the whole row held back until the message is hovered.",
       "registryDependencies": [
-        "https://aiellie.dev/r/actions.json",
-        "https://aiellie.dev/r/menu.json",
-        "https://aiellie.dev/r/tooltip.json",
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/actions.json",
+        "https://ui.aiellie.dev/r/menu.json",
+        "https://ui.aiellie.dev/r/tooltip.json",
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "dependencies": [
         "@base-ui/react"
@@ -442,7 +442,7 @@
       "title": "Actions",
       "description": "The class strings every element shares — surfaces, pressable buttons, the icon and label swaps — kept in one place so a card and a toolbar agree on what a press looks like.",
       "registryDependencies": [
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "files": [
         {
@@ -461,9 +461,9 @@
         "@base-ui/react"
       ],
       "registryDependencies": [
-        "https://aiellie.dev/r/actions.json",
-        "https://aiellie.dev/r/tooltip.json",
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/actions.json",
+        "https://ui.aiellie.dev/r/tooltip.json",
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "files": [
         {
@@ -482,7 +482,7 @@
         "@hugeicons/react"
       ],
       "registryDependencies": [
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "files": [
         {
@@ -502,10 +502,10 @@
         "@hugeicons/react"
       ],
       "registryDependencies": [
-        "https://aiellie.dev/r/actions.json",
-        "https://aiellie.dev/r/floating-toolbar.json",
-        "https://aiellie.dev/r/use-copy-to-clipboard.json",
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/actions.json",
+        "https://ui.aiellie.dev/r/floating-toolbar.json",
+        "https://ui.aiellie.dev/r/use-copy-to-clipboard.json",
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "files": [
         {
@@ -521,8 +521,8 @@
       "title": "Demos Switcher",
       "description": "Holds a list of variants and shows one, with the toolbar that picks between them — the piece that turns a set of demos into a single card.",
       "registryDependencies": [
-        "https://aiellie.dev/r/demo-toolbar.json",
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/demo-toolbar.json",
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "files": [
         {
@@ -538,7 +538,7 @@
       "title": "Kbd",
       "description": "A key as it is printed on a keyboard, sized to sit inline in a sentence without pushing the line height around.",
       "registryDependencies": [
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "files": [
         {
@@ -557,7 +557,7 @@
         "@base-ui/react"
       ],
       "registryDependencies": [
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "files": [
         {
@@ -573,7 +573,7 @@
       "title": "Bubble",
       "description": "A bubble is a container for a message.",
       "registryDependencies": [
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "dependencies": [
         "@base-ui/react",
@@ -593,7 +593,7 @@
       "title": "Button",
       "description": "Base UI's button in the elements' sizes and emphases, including the square icon sizes the toolbars and the scroller sit on.",
       "registryDependencies": [
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "dependencies": [
         "@base-ui/react",
@@ -613,7 +613,7 @@
       "title": "Marker",
       "description": "A line across a thread rather than a message in it — a day, an unread point, a note about what happened — drawn plain, ruled off, or with the rules running out to either side of it.",
       "registryDependencies": [
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "dependencies": [
         "@base-ui/react",
@@ -633,7 +633,7 @@
       "title": "Message",
       "description": "The frame a message sits in — avatar, header, body and footer — laid out from either side, with the avatar lifting itself to stay level with the bubble when a footer is present.",
       "registryDependencies": [
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "files": [
         {
@@ -649,8 +649,8 @@
       "title": "Message Scroller",
       "description": "A conversation viewport that stays pinned to the newest message while you are at the bottom and lets go the moment you scroll up, with a button that carries you back down.",
       "registryDependencies": [
-        "https://aiellie.dev/r/utils.json",
-        "https://aiellie.dev/r/button.json"
+        "https://ui.aiellie.dev/r/utils.json",
+        "https://ui.aiellie.dev/r/button.json"
       ],
       "dependencies": [
         "@shadcn/react",
@@ -671,9 +671,9 @@
       "title": "Colors",
       "description": "Every colour token the elements draw from, a group at a time, each swatch over a dotted backdrop so a translucent token reads as translucent rather than as an empty box.",
       "registryDependencies": [
-        "https://aiellie.dev/r/colors.json",
-        "https://aiellie.dev/r/demos-switcher.json",
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/colors.json",
+        "https://ui.aiellie.dev/r/demos-switcher.json",
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "files": [
         {
@@ -695,8 +695,8 @@
       "title": "Fonts",
       "description": "The two families the elements are set in, the weights they are used at, and the type scale they step through — each shown at the size it is actually rendered.",
       "registryDependencies": [
-        "https://aiellie.dev/r/fonts.json",
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/fonts.json",
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "files": [
         {
@@ -732,9 +732,9 @@
       "title": "Code Block",
       "description": "A named block of code with a copy of exactly what is on screen — numbered and marked where the prose is pointing at lines, set in weight rather than colour where the hues would speak over the page, wrapped for a narrow column, still arriving, or holding several files under tabs.",
       "registryDependencies": [
-        "https://aiellie.dev/r/code-block.json",
-        "https://aiellie.dev/r/actions.json",
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/code-block.json",
+        "https://ui.aiellie.dev/r/actions.json",
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "dependencies": [
         "@hugeicons/core-free-icons",
@@ -790,8 +790,8 @@
       "title": "Code Tabs",
       "description": "Several files under one header, the strip scrolling rather than pushing the actions off the block, each tab's badge turning into the cross that shuts it, and the copy action always handed the file that is actually showing.",
       "registryDependencies": [
-        "https://aiellie.dev/r/code-tabs.json",
-        "https://aiellie.dev/r/code-block.json"
+        "https://ui.aiellie.dev/r/code-tabs.json",
+        "https://ui.aiellie.dev/r/code-block.json"
       ],
       "files": [
         {
@@ -827,8 +827,8 @@
       "title": "Code Diff",
       "description": "What a change actually did, from the unified diff that describes it — with the count in the header, numbered down both sides, side by side where the room is worth spending, and in weight rather than colour where it is not.",
       "registryDependencies": [
-        "https://aiellie.dev/r/code-diff.json",
-        "https://aiellie.dev/r/code-block.json"
+        "https://ui.aiellie.dev/r/code-diff.json",
+        "https://ui.aiellie.dev/r/code-block.json"
       ],
       "files": [
         {
@@ -868,8 +868,8 @@
       "title": "Terminal",
       "description": "A command and what came back — a clean run, a run that failed and says so in the tone it failed in, and a run still going with the caret holding the end of the line.",
       "registryDependencies": [
-        "https://aiellie.dev/r/terminal.json",
-        "https://aiellie.dev/r/code-block.json"
+        "https://ui.aiellie.dev/r/terminal.json",
+        "https://ui.aiellie.dev/r/code-block.json"
       ],
       "files": [
         {
@@ -905,7 +905,7 @@
       "title": "Tool Call",
       "description": "A tool call folded behind its summary — open, as a run of three in four different states, failed, and driven from outside so a transcript can unfold the call it just finished.",
       "registryDependencies": [
-        "https://aiellie.dev/r/tool-call.json"
+        "https://ui.aiellie.dev/r/tool-call.json"
       ],
       "files": [
         {
@@ -945,8 +945,8 @@
       "title": "File Tree",
       "description": "The files a change touched, marked added, modified or removed — on its own, driving a block beside it, or with nothing marked at all for a tree that is showing a project rather than a change.",
       "registryDependencies": [
-        "https://aiellie.dev/r/file-tree.json",
-        "https://aiellie.dev/r/code-block.json"
+        "https://ui.aiellie.dev/r/file-tree.json",
+        "https://ui.aiellie.dev/r/code-block.json"
       ],
       "files": [
         {
@@ -982,8 +982,8 @@
       "title": "Code Annotation",
       "description": "A note under the line it is about — as a remark, a warning or an error, and as one the reader can be done with.",
       "registryDependencies": [
-        "https://aiellie.dev/r/code-annotation.json",
-        "https://aiellie.dev/r/code-block.json"
+        "https://ui.aiellie.dev/r/code-annotation.json",
+        "https://ui.aiellie.dev/r/code-block.json"
       ],
       "files": [
         {
@@ -1019,7 +1019,7 @@
       "title": "Inline Code",
       "description": "A symbol named in a sentence — plain, copying itself, leading somewhere, and set at three sizes to show it takes the size of whatever it sits among.",
       "registryDependencies": [
-        "https://aiellie.dev/r/inline-code.json"
+        "https://ui.aiellie.dev/r/inline-code.json"
       ],
       "files": [
         {
@@ -1059,7 +1059,7 @@
       "title": "Code Snippet",
       "description": "A code snippet with tabs for the package manager running it — npx, pnpm dlx, bunx, or yarn dlx — or under tabs of your own, or under none at all, coloured like code on request, with a copy action handed exactly the line on screen.",
       "registryDependencies": [
-        "https://aiellie.dev/r/code-snippet.json"
+        "https://ui.aiellie.dev/r/code-snippet.json"
       ],
       "files": [
         {
@@ -1103,7 +1103,7 @@
       "title": "Bubble",
       "description": "A bubble is a container for a message.",
       "registryDependencies": [
-        "https://aiellie.dev/r/bubble.json"
+        "https://ui.aiellie.dev/r/bubble.json"
       ],
       "files": [
         {
@@ -1139,8 +1139,8 @@
       "title": "Message",
       "description": "The frame around a bubble — who said it, when, and which side it belongs on — including the ghost case where the frame gets out of the way of the prose.",
       "registryDependencies": [
-        "https://aiellie.dev/r/message.json",
-        "https://aiellie.dev/r/bubble.json"
+        "https://ui.aiellie.dev/r/message.json",
+        "https://ui.aiellie.dev/r/bubble.json"
       ],
       "files": [
         {
@@ -1176,11 +1176,11 @@
       "title": "Message Scroller",
       "description": "A thread that holds the newest message in view until you scroll away from it, appends without yanking the viewport, and can be driven from outside by the hook.",
       "registryDependencies": [
-        "https://aiellie.dev/r/message-scroller.json",
-        "https://aiellie.dev/r/message.json",
-        "https://aiellie.dev/r/bubble.json",
-        "https://aiellie.dev/r/button.json",
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/message-scroller.json",
+        "https://ui.aiellie.dev/r/message.json",
+        "https://ui.aiellie.dev/r/bubble.json",
+        "https://ui.aiellie.dev/r/button.json",
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "files": [
         {
@@ -1244,8 +1244,8 @@
       "title": "Suggestions",
       "description": "Prompts offered as dashed bubbles and tinted once picked — as a run of pills, as a list, or picked to be sent.",
       "registryDependencies": [
-        "https://aiellie.dev/r/suggestions.json",
-        "https://aiellie.dev/r/bubble.json"
+        "https://ui.aiellie.dev/r/suggestions.json",
+        "https://ui.aiellie.dev/r/bubble.json"
       ],
       "files": [
         {
@@ -1281,9 +1281,9 @@
       "title": "Reactions",
       "description": "A counted row under a message, the picker and the tally wired together as two halves of one thing, and both sides of a thread including the row with nothing on it yet.",
       "registryDependencies": [
-        "https://aiellie.dev/r/reactions.json",
-        "https://aiellie.dev/r/message-context-menu.json",
-        "https://aiellie.dev/r/bubble.json"
+        "https://ui.aiellie.dev/r/reactions.json",
+        "https://ui.aiellie.dev/r/message-context-menu.json",
+        "https://ui.aiellie.dev/r/bubble.json"
       ],
       "files": [
         {
@@ -1319,8 +1319,8 @@
       "title": "Quoted Message",
       "description": "A reply carrying what it replies to, the quote as a way back to the original, and the quote waiting above something not sent yet.",
       "registryDependencies": [
-        "https://aiellie.dev/r/quoted-message.json",
-        "https://aiellie.dev/r/bubble.json"
+        "https://ui.aiellie.dev/r/quoted-message.json",
+        "https://ui.aiellie.dev/r/bubble.json"
       ],
       "files": [
         {
@@ -1356,8 +1356,8 @@
       "title": "Response",
       "description": "An answer set as prose — lists, a quote, links and inline code — with a code block that names its language and copies itself, and a table that scrolls rather than pushing the thread sideways.",
       "registryDependencies": [
-        "https://aiellie.dev/r/response.json",
-        "https://aiellie.dev/r/bubble.json"
+        "https://ui.aiellie.dev/r/response.json",
+        "https://ui.aiellie.dev/r/bubble.json"
       ],
       "files": [
         {
@@ -1393,9 +1393,9 @@
       "title": "Message Status",
       "description": "A message travelling from sending to read beside its timestamp, every state at rest, and the failed one offering the retry.",
       "registryDependencies": [
-        "https://aiellie.dev/r/message-status.json",
-        "https://aiellie.dev/r/timestamps.json",
-        "https://aiellie.dev/r/bubble.json"
+        "https://ui.aiellie.dev/r/message-status.json",
+        "https://ui.aiellie.dev/r/timestamps.json",
+        "https://ui.aiellie.dev/r/bubble.json"
       ],
       "files": [
         {
@@ -1431,9 +1431,9 @@
       "title": "Streaming Text",
       "description": "An answer typed out from a string in hand, the same words arriving as tokens instead, and the typing bubble handing over to the stream at the first of them.",
       "registryDependencies": [
-        "https://aiellie.dev/r/streaming-text.json",
-        "https://aiellie.dev/r/typing-indicator.json",
-        "https://aiellie.dev/r/bubble.json"
+        "https://ui.aiellie.dev/r/streaming-text.json",
+        "https://ui.aiellie.dev/r/typing-indicator.json",
+        "https://ui.aiellie.dev/r/bubble.json"
       ],
       "files": [
         {
@@ -1469,9 +1469,9 @@
       "title": "Typing Indicator",
       "description": "The stand-in for an answer still being written — a bubble holding its place, the dots alone, a line saying who is typing, or the caret a streamed answer starts at.",
       "registryDependencies": [
-        "https://aiellie.dev/r/typing-indicator.json",
-        "https://aiellie.dev/r/bubble.json",
-        "https://aiellie.dev/r/message.json"
+        "https://ui.aiellie.dev/r/typing-indicator.json",
+        "https://ui.aiellie.dev/r/bubble.json",
+        "https://ui.aiellie.dev/r/message.json"
       ],
       "files": [
         {
@@ -1507,8 +1507,8 @@
       "title": "Message Highlight Toolbar",
       "description": "Select any of the text in a message for the pill: reply, explain, edit, and a menu for filing it as a note, a memory or a snippet.",
       "registryDependencies": [
-        "https://aiellie.dev/r/message-highlight-toolbar.json",
-        "https://aiellie.dev/r/bubble.json"
+        "https://ui.aiellie.dev/r/message-highlight-toolbar.json",
+        "https://ui.aiellie.dev/r/bubble.json"
       ],
       "dependencies": [
         "@hugeicons/core-free-icons",
@@ -1544,9 +1544,9 @@
       "title": "Message Context Menu",
       "description": "A thread where every message answers a right click with its reactions and its actions, and wears the reaction it was given.",
       "registryDependencies": [
-        "https://aiellie.dev/r/message-context-menu.json",
-        "https://aiellie.dev/r/menu.json",
-        "https://aiellie.dev/r/bubble.json"
+        "https://ui.aiellie.dev/r/message-context-menu.json",
+        "https://ui.aiellie.dev/r/menu.json",
+        "https://ui.aiellie.dev/r/bubble.json"
       ],
       "dependencies": [
         "@hugeicons/core-free-icons",
@@ -1582,8 +1582,8 @@
       "title": "Timestamps",
       "description": "Stamps under the bubbles they belong to and ruled across the thread between days, in every phrasing the formatter has.",
       "registryDependencies": [
-        "https://aiellie.dev/r/timestamps.json",
-        "https://aiellie.dev/r/bubble.json"
+        "https://ui.aiellie.dev/r/timestamps.json",
+        "https://ui.aiellie.dev/r/bubble.json"
       ],
       "files": [
         {
@@ -1623,8 +1623,8 @@
       "title": "Message Actions",
       "description": "Copy, rate and retry under their tooltips, the rest behind a menu, and the row appearing only for the message under the pointer.",
       "registryDependencies": [
-        "https://aiellie.dev/r/message-actions.json",
-        "https://aiellie.dev/r/bubble.json"
+        "https://ui.aiellie.dev/r/message-actions.json",
+        "https://ui.aiellie.dev/r/bubble.json"
       ],
       "dependencies": [
         "@hugeicons/core-free-icons",
@@ -1681,7 +1681,7 @@
         "@hugeicons/react"
       ],
       "registryDependencies": [
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "files": [
         {
@@ -1723,7 +1723,7 @@
       "title": "Fonts",
       "description": "The two families the elements are set in, loaded and bound to their CSS variables, alongside the weights and the type scale they are used at.",
       "registryDependencies": [
-        "https://aiellie.dev/r/utils.json"
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "files": [
         {

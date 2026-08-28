@@ -4,8 +4,8 @@
   "title": "File Tree",
   "description": "The files a change touched, marked added, modified or removed — on its own, driving a block beside it, or with nothing marked at all for a tree that is showing a project rather than a change.",
   "registryDependencies": [
-    "https://aiellie.dev/r/file-tree.json",
-    "https://aiellie.dev/r/code-block.json"
+    "https://ui.aiellie.dev/r/file-tree.json",
+    "https://ui.aiellie.dev/r/code-block.json"
   ],
   "files": [
     {

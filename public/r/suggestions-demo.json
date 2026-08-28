@@ -4,8 +4,8 @@
   "title": "Suggestions",
   "description": "Prompts offered as dashed bubbles and tinted once picked — as a run of pills, as a list, or picked to be sent.",
   "registryDependencies": [
-    "https://aiellie.dev/r/suggestions.json",
-    "https://aiellie.dev/r/bubble.json"
+    "https://ui.aiellie.dev/r/suggestions.json",
+    "https://ui.aiellie.dev/r/bubble.json"
   ],
   "files": [
     {

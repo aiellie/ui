@@ -4,7 +4,7 @@
   "title": "Actions",
   "description": "The class strings every element shares — surfaces, pressable buttons, the icon and label swaps — kept in one place so a card and a toolbar agree on what a press looks like.",
   "registryDependencies": [
-    "https://aiellie.dev/r/utils.json"
+    "https://ui.aiellie.dev/r/utils.json"
   ],
   "files": [
     {

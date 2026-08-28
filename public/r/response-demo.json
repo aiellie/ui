@@ -4,8 +4,8 @@
   "title": "Response",
   "description": "An answer set as prose — lists, a quote, links and inline code — with a code block that names its language and copies itself, and a table that scrolls rather than pushing the thread sideways.",
   "registryDependencies": [
-    "https://aiellie.dev/r/response.json",
-    "https://aiellie.dev/r/bubble.json"
+    "https://ui.aiellie.dev/r/response.json",
+    "https://ui.aiellie.dev/r/bubble.json"
   ],
   "files": [
     {

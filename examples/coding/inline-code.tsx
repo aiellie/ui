@@ -22,7 +22,7 @@ export function InlineCodeCopyDemo() {
   return (
     <p className="max-w-sm text-sm leading-relaxed text-pretty text-foreground">
       Add it with{" "}
-      <InlineCodeCopy copy="npx shadcn@latest add https://aiellie.dev/r/inline-code.json">
+      <InlineCodeCopy copy="npx shadcn@latest add https://ui.aiellie.dev/r/inline-code.json">
         npx shadcn add inline-code
       </InlineCodeCopy>
       , then set the tint with <InlineCodeCopy>--primary</InlineCodeCopy> and

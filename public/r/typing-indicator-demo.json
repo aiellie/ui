@@ -4,9 +4,9 @@
   "title": "Typing Indicator",
   "description": "The stand-in for an answer still being written — a bubble holding its place, the dots alone, a line saying who is typing, or the caret a streamed answer starts at.",
   "registryDependencies": [
-    "https://aiellie.dev/r/typing-indicator.json",
-    "https://aiellie.dev/r/bubble.json",
-    "https://aiellie.dev/r/message.json"
+    "https://ui.aiellie.dev/r/typing-indicator.json",
+    "https://ui.aiellie.dev/r/bubble.json",
+    "https://ui.aiellie.dev/r/message.json"
   ],
   "files": [
     {

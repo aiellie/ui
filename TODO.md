@@ -38,3 +38,4 @@ https://github.com/aiellie
 29. be careful not to use button.tsx so much
 30. fix highlight code color 
 31. remove the focus rings
+32. fix layout to match https://agents.aiellie.app/templates
