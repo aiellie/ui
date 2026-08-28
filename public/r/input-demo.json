@@ -1,0 +1,39 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "input-demo",
+  "title": "Input",
+  "description": "A single line taken in — at rest, disabled, and marked invalid the same way assistive tech hears it — then on the end of a row with the button that sends it.",
+  "registryDependencies": [
+    "https://ui.aiellie.dev/r/input.json",
+    "https://ui.aiellie.dev/r/button.json"
+  ],
+  "files": [
+    {
+      "path": "examples/primitives/input.tsx",
+      "content": "\"use client\"\n\nimport { Button } from \"@/components/ui/button\"\nimport { Input } from \"@/components/ui/input\"\n\nexport function InputDemo() {\n  return (\n    <div className=\"w-full max-w-xs\">\n      <Input type=\"text\" placeholder=\"Name the thread\" />\n    </div>\n  )\n}\n\n/**\n * Invalid arrives as `aria-invalid` rather than a prop of the field's own, so\n * the state the styling answers to is the one assistive tech is told about.\n */\nexport function InputStatesDemo() {\n  return (\n    <div className=\"flex w-full max-w-xs flex-col gap-3\">\n      <Input type=\"text\" placeholder=\"At rest\" />\n      <Input type=\"text\" placeholder=\"Disabled\" disabled />\n      <Input\n        type=\"email\"\n        aria-invalid\n        aria-label=\"Email\"\n        defaultValue=\"not-an-address\"\n      />\n    </div>\n  )\n}\n\nexport function InputWithButtonDemo() {\n  return (\n    <form\n      className=\"flex w-full max-w-xs items-center gap-2\"\n      onSubmit={(event) => event.preventDefault()}\n    >\n      <Input type=\"email\" placeholder=\"you@example.com\" aria-label=\"Email\" />\n      <Button type=\"submit\" variant=\"outline\">\n        Invite\n      </Button>\n    </form>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/primitives/input.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Default",
+        "demo": "InputDemo"
+      },
+      {
+        "name": "States",
+        "demo": "InputStatesDemo"
+      },
+      {
+        "name": "With a button",
+        "demo": "InputWithButtonDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "primitives"
+  ],
+  "type": "registry:example"
+}

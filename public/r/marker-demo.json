@@ -1,0 +1,42 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "marker-demo",
+  "title": "Marker",
+  "description": "A line across a thread rather than a message in it — bare, ruled out to either side, or underlined — and wearing an icon where the note calls for one.",
+  "dependencies": [
+    "@hugeicons/core-free-icons",
+    "@hugeicons/react"
+  ],
+  "registryDependencies": [
+    "https://ui.aiellie.dev/r/marker.json"
+  ],
+  "files": [
+    {
+      "path": "examples/primitives/marker.tsx",
+      "content": "\"use client\"\n\nimport { Calendar03Icon, StickyNote01Icon } from \"@hugeicons/core-free-icons\"\nimport { HugeiconsIcon } from \"@hugeicons/react\"\n\nimport { Marker, MarkerContent, MarkerIcon } from \"@/components/ui/marker\"\n\nexport function MarkerDemo() {\n  return (\n    <div className=\"w-full max-w-sm\">\n      <Marker variant=\"separator\">\n        <MarkerContent>Today</MarkerContent>\n      </Marker>\n    </div>\n  )\n}\n\n/** The three treatments: bare, ruled out to either side, and underlined. */\nexport function MarkerVariantsDemo() {\n  return (\n    <div className=\"flex w-full max-w-sm flex-col gap-6\">\n      <Marker>\n        <MarkerContent>Yesterday</MarkerContent>\n      </Marker>\n      <Marker variant=\"separator\">\n        <MarkerContent>4 unread messages</MarkerContent>\n      </Marker>\n      <Marker variant=\"border\">\n        <MarkerContent>Alex joined the thread</MarkerContent>\n      </Marker>\n    </div>\n  )\n}\n\nexport function MarkerIconDemo() {\n  return (\n    <div className=\"flex w-full max-w-sm flex-col gap-6\">\n      <Marker>\n        <MarkerIcon>\n          <HugeiconsIcon icon={Calendar03Icon} strokeWidth={2} />\n        </MarkerIcon>\n        <MarkerContent>Monday, 12 January</MarkerContent>\n      </Marker>\n      <Marker variant=\"border\">\n        <MarkerIcon>\n          <HugeiconsIcon icon={StickyNote01Icon} strokeWidth={2} />\n        </MarkerIcon>\n        <MarkerContent>\n          The thread above was imported from the old workspace.\n        </MarkerContent>\n      </Marker>\n    </div>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/primitives/marker.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Default",
+        "demo": "MarkerDemo"
+      },
+      {
+        "name": "Variants",
+        "demo": "MarkerVariantsDemo"
+      },
+      {
+        "name": "With icons",
+        "demo": "MarkerIconDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "primitives"
+  ],
+  "type": "registry:example"
+}

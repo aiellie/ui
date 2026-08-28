@@ -1,7 +1,14 @@
 import type { ComponentType } from "react"
 import {
+  AiChipIcon,
   AtIcon,
   BubbleChatSparkIcon,
+  CodeCircleIcon,
+  CursorInfo02Icon,
+  CursorPointer02Icon,
+  InputCursorTextIcon,
+  KeyboardIcon,
+  SolidLine01Icon,
   TextIndent01Icon,
   FavouriteIcon,
   QuoteDownIcon,
@@ -65,6 +72,13 @@ import * as typingIndicatorDemos from "@/examples/messages/typing-indicator"
 import * as messageScrollerDemos from "@/examples/messages/message-scroller"
 import * as suggestionsDemos from "@/examples/messages/suggestions"
 import * as timestampsDemos from "@/examples/messages/timestamps"
+import * as buttonDemos from "@/examples/primitives/button"
+import * as inputDemos from "@/examples/primitives/input"
+import * as kbdDemos from "@/examples/primitives/kbd"
+import * as markerDemos from "@/examples/primitives/marker"
+import * as tooltipDemos from "@/examples/primitives/tooltip"
+import * as codeIconsDemos from "@/examples/icons/code-icons"
+import * as modelIconsDemos from "@/examples/icons/model-icons"
 import * as fontsDemos from "@/examples/tokens/fonts-demos"
 import { colorsVariants } from "@/examples/tokens/colors-demos"
 
@@ -204,6 +218,34 @@ const exampleDemos: Record<string, ExampleDemos> = {
   "timestamps-demo": {
     icon: Clock01Icon,
     components: { ...timestampsDemos },
+  },
+  "button-demo": {
+    icon: CursorPointer02Icon,
+    components: { ...buttonDemos },
+  },
+  "input-demo": {
+    icon: InputCursorTextIcon,
+    components: { ...inputDemos },
+  },
+  "kbd-demo": {
+    icon: KeyboardIcon,
+    components: { ...kbdDemos },
+  },
+  "tooltip-demo": {
+    icon: CursorInfo02Icon,
+    components: { ...tooltipDemos },
+  },
+  "marker-demo": {
+    icon: SolidLine01Icon,
+    components: { ...markerDemos },
+  },
+  "code-icons-demo": {
+    icon: CodeCircleIcon,
+    components: { ...codeIconsDemos },
+  },
+  "model-icons-demo": {
+    icon: AiChipIcon,
+    components: { ...modelIconsDemos },
   },
 }
 

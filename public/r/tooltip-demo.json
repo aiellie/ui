@@ -1,0 +1,40 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tooltip-demo",
+  "title": "Tooltip",
+  "description": "A hint held under the pointer — kept to whichever side it was given, and carrying the shortcut for the thing it names as a key the panel knows how to wear.",
+  "registryDependencies": [
+    "https://ui.aiellie.dev/r/tooltip.json",
+    "https://ui.aiellie.dev/r/button.json",
+    "https://ui.aiellie.dev/r/kbd.json"
+  ],
+  "files": [
+    {
+      "path": "examples/primitives/tooltip.tsx",
+      "content": "\"use client\"\n\nimport { Button } from \"@/components/ui/button\"\nimport { Kbd } from \"@/components/ui/kbd\"\nimport {\n  Tooltip,\n  TooltipContent,\n  TooltipTrigger,\n  TooltipProvider,\n} from \"@/components/ui/tooltip\"\n\nexport function TooltipDemo() {\n  return (\n    <TooltipProvider>\n      <Tooltip>\n        <TooltipTrigger render={<Button variant=\"outline\">Hover me</Button>} />\n        <TooltipContent>Says the thing the label had no room for</TooltipContent>\n      </Tooltip>\n    </TooltipProvider>\n  )\n}\n\n/** The panel keeps to the side it was given rather than picking its own. */\nexport function TooltipSidesDemo() {\n  return (\n    <TooltipProvider>\n      <div className=\"grid max-w-sm grid-cols-2 gap-2\">\n        {([\"top\", \"right\", \"bottom\", \"left\"] as const).map((side) => (\n          <Tooltip key={side}>\n            <TooltipTrigger\n              render={\n                <Button variant=\"outline\" className=\"capitalize\">\n                  {side}\n                </Button>\n              }\n            />\n            <TooltipContent side={side}>Held to the {side}</TooltipContent>\n          </Tooltip>\n        ))}\n      </div>\n    </TooltipProvider>\n  )\n}\n\n/**\n * A key inside the panel takes the tooltip's own treatment — the surface\n * styles it for exactly this, so the shortcut reads as part of the hint.\n */\nexport function TooltipShortcutDemo() {\n  return (\n    <TooltipProvider>\n      <Tooltip>\n        <TooltipTrigger render={<Button variant=\"outline\">Search</Button>} />\n        <TooltipContent>\n          Search the thread\n          <Kbd>⌘</Kbd>\n          <Kbd>F</Kbd>\n        </TooltipContent>\n      </Tooltip>\n    </TooltipProvider>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/primitives/tooltip.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Default",
+        "demo": "TooltipDemo"
+      },
+      {
+        "name": "Sides",
+        "demo": "TooltipSidesDemo"
+      },
+      {
+        "name": "Shortcut",
+        "demo": "TooltipShortcutDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "primitives"
+  ],
+  "type": "registry:example"
+}

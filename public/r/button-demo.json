@@ -1,0 +1,42 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "button-demo",
+  "title": "Button",
+  "description": "Every emphasis the elements press — filled, secondary, outlined, destructive, ghost and a link — through the four heights and the square icon sizes the toolbars stand on.",
+  "dependencies": [
+    "@hugeicons/core-free-icons",
+    "@hugeicons/react"
+  ],
+  "registryDependencies": [
+    "https://ui.aiellie.dev/r/button.json"
+  ],
+  "files": [
+    {
+      "path": "examples/primitives/button.tsx",
+      "content": "\"use client\"\n\nimport { ArrowRight02Icon, Copy01Icon, PlusSignIcon } from \"@hugeicons/core-free-icons\"\nimport { HugeiconsIcon } from \"@hugeicons/react\"\n\nimport { Button } from \"@/components/ui/button\"\n\n/** Every emphasis, quietest last — the order a screen should use them in. */\nexport function ButtonDemo() {\n  return (\n    <div className=\"flex max-w-sm flex-wrap items-center justify-center gap-2\">\n      <Button>Send</Button>\n      <Button variant=\"secondary\">Duplicate</Button>\n      <Button variant=\"outline\">Preview</Button>\n      <Button variant=\"destructive\">Delete</Button>\n      <Button variant=\"ghost\">Dismiss</Button>\n      <Button variant=\"link\">Learn more</Button>\n    </div>\n  )\n}\n\nexport function ButtonSizesDemo() {\n  return (\n    <div className=\"flex max-w-sm flex-wrap items-center justify-center gap-2\">\n      <Button size=\"xs\" variant=\"outline\">\n        Extra small\n      </Button>\n      <Button size=\"sm\" variant=\"outline\">\n        Small\n      </Button>\n      <Button variant=\"outline\">Default</Button>\n      <Button size=\"lg\" variant=\"outline\">\n        Large\n      </Button>\n    </div>\n  )\n}\n\n/**\n * `data-icon=\"inline-start\"` is what pulls the padding in on the icon's side,\n * so a labelled button with a glyph does not sit lopsided in its box. The\n * square `icon-*` sizes are the ones the toolbars and the scroller stand on.\n */\nexport function ButtonIconsDemo() {\n  return (\n    <div className=\"flex max-w-sm flex-wrap items-center justify-center gap-2\">\n      <Button>\n        <HugeiconsIcon\n          icon={PlusSignIcon}\n          strokeWidth={2}\n          data-icon=\"inline-start\"\n        />\n        New thread\n      </Button>\n      <Button variant=\"outline\">\n        Continue\n        <HugeiconsIcon\n          icon={ArrowRight02Icon}\n          strokeWidth={2}\n          data-icon=\"inline-end\"\n        />\n      </Button>\n      <Button size=\"icon-xs\" variant=\"ghost\" aria-label=\"Copy\">\n        <HugeiconsIcon icon={Copy01Icon} strokeWidth={2} />\n      </Button>\n      <Button size=\"icon-sm\" variant=\"ghost\" aria-label=\"Copy\">\n        <HugeiconsIcon icon={Copy01Icon} strokeWidth={2} />\n      </Button>\n      <Button size=\"icon\" variant=\"outline\" aria-label=\"Copy\">\n        <HugeiconsIcon icon={Copy01Icon} strokeWidth={2} />\n      </Button>\n    </div>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/primitives/button.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Variants",
+        "demo": "ButtonDemo"
+      },
+      {
+        "name": "Sizes",
+        "demo": "ButtonSizesDemo"
+      },
+      {
+        "name": "Icons",
+        "demo": "ButtonIconsDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "primitives"
+  ],
+  "type": "registry:example"
+}

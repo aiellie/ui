@@ -1,0 +1,41 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "model-icons-demo",
+  "title": "Model Icons",
+  "description": "The mark a model, a provider or a capability wears — models in their own colours since the logo is how one is recognised, providers in plain ink beside them, and a glyph for each thing a model can do.",
+  "registryDependencies": [
+    "https://ui.aiellie.dev/r/model-icons.json",
+    "https://ui.aiellie.dev/r/models.json",
+    "https://ui.aiellie.dev/r/providers.json",
+    "https://ui.aiellie.dev/r/utils.json"
+  ],
+  "files": [
+    {
+      "path": "examples/icons/model-icons.tsx",
+      "content": "\"use client\"\n\nimport {\n  CapabilityIcon,\n  ModelIcon,\n  ProviderIcon,\n} from \"@/components/icons/model-icons\"\nimport { modelCapabilities, models, type ModelCapability } from \"@/lib/models\"\nimport { providers } from \"@/lib/providers\"\nimport { cn } from \"@/lib/utils\"\n\n// `pb-14` keeps the last row clear of the floating toolbar.\nconst demoShell = \"flex h-full min-h-0 w-full flex-col overflow-y-auto pb-14\"\n\n/**\n * Models wear their own colours by default — the logo is how a model is\n * recognised — so this tab is `ModelIcon` exactly as it comes.\n */\nexport function ModelIconsDemo() {\n  return (\n    <div className={cn(demoShell, \"grid grid-cols-2 content-start gap-2\")}>\n      {models.map((model) => (\n        <div\n          key={model.id}\n          className=\"flex min-w-0 items-center gap-2.5 rounded-lg border px-3 py-2\"\n        >\n          <ModelIcon\n            model={model.id}\n            provider={model.provider}\n            className=\"size-4 text-foreground\"\n          />\n          <span className=\"truncate text-xs text-muted-foreground\">\n            {model.name}\n          </span>\n        </div>\n      ))}\n    </div>\n  )\n}\n\n/**\n * Providers are monochrome by default — a run of full-colour logos down a\n * list reads as a sponsor list, not a menu — so this tab is the plain set.\n */\nexport function ModelIconsProvidersDemo() {\n  return (\n    <div className={cn(demoShell, \"grid grid-cols-2 content-start gap-2\")}>\n      {providers.map((provider) => (\n        <div\n          key={provider.id}\n          className=\"flex min-w-0 items-center gap-2.5 rounded-lg border px-3 py-2\"\n        >\n          <ProviderIcon\n            provider={provider.id}\n            className=\"size-4 text-foreground\"\n          />\n          <span className=\"truncate text-xs text-muted-foreground\">\n            {provider.name}\n          </span>\n        </div>\n      ))}\n    </div>\n  )\n}\n\nexport function ModelIconsCapabilitiesDemo() {\n  return (\n    <div className=\"flex w-full max-w-sm flex-col gap-2\">\n      {(Object.keys(modelCapabilities) as ModelCapability[]).map(\n        (capability) => (\n          <div\n            key={capability}\n            className=\"flex min-w-0 items-center gap-2.5 rounded-lg border px-3 py-2\"\n          >\n            <CapabilityIcon\n              capability={capability}\n              className=\"size-4 text-foreground\"\n            />\n            <span className=\"text-xs font-medium\">\n              {modelCapabilities[capability].name}\n            </span>\n            <span className=\"ms-auto truncate ps-2 text-xs text-muted-foreground\">\n              {modelCapabilities[capability].description}\n            </span>\n          </div>\n        )\n      )}\n    </div>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/icons/model-icons.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Models",
+        "demo": "ModelIconsDemo"
+      },
+      {
+        "name": "Providers",
+        "demo": "ModelIconsProvidersDemo"
+      },
+      {
+        "name": "Capabilities",
+        "demo": "ModelIconsCapabilitiesDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "icons"
+  ],
+  "type": "registry:example"
+}

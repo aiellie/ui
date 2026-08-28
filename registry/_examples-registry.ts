@@ -812,4 +812,173 @@ export const examples: Registry["items"] = [
       wide: false,
     },
   },
+  {
+    name: "button-demo",
+    type: "registry:example",
+    title: "Button",
+    description:
+      "Every emphasis the elements press — filled, secondary, outlined, destructive, ghost and a link — through the four heights and the square icon sizes the toolbars stand on.",
+    registryDependencies: ["button"],
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    files: [
+      {
+        path: "examples/primitives/button.tsx",
+        type: "registry:example",
+        target: "examples/primitives/button.tsx",
+      },
+    ],
+    categories: ["primitives"],
+    meta: {
+      variants: [
+        { name: "Variants", demo: "ButtonDemo" },
+        { name: "Sizes", demo: "ButtonSizesDemo" },
+        { name: "Icons", demo: "ButtonIconsDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "input-demo",
+    type: "registry:example",
+    title: "Input",
+    description:
+      "A single line taken in — at rest, disabled, and marked invalid the same way assistive tech hears it — then on the end of a row with the button that sends it.",
+    registryDependencies: ["input", "button"],
+    files: [
+      {
+        path: "examples/primitives/input.tsx",
+        type: "registry:example",
+        target: "examples/primitives/input.tsx",
+      },
+    ],
+    categories: ["primitives"],
+    meta: {
+      variants: [
+        { name: "Default", demo: "InputDemo" },
+        { name: "States", demo: "InputStatesDemo" },
+        { name: "With a button", demo: "InputWithButtonDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "kbd-demo",
+    type: "registry:example",
+    title: "Kbd",
+    description:
+      "Keys as they are printed — singly, chorded into the group a shortcut is, and named mid-sentence without pushing the line height around.",
+    registryDependencies: ["kbd"],
+    files: [
+      {
+        path: "examples/primitives/kbd.tsx",
+        type: "registry:example",
+        target: "examples/primitives/kbd.tsx",
+      },
+    ],
+    categories: ["primitives"],
+    meta: {
+      variants: [
+        { name: "Keys", demo: "KbdDemo" },
+        { name: "Combinations", demo: "KbdGroupDemo" },
+        { name: "In a sentence", demo: "KbdSentenceDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "tooltip-demo",
+    type: "registry:example",
+    title: "Tooltip",
+    description:
+      "A hint held under the pointer — kept to whichever side it was given, and carrying the shortcut for the thing it names as a key the panel knows how to wear.",
+    registryDependencies: ["tooltip", "button", "kbd"],
+    files: [
+      {
+        path: "examples/primitives/tooltip.tsx",
+        type: "registry:example",
+        target: "examples/primitives/tooltip.tsx",
+      },
+    ],
+    categories: ["primitives"],
+    meta: {
+      variants: [
+        { name: "Default", demo: "TooltipDemo" },
+        { name: "Sides", demo: "TooltipSidesDemo" },
+        { name: "Shortcut", demo: "TooltipShortcutDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "marker-demo",
+    type: "registry:example",
+    title: "Marker",
+    description:
+      "A line across a thread rather than a message in it — bare, ruled out to either side, or underlined — and wearing an icon where the note calls for one.",
+    registryDependencies: ["marker"],
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    files: [
+      {
+        path: "examples/primitives/marker.tsx",
+        type: "registry:example",
+        target: "examples/primitives/marker.tsx",
+      },
+    ],
+    categories: ["primitives"],
+    meta: {
+      variants: [
+        { name: "Default", demo: "MarkerDemo" },
+        { name: "Variants", demo: "MarkerVariantsDemo" },
+        { name: "With icons", demo: "MarkerIconDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "code-icons-demo",
+    type: "registry:example",
+    title: "Code Icons",
+    description:
+      "The badge a file or a language wears, the same names down both tabs — the interface set drawn in the ink around it, the brand set in each language's own colours, and the fall-through where only one of them has a mark.",
+    registryDependencies: ["code-icons"],
+    files: [
+      {
+        path: "examples/icons/code-icons.tsx",
+        type: "registry:example",
+        target: "examples/icons/code-icons.tsx",
+      },
+    ],
+    categories: ["icons"],
+    meta: {
+      variants: [
+        { name: "Mono", demo: "CodeIconsDemo" },
+        { name: "Brand", demo: "CodeIconsBrandDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "model-icons-demo",
+    type: "registry:example",
+    title: "Model Icons",
+    description:
+      "The mark a model, a provider or a capability wears — models in their own colours since the logo is how one is recognised, providers in plain ink beside them, and a glyph for each thing a model can do.",
+    registryDependencies: ["model-icons", "models", "providers", "utils"],
+    files: [
+      {
+        path: "examples/icons/model-icons.tsx",
+        type: "registry:example",
+        target: "examples/icons/model-icons.tsx",
+      },
+    ],
+    categories: ["icons"],
+    meta: {
+      variants: [
+        { name: "Models", demo: "ModelIconsDemo" },
+        { name: "Providers", demo: "ModelIconsProvidersDemo" },
+        { name: "Capabilities", demo: "ModelIconsCapabilitiesDemo" },
+      ],
+      wide: false,
+    },
+  },
 ]
