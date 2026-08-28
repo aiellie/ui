@@ -45,7 +45,7 @@ export const components: Registry["items"] = [
     type: "registry:component",
     title: "Demo Card",
     description:
-      "The frame an example is shown in: a stage that takes the height it is given, for whatever is being demonstrated.",
+      "The frame an example is shown in: a toolbar across the top and a stage under it, taking the height it is given.",
     registryDependencies: ["utils"],
     files: [
       {
@@ -60,11 +60,12 @@ export const components: Registry["items"] = [
     type: "registry:component",
     title: "Demo Toolbar",
     description:
-      "The floating toolbar an example carries: a tab per variant, the line that installs it, and the way back, out to the source, or into fullscreen.",
+      "The row an example is read under: a tab per variant, the line that installs it, and the way back, out to the source, or into fullscreen.",
     dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
     registryDependencies: [
       "actions",
-      "floating-toolbar",
+      "menu",
+      "tooltip-icon-button",
       "use-copy-to-clipboard",
       "utils",
     ],
@@ -81,8 +82,8 @@ export const components: Registry["items"] = [
     type: "registry:component",
     title: "Demos Switcher",
     description:
-      "Holds a list of variants and shows one, with the toolbar that picks between them — the piece that turns a set of demos into a single card.",
-    registryDependencies: ["demo-toolbar", "utils"],
+      "Holds a list of variants and shows the one it is told to, so the control that picks between them can stand beside it rather than over it.",
+    registryDependencies: ["utils"],
     files: [
       {
         path: "components/aiellie-ui/demos-switcher.tsx",

@@ -22,6 +22,7 @@ import {
 import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react"
 
 import { DemoCard } from "@/components/aiellie-ui/demo-card"
+import { DemoToolbar } from "@/components/aiellie-ui/demo-toolbar"
 import { DemosSwitcher } from "@/components/aiellie-ui/demos-switcher"
 import {
   Menu,
@@ -300,18 +301,26 @@ function ExampleCard({
   slug: string
 }) {
   const item = useMemo(() => itemFor(examples, slug), [examples, slug])
+  const [active, setActive] = useState(0)
+
   if (!item) return null
 
   const { example } = item
 
   return (
-    <DemoCard>
-      <DemosSwitcher
-        variants={example.variants}
-        installCommand={example.installCommand}
-        demoInstallCommand={example.demoInstallCommand}
-        fullscreenHref={example.fullscreenHref}
-      />
+    <DemoCard
+      toolbar={
+        <DemoToolbar
+          variants={example.variants.map((variant) => variant.name)}
+          active={active}
+          onActiveChange={setActive}
+          installCommand={example.installCommand}
+          demoInstallCommand={example.demoInstallCommand}
+          fullscreenHref={example.fullscreenHref}
+        />
+      }
+    >
+      <DemosSwitcher variants={example.variants} active={active} />
     </DemoCard>
   )
 }
@@ -769,7 +778,7 @@ function ExamplesBrowser({
             given, and what is being demonstrated does its own scrolling inside
             it. `overflow-hidden` so a demo that is briefly too tall on its way
             in cannot push a scrollbar onto the frame. */}
-        <div className="h-full overflow-hidden px-6 py-4">
+        <div className="h-full overflow-hidden ">
           {/* Keyed on the route so moving between examples re-mounts the card
               and it fades in, rather than the card swapping its contents in
               place. */}

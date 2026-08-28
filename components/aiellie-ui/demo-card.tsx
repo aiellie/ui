@@ -5,6 +5,8 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 
 type DemoCardProps = {
+  /** The row across the card's top — a `DemoToolbar`, or nothing. */
+  toolbar?: React.ReactNode
   wide?: boolean
   className?: string
   children: React.ReactNode
@@ -19,7 +21,12 @@ type DemoCardProps = {
  * to have a height for that to mean anything — `h-full` against an auto-height
  * parent resolves to auto, and the frame collapses to its contents.
  */
-function DemoCard({ wide = false, className, children }: DemoCardProps) {
+function DemoCard({
+  toolbar,
+  wide = false,
+  className,
+  children,
+}: DemoCardProps) {
   const rootRef = React.useRef<HTMLDivElement>(null)
   const [mounted, setMounted] = React.useState(false)
 
@@ -55,12 +62,18 @@ function DemoCard({ wide = false, className, children }: DemoCardProps) {
         className
       )}
     >
-      <div className="relative flex min-h-0 flex-1 items-center justify-center overflow-hidden rounded-2xl border bg-dotted p-6 md:p-10">
-        {mounted ? (
-          <div className="flex h-full min-h-0 w-full items-center justify-center">
-            {children}
-          </div>
-        ) : null}
+      {/* The frame is the border and the corners; what is inside it is a
+          header and a stage, so the toolbar can run edge to edge under its own
+          hairline rather than floating in the demo's padding. */}
+      <div className="flex h-full min-h-0 flex-col overflow-hidden">
+        {toolbar}
+        <div className="relative flex min-h-0 flex-1 items-center justify-center bg-dotted p-6 md:p-10">
+          {mounted ? (
+            <div className="flex h-full min-h-0 w-full items-center justify-center">
+              {children}
+            </div>
+          ) : null}
+        </div>
       </div>
     </div>
   )

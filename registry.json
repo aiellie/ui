@@ -815,7 +815,7 @@
       "name": "demo-card",
       "type": "registry:component",
       "title": "Demo Card",
-      "description": "The frame an example is shown in: a stage that takes the height it is given, for whatever is being demonstrated.",
+      "description": "The frame an example is shown in: a toolbar across the top and a stage under it, taking the height it is given.",
       "registryDependencies": [
         "https://ui.aiellie.dev/r/utils.json"
       ],
@@ -831,14 +831,15 @@
       "name": "demo-toolbar",
       "type": "registry:component",
       "title": "Demo Toolbar",
-      "description": "The floating toolbar an example carries: a tab per variant, the line that installs it, and the way back, out to the source, or into fullscreen.",
+      "description": "The row an example is read under: a tab per variant, the line that installs it, and the way back, out to the source, or into fullscreen.",
       "dependencies": [
         "@hugeicons/core-free-icons",
         "@hugeicons/react"
       ],
       "registryDependencies": [
         "https://ui.aiellie.dev/r/actions.json",
-        "https://ui.aiellie.dev/r/floating-toolbar.json",
+        "https://ui.aiellie.dev/r/menu.json",
+        "https://ui.aiellie.dev/r/tooltip-icon-button.json",
         "https://ui.aiellie.dev/r/use-copy-to-clipboard.json",
         "https://ui.aiellie.dev/r/utils.json"
       ],
@@ -854,9 +855,8 @@
       "name": "demos-switcher",
       "type": "registry:component",
       "title": "Demos Switcher",
-      "description": "Holds a list of variants and shows one, with the toolbar that picks between them — the piece that turns a set of demos into a single card.",
+      "description": "Holds a list of variants and shows the one it is told to, so the control that picks between them can stand beside it rather than over it.",
       "registryDependencies": [
-        "https://ui.aiellie.dev/r/demo-toolbar.json",
         "https://ui.aiellie.dev/r/utils.json"
       ],
       "files": [
