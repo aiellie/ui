@@ -1,6 +1,5 @@
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import { ThemeToggle } from "@/components/theme-toggle"
 import { fontVariables } from "@/lib/fonts"
 import { cn } from "@/lib/utils"
 
@@ -18,7 +17,6 @@ export default function RootLayout({
       <body>
         <ThemeProvider>
           {children}
-          <ThemeToggle className="fixed right-4 bottom-4 z-50" />
         </ThemeProvider>
       </body>
     </html>

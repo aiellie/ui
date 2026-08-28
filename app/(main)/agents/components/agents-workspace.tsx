@@ -2,11 +2,6 @@
 
 import * as React from "react"
 import {
-  InspectionPanelIcon,
-  MachineRobotIcon,
-} from "@hugeicons/core-free-icons"
-
-import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
@@ -16,7 +11,6 @@ import { agents, findAgent } from "@/lib/agents"
 import { AgentChat } from "./agent-chat"
 import { AgentDetails } from "./agent-details"
 import { AgentsSidebar } from "./agents-sidebar"
-import { Pane, PaneEmpty } from "./pane"
 
 /**
  * A panel scrolls itself: the library writes `overflow: auto` inline on the
@@ -56,9 +50,7 @@ function AgentsWorkspace() {
         maxSize="30"
         style={pane}
       >
-        <Pane icon={MachineRobotIcon} title="Agents">
-          <AgentsSidebar value={selected} onValueChange={setSelected} />
-        </Pane>
+        <AgentsSidebar value={selected} onValueChange={setSelected} />
       </ResizablePanel>
 
       <ResizableHandle withHandle className={handle} />
@@ -84,13 +76,7 @@ function AgentsWorkspace() {
         maxSize="40"
         style={pane}
       >
-        <Pane icon={InspectionPanelIcon} title="Details">
-          {agent ? (
-            <AgentDetails agent={agent} />
-          ) : (
-            <PaneEmpty>Pick an agent to see its details.</PaneEmpty>
-          )}
-        </Pane>
+        {agent ? <AgentDetails agent={agent} /> : null}
       </ResizablePanel>
     </ResizablePanelGroup>
   )

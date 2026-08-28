@@ -4,7 +4,7 @@ import * as React from "react"
 import { mergeProps } from "@base-ui/react/merge-props"
 import { useRender } from "@base-ui/react/use-render"
 import { ArrowRight01Icon } from "@hugeicons/core-free-icons"
-import { HugeiconsIcon } from "@hugeicons/react"
+import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react"
 
 import { cn } from "@/lib/utils"
 
@@ -117,7 +117,7 @@ export function ChatAvatarImage({
     <div
       data-slot="chat-avatar-image"
       className={cn(
-        "relative flex size-[var(--chat-avatar-size,4rem)] shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted text-sm font-medium text-muted-foreground ring-1 ring-border/40 select-none",
+        "relative flex size-[var(--chat-avatar-size,3rem)] shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted text-sm font-medium text-muted-foreground ring-1 ring-border/40 select-none",
         className
       )}
       {...props}
@@ -168,6 +168,12 @@ export function ChatAvatarStack({
 export interface ChatAvatarNameProps extends useRender.ComponentProps<"div"> {
   /** The mark that says the name opens something. */
   chevron?: boolean
+  /**
+   * A mark before the name. Worth having where the portrait is a picture
+   * rather than a face — a product, an agent, a room — since the glyph says
+   * what kind of thing it is and the photograph on its own does not.
+   */
+  icon?: IconSvgElement
 }
 
 /**
@@ -180,6 +186,7 @@ export interface ChatAvatarNameProps extends useRender.ComponentProps<"div"> {
  */
 export function ChatAvatarName({
   chevron = true,
+  icon,
   className,
   children,
   render,
@@ -202,6 +209,14 @@ export function ChatAvatarName({
         ),
         children: (
           <>
+            {icon ? (
+              <HugeiconsIcon
+                aria-hidden
+                icon={icon}
+                strokeWidth={2}
+                className="me-0.5 size-3.5 shrink-0 text-muted-foreground"
+              />
+            ) : null}
             <span className="truncate">{children}</span>
             {chevron ? (
               <HugeiconsIcon

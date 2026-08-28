@@ -44,7 +44,7 @@ const itemClass = cn(
 
 /**
  * Floating toolbar for the theme switch, built like `DemoToolbar`: one blurred
- * pill of ghost buttons, stacked vertically and positionally agnostic — the
+ * pill of ghost buttons, laid out horizontally and positionally agnostic — the
  * caller places it with `className`.
  */
 export function ThemeToggle({ className }: { className?: string }) {
@@ -72,7 +72,7 @@ export function ThemeToggle({ className }: { className?: string }) {
         role="toolbar"
         aria-label="Theme"
         className={cn(
-          "flex shrink-0 animate-in flex-col items-center gap-0.5 rounded-xl p-0 shadow-xl backdrop-blur-xl duration-500 ease-out fill-mode-both fade-in slide-in-from-bottom-2 motion-reduce:animate-none dark:bg-card/90",
+          "flex shrink-0 animate-in flex-row items-center gap-0.5 rounded-xl p-0 shadow-xl backdrop-blur-xl duration-500 ease-out fill-mode-both fade-in slide-in-from-bottom-2 motion-reduce:animate-none dark:bg-card/90",
           className
         )}
       >
@@ -105,7 +105,7 @@ export function ThemeToggle({ className }: { className?: string }) {
                   )}
                 />
               </TooltipTrigger>
-              <TooltipContent side="left">
+              <TooltipContent side="top">
                 {mode.label} <Kbd>D</Kbd>
               </TooltipContent>
             </Tooltip>

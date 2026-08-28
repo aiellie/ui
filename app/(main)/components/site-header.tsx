@@ -6,7 +6,7 @@ import {
   MachineRobotIcon,
   AiSwapIcon,
 } from "@hugeicons/core-free-icons"
-
+  import { ThemeToggle } from "@/components/theme-toggle"
 import { NavButton, type NavPage } from "./nav-button"
 import { Rules, type RuleDoc } from "./rules"
 
@@ -30,6 +30,7 @@ export function SiteHeader({ docs }: { docs: RuleDoc[] }) {
             page rather than going anywhere, and a destination is the one thing
             a button sitting in a run of links claims to be. */}
         <Rules docs={docs} className="ms-auto" />
+        <ThemeToggle />
       </div>
     </header>
   )

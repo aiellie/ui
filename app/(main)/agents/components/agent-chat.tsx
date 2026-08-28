@@ -10,9 +10,6 @@ import {
 } from "@/components/aiellie-ui/chat-avatar"
 import { ChatCardThread } from "@/components/aiellie-ui/chat-card"
 import {
-  EmptyState,
-  EmptyStateComposer,
-  EmptyStateContent,
   EmptyStateDescription,
   EmptyStateTitle,
 } from "@/components/aiellie-ui/composer/empty-state"
@@ -25,7 +22,7 @@ import { Bubble, BubbleContent } from "@/components/ui/bubble"
 import type { Agent } from "@/lib/agents"
 import { cn } from "@/lib/utils"
 
-import { Pane } from "./pane"
+import { Pane, PaneTitle } from "./pane"
 
 interface Turn {
   id: number
@@ -41,37 +38,14 @@ interface Turn {
 const measure = "mx-auto w-full max-w-3xl"
 
 /**
- * The portrait and the name, drawn the same either side of the first message —
- * only the glass behind it changes. The glyph stands in while the picture is
- * still coming off its host, and stays if it never does.
- */
-function Portrait({ agent, floating }: { agent: Agent; floating: boolean }) {
-  return (
-    <ChatAvatar floating={floating}>
-      <ChatAvatarImage
-        src={agent.avatar}
-        fallback={
-          <HugeiconsIcon
-            icon={agent.icon}
-            strokeWidth={1.5}
-            className="size-6"
-          />
-        }
-      />
-      <ChatAvatarName chevron={false}>{agent.name}</ChatAvatarName>
-    </ChatAvatar>
-  )
-}
-
-/**
- * The middle of the workspace: the agent's opening screen until there is
- * something in the thread, and the thread itself after that.
+ * The middle of the workspace: whose thread this is at the top, what has been
+ * said under it, and the field at the foot.
  *
- * The composer moves rather than being duplicated. On the opening screen it is
- * the middle of the page — the one thing a reader is there to reach — and once
- * a thread exists it belongs at the foot, under what has been said. That is
- * also why the state lives here: it is the same field, and where it sits is the
- * only thing the first message changes.
+ * The shape does not move when the first message lands — the portrait stays
+ * where it was and the composer stays where it was, and the greeting is simply
+ * replaced by the thread it invited. A composer that starts mid-screen and
+ * drops to the bottom on the first send is a page rearranging itself at the
+ * exact moment the reader is watching what they just wrote.
  */
 function AgentChat({ agent }: { agent: Agent }) {
   const [turns, setTurns] = React.useState<Turn[]>([])
@@ -82,61 +56,54 @@ function AgentChat({ agent }: { agent: Agent }) {
     setValue("")
   }
 
-  const opening = turns.length === 0
-
   return (
     <Pane
-      icon={agent.icon}
-      title={agent.name}
+      header={<PaneTitle icon={agent.icon}>{agent.name}</PaneTitle>}
       footer={
-        opening ? null : (
-          /* Held to the thread's own measure rather than the panel's width.
-             A composer as wide as the window puts its send control in the
-             bottom corner of the screen — which on this site is where the
-             theme toggle floats — and a field a thousand pixels wide was
-             never the right shape for a line of text anyway. */
-          <div className={measure}>
-            <MessageInput
-              value={value}
-              onValueChange={setValue}
-              onSubmit={send}
-            >
-              <MessageInputField placeholder={`Message ${agent.name}…`} />
-              <MessageInputSubmit />
-            </MessageInput>
-          </div>
-        )
+        /* Held to the thread's own measure rather than the panel's width: a
+           field a thousand pixels wide was never the right shape for a line
+           of text. */
+        <div className={measure}>
+          <MessageInput value={value} onValueChange={setValue} onSubmit={send}>
+            <MessageInputField placeholder={`Message ${agent.name}…`} />
+            <MessageInputSubmit />
+          </MessageInput>
+        </div>
       }
     >
-      {opening ? (
-        <EmptyState className="p-3">
-          <div />
-          <EmptyStateContent>
-            <Portrait agent={agent} floating={false} />
-            <EmptyStateTitle>Where would you like to start?</EmptyStateTitle>
+      <ChatCardThread className={cn(measure, "h-full")}>
+        <ChatAvatar>
+          <ChatAvatarImage
+            src={agent.avatar}
+            fallback={
+              <HugeiconsIcon
+                icon={agent.icon}
+                strokeWidth={1.5}
+                className="size-6"
+              />
+            }
+          />
+          <ChatAvatarName icon={agent.icon} chevron={false}>
+            {agent.name}
+          </ChatAvatarName>
+        </ChatAvatar>
+
+        {turns.length === 0 ? (
+          /* Centred in what is left under the portrait rather than following
+             it down the page, so the invitation sits where the first answer
+             will and the screen has a middle. */
+          <div className="flex flex-1 flex-col items-center justify-center gap-4 pb-8">
+            <EmptyStateTitle>{agent.greeting}</EmptyStateTitle>
             <EmptyStateDescription>{agent.description}</EmptyStateDescription>
-            <EmptyStateComposer className="max-w-lg">
-              <MessageInput
-                value={value}
-                onValueChange={setValue}
-                onSubmit={send}
-              >
-                <MessageInputField placeholder="Ask anything…" />
-                <MessageInputSubmit />
-              </MessageInput>
-            </EmptyStateComposer>
-          </EmptyStateContent>
-        </EmptyState>
-      ) : (
-        <ChatCardThread className={cn(measure, "h-full")}>
-          <Portrait agent={agent} floating />
-          {turns.map((turn) => (
+          </div>
+        ) : (
+          turns.map((turn) => (
             <Bubble key={turn.id} align="end">
               <BubbleContent>{turn.text}</BubbleContent>
             </Bubble>
-          ))}
-        </ChatCardThread>
-      )}
+          ))
+        )}
+      </ChatCardThread>
     </Pane>
   )
 }
