@@ -15,7 +15,11 @@ import { tokenExamples } from "@/registry/_demos"
  * data has to be pulled in on this side of the boundary.
  */
 function DesignBrowser({ children }: { children: ReactNode }) {
-  return <ExamplesBrowser examples={tokenExamples}>{children}</ExamplesBrowser>
+  return (
+    <ExamplesBrowser examples={tokenExamples} noun="designs">
+      {children}
+    </ExamplesBrowser>
+  )
 }
 
 /** The card on the stage, resolved from the slug the route was asked for. */

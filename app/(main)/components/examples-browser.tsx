@@ -3,11 +3,30 @@
 import { useCallback, useMemo, useState, type ReactNode } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Layers01Icon } from "@hugeicons/core-free-icons"
+import { Input as InputPrimitive } from "@base-ui/react/input"
+import { Popover } from "@base-ui/react/popover"
+import {
+  Cancel01Icon,
+  FilterHorizontalIcon,
+  Layers01Icon,
+  Search01Icon,
+} from "@hugeicons/core-free-icons"
 import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react"
 
 import { DemoCard } from "@/components/aiellie-ui/demo-card"
 import { DemosSwitcher } from "@/components/aiellie-ui/demos-switcher"
+import {
+  Menu,
+  MenuCheckboxItem,
+  MenuContent,
+  MenuGroup,
+  MenuGroupLabel,
+  MenuItem,
+  MenuSeparator,
+  MenuShortcut,
+  MenuTrigger,
+  menuPopup,
+} from "@/components/aiellie-ui/menu"
 import { TooltipIconButton } from "@/components/aiellie-ui/tooltip-icon-button"
 import {
   ResizableHandle,
@@ -52,6 +71,17 @@ const handle = "bg-border/50 transition-colors hover:bg-border active:bg-border"
  * own at the foot of the list.
  */
 const ungrouped = { slug: "ungrouped", name: "Other", icon: Layers01Icon }
+
+/**
+ * The lit state a header control takes while it is narrowing the list, said on
+ * the glyph as well as on the button: `ghost` paints its own svg
+ * `muted-foreground`, and a rule on the icon beats a colour the button is only
+ * passing down by inheritance.
+ */
+const headerLit = cn(
+  "text-accent hover:text-accent",
+  "[&_svg]:text-accent hover:[&_svg]:text-accent"
+)
 
 /** The lit-while-current treatment both shapes of rail item share. */
 const railCurrent = cn(
@@ -117,6 +147,35 @@ function groupsFor(examples: Example[]): Group[] {
 }
 
 /**
+ * The runs the rail actually draws: the page's, with anything the search and
+ * the category filter rule out taken away, and a run left with nothing dropped
+ * rather than left standing as a label over an empty space.
+ *
+ * The description is searched as well as the title, so a query like "hover" or
+ * "streaming" finds the thing it describes and not only the thing named after
+ * it. What this narrows is the rail and nothing else — a card is still numbered
+ * by where it sits in its whole category, so searching cannot renumber the page
+ * under someone.
+ */
+function shownIn(groups: Group[], query: string, categories: string[]) {
+  const needle = query.trim().toLowerCase()
+
+  return groups.flatMap((group) => {
+    if (categories.length && !categories.includes(group.slug)) return []
+
+    const examples = needle
+      ? group.examples.filter(
+          (example) =>
+            example.title.toLowerCase().includes(needle) ||
+            example.description.toLowerCase().includes(needle)
+        )
+      : group.examples
+
+    return examples.length ? [{ ...group, examples }] : []
+  })
+}
+
+/**
  * One example resolved out of the page's list, with the place it holds in its
  * own run — so a card is numbered from one inside its category rather than on
  * down the page, the way the grid used to number it.
@@ -128,6 +187,83 @@ function itemFor(examples: Example[], slug: string): Item | undefined {
     )
     if (index >= 0) return { example: group.examples[index], index: index + 1 }
   }
+}
+
+/**
+ * The search field, wherever it is drawn: in the rail's header, or in the
+ * popover a collapsed rail opens.
+ *
+ * The clear button holds its place rather than arriving with the first
+ * keystroke — mounted it would shove whatever sits beside it sideways the
+ * moment you started typing, which is the same reason a hover-revealed row
+ * reserves its space instead of appearing.
+ */
+function SearchField({
+  value,
+  onValueChange,
+  onDismiss,
+  placeholder,
+  autoFocus,
+}: {
+  value: string
+  onValueChange: (value: string) => void
+  /** What Escape does once the field is already empty, if anything. */
+  onDismiss?: () => void
+  placeholder: string
+  autoFocus?: boolean
+}) {
+  return (
+    <>
+      <HugeiconsIcon
+        aria-hidden
+        icon={Search01Icon}
+        strokeWidth={1.75}
+        className="size-3.5 shrink-0 text-muted-foreground/70"
+      />
+      <InputPrimitive
+        // `role` rather than `type="search"`, which reads the same to a screen
+        // reader but hands WebKit both the Escape key and a clear cross of its
+        // own.
+        type="text"
+        role="searchbox"
+        autoFocus={autoFocus}
+        value={value}
+        onValueChange={onValueChange}
+        onKeyDown={(event) => {
+          if (event.key !== "Escape") return
+
+          /* Escape clears the query first, and only once the field is empty
+             does it belong to whatever is holding it. Said here rather than
+             left to bubble because Base UI's popover does not take Escape off
+             a focused input — outside-click dismisses it, that key does not. */
+          if (value !== "") {
+            event.stopPropagation()
+            onValueChange("")
+            return
+          }
+
+          onDismiss?.()
+        }}
+        placeholder={placeholder}
+        aria-label={placeholder}
+        className="min-w-0 flex-1 bg-transparent text-[12.5px] text-foreground outline-none placeholder:text-muted-foreground/70"
+      />
+      <TooltipIconButton
+        tooltip="Clear search"
+        onClick={() => onValueChange("")}
+        // Inert rather than absent while there is nothing to clear: it is
+        // still holding the space it will occupy.
+        aria-hidden={!value}
+        tabIndex={value ? undefined : -1}
+        className={cn(
+          "-me-1 shrink-0 transition-opacity duration-150 motion-reduce:transition-none",
+          !value && "pointer-events-none opacity-0"
+        )}
+      >
+        <HugeiconsIcon icon={Cancel01Icon} />
+      </TooltipIconButton>
+    </>
+  )
 }
 
 /**
@@ -193,13 +329,59 @@ function ExampleCard({
  */
 function ExamplesBrowser({
   examples,
+  noun,
   children,
 }: {
   examples: Example[]
+  /** What this page calls the things it lists, for the field's placeholder. */
+  noun: string
   children: ReactNode
 }) {
   const groups = useMemo(() => groupsFor(examples), [examples])
   const pathname = usePathname()
+
+  /* The query and the picked categories are held here, at the layout, so
+     they survive the move from one example to the next: narrowing the rail to
+     find something and having it thrown away by opening what you found is the
+     one thing a filter must not do. */
+  const [query, setQuery] = useState("")
+  const [categories, setCategories] = useState<string[]>([])
+
+  const shown = useMemo(
+    () => shownIn(groups, query, categories),
+    [groups, query, categories]
+  )
+  const filtered = categories.length > 0
+  const queried = query.trim() !== ""
+
+  /* What is narrowing the rail, said the way the reset offers to undo it — a
+     button promising to clear a filter nobody set is a button that has not
+     been looking. */
+  const narrowed = queried || filtered
+  const clearLabel =
+    queried && filtered
+      ? "Clear search and filters"
+      : filtered
+        ? "Clear filters"
+        : "Clear search"
+
+  function clearAll() {
+    setQuery("")
+    setCategories([])
+  }
+
+  /* What the field would search if you typed into it now: the categories that
+     are picked, and not the query — a field saying how much is left to search
+     once you have searched it is a field answering its own question. */
+  const searchable = useMemo(
+    () =>
+      shownIn(groups, "", categories).reduce(
+        (total, group) => total + group.examples.length,
+        0
+      ),
+    [groups, categories]
+  )
+  const placeholder = `Search ${searchable} ${noun}...`
 
   /* Dragged past its minimum the rail collapses to a strip of glyphs, so what
      it is showing has to be known here and not just in CSS: the two shapes are
@@ -211,6 +393,7 @@ function ExamplesBrowser({
      rather than an effect, so the observer is attached to whatever node is
      actually mounted and torn down with it. */
   const [collapsed, setCollapsed] = useState(false)
+  const [searching, setSearching] = useState(false)
   const measure = useCallback((node: HTMLElement | null) => {
     if (!node) return
 
@@ -220,7 +403,13 @@ function ExamplesBrowser({
          with a measure of what is left after it. */
       const width =
         entry.borderBoxSize?.[0]?.inlineSize ?? entry.contentRect.width
-      setCollapsed(width < RAIL_MIN)
+      const narrow = width < RAIL_MIN
+
+      setCollapsed(narrow)
+      /* The popover only exists while the rail is a strip. Left open on the
+         way out it would spring back the next time the rail was collapsed,
+         having been shut by the rail widening rather than by anyone. */
+      if (!narrow) setSearching(false)
     })
 
     observer.observe(node)
@@ -242,10 +431,158 @@ function ExamplesBrowser({
         minSize={RAIL_MIN}
         maxSize={384}
       >
-        {/* The scrolling lives on the nav rather than the panel: a panel is
+        {/* The wrapper is what the panel's width is read off, being the one
+            box that is always exactly it — the nav's own padding changes with
+            the shape, and the header is a row rather than the whole column. */}
+        <div ref={measure} className="flex h-full flex-col">
+          {/* The search and the filter sit in a header of the rail's own,
+              drawn like a pane's on /agents so the two read as one system.
+              Collapsed there is no room for a field, so the row keeps the
+              filter alone: it is the same control it was, it still says when
+              something is hidden, and a rail you cannot read is not one you
+              would be searching. */}
+          <header
+            className={cn(
+              "flex shrink-0 border-b border-border/40",
+              collapsed
+                ? "flex-col items-center gap-1 px-2 py-2"
+                : "h-9 items-center gap-2 px-3"
+            )}
+          >
+            {collapsed ? (
+              /* No room for a field in a 48px strip, so the search becomes a
+                 button that hands you one — the same field, in a popup beside
+                 the rail. It is lit while a query is standing, so a list
+                 shortened by one still says why. */
+              <Popover.Root open={searching} onOpenChange={setSearching}>
+                <Popover.Trigger
+                  render={
+                    <TooltipIconButton
+                      tooltip="Search"
+                      side="right"
+                      className={cn("shrink-0", queried && headerLit)}
+                    />
+                  }
+                >
+                  <HugeiconsIcon icon={Search01Icon} />
+                </Popover.Trigger>
+                <Popover.Portal>
+                  <Popover.Positioner
+                    side="right"
+                    sideOffset={6}
+                    align="start"
+                    collisionPadding={8}
+                    className="isolate z-50"
+                  >
+                    {/* The menus' own popup, since it is the same kind of
+                        thing hanging off the same kind of button. */}
+                    <Popover.Popup
+                      className={cn(
+                        menuPopup("glass"),
+                        "flex w-64 items-center gap-2 px-2.5 py-1.5"
+                      )}
+                    >
+                      <SearchField
+                        autoFocus
+                        value={query}
+                        onValueChange={setQuery}
+                        onDismiss={() => setSearching(false)}
+                        placeholder={placeholder}
+                      />
+                    </Popover.Popup>
+                  </Popover.Positioner>
+                </Popover.Portal>
+              </Popover.Root>
+            ) : (
+              <SearchField
+                value={query}
+                onValueChange={setQuery}
+                placeholder={placeholder}
+              />
+            )}
+            <Menu>
+              <MenuTrigger
+                render={
+                  <TooltipIconButton
+                    tooltip="Filter"
+                    side={collapsed ? "right" : "bottom"}
+                    // Lit while something is hidden, so a list that looks
+                    // short says why without the menu having to be opened.
+                    className={cn(
+                      "relative shrink-0",
+                      !collapsed && "-me-1",
+                      filtered && headerLit
+                    )}
+                  />
+                }
+              >
+                <HugeiconsIcon icon={FilterHorizontalIcon} />
+                {/* How many, not just that there are any — the glyph's own
+                    colour already says that much, and one category hidden
+                    reads very differently from four. aria-hidden because the
+                    menu underneath says the same thing in full, and a bare
+                    number read out after "Filter" is a riddle. */}
+                {filtered ? (
+                  <span
+                    aria-hidden
+                    className="absolute -end-1 -top-1 flex size-3 items-center justify-center rounded-full bg-accent font-mono text-[8px] leading-none text-accent-foreground tabular-nums"
+                  >
+                    {categories.length}
+                  </span>
+                ) : null}
+              </MenuTrigger>
+              <MenuContent
+                align={collapsed ? "start" : "end"}
+                side={collapsed ? "right" : "bottom"}
+                aria-label="Filter examples"
+              >
+                <MenuGroup>
+                  <MenuGroupLabel>Category</MenuGroupLabel>
+                  {/* The page's own categories, not the registry's: a filter
+                      offering a category this page has nothing in is a way of
+                      emptying the rail on purpose. Counted off `groups` rather
+                      than what is on screen, so the numbers say what picking a
+                      category would give you rather than what the last pick
+                      already took away. */}
+                  {groups.map((group) => (
+                    <MenuCheckboxItem
+                      key={group.slug}
+                      checked={categories.includes(group.slug)}
+                      onCheckedChange={(checked) =>
+                        setCategories((previous) =>
+                          checked
+                            ? [...previous, group.slug]
+                            : previous.filter((slug) => slug !== group.slug)
+                        )
+                      }
+                      // Held open, because picking two categories is two
+                      // clicks and a menu that shuts between them is a menu
+                      // reopened.
+                      closeOnClick={false}
+                    >
+                      <HugeiconsIcon icon={group.icon} strokeWidth={2} />
+                      {group.name}
+                      <MenuShortcut className="font-mono tabular-nums">
+                        {String(group.examples.length).padStart(2, "0")}
+                      </MenuShortcut>
+                    </MenuCheckboxItem>
+                  ))}
+                </MenuGroup>
+                <MenuSeparator />
+                <MenuItem
+                  disabled={!filtered}
+                  onClick={() => setCategories([])}
+                >
+                  Clear filters
+                </MenuItem>
+              </MenuContent>
+            </Menu>
+          </header>
+          {/* The scrolling lives on the nav rather than the panel: a panel is
             left `overflow: visible` by the library, and a rail listing every
-            example the page has is taller than the frame. `h-full` is what
-            gives it something to overflow.
+            example the page has is taller than the frame. `flex-1 min-h-0` is
+            what gives it something to overflow, now that the header has taken
+            its share of the column.
 
             `relative` is load-bearing, not decoration. Collapsed, every item
             carries its name in an `sr-only` span, and `sr-only` is
@@ -255,95 +592,125 @@ function ExamplesBrowser({
             a list that is supposed to be scrolling inside this box. Making the
             rail their containing block puts them back inside what clips
             them. */}
-        <nav
-          ref={measure}
-          aria-label="Examples"
-          data-collapsed={collapsed}
-          className={cn(
-            "relative flex h-full flex-col gap-5 overflow-x-hidden overflow-y-auto py-4",
-            collapsed ? "items-center px-2" : "px-4"
-          )}
-        >
-          {groups.map((group) => (
-            <div
-              key={group.slug}
-              role="group"
-              aria-label={group.name}
-              className="flex shrink-0 flex-col gap-0.5"
-            >
-              {/* aria-hidden either way: the run is already named by
+          <nav
+            aria-label="Examples"
+            data-collapsed={collapsed}
+            className={cn(
+              "relative flex min-h-0 flex-1 flex-col gap-5 overflow-x-hidden overflow-y-auto py-4",
+              collapsed ? "items-center px-2" : "px-2"
+            )}
+          >
+            {shown.map((group) => (
+              <div
+                key={group.slug}
+                role="group"
+                aria-label={group.name}
+                className="flex shrink-0 flex-col gap-0.5"
+              >
+                {/* aria-hidden either way: the run is already named by
                   `aria-label` above, so the label would only say it twice.
                   Collapsed it keeps the glyph alone — the run still has to be
                   told from the one above it, and the names are on the items'
                   tooltips by then. */}
-              {collapsed ? (
-                <span
-                  aria-hidden
-                  className="mb-1 flex h-4 items-center justify-center text-foreground/25"
-                >
-                  <HugeiconsIcon
-                    icon={group.icon}
-                    strokeWidth={2}
-                    className="size-3"
-                  />
-                </span>
-              ) : (
-                <span aria-hidden className={sidebarLabel}>
-                  <HugeiconsIcon
-                    icon={group.icon}
-                    strokeWidth={2}
-                    className="size-3 shrink-0"
-                  />
-                  {group.name}
-                  <span className="ms-auto ps-2 tracking-tight tabular-nums">
-                    {String(group.examples.length).padStart(2, "0")}
+                {collapsed ? (
+                  <span
+                    aria-hidden
+                    className="mb-1 flex h-4 items-center justify-center text-foreground/25"
+                  >
+                    <HugeiconsIcon
+                      icon={group.icon}
+                      strokeWidth={2}
+                      className="size-3"
+                    />
                   </span>
-                </span>
-              )}
-              {group.examples.map((example) => {
-                const current = pathname === example.href
-                const glyph = (
-                  <HugeiconsIcon
-                    icon={example.icon}
-                    strokeWidth={2}
-                    className="size-3.5 shrink-0"
-                  />
-                )
+                ) : (
+                  <span aria-hidden className={sidebarLabel}>
+                    <HugeiconsIcon
+                      icon={group.icon}
+                      strokeWidth={2}
+                      className="size-3 shrink-0"
+                    />
+                    {group.name}
+                    <span className="ms-auto ps-2 tracking-tight tabular-nums">
+                      {String(group.examples.length).padStart(2, "0")}
+                    </span>
+                  </span>
+                )}
+                {group.examples.map((example) => {
+                  const current = pathname === example.href
+                  const glyph = (
+                    <HugeiconsIcon
+                      icon={example.icon}
+                      strokeWidth={2}
+                      className="size-3.5 shrink-0"
+                    />
+                  )
 
-                return collapsed ? (
-                  <TooltipIconButton
-                    key={example.name}
-                    tooltip={example.title}
-                    side="right"
-                    /* The rail item is a link wherever it is drawn, collapsed
+                  return collapsed ? (
+                    <TooltipIconButton
+                      key={example.name}
+                      tooltip={example.title}
+                      side="right"
+                      /* The rail item is a link wherever it is drawn, collapsed
                        or not. `nativeButton={false}` is Base UI being told so:
                        left true it expects a real `<button>` in `render` and
                        warns that it is handing an anchor button semantics it
                        cannot keep. */
-                    render={<Link href={example.href} />}
-                    nativeButton={false}
-                    data-active={current}
-                    aria-current={current ? "page" : undefined}
-                    className={cn("size-7.5 rounded-md", railCurrent)}
+                      render={<Link href={example.href} />}
+                      nativeButton={false}
+                      data-active={current}
+                      aria-current={current ? "page" : undefined}
+                      className={cn("size-7.5 rounded-md", railCurrent)}
+                    >
+                      {glyph}
+                    </TooltipIconButton>
+                  ) : (
+                    <Link
+                      key={example.name}
+                      href={example.href}
+                      data-active={current}
+                      aria-current={current ? "page" : undefined}
+                      className={sidebarItem}
+                    >
+                      {glyph}
+                      <span className="min-w-0 truncate">{example.title}</span>
+                    </Link>
+                  )
+                })}
+              </div>
+            ))}
+            {/* Collapsed the row would be a wall of wrapped text in a 48px
+                strip, and the filter glyph above is already lit — so the empty
+                rail says it with nothing rather than badly. */}
+            {shown.length === 0 && !collapsed ? (
+              /* Centred in whatever the runs have left, which when there are
+                 no runs is the whole rail: an empty list left at the top reads
+                 as a list that has not loaded, and the way out of it is worth
+                 putting where the eye already is. `-mt-9` for the header the
+                 column above has taken, so the middle of the rail is the middle
+                 of the panel. */
+              <div className="-mt-9 flex flex-1 flex-col items-center justify-center gap-3 px-2 text-center">
+                <p className="text-[12.5px] leading-relaxed text-balance text-foreground/35">
+                  {queried
+                    ? `Nothing matching “${query.trim()}”.`
+                    : "Nothing to show."}
+                </p>
+                {/* Only when there is something to undo: an empty rail with no
+                    query and no filter on it is a page with nothing in it, and
+                    a reset would be a button that does nothing. */}
+                {narrowed ? (
+                  <button
+                    type="button"
+                    onClick={clearAll}
+                    className={cn(navButton, "w-auto text-foreground/60 border-border border")}
                   >
-                    {glyph}
-                  </TooltipIconButton>
-                ) : (
-                  <Link
-                    key={example.name}
-                    href={example.href}
-                    data-active={current}
-                    aria-current={current ? "page" : undefined}
-                    className={sidebarItem}
-                  >
-                    {glyph}
-                    <span className="min-w-0 truncate">{example.title}</span>
-                  </Link>
-                )
-              })}
-            </div>
-          ))}
-        </nav>
+                    {clearLabel}
+                  </button>
+                ) : null}
+              </div>
+            ) : null}
+          </nav>
+        </div>
       </ResizablePanel>
 
       <ResizableHandle withHandle className={handle} />

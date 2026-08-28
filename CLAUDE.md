@@ -101,6 +101,13 @@ given the document's height the panels would grow with the page instead of split
 and the handle would have nothing to move. Dragged past its minimum the rail collapses to
 a strip of glyphs, its items becoming `TooltipIconButton`s.
 
+The rail's header holds a search field and a filter menu of the page's own categories,
+drawn like a pane's header on `/agents`; collapsed, where there is no room for a field,
+the search becomes a button that opens the same field in a popover. Both narrow the
+**rail** and nothing else: the card keeps the number it has in its whole category, and
+the example you are reading stays on the stage even when a filter has taken it out of the
+list.
+
 - An example falls into the **first** category it carries, in the rail's order.
   `sectionFor` walks that same order, so the page it goes to and the label it lands
   under can't disagree.
