@@ -170,9 +170,9 @@ function ExamplesBrowser({ examples }: { examples: Example[] }) {
   if (!group) return null
 
   return (
-    <div className="mt-10">
-      <Separator className={dashed} />
-      <div className="mt-6 flex flex-col gap-6 md:flex-row md:gap-10">
+    <div className="mt-0">
+      {/*<Separator className={dashed} />*/}
+      <div className="mt-0 flex flex-col gap-6 md:flex-row md:gap-10">
         {/* The rail is a nav of filters, not of destinations, so the items are
             buttons marked `aria-current` rather than links — and not tabs,
             whose role promises arrow-key navigation between them. Each run is

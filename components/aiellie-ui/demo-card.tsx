@@ -72,7 +72,7 @@ function DemoCard({
           </div>
         ) : null}
       </div>
-      <Link href={href} className="group/link mt-4 flex items-baseline gap-2.5">
+    {/*  <Link href={href} className="group/link mt-4 flex items-baseline gap-2.5">
         <span className="font-mono text-[11px] tracking-tight text-foreground/30 tabular-nums">
           {String(index).padStart(2, "0")}
         </span>
@@ -90,6 +90,7 @@ function DemoCard({
       <p className="mt-1 text-[13px] leading-relaxed text-foreground/50">
         {description}
       </p>
+      */}
     </div>
   )
 }
