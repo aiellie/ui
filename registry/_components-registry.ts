@@ -45,8 +45,7 @@ export const components: Registry["items"] = [
     type: "registry:component",
     title: "Demo Card",
     description:
-      "The frame an example is shown in: a numbered header carrying its glyph, title and description, and a stage below for whatever is being demonstrated.",
-    dependencies: ["@hugeicons/react"],
+      "The frame an example is shown in: a stage that takes the height it is given, for whatever is being demonstrated.",
     registryDependencies: ["utils"],
     files: [
       {

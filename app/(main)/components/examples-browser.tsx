@@ -1,10 +1,18 @@
 "use client"
 
-import { useCallback, useMemo, useState, type ReactNode } from "react"
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Input as InputPrimitive } from "@base-ui/react/input"
 import { Popover } from "@base-ui/react/popover"
+import type { PanelImperativeHandle } from "react-resizable-panels"
 import {
   Cancel01Icon,
   FilterHorizontalIcon,
@@ -61,6 +69,13 @@ type Item = {
  */
 const RAIL_COLLAPSED = 48
 const RAIL_MIN = 176
+
+/**
+ * The width the whole browser stops having room for a list of names beside a
+ * demo. Below it the rail is put to its icons whether or not anyone dragged it
+ * there: a 240px rail out of 600 is most of the window given to a nav.
+ */
+const NARROW = 768
 
 /** The hairline only firms up under the pointer, so it reads as a divider first and a control second. */
 const handle = "bg-border/50 transition-colors hover:bg-border active:bg-border"
@@ -287,16 +302,10 @@ function ExampleCard({
   const item = useMemo(() => itemFor(examples, slug), [examples, slug])
   if (!item) return null
 
-  const { example, index } = item
+  const { example } = item
 
   return (
-    <DemoCard
-      href={example.href}
-      index={index}
-      title={example.title}
-      description={example.description}
-      icon={example.icon}
-    >
+    <DemoCard>
       <DemosSwitcher
         variants={example.variants}
         installCommand={example.installCommand}
@@ -415,6 +424,43 @@ function ExamplesBrowser({
     return () => observer.disconnect()
   }, [])
 
+  /* Below `NARROW` the rail is put to its icons on its own, and given back its
+     width when there is room for it again.
+
+     Measured off the document rather than the panel group, whose own
+     `elementRef` never calls a callback ref — and the width that decides this
+     is the window's either way. `roomy` remembers the last answer so only the
+     crossing is acted on: run on every tick it would fight anyone dragging the
+     handle at a width it has already had its say about.
+
+     Nothing is done on the first reading while there is room, because `expand`
+     on a panel that is not collapsed takes it to its maximum rather than doing
+     nothing — the rail would fly open to 384px on every load. */
+  const rail = useRef<PanelImperativeHandle>(null)
+  useEffect(() => {
+    let roomy: boolean | null = null
+
+    const observer = new ResizeObserver(([entry]) => {
+      const width =
+        entry.borderBoxSize?.[0]?.inlineSize ?? entry.contentRect.width
+      const next = width >= NARROW
+      if (next === roomy) return
+
+      const first = roomy === null
+      roomy = next
+
+      /* Out of the frame the resize is being laid out in: a size set inside
+         that pass is overwritten by the end of it. */
+      requestAnimationFrame(() => {
+        if (!next) rail.current?.collapse()
+        else if (!first) rail.current?.expand()
+      })
+    })
+
+    observer.observe(document.documentElement)
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <ResizablePanelGroup orientation="horizontal">
       {/* The rail is a nav of destinations now, so the items are links marked
@@ -425,6 +471,7 @@ function ExamplesBrowser({
       <ResizablePanel
         id="examples"
         collapsible
+        panelRef={rail}
         collapsedSize={RAIL_COLLAPSED}
         defaultSize={240}
         minSize={RAIL_MIN}
@@ -718,13 +765,17 @@ function ExamplesBrowser({
       <ResizableHandle withHandle className={handle} />
 
       <ResizablePanel id="stage" defaultSize="80" minSize="40">
-        <div className="h-full overflow-y-auto px-6 py-4">
+        {/* The stage is a height, not a scroller: the card takes what it is
+            given, and what is being demonstrated does its own scrolling inside
+            it. `overflow-hidden` so a demo that is briefly too tall on its way
+            in cannot push a scrollbar onto the frame. */}
+        <div className="h-full overflow-hidden px-6 py-4">
           {/* Keyed on the route so moving between examples re-mounts the card
               and it fades in, rather than the card swapping its contents in
               place. */}
           <div
             key={pathname}
-            className="min-w-0 animate-in duration-300 fade-in motion-reduce:animate-none"
+            className="h-full min-w-0 animate-in duration-300 fade-in motion-reduce:animate-none"
           >
             {children}
           </div>
