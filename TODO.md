@@ -39,3 +39,5 @@ https://github.com/aiellie
 30. fix highlight code color 
 31. remove the focus rings
 32. fix layout to match https://agents.aiellie.app/templates
+33. move the tokens from the registry and put them in playground
+34. add a roadmap

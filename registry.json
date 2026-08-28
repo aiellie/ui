@@ -878,6 +878,92 @@
       }
     },
     {
+      "name": "code-highlight-demo",
+      "type": "registry:example",
+      "title": "Code Highlight",
+      "description": "The palette every code element is read in: one colour per kind of token with the class behind it, the same ramp again with the hue taken out, the pass a command line gets instead of the keyword set, and the pair a diff is marked in.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/highlight.json",
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "examples/tokens/code-highlight.tsx",
+          "type": "registry:example",
+          "target": "examples/tokens/code-highlight.tsx"
+        }
+      ],
+      "categories": [
+        "syntax"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Palette",
+            "demo": "PaletteDemo"
+          },
+          {
+            "name": "Mono",
+            "demo": "MonoDemo"
+          },
+          {
+            "name": "Scanner",
+            "demo": "ScannerDemo"
+          },
+          {
+            "name": "Command",
+            "demo": "CommandDemo"
+          },
+          {
+            "name": "Diff",
+            "demo": "DiffDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "theme-demo",
+      "type": "registry:example",
+      "title": "Theme",
+      "description": "One set of tokens under both modes at once — a panel of each side by side, the elevation ladder that does not simply invert, the accents with the foregrounds they are paired with, and every token split down the middle.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/colors.json",
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "examples/tokens/theme.tsx",
+          "type": "registry:example",
+          "target": "examples/tokens/theme.tsx"
+        }
+      ],
+      "categories": [
+        "colors"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Modes",
+            "demo": "ModesDemo"
+          },
+          {
+            "name": "Surfaces",
+            "demo": "SurfacesDemo"
+          },
+          {
+            "name": "Accents",
+            "demo": "AccentsDemo"
+          },
+          {
+            "name": "Tokens",
+            "demo": "TokensDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
       "name": "code-block-demo",
       "type": "registry:example",
       "title": "Code Block",

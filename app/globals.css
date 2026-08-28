@@ -52,7 +52,16 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-:root {
+/* `.light` is named beside `:root` rather than repeating the palette: it lets
+   a subtree be handed the light values while the page is dark, which is what
+   the theme example needs to stand both modes side by side. On `<html>` it
+   changes nothing — next-themes sets `light` there, and that already matched
+   `:root`.
+
+   Note the `dark` variant above still matches any descendant of `.dark`, so a
+   forced-light island must not reach for `dark:` utilities. */
+:root,
+.light {
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
   --card: oklch(1 0 0);

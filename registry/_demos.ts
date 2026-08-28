@@ -31,6 +31,8 @@ import {
   Wrench01Icon,
   ShieldKeyIcon,
   SignalFull01Icon,
+  HighlighterIcon,
+  ContrastIcon,
 } from "@hugeicons/core-free-icons"
 import type { IconSvgElement } from "@hugeicons/react"
 import type { RegistryItem } from "shadcn/schema"
@@ -65,7 +67,9 @@ import * as typingIndicatorDemos from "@/examples/messages/typing-indicator"
 import * as messageScrollerDemos from "@/examples/messages/message-scroller"
 import * as suggestionsDemos from "@/examples/messages/suggestions"
 import * as timestampsDemos from "@/examples/messages/timestamps"
+import * as codeHighlightDemos from "@/examples/tokens/code-highlight"
 import * as fontsDemos from "@/examples/tokens/fonts-demos"
+import * as themeDemos from "@/examples/tokens/theme"
 import { colorsVariants } from "@/examples/tokens/colors-demos"
 
 import { examples } from "./_examples-registry"
@@ -89,6 +93,14 @@ type ExampleDemos = {
 const exampleDemos: Record<string, ExampleDemos> = {
   "colors-demo": { icon: PaintBoardIcon, variants: colorsVariants },
   "fonts-demo": { icon: TextFontIcon, components: { ...fontsDemos } },
+  "code-highlight-demo": {
+    icon: HighlighterIcon,
+    components: { ...codeHighlightDemos },
+  },
+  "theme-demo": {
+    icon: ContrastIcon,
+    components: { ...themeDemos },
+  },
   "code-block-demo": {
     icon: FileCodeIcon,
     components: { ...codeBlockDemos },

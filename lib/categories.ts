@@ -4,6 +4,7 @@ import {
   AiContentGenerator02Icon,
   SquareTerminalIcon,
   MessageSquareDotIcon,
+  CodeIcon,
 } from "@hugeicons/core-free-icons"
 import type { IconSvgElement } from "@hugeicons/react"
 
@@ -80,5 +81,12 @@ export const registryCategories: RegistryCategory[] = [
     section: "tokens",
     hidden: false,
     icon: AiContentGenerator02Icon,
+  },
+  {
+    name: "Syntax",
+    slug: "syntax",
+    section: "tokens",
+    hidden: false,
+    icon: CodeIcon,
   },
 ]
