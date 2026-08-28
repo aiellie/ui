@@ -154,8 +154,10 @@ function labelFrom(tooltip: React.ReactNode, ariaLabel?: string) {
   return ariaLabel ?? (typeof tooltip === "string" ? tooltip : undefined)
 }
 
-export interface CodeBlockActionProps
-  extends Omit<React.ComponentProps<"button">, "children"> {
+export interface CodeBlockActionProps extends Omit<
+  React.ComponentProps<"button">,
+  "children"
+> {
   children: React.ReactNode
   tooltip?: React.ReactNode
   /** What the tooltip and the name become once the action has landed. */
@@ -201,10 +203,16 @@ function CodeBlockAction({
       )}
       {...props}
     >
-      <span aria-hidden className={cn(iconSwap, done ? iconSwapOut : iconSwapIn)}>
+      <span
+        aria-hidden
+        className={cn(iconSwap, done ? iconSwapOut : iconSwapIn)}
+      >
         {children}
       </span>
-      <span aria-hidden className={cn(iconSwap, done ? iconSwapIn : iconSwapOut)}>
+      <span
+        aria-hidden
+        className={cn(iconSwap, done ? iconSwapIn : iconSwapOut)}
+      >
         {doneChildren ?? <HugeiconsIcon icon={Tick02Icon} strokeWidth={2} />}
       </span>
     </button>
@@ -254,7 +262,10 @@ function CodeBlockCopy({
   onCopy,
   children,
   ...props
-}: Omit<CodeBlockActionProps, "children" | "done" | "doneChildren" | "onCopy"> & {
+}: Omit<
+  CodeBlockActionProps,
+  "children" | "done" | "doneChildren" | "onCopy"
+> & {
   code: string
   children?: React.ReactNode
   onCopy?: () => void
@@ -344,8 +355,10 @@ function CodeBlockCaret() {
   )
 }
 
-export interface CodeBlockBodyProps
-  extends Omit<React.ComponentProps<"pre">, "children"> {
+export interface CodeBlockBodyProps extends Omit<
+  React.ComponentProps<"pre">,
+  "children"
+> {
   code: string
   /**
    * Which palette the tokens take. `mono` keeps every distinction the colour
@@ -529,10 +542,12 @@ function CodeBlockBody({
                            state either way. */
                         aria-controls={open ? `${noteId}-${number}` : undefined}
                         aria-label={
-                          open ? `Hide note on line ${number}` : `Show note on line ${number}`
+                          open
+                            ? `Hide note on line ${number}`
+                            : `Show note on line ${number}`
                         }
                         onClick={() => toggleNote(number)}
-                        className="grid h-[1.7em] w-3.5 shrink-0 cursor-pointer place-items-center rounded-sm text-foreground/30 outline-none transition-colors duration-150 hover:text-foreground/70 focus-visible:ring-1 focus-visible:ring-foreground/20 motion-reduce:transition-none"
+                        className="grid h-[1.7em] w-3.5 shrink-0 cursor-pointer place-items-center rounded-sm text-foreground/30 transition-colors duration-150 outline-none hover:text-foreground/70 focus-visible:ring-1 focus-visible:ring-foreground/20 motion-reduce:transition-none"
                       >
                         <HugeiconsIcon
                           aria-hidden

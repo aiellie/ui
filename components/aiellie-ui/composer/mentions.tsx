@@ -2,6 +2,8 @@
 
 import * as React from "react"
 import { createPortal } from "react-dom"
+import { ArrowTurnBackwardIcon } from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
 
 import { floating } from "@/components/aiellie-ui/actions"
 import { cn } from "@/lib/utils"
@@ -90,15 +92,25 @@ export function useMentions<
   format = (item) => `${trigger}${item.handle} `,
 }: UseMentionsOptions) {
   const ref = React.useRef<Field>(null)
-  const [active, setActive] = React.useState<Active | null>(null)
-  const [index, setIndex] = React.useState(0)
+  // The mention being typed and the row in hand are one piece of state, not
+  // two. They only ever change together — a new query starts at the first
+  // match — and holding them apart is what lets a stray read send a highlight
+  // home that nothing had asked to move.
+  const [{ active, index }, setState] = React.useState<{
+    active: Active | null
+    index: number
+  }>({ active: null, index: 0 })
   const listId = React.useId()
 
   const matches = React.useMemo(
     () => (active ? matchesFor(items, active.query) : []),
     [items, active]
   )
-  const open = active !== null && matches.length > 0
+  // Open on the trigger rather than on the matches. A menu that disappears
+  // when nothing matches reads as the at sign having stopped working, where
+  // one saying nobody matched is an answer — and Enter goes back to being the
+  // message's in that state rather than being swallowed by an empty list.
+  const open = active !== null
 
   // The caret is on the element, not in the value: the same text can be typed
   // into two places and only the DOM knows which one is being written at.
@@ -107,11 +119,48 @@ export function useMentions<
     if (!field) return
     const caret = field.selectionStart ?? field.value.length
     const next = activeMention(field.value, caret, trigger)
-    setActive(next)
-    setIndex(0)
+
+    setState((previous) => {
+      const same =
+        previous.active && next
+          ? previous.active.start === next.start &&
+            previous.active.query === next.query
+          : previous.active === next
+      // Reading the same mention back is no reason to send the highlight home.
+      // This runs on every key released — the arrows raise one too — so a read
+      // that reset the row in hand would undo the press that moved it.
+      return same ? previous : { active: next, index: 0 }
+    })
   }, [trigger])
 
-  const dismiss = React.useCallback(() => setActive(null), [])
+  const setIndex = React.useCallback(
+    (next: number) => setState((previous) => ({ ...previous, index: next })),
+    []
+  )
+
+  const dismiss = React.useCallback(
+    () =>
+      setState((previous) =>
+        previous.active ? { active: null, index: 0 } : previous
+      ),
+    []
+  )
+
+  // Every row is in the list already — only the highlight moves — so the row
+  // moved to can be brought into view now rather than a render later. Keys
+  // only: doing this on hover would scroll the list out from under a pointer
+  // that was merely passing over it.
+  const highlight = React.useCallback(
+    (next: number) => {
+      setIndex(next)
+      const item = matches[next]
+      if (!item) return
+      document
+        .getElementById(`${listId}-${item.id}`)
+        ?.scrollIntoView({ block: "nearest" })
+    },
+    [matches, listId, setIndex]
+  )
 
   const accept = React.useCallback(
     (item: MentionItem) => {
@@ -123,7 +172,7 @@ export function useMentions<
       const next = value.slice(0, active.start) + inserted + value.slice(caret)
 
       onValueChange(next)
-      setActive(null)
+      setState({ active: null, index: 0 })
 
       // The caret goes after what was inserted rather than to the end: a
       // mention is often written into the middle of a sentence.
@@ -136,7 +185,8 @@ export function useMentions<
     [active, value, format, onValueChange]
   )
 
-  const activeId = open ? `${listId}-${matches[index]?.id}` : undefined
+  const highlighted = matches[index]
+  const activeId = highlighted ? `${listId}-${highlighted.id}` : undefined
 
   const fieldProps = {
     ref,
@@ -147,26 +197,26 @@ export function useMentions<
     "aria-controls": open ? listId : undefined,
     "aria-activedescendant": activeId,
     "aria-autocomplete": "list" as const,
+    "aria-haspopup": "listbox" as const,
     onKeyDown: (event: React.KeyboardEvent<Field>) => {
       if (!open) return
 
       if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+        if (!matches.length) return
         event.preventDefault()
         const step = event.key === "ArrowDown" ? 1 : -1
-        setIndex((previous) => {
-          const next = previous + step
-          // Wrapping, because a list this short is a ring rather than a page.
-          return (next + matches.length) % matches.length
-        })
+        // Wrapping, because a list this short is a ring rather than a page.
+        highlight((index + step + matches.length) % matches.length)
         return
       }
 
-      // Enter belongs to the menu while it is open — the message is not
-      // finished if the reader is halfway through naming somebody.
+      // Enter belongs to the menu while it has a name to take — the message is
+      // not finished if the reader is halfway through naming somebody — and
+      // goes straight back to the message when it has none.
       if (event.key === "Enter" || event.key === "Tab") {
+        if (!highlighted) return
         event.preventDefault()
-        const item = matches[index]
-        if (item) accept(item)
+        accept(highlighted)
         return
       }
 
@@ -177,6 +227,10 @@ export function useMentions<
     },
     onKeyUp: read,
     onClick: read,
+    // A menu left hanging over the page with nothing focused behind it is a
+    // menu nobody asked for. Taking a name does not blur the field — the list
+    // defaults its own presses away — so this only fires on leaving properly.
+    onBlur: dismiss,
     onInput: read,
   }
 
@@ -236,16 +290,36 @@ export function Mentions<
 
   React.useLayoutEffect(() => {
     if (!open) return undefined
+    const field = ref.current
+    if (!field) return undefined
 
     function measure() {
       const field = ref.current
-      if (field) setBox(field.getBoundingClientRect())
+      if (!field) return
+      const next = field.getBoundingClientRect()
+      // Scrolling anywhere on the page fires this every frame, and a fresh
+      // rect is a fresh object however still the field has been. Without the
+      // comparison the whole menu re-renders for a field that has not moved.
+      setBox((previous) =>
+        previous &&
+        previous.top === next.top &&
+        previous.left === next.left &&
+        previous.width === next.width &&
+        previous.height === next.height
+          ? previous
+          : next
+      )
     }
 
     measure()
+    // The window is not the only thing that moves the field: a composer grows
+    // as it is written into, and the menu is stood on the field's own edge.
+    const observer = new ResizeObserver(measure)
+    observer.observe(field)
     window.addEventListener("resize", measure)
     window.addEventListener("scroll", measure, true)
     return () => {
+      observer.disconnect()
       window.removeEventListener("resize", measure)
       window.removeEventListener("scroll", measure, true)
     }
@@ -275,7 +349,9 @@ export function Mentions<
       style={{
         position: "fixed",
         left: box.left,
-        width: Math.max(box.width, 240),
+        // The field's width, within reason: a menu drawn the full span of a
+        // wide composer is a great deal of paper for six names.
+        width: Math.min(Math.max(box.width, 240), 380),
         maxHeight: Math.max(Math.min(256, room), 96),
         ...(placement === "top"
           ? { bottom: window.innerHeight - box.top + gap }
@@ -283,8 +359,13 @@ export function Mentions<
       }}
       className={cn(
         floating,
-        "z-50 overflow-y-auto overscroll-contain rounded-xl border-border/40 p-1 shadow-xl backdrop-blur-xl",
-        "animate-in duration-150 ease-out zoom-in-95 fade-in motion-reduce:animate-none",
+        // `scroll-p-1` so a row brought into view stops inside the padding
+        // rather than flush against the edge it was scrolled to.
+        "z-50 scroll-p-1 overflow-y-auto overscroll-contain rounded-xl border-border/40 p-1 shadow-xl backdrop-blur-xl",
+        // Grown out of the field rather than out of its own middle: the menu
+        // belongs to the edge it opened from, whichever edge that turned out
+        // to be.
+        "animate-in duration-150 ease-out zoom-in-95 fade-in data-[side=bottom]:origin-top data-[side=bottom]:slide-in-from-top-1 data-[side=top]:origin-bottom data-[side=top]:slide-in-from-bottom-1 motion-reduce:animate-none",
         className
       )}
       {...props}
@@ -313,8 +394,47 @@ export function MentionsGroupLabel({
 }
 
 /**
+ * A name with the part that was typed picked back out of it, so a list of six
+ * near-identical handles says which one is answering the query.
+ *
+ * A `mark` because that is the element for text picked out for reference,
+ * stripped of the yellow a browser would otherwise give it.
+ */
+export function MentionsMatch({
+  text,
+  query,
+  className,
+  ...props
+}: Omit<React.ComponentProps<"span">, "children"> & {
+  text: string
+  query: string
+}) {
+  const at = query ? text.toLowerCase().indexOf(query.toLowerCase()) : -1
+
+  return (
+    <span data-slot="mentions-match" className={className} {...props}>
+      {at < 0 ? (
+        text
+      ) : (
+        <>
+          {text.slice(0, at)}
+          <mark className="bg-transparent font-semibold text-foreground">
+            {text.slice(at, at + query.length)}
+          </mark>
+          {text.slice(at + query.length)}
+        </>
+      )}
+    </span>
+  )
+}
+
+/**
  * One name. Highlighted by the keyboard as much as by the pointer, so moving
  * with the arrows and moving with the mouse look like the same thing.
+ *
+ * The icon sits in a round frame that clips and is positioned, so `icon` can be
+ * a glyph, a pair of letters, or a picture laid over the letters it falls back
+ * to while it loads or if it never arrives.
  */
 export function MentionsItem<
   Field extends HTMLInputElement | HTMLTextAreaElement = HTMLInputElement,
@@ -329,7 +449,7 @@ export function MentionsItem<
   controller: MentionsController<Field>
   children?: React.ReactNode
 }) {
-  const { matches, index, setIndex, accept, listId } = controller
+  const { matches, index, setIndex, accept, listId, query } = controller
   const position = matches.findIndex((match) => match.id === item.id)
   const highlighted = position === index
 
@@ -355,19 +475,34 @@ export function MentionsItem<
       {children ?? (
         <>
           {item.icon ? (
-            <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-foreground/[0.06] text-muted-foreground dark:bg-foreground/[0.09]">
+            <span className="relative flex size-6 shrink-0 items-center justify-center overflow-hidden rounded-full bg-foreground/[0.06] text-muted-foreground dark:bg-foreground/[0.09]">
               {item.icon}
             </span>
           ) : null}
-          <span className="min-w-0 flex-1 truncate font-medium">
-            {item.name}
+          <span className="min-w-0 truncate font-medium">
+            <MentionsMatch text={item.name} query={query} />
+          </span>
+          {/* Takes what is left over and nothing else: sized from nought, it
+              collapses when there is no room rather than taking the room the
+              name needed — a row that answers "R…" has hidden the one thing
+              the reader was scanning for. It is the spacer either way, so it
+              is drawn whether or not there is a description to put in it. */}
+          <span className="min-w-0 flex-1 truncate text-end text-muted-foreground">
+            {item.description}
           </span>
           <span className="shrink-0 text-muted-foreground">
-            {item.description ? (
-              <span className="me-2 hidden sm:inline">{item.description}</span>
-            ) : null}
-            @{item.handle}
+            @<MentionsMatch text={item.handle} query={query} />
           </span>
+          {/* The key that takes the row, on the row it would take. Drawn on
+              every row and hidden rather than mounted with the highlight, so
+              the names do not shuffle sideways as it moves down them. */}
+          <HugeiconsIcon
+            icon={ArrowTurnBackwardIcon}
+            className={cn(
+              "size-3.5 shrink-0 text-muted-foreground transition-opacity duration-150 motion-reduce:transition-none",
+              highlighted ? "opacity-100" : "opacity-0"
+            )}
+          />
         </>
       )}
     </div>

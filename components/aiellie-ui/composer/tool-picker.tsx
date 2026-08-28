@@ -12,7 +12,10 @@ import {
   MenuGroupLabel,
   MenuTrigger,
 } from "@/components/aiellie-ui/menu"
-import { Button } from "@/components/ui/button"
+import {
+  TooltipIconButton,
+  type TooltipIconButtonProps,
+} from "@/components/aiellie-ui/tooltip-icon-button"
 import type { Tool } from "@/lib/tools"
 import { tools as defaultTools, toolsByCategory } from "@/lib/tools"
 import { cn } from "@/lib/utils"
@@ -30,8 +33,10 @@ import { cn } from "@/lib/utils"
  *
  * The surface is `menu`'s, whole, and the glyphs are the catalogue's. What this
  * file adds is the part a menu has no opinion about: that the rows come from
- * `lib/tools`, that a row says what its tool does, and that the trigger carries
- * the count so the answer to "how many are on?" does not require opening it.
+ * `lib/tools`, that a row says what its tool does, and that the ones that are
+ * on stand beside the trigger in the colours the catalogue gives them — so what
+ * a message is being sent with is read off the composer rather than counted
+ * inside a menu nobody has open.
  */
 
 type ToolPickerContextValue = {
@@ -119,14 +124,15 @@ function ToolPicker({
 }
 
 /**
- * The thing that opens the list: a wrench, and the count once there is one to
- * show. Ghost and small for the same reason the model picker's is — this sits
- * beside the field, and a control with a border competes with the field for the
- * attention that belongs to the writing.
+ * The thing that opens the list: a wrench, and nothing else. It used to carry
+ * the count of what was on, which is the one question `ToolPickerActive`
+ * answers better — a `3` says how many and never which, and three glyphs say
+ * both — so the trigger is left as the way in and the row beside it is what a
+ * composer is read from.
  *
- * It squares up to an icon button while nothing is on and widens for the count
- * rather than holding a slot open for it, because a `0` sitting there says the
- * same thing as an unlit button while taking a number to read.
+ * `TooltipIconButton` is the control, as it is on the two menus next door:
+ * ghost, square, and carrying its name on a hover, so a composer row of glyphs
+ * still says what each one opens without taking a word's width to do it.
  *
  * `render` is passed straight through, so a composer with a control of its own
  * keeps it and only borrows the behaviour.
@@ -134,30 +140,21 @@ function ToolPicker({
 function ToolPickerTrigger({
   className,
   children,
-  showCount = true,
   ...props
-}: React.ComponentProps<typeof MenuTrigger> & { showCount?: boolean }) {
-  const { value } = useToolPickerContext("ToolPickerTrigger")
-  const count = value.length
-  const withCount = showCount && count > 0
-
+}: React.ComponentProps<typeof MenuTrigger>) {
   return (
     <MenuTrigger
       data-slot="tool-picker-trigger"
-      aria-label={count ? `Tools, ${count} on` : "Tools"}
+      aria-label="Tools"
       render={
-        <Button
+        <TooltipIconButton
           type="button"
-          variant="ghost"
-          size={withCount ? "sm" : "icon-sm"}
-          data-active={count > 0 || undefined}
+          tooltip="Tools"
+          side="top"
           className={cn(
             // `w-fit` because a Button is `width: auto` and a picker put in a
             // column would otherwise be stretched the width of the column.
-            "w-fit gap-1.5 rounded-full font-medium text-muted-foreground hover:text-foreground",
-            // Lit while anything is on — the count says how many, and this says
-            // at a glance that the answer is not none.
-            "data-active:bg-foreground/[0.06] data-active:text-foreground dark:data-active:bg-foreground/[0.09]",
+            "size-7 w-fit rounded-full text-muted-foreground hover:text-foreground",
             className
           )}
         />
@@ -165,17 +162,109 @@ function ToolPickerTrigger({
       {...props}
     >
       {children ?? (
-        <>
-          <HugeiconsIcon
-            aria-hidden
-            icon={Wrench01Icon}
-            strokeWidth={1.75}
-            className="size-3.5"
-          />
-          {withCount ? <span className="tabular-nums">{count}</span> : null}
-        </>
+        <HugeiconsIcon
+          aria-hidden
+          icon={Wrench01Icon}
+          strokeWidth={1.75}
+          className="size-3.5"
+        />
       )}
     </MenuTrigger>
+  )
+}
+
+type ToolPickerActiveToolProps = Omit<TooltipIconButtonProps, "tooltip"> & {
+  tool: Tool
+  /** Overrides the tool's name on the hover. */
+  tooltip?: string
+}
+
+/**
+ * One tool that is on, as the glyph it is drawn with and the colour the
+ * catalogue gives it. Pressing it takes the tool off: the menu is where a set
+ * is built, this row is where it is loosened, and a set that took two clicks
+ * and a scroll to loosen would send people back to sending everything.
+ *
+ * `link` rather than the ghost the trigger and the menus next door wear.
+ * Ghost paints its own fill and its own colour over a hover, and a tool that
+ * turns grey the moment it is pointed at has lost the one thing this row is
+ * for; `link` is the only variant that brings neither, so the tool's colour is
+ * the only colour on the button, at rest and under the cursor both — the hover
+ * below is that same colour again, deepened, taken from `currentColor` so it
+ * holds for a catalogue this file has never seen.
+ */
+function ToolPickerActiveTool({
+  tool,
+  tooltip,
+  className,
+  children,
+  onClick,
+  ...props
+}: ToolPickerActiveToolProps) {
+  const { value, toggle } = useToolPickerContext("ToolPickerActiveTool")
+  const on = value.includes(tool.id)
+
+  return (
+    <TooltipIconButton
+      data-slot="tool-picker-active-tool"
+      type="button"
+      variant="link"
+      tooltip={tooltip ?? tool.name}
+      side="top"
+      // A button only ever drawn while its tool is on has no other way of
+      // saying that it is a state and not an action.
+      aria-pressed={on}
+      onClick={(event) => {
+        onClick?.(event)
+        if (!event.defaultPrevented) toggle(tool.id, !on)
+      }}
+      className={cn(
+        "size-7 rounded-full border hover:bg-current/15 hover:no-underline",
+        tool.color,
+        className
+      )}
+      {...props}
+    >
+      {children ?? (
+        <HugeiconsIcon
+          aria-hidden
+          icon={tool.icon}
+          strokeWidth={1.75}
+          className="size-3.5"
+        />
+      )}
+    </TooltipIconButton>
+  )
+}
+
+/**
+ * The tools that are on, beside the picker rather than counted inside it, in
+ * the catalogue's order so the row does not reshuffle itself as it is worked.
+ *
+ * Nothing at all while nothing is on — an empty row would hold a gap open for
+ * a state that already has a name, which is the unlit wrench next to it.
+ */
+function ToolPickerActive({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<"div">) {
+  const { value, tools } = useToolPickerContext("ToolPickerActive")
+  const chosen = tools.filter((tool) => value.includes(tool.id))
+
+  if (!children && !chosen.length) return null
+
+  return (
+    <div
+      data-slot="tool-picker-active"
+      className={cn("flex flex-wrap items-center gap-1", className)}
+      {...props}
+    >
+      {children ??
+        chosen.map((tool) => (
+          <ToolPickerActiveTool key={tool.id} tool={tool} />
+        ))}
+    </div>
   )
 }
 
@@ -263,5 +352,12 @@ function ToolPickerContent({
   )
 }
 
-export { ToolPicker, ToolPickerContent, ToolPickerItem, ToolPickerTrigger }
-export type { ToolPickerProps }
+export {
+  ToolPicker,
+  ToolPickerActive,
+  ToolPickerActiveTool,
+  ToolPickerContent,
+  ToolPickerItem,
+  ToolPickerTrigger,
+}
+export type { ToolPickerActiveToolProps, ToolPickerProps }

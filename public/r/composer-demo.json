@@ -1,0 +1,40 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "composer-demo",
+  "title": "Composer",
+  "description": "A message being written: an at sign naming the people and agents it can reach, and a row under the field — not inside it — for the model answering and how hard it should think.",
+  "dependencies": [
+    "@hugeicons/core-free-icons",
+    "@hugeicons/react",
+    "ai"
+  ],
+  "registryDependencies": [
+    "https://ui.aiellie.dev/r/composer.json",
+    "https://ui.aiellie.dev/r/effort-menu.json",
+    "https://ui.aiellie.dev/r/mentions.json",
+    "https://ui.aiellie.dev/r/model-picker.json",
+    "https://ui.aiellie.dev/r/models.json",
+    "https://ui.aiellie.dev/r/tooltip.json"
+  ],
+  "files": [
+    {
+      "path": "examples/composer/composer.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport {\n  AiBrain01Icon,\n  AiSearch02Icon,\n  Bug01Icon,\n} from \"@hugeicons/core-free-icons\"\nimport { HugeiconsIcon } from \"@hugeicons/react\"\nimport type { ChatStatus } from \"ai\"\n\nimport {\n  Composer,\n  ComposerField,\n  ComposerInput,\n  ComposerSubmit,\n  ComposerToolbar,\n} from \"@/components/aiellie-ui/composer/composer\"\nimport {\n  EffortMenu,\n  EffortMenuContent,\n  EffortMenuTrigger,\n  findEffort,\n} from \"@/components/aiellie-ui/composer/effort-menu\"\nimport type { MentionItem } from \"@/components/aiellie-ui/composer/mentions\"\nimport {\n  ModelPicker,\n  ModelPickerContent,\n  ModelPickerTrigger,\n} from \"@/components/aiellie-ui/composer/model-picker\"\nimport { TooltipProvider } from \"@/components/ui/tooltip\"\nimport { findModel } from \"@/lib/models\"\n\n/** Kept short and kept here: a composer demo should not need a directory. */\nconst mentions: MentionItem[] = [\n  {\n    id: \"marta\",\n    name: \"Marta Oyelaran\",\n    handle: \"marta\",\n    description: \"Engineering\",\n    group: \"People\",\n    icon: <span className=\"text-[10px] font-medium\">MO</span>,\n  },\n  {\n    id: \"ines\",\n    name: \"Inés Bonilla\",\n    handle: \"ines\",\n    description: \"Design\",\n    group: \"People\",\n    icon: <span className=\"text-[10px] font-medium\">IB</span>,\n  },\n  {\n    id: \"kenji\",\n    name: \"Kenji Watanabe\",\n    handle: \"kenji\",\n    description: \"Engineering\",\n    group: \"People\",\n    icon: <span className=\"text-[10px] font-medium\">KW</span>,\n  },\n  {\n    id: \"reviewer\",\n    name: \"Reviewer\",\n    handle: \"reviewer\",\n    description: \"Reads a diff before anyone else has to\",\n    group: \"Agents\",\n    icon: <HugeiconsIcon icon={Bug01Icon} className=\"size-3.5\" />,\n  },\n  {\n    id: \"researcher\",\n    name: \"Researcher\",\n    handle: \"researcher\",\n    description: \"Comes back with citations\",\n    group: \"Agents\",\n    icon: <HugeiconsIcon icon={AiSearch02Icon} className=\"size-3.5\" />,\n  },\n  {\n    id: \"planner\",\n    name: \"Planner\",\n    handle: \"planner\",\n    description: \"Breaks the ask into an order\",\n    group: \"Agents\",\n    icon: <HugeiconsIcon icon={AiBrain01Icon} className=\"size-3.5\" />,\n  },\n]\n\n/**\n * The field, the names an at sign reaches, and the row underneath saying who\n * is answering — one composer rather than three controls that happen to have\n * been put near each other.\n */\nexport function ComposerDemo() {\n  const [model, setModel] = React.useState(\"claude-opus-5\")\n  const [effort, setEffort] = React.useState(\"medium\")\n  const [status, setStatus] = React.useState<ChatStatus>(\"ready\")\n  const [sent, setSent] = React.useState<string | null>(null)\n  const answering = findModel(model)?.name ?? model\n\n  React.useEffect(() => {\n    if (status !== \"streaming\") return undefined\n    const id = setTimeout(() => setStatus(\"ready\"), 4000)\n    return () => clearTimeout(id)\n  }, [status])\n\n  const thinking = findEffort(effort)?.name.toLowerCase() ?? effort\n  const note =\n    status === \"streaming\"\n      ? `${answering} is answering.`\n      : sent\n        ? `Sent to ${answering} on ${thinking} effort: ${sent}`\n        : `Writing to ${answering}, thinking ${thinking}. Type @ for people and agents.`\n\n  return (\n    <TooltipProvider>\n      <div className=\"flex w-full max-w-md flex-col gap-2\">\n        <Composer\n          mentions={mentions}\n          onSubmit={(message) => {\n            setSent(message)\n            setStatus(\"streaming\")\n          }}\n        >\n          <ComposerInput>\n            <ComposerField placeholder=\"Send a message, @ to name someone…\" />\n            <ComposerSubmit status={status} onStop={() => setStatus(\"ready\")} />\n          </ComposerInput>\n          <ComposerToolbar>\n            <ModelPicker value={model} onValueChange={setModel}>\n              <ModelPickerTrigger />\n              <ModelPickerContent side=\"top\" />\n            </ModelPicker>\n            <EffortMenu value={effort} onValueChange={setEffort}>\n              <EffortMenuTrigger />\n              <EffortMenuContent side=\"top\" />\n            </EffortMenu>\n          </ComposerToolbar>\n        </Composer>\n        <p className=\"min-h-4 ps-1 text-xs text-muted-foreground\">{note}</p>\n      </div>\n    </TooltipProvider>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/composer/composer.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Default",
+        "demo": "ComposerDemo"
+      }
+    ],
+    "wide": true
+  },
+  "categories": [
+    "composer"
+  ],
+  "type": "registry:example"
+}

@@ -47,7 +47,7 @@ function CodeTabsList({ className, ...props }: Tabs.List.Props) {
            copy off the end of the block. `py-1 -my-1` buys back the room a
            scroller clips on the other axis, which is where the focus ring
            lives. */
-        "-ms-1 -my-1 flex min-w-0 items-center gap-0.5 overflow-x-auto py-1",
+        "-my-1 -ms-1 flex min-w-0 items-center gap-0.5 overflow-x-auto py-1",
         className
       )}
       {...props}
@@ -61,7 +61,7 @@ function CodeTabsList({ className, ...props }: Tabs.List.Props) {
  */
 export const codeTab = cn(
   mono,
-  "shrink-0 cursor-pointer rounded-full px-2 py-1 whitespace-nowrap outline-none transition-[background-color,color,scale] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] focus-visible:ring-1 focus-visible:ring-foreground/20 active:scale-[0.94] motion-reduce:transition-none",
+  "shrink-0 cursor-pointer rounded-full px-2 py-1 whitespace-nowrap transition-[background-color,color,scale] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] outline-none focus-visible:ring-1 focus-visible:ring-foreground/20 active:scale-[0.94] motion-reduce:transition-none",
   "text-foreground/35 hover:text-foreground/70",
   /* Keyed off `aria-selected` rather than a data attribute: that is the state
      the tab actually announces, so a hand-rolled tab wearing this class gets
@@ -154,7 +154,8 @@ function CodeTabsTab({
       className={cn(
         codeTab,
         "group/tab",
-        slot && "flex items-center gap-1.5 [&_svg:not([class*='size-'])]:size-3",
+        slot &&
+          "flex items-center gap-1.5 [&_svg:not([class*='size-'])]:size-3",
         className
       )}
       {...props}
@@ -176,7 +177,9 @@ function CodeTabsTab({
               tabIndex={-1}
               aria-label={
                 closeLabel ??
-                (typeof children === "string" ? `Close ${children}` : "Close tab")
+                (typeof children === "string"
+                  ? `Close ${children}`
+                  : "Close tab")
               }
               onClick={(event) => {
                 /* The tab is listening for this click too, and closing a file

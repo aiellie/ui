@@ -190,7 +190,7 @@ function FloatingToolbarMenuContent({
           data-slot="floating-toolbar-menu-content"
           className={cn(
             floating,
-            "min-w-32 origin-(--transform-origin) rounded-xl border-border/40 p-1 shadow-xl backdrop-blur-xl transition-[opacity,scale] duration-150 ease-out data-closed:scale-95 data-closed:opacity-0 data-starting-style:scale-95 data-starting-style:opacity-0 motion-reduce:transition-none",
+            "min-w-32 origin-(--transform-origin) rounded-xl border-border/40 p-1 shadow-xl backdrop-blur-xl transition-[opacity,scale] duration-150 ease-out data-starting-style:scale-95 data-starting-style:opacity-0 motion-reduce:transition-none data-closed:scale-95 data-closed:opacity-0",
             className
           )}
           {...props}

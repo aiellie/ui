@@ -12,9 +12,9 @@ export default function Page() {
               Playground
             </h1>
           </div>
-          <p className="text-foreground/50 mt-1.5 max-w-md text-[13.5px] leading-relaxed">
-            A scratch surface for composing elements together before they earn
-            a card.
+          <p className="mt-1.5 max-w-md text-[13.5px] leading-relaxed text-foreground/50">
+            A scratch surface for composing elements together before they earn a
+            card.
           </p>
         </div>
       </header>

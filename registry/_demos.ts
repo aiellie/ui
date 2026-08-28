@@ -1,6 +1,7 @@
 import type { ComponentType } from "react"
 import {
   AtIcon,
+  SlashIcon,
   BubbleChatSparkIcon,
   TextIndent01Icon,
   FavouriteIcon,
@@ -34,12 +35,14 @@ import {
   QuillWrite01Icon,
   HighlighterIcon,
   ContrastIcon,
+  LayoutBottomIcon,
 } from "@hugeicons/core-free-icons"
 import type { IconSvgElement } from "@hugeicons/react"
 import type { RegistryItem } from "shadcn/schema"
 
 import type { DemoVariant } from "@/components/aiellie-ui/demos-switcher"
 import * as codeAnnotationDemos from "@/examples/coding/code-annotation"
+import * as composerDemos from "@/examples/composer/composer"
 import * as codeBlockDemos from "@/examples/coding/code-block"
 import * as codeDiffDemos from "@/examples/coding/code-diff"
 import * as codeTabsDemos from "@/examples/coding/code-tabs"
@@ -52,6 +55,7 @@ import * as bubbleDemos from "@/examples/messages/bubble"
 import * as messageDemos from "@/examples/messages/message"
 import * as messageActionsDemos from "@/examples/messages/message-actions"
 import * as mentionsDemos from "@/examples/composer/mentions"
+import * as slashMenuDemos from "@/examples/composer/slash-menu"
 import * as messageInputDemos from "@/examples/composer/message-input"
 import * as modelPickerDemos from "@/examples/composer/model-picker"
 import * as toolPickerDemos from "@/examples/composer/tool-picker"
@@ -158,6 +162,14 @@ const exampleDemos: Record<string, ExampleDemos> = {
   "mentions-demo": {
     icon: AtIcon,
     components: { ...mentionsDemos },
+  },
+  "slash-menu-demo": {
+    icon: SlashIcon,
+    components: { ...slashMenuDemos },
+  },
+  "composer-demo": {
+    icon: LayoutBottomIcon,
+    components: { ...composerDemos },
   },
   "message-input-demo": {
     icon: TextIndent01Icon,

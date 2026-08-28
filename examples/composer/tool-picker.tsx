@@ -14,15 +14,17 @@ import {
 } from "@/components/aiellie-ui/composer/model-picker"
 import {
   ToolPicker,
+  ToolPickerActive,
   ToolPickerContent,
   ToolPickerTrigger,
 } from "@/components/aiellie-ui/composer/tool-picker"
 import { TooltipProvider } from "@/components/ui/tooltip"
-import { findTool, tools } from "@/lib/tools"
+import { tools } from "@/lib/tools"
 
 /**
- * The choice on its own: a wrench that carries the count, and a list that says
- * what each tool does before asking whether it should be on.
+ * The choice on its own: a wrench that opens a list saying what each tool does
+ * before asking whether it should be on, and the ones that are on standing
+ * beside it in their own colours — pressed to take one back off.
  */
 export function ToolPickerDemo() {
   const [chosen, setChosen] = React.useState<string[]>(["read", "grep"])
@@ -30,12 +32,15 @@ export function ToolPickerDemo() {
   return (
     <div className="flex w-full max-w-sm flex-col gap-2">
       <ToolPicker value={chosen} onValueChange={setChosen}>
-        <ToolPickerTrigger />
+        <div className="flex flex-wrap items-center gap-1">
+          <ToolPickerTrigger />
+          <ToolPickerActive />
+        </div>
         <ToolPickerContent />
       </ToolPicker>
       <p className="ps-1 text-xs text-muted-foreground">
         {chosen.length
-          ? chosen.map((id) => findTool(id)?.id ?? id).join(", ")
+          ? `${chosen.length} of ${tools.length} on — press one to take it off.`
           : "No tools — it can only answer."}
       </p>
     </div>
@@ -67,6 +72,7 @@ export function ToolPickerComposerDemo() {
             <ToolPicker value={chosen} onValueChange={setChosen}>
               <ToolPickerTrigger />
               <ToolPickerContent side="top" />
+              <ToolPickerActive />
             </ToolPicker>
             <ModelPicker value={model} onValueChange={setModel}>
               <ModelPickerTrigger />
@@ -90,6 +96,8 @@ export function ToolPickerComposerDemo() {
  * away. An agent is usually given the whole set and then narrowed — a run that
  * should not be touching the filesystem is one where `write` and `edit` come
  * off, rather than one where the other six have to be found and switched on.
+ * With the whole catalogue up, the row beside the wrench is the run's
+ * capabilities written out, and taking one off is a press on the thing itself.
  */
 export function ToolPickerAllDemo() {
   const [chosen, setChosen] = React.useState<string[]>(
@@ -100,7 +108,10 @@ export function ToolPickerAllDemo() {
   return (
     <div className="flex w-full max-w-sm flex-col gap-2">
       <ToolPicker value={chosen} onValueChange={setChosen}>
-        <ToolPickerTrigger />
+        <div className="flex flex-wrap items-center gap-1">
+          <ToolPickerTrigger />
+          <ToolPickerActive />
+        </div>
         <ToolPickerContent />
       </ToolPicker>
       <p className="ps-1 text-xs text-muted-foreground">

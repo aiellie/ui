@@ -1,6 +1,6 @@
-"use client";
+"use client"
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
 
 /**
  * The clipboard without the async API: a hidden textarea, selected and copied
@@ -8,33 +8,33 @@ import { useEffect, useState } from "react";
  * is absent on insecure origins, which is where a local preview usually runs.
  */
 function legacyCopyToClipboard(value: string) {
-  const textArea = document.createElement("textarea");
-  textArea.value = value;
-  textArea.setAttribute("readonly", "");
-  textArea.style.position = "fixed";
-  textArea.style.opacity = "0";
-  textArea.style.pointerEvents = "none";
+  const textArea = document.createElement("textarea")
+  textArea.value = value
+  textArea.setAttribute("readonly", "")
+  textArea.style.position = "fixed"
+  textArea.style.opacity = "0"
+  textArea.style.pointerEvents = "none"
 
-  document.body.appendChild(textArea);
-  textArea.focus();
-  textArea.select();
-  textArea.setSelectionRange(0, value.length);
+  document.body.appendChild(textArea)
+  textArea.focus()
+  textArea.select()
+  textArea.setSelectionRange(0, value.length)
 
-  let hasCopied = false;
+  let hasCopied = false
   try {
-    hasCopied = document.execCommand("copy");
+    hasCopied = document.execCommand("copy")
   } catch {
-    hasCopied = false;
+    hasCopied = false
   }
 
-  document.body.removeChild(textArea);
-  return hasCopied;
+  document.body.removeChild(textArea)
+  return hasCopied
 }
 
 export interface UseCopyToClipboardOptions {
   /** How long `isCopied` holds; 0 keeps it up until something clears it. */
-  timeout?: number;
-  onCopy?: () => void;
+  timeout?: number
+  onCopy?: () => void
 }
 
 /**
@@ -52,38 +52,38 @@ export function useCopyToClipboard({
   /* A count rather than a flag: copying again while the tick is still up
      bumps it, and the effect below restarts on the new value instead of
      letting the first copy's deadline cut the second one short. */
-  const [copies, setCopies] = useState(0);
-  const isCopied = copies > 0;
+  const [copies, setCopies] = useState(0)
+  const isCopied = copies > 0
 
   useEffect(() => {
-    if (copies === 0 || timeout === 0) return;
-    const id = setTimeout(() => setCopies(0), timeout);
-    return () => clearTimeout(id);
-  }, [copies, timeout]);
+    if (copies === 0 || timeout === 0) return
+    const id = setTimeout(() => setCopies(0), timeout)
+    return () => clearTimeout(id)
+  }, [copies, timeout])
 
   const copyToClipboard = async (value: string) => {
-    if (typeof window === "undefined" || !value) return false;
+    if (typeof window === "undefined" || !value) return false
 
-    let hasCopied = false;
+    let hasCopied = false
 
     if (navigator.clipboard?.writeText) {
       try {
-        await navigator.clipboard.writeText(value);
-        hasCopied = true;
+        await navigator.clipboard.writeText(value)
+        hasCopied = true
       } catch {
-        hasCopied = legacyCopyToClipboard(value);
+        hasCopied = legacyCopyToClipboard(value)
       }
     } else {
-      hasCopied = legacyCopyToClipboard(value);
+      hasCopied = legacyCopyToClipboard(value)
     }
 
-    if (!hasCopied) return false;
+    if (!hasCopied) return false
 
-    setCopies((count) => count + 1);
-    onCopy?.();
+    setCopies((count) => count + 1)
+    onCopy?.()
 
-    return true;
-  };
+    return true
+  }
 
-  return { isCopied, copyToClipboard };
+  return { isCopied, copyToClipboard }
 }

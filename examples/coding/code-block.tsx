@@ -275,7 +275,7 @@ export function CodeBlockTabsDemo() {
             axis, which is where the pills' focus ring lives. */}
         <div
           role="tablist"
-          className="-ms-1 -my-1 flex min-w-0 items-center gap-0.5 overflow-x-auto py-1"
+          className="-my-1 -ms-1 flex min-w-0 items-center gap-0.5 overflow-x-auto py-1"
         >
           {FILES.map((entry, at) => {
             const selected = at === active
@@ -289,7 +289,7 @@ export function CodeBlockTabsDemo() {
                 onClick={() => setActive(at)}
                 className={cn(
                   mono,
-                  "shrink-0 cursor-pointer rounded-full px-2 py-1 outline-none transition-[background-color,color,scale] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] focus-visible:ring-1 focus-visible:ring-foreground/20 active:scale-[0.94] motion-reduce:transition-none",
+                  "shrink-0 cursor-pointer rounded-full px-2 py-1 transition-[background-color,color,scale] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] outline-none focus-visible:ring-1 focus-visible:ring-foreground/20 active:scale-[0.94] motion-reduce:transition-none",
                   selected
                     ? "bg-foreground/[0.06] text-foreground/90 dark:bg-foreground/[0.09]"
                     : "text-foreground/35 hover:text-foreground/70"

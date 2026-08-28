@@ -359,12 +359,29 @@ export const aiellieui: Registry["items"] = [
     ],
   },
   {
+    name: "composer",
+    type: "registry:ui",
+    title: "Composer",
+    description:
+      "The whole of what a message is written in: the field, the names an at sign can reach, and a row under the field for what the message is being sent with — the model answering it, and the send.",
+    registryDependencies: ["mentions", "message-input", "utils"],
+    dependencies: ["@base-ui/react"],
+    files: [
+      {
+        path: "components/aiellie-ui/composer/composer.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/composer/composer.tsx",
+      },
+    ],
+  },
+  {
     name: "mentions",
     type: "registry:ui",
     title: "Mentions",
     description:
       "The menu an at sign opens: the people and agents a message can name, filtered as it is typed, moved through with the arrows and taken with Enter — leaving Enter to send the message when the menu is not open.",
     registryDependencies: ["actions", "utils"],
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
     files: [
       {
         path: "components/aiellie-ui/composer/mentions.tsx",
@@ -374,13 +391,33 @@ export const aiellieui: Registry["items"] = [
     ],
   },
   {
+    name: "slash-menu",
+    type: "registry:ui",
+    title: "Slash Menu",
+    description:
+      "The menu a slash opens at the head of the field: the commands a composer can run, filtered as the name is typed and taken with Enter — the ones that want nothing else running on the spot and emptying the field, the ones that want an argument written in and left waiting for it.",
+    registryDependencies: ["actions", "utils"],
+    files: [
+      {
+        path: "components/aiellie-ui/composer/slash-menu.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/composer/slash-menu.tsx",
+      },
+    ],
+  },
+  {
     name: "message-input",
     type: "registry:ui",
     title: "Message Input",
     description:
-      "The field a message is written in, with one control at the end of it: voice while the field is empty, send once there is something to send, and stop while an answer is coming.",
-    registryDependencies: ["button", "input", "tooltip", "utils"],
-    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react", "ai"],
+      "The field a message is written in, with one control at the end of it: send once there is something to send, and stop while an answer is coming back.",
+    registryDependencies: ["actions", "tooltip-icon-button", "utils"],
+    dependencies: [
+      "@base-ui/react",
+      "@hugeicons/core-free-icons",
+      "@hugeicons/react",
+      "ai",
+    ],
     files: [
       {
         path: "components/aiellie-ui/composer/message-input.tsx",
@@ -417,8 +454,8 @@ export const aiellieui: Registry["items"] = [
     type: "registry:ui",
     title: "Tool Picker",
     description:
-      "Which tools the answer may reach for, chosen from the composer — the catalogue stood under the group each tool belongs to, every row saying what a call to it does, and the wrench that opens it carrying the count of the ones that are on.",
-    registryDependencies: ["button", "menu", "tools", "utils"],
+      "Which tools the answer may reach for, chosen from the composer — the catalogue stood under the group each tool belongs to, every row saying what a call to it does, and the ones that are on stood beside the wrench in the colour each is drawn in, pressed to take one back off.",
+    registryDependencies: ["menu", "tools", "tooltip-icon-button", "utils"],
     dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
     files: [
       {
@@ -433,8 +470,8 @@ export const aiellieui: Registry["items"] = [
     type: "registry:ui",
     title: "Approval Mode Menu",
     description:
-      "How much rope the agent is given, chosen from the composer — auto, manual, accept edits, plan and full access, each row carrying the line on what running under it means, and the one that never stops to ask set apart and drawn as the danger it is, on the row and on the trigger both.",
-    registryDependencies: ["button", "menu", "utils"],
+      "How much rope the agent is given, chosen from the composer — auto, manual, accept edits, plan and full access, each row carrying the line on what running under it means, and the one that never stops to ask set apart and drawn as the danger it is, on the row and on the icon that opens it both.",
+    registryDependencies: ["menu", "tooltip-icon-button", "utils"],
     dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
     files: [
       {
@@ -450,7 +487,7 @@ export const aiellieui: Registry["items"] = [
     title: "Effort Menu",
     description:
       "How hard the model is asked to think, set from the composer — a ladder of six named rungs on a slider rather than a list of rows, because low and ultra are the two ends of one thing and not two options, and a trigger of bars that fill to the rung so a composer says how hard it is thinking without being opened.",
-    registryDependencies: ["button", "menu", "utils"],
+    registryDependencies: ["menu", "tooltip-icon-button", "utils"],
     dependencies: ["@base-ui/react"],
     files: [
       {
@@ -473,6 +510,22 @@ export const aiellieui: Registry["items"] = [
         path: "components/aiellie-ui/agents/prompt-menu.tsx",
         type: "registry:ui",
         target: "components/aiellie-ui/agents/prompt-menu.tsx",
+      },
+    ],
+  },
+  {
+    name: "tooltip-icon-button",
+    type: "registry:ui",
+    title: "Tooltip Icon Button",
+    description:
+      "An icon button that carries its name on a tooltip, so a composer row of glyphs still says what each one does without taking a word's width to do it.",
+    registryDependencies: ["button", "tooltip", "utils"],
+    dependencies: ["radix-ui"],
+    files: [
+      {
+        path: "components/aiellie-ui/tooltip-icon-button.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/tooltip-icon-button.tsx",
       },
     ],
   },

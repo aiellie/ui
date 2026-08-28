@@ -180,8 +180,7 @@ function TerminalStatus({
       )}
       {...props}
     >
-      {children ??
-        (code === 0 ? "Exited cleanly" : `Exited with code ${code}`)}
+      {children ?? (code === 0 ? "Exited cleanly" : `Exited with code ${code}`)}
     </div>
   )
 }

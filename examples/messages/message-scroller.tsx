@@ -68,8 +68,8 @@ function Row({ turn, className }: { turn: Turn; className?: string }) {
     <Message align={mine ? "end" : "start"} className={className}>
       {mine ? null : (
         <MessageAvatar className="size-8 text-xs font-medium">
-  {turn.from}
-</MessageAvatar>
+          {turn.from}
+        </MessageAvatar>
       )}
       <MessageContent>
         <Bubble variant={mine ? "default" : "muted"}>

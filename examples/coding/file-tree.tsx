@@ -100,9 +100,9 @@ export function FileTreeSelectionDemo() {
 }
 
 /**
-  * Nothing marked, for a tree showing a project rather than a change — and the
-  * brand badges, which earn their colour in a tree of mixed languages.
-  */
+ * Nothing marked, for a tree showing a project rather than a change — and the
+ * brand badges, which earn their colour in a tree of mixed languages.
+ */
 export function FileTreePlainDemo() {
   const plain: FileNode[] = [
     {

@@ -4,7 +4,7 @@ import * as React from "react"
 import { Slider } from "@base-ui/react/slider"
 
 import { Menu, MenuContent, MenuTrigger } from "@/components/aiellie-ui/menu"
-import { Button } from "@/components/ui/button"
+import { TooltipIconButton } from "@/components/aiellie-ui/tooltip-icon-button"
 import { cn } from "@/lib/utils"
 
 /**
@@ -254,10 +254,10 @@ function EffortBars({
 }
 
 /**
- * The bars, as the thing that opens the ladder. Ghost and square by default for
- * the reason the pickers beside it are: this sits next to the field, and a
- * control with a border competes with the field for attention that belongs to
- * the writing.
+ * The bars, as the thing that opens the ladder. `TooltipIconButton` is the
+ * control: ghost and square for the reason the pickers beside it are, with
+ * the rung's name on a hover so the glyph still says how hard it is thinking
+ * without taking a word's width to do it.
  *
  * `showLabel` widens it to carry the rung's name as well, for a composer with
  * the room — the bars alone are quick to read once but not self-explaining the
@@ -275,20 +275,20 @@ function EffortMenuTrigger({
   const { value, efforts } = useEffortMenuContext("EffortMenuTrigger")
   const effort = findEffort(value, efforts)
   const level = effortIndex(value, efforts)
+  const name = effort?.name ?? "Effort"
 
   return (
     <MenuTrigger
       data-slot="effort-menu-trigger"
       aria-label={effort ? `Effort: ${effort.name}` : "Effort"}
       render={
-        <Button
+        <TooltipIconButton
           type="button"
-          variant="ghost"
-          size={showLabel ? "sm" : "icon-sm"}
+          tooltip={name}
+          side="top"
           className={cn(
-            // `w-fit` because a Button is `width: auto` and a menu put in a
-            // column would otherwise be stretched the width of the column.
-            "w-fit gap-1.5 rounded-full font-medium text-muted-foreground hover:text-foreground",
+            "size-7 text-muted-foreground hover:text-foreground",
+            showLabel && "w-fit gap-1.5 rounded-full px-2.5",
             className
           )}
         />

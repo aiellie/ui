@@ -208,7 +208,7 @@ function DiffNumbers({
           key={column}
           aria-hidden
           style={{ minInlineSize: width }}
-          className="shrink-0 pe-2 text-end tabular-nums text-foreground/25 select-none"
+          className="shrink-0 pe-2 text-end text-foreground/25 tabular-nums select-none"
         >
           {row?.[column] ?? ""}
         </span>
@@ -243,8 +243,10 @@ function DiffMark({ row }: { row?: DiffRow }) {
   )
 }
 
-export interface CodeDiffBodyProps
-  extends Omit<React.ComponentProps<"pre">, "children"> {
+export interface CodeDiffBodyProps extends Omit<
+  React.ComponentProps<"pre">,
+  "children"
+> {
   /** A unified diff, as `git diff` writes it. */
   diff: string
   /**
@@ -284,13 +286,21 @@ export function CodeDiffBody({
 
   const colors = TOKEN_PALETTES[palette]
   const split = view === "split"
-  const pairs = React.useMemo(() => (split ? pairRows(rows) : []), [split, rows])
+  const pairs = React.useMemo(
+    () => (split ? pairRows(rows) : []),
+    [split, rows]
+  )
 
   /* Room for the highest number either side reaches, so the gutter does not
      widen partway down and step every row after it sideways. */
-  const width = `${String(
-    rows.reduce((most, row) => Math.max(most, row.after ?? 0, row.before ?? 0), 0)
-  ).length}ch`
+  const width = `${
+    String(
+      rows.reduce(
+        (most, row) => Math.max(most, row.after ?? 0, row.before ?? 0),
+        0
+      )
+    ).length
+  }ch`
 
   const rowClass =
     "flex min-h-[1.7em] animate-in px-3 duration-300 fill-mode-both fade-in motion-reduce:animate-none"
@@ -369,10 +379,7 @@ export function CodeDiffBody({
                         <DiffMark row={row} />
                         <span className="min-w-0 whitespace-pre">
                           {row ? (
-                            <DiffCode
-                              row={row as Tokenized}
-                              colors={colors}
-                            />
+                            <DiffCode row={row as Tokenized} colors={colors} />
                           ) : null}
                         </span>
                       </span>

@@ -87,11 +87,7 @@ export interface ToolCallProps extends Collapsible.Root.Props {
  * because it is the one thing three different parts each need and nothing
  * between them would otherwise carry.
  */
-function ToolCall({
-  status = "done",
-  className,
-  ...props
-}: ToolCallProps) {
+function ToolCall({ status = "done", className, ...props }: ToolCallProps) {
   return (
     <StatusContext.Provider value={status}>
       <Collapsible.Root
@@ -131,7 +127,7 @@ function ToolCallTrigger({
     <Collapsible.Trigger
       data-slot="tool-call-trigger"
       className={cn(
-        "flex w-full cursor-pointer items-center gap-2 px-3.5 py-2.5 text-start outline-none transition-colors duration-150 hover:bg-foreground/[0.02] focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-foreground/20 motion-reduce:transition-none dark:hover:bg-foreground/[0.03]",
+        "flex w-full cursor-pointer items-center gap-2 px-3.5 py-2.5 text-start transition-colors duration-150 outline-none hover:bg-foreground/[0.02] focus-visible:ring-1 focus-visible:ring-foreground/20 focus-visible:ring-inset motion-reduce:transition-none dark:hover:bg-foreground/[0.03]",
         className
       )}
       {...props}
@@ -230,10 +226,7 @@ function ToolCallSection({
          the trigger row off from the panel, and without it the row and the
          first section read as one block that happens to have a heading in the
          middle. */
-      className={cn(
-        "border-t border-border/60 px-3.5 py-2.5",
-        className
-      )}
+      className={cn("border-t border-border/60 px-3.5 py-2.5", className)}
       {...props}
     >
       <h4 className={cn(mono, "mb-1.5 text-foreground/35 uppercase")}>

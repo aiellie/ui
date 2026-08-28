@@ -126,7 +126,6 @@ function NavMenu({
       >
         <HugeiconsIcon icon={icon} strokeWidth={2} className="size-3.5" />
         <span className="sr-only sm:not-sr-only">{label}</span>
-        
       </MenuTrigger>
       <MenuContent aria-label={label}>
         {items.map((item) => {

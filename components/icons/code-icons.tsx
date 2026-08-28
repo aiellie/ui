@@ -189,7 +189,12 @@ const JsonMark = (props: MarkProps) => (
 )
 
 const MarkdownMark = (props: MarkProps) => (
-  <Mark viewBox="0 0 22 16" fill="currentColor" strokeLinejoin="round" {...props}>
+  <Mark
+    viewBox="0 0 22 16"
+    fill="currentColor"
+    strokeLinejoin="round"
+    {...props}
+  >
     <path
       fillRule="evenodd"
       clipRule="evenodd"

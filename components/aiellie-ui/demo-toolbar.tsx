@@ -55,7 +55,7 @@ import { cn } from "@/lib/utils"
 const revealedOnCardHover = cn(
   "pointer-fine:in-[[data-slot=demo-card]]:animate-none",
   "pointer-fine:in-[[data-slot=demo-card]]:opacity-0",
-  "transition-opacity ease-out [transition-duration:200ms] motion-reduce:transition-none",
+  "transition-opacity [transition-duration:200ms] ease-out motion-reduce:transition-none",
   "group-hover/demo-card:opacity-100",
   "group-focus-within/demo-card:opacity-100",
   "has-[[data-popup-open]]:opacity-100"
@@ -104,8 +104,7 @@ function DemoToolbar({
 
   const hasLead = backHref != null || title != null
   const hasTabs = variants.length > 1
-  const hasTrail =
-    commands.length > 0 || href != null || fullscreenHref != null
+  const hasTrail = commands.length > 0 || href != null || fullscreenHref != null
 
   const copyTooltip = isCopied ? "Copied" : "Copy install command"
 
@@ -116,12 +115,20 @@ function DemoToolbar({
       <HugeiconsIcon
         icon={BashIcon}
         strokeWidth={1.75}
-        className={cn(iconSwap, "size-3.5", isCopied ? iconSwapOut : iconSwapIn)}
+        className={cn(
+          iconSwap,
+          "size-3.5",
+          isCopied ? iconSwapOut : iconSwapIn
+        )}
       />
       <HugeiconsIcon
         icon={Tick02Icon}
         strokeWidth={1.75}
-        className={cn(iconSwap, "size-3.5", isCopied ? iconSwapIn : iconSwapOut)}
+        className={cn(
+          iconSwap,
+          "size-3.5",
+          isCopied ? iconSwapIn : iconSwapOut
+        )}
       />
     </>
   )
@@ -141,9 +148,7 @@ function DemoToolbar({
         </FloatingToolbarButton>
       ) : null}
       {title ? (
-        <span className="px-2 text-[11px] whitespace-nowrap">
-          {title}
-        </span>
+        <span className="px-2 text-[11px] whitespace-nowrap">{title}</span>
       ) : null}
       {hasLead && hasTabs ? <FloatingToolbarSeparator /> : null}
       {hasTabs ? (

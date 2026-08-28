@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import {
-  ArrowDown01Icon,
   Cancel01Icon,
   Search01Icon,
   SquareLock01Icon,
@@ -223,12 +222,6 @@ function ModelPickerTrigger({
             />
           ) : null}
           {model?.name ?? "Choose a model"}
-          <HugeiconsIcon
-            aria-hidden
-            icon={ArrowDown01Icon}
-            strokeWidth={1.75}
-            className="size-3 opacity-60"
-          />
         </>
       )}
     </MenuTrigger>

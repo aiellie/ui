@@ -415,6 +415,27 @@
       ]
     },
     {
+      "name": "composer",
+      "type": "registry:ui",
+      "title": "Composer",
+      "description": "The whole of what a message is written in: the field, the names an at sign can reach, and a row under the field for what the message is being sent with — the model answering it, and the send.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/mentions.json",
+        "https://ui.aiellie.dev/r/message-input.json",
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/composer/composer.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/composer/composer.tsx"
+        }
+      ]
+    },
+    {
       "name": "mentions",
       "type": "registry:ui",
       "title": "Mentions",
@@ -422,6 +443,10 @@
       "registryDependencies": [
         "https://ui.aiellie.dev/r/actions.json",
         "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
       ],
       "files": [
         {
@@ -432,17 +457,34 @@
       ]
     },
     {
+      "name": "slash-menu",
+      "type": "registry:ui",
+      "title": "Slash Menu",
+      "description": "The menu a slash opens at the head of the field: the commands a composer can run, filtered as the name is typed and taken with Enter — the ones that want nothing else running on the spot and emptying the field, the ones that want an argument written in and left waiting for it.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/actions.json",
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/composer/slash-menu.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/composer/slash-menu.tsx"
+        }
+      ]
+    },
+    {
       "name": "message-input",
       "type": "registry:ui",
       "title": "Message Input",
-      "description": "The field a message is written in, with one control at the end of it: voice while the field is empty, send once there is something to send, and stop while an answer is coming.",
+      "description": "The field a message is written in, with one control at the end of it: send once there is something to send, and stop while an answer is coming back.",
       "registryDependencies": [
-        "https://ui.aiellie.dev/r/button.json",
-        "https://ui.aiellie.dev/r/input.json",
-        "https://ui.aiellie.dev/r/tooltip.json",
+        "https://ui.aiellie.dev/r/actions.json",
+        "https://ui.aiellie.dev/r/tooltip-icon-button.json",
         "https://ui.aiellie.dev/r/utils.json"
       ],
       "dependencies": [
+        "@base-ui/react",
         "@hugeicons/core-free-icons",
         "@hugeicons/react",
         "ai"
@@ -484,11 +526,11 @@
       "name": "tool-picker",
       "type": "registry:ui",
       "title": "Tool Picker",
-      "description": "Which tools the answer may reach for, chosen from the composer — the catalogue stood under the group each tool belongs to, every row saying what a call to it does, and the wrench that opens it carrying the count of the ones that are on.",
+      "description": "Which tools the answer may reach for, chosen from the composer — the catalogue stood under the group each tool belongs to, every row saying what a call to it does, and the ones that are on stood beside the wrench in the colour each is drawn in, pressed to take one back off.",
       "registryDependencies": [
-        "https://ui.aiellie.dev/r/button.json",
         "https://ui.aiellie.dev/r/menu.json",
         "https://ui.aiellie.dev/r/tools.json",
+        "https://ui.aiellie.dev/r/tooltip-icon-button.json",
         "https://ui.aiellie.dev/r/utils.json"
       ],
       "dependencies": [
@@ -507,10 +549,10 @@
       "name": "approval-mode-menu",
       "type": "registry:ui",
       "title": "Approval Mode Menu",
-      "description": "How much rope the agent is given, chosen from the composer — auto, manual, accept edits, plan and full access, each row carrying the line on what running under it means, and the one that never stops to ask set apart and drawn as the danger it is, on the row and on the trigger both.",
+      "description": "How much rope the agent is given, chosen from the composer — auto, manual, accept edits, plan and full access, each row carrying the line on what running under it means, and the one that never stops to ask set apart and drawn as the danger it is, on the row and on the icon that opens it both.",
       "registryDependencies": [
-        "https://ui.aiellie.dev/r/button.json",
         "https://ui.aiellie.dev/r/menu.json",
+        "https://ui.aiellie.dev/r/tooltip-icon-button.json",
         "https://ui.aiellie.dev/r/utils.json"
       ],
       "dependencies": [
@@ -531,8 +573,8 @@
       "title": "Effort Menu",
       "description": "How hard the model is asked to think, set from the composer — a ladder of six named rungs on a slider rather than a list of rows, because low and ultra are the two ends of one thing and not two options, and a trigger of bars that fill to the rung so a composer says how hard it is thinking without being opened.",
       "registryDependencies": [
-        "https://ui.aiellie.dev/r/button.json",
         "https://ui.aiellie.dev/r/menu.json",
+        "https://ui.aiellie.dev/r/tooltip-icon-button.json",
         "https://ui.aiellie.dev/r/utils.json"
       ],
       "dependencies": [
@@ -566,6 +608,27 @@
           "path": "components/aiellie-ui/agents/prompt-menu.tsx",
           "type": "registry:ui",
           "target": "components/aiellie-ui/agents/prompt-menu.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tooltip-icon-button",
+      "type": "registry:ui",
+      "title": "Tooltip Icon Button",
+      "description": "An icon button that carries its name on a tooltip, so a composer row of glyphs still says what each one does without taking a word's width to do it.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/button.json",
+        "https://ui.aiellie.dev/r/tooltip.json",
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "dependencies": [
+        "radix-ui"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/tooltip-icon-button.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/tooltip-icon-button.tsx"
         }
       ]
     },
@@ -1878,6 +1941,80 @@
       }
     },
     {
+      "name": "composer-demo",
+      "type": "registry:example",
+      "title": "Composer",
+      "description": "A message being written: an at sign naming the people and agents it can reach, and a row under the field — not inside it — for the model answering and how hard it should think.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/composer.json",
+        "https://ui.aiellie.dev/r/effort-menu.json",
+        "https://ui.aiellie.dev/r/mentions.json",
+        "https://ui.aiellie.dev/r/model-picker.json",
+        "https://ui.aiellie.dev/r/models.json",
+        "https://ui.aiellie.dev/r/tooltip.json"
+      ],
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react",
+        "ai"
+      ],
+      "files": [
+        {
+          "path": "examples/composer/composer.tsx",
+          "type": "registry:example",
+          "target": "examples/composer/composer.tsx"
+        }
+      ],
+      "categories": [
+        "composer"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Default",
+            "demo": "ComposerDemo"
+          }
+        ],
+        "wide": true
+      }
+    },
+    {
+      "name": "message-input-demo",
+      "type": "registry:example",
+      "title": "Message Input",
+      "description": "A message being written and sent, with the control at the end of the field turning from send to stop while an answer comes back.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/message-input.json",
+        "https://ui.aiellie.dev/r/tooltip.json"
+      ],
+      "dependencies": [
+        "ai"
+      ],
+      "files": [
+        {
+          "path": "examples/composer/message-input.tsx",
+          "type": "registry:example",
+          "target": "examples/composer/message-input.tsx"
+        }
+      ],
+      "categories": [
+        "composer"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Default",
+            "demo": "MessageInputDemo"
+          },
+          {
+            "name": "States",
+            "demo": "MessageInputStatesDemo"
+          }
+        ],
+        "wide": true
+      }
+    },
+    {
       "name": "mentions-demo",
       "type": "registry:example",
       "title": "Mentions",
@@ -1926,22 +2063,29 @@
       }
     },
     {
-      "name": "message-input-demo",
+      "name": "slash-menu-demo",
       "type": "registry:example",
-      "title": "Message Input",
-      "description": "A message being written and sent, with the control at the end of the field changing between voice, send and stop as the field and the answer do.",
+      "title": "Slash Menu",
+      "description": "A slash at the head of the composer opening what it can run, with the example catalogue it draws them from.",
       "registryDependencies": [
+        "https://ui.aiellie.dev/r/slash-menu.json",
         "https://ui.aiellie.dev/r/message-input.json",
         "https://ui.aiellie.dev/r/tooltip.json"
       ],
       "dependencies": [
-        "ai"
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
       ],
       "files": [
         {
-          "path": "examples/composer/message-input.tsx",
+          "path": "examples/composer/slash-menu.tsx",
           "type": "registry:example",
-          "target": "examples/composer/message-input.tsx"
+          "target": "examples/composer/slash-menu.tsx"
+        },
+        {
+          "path": "examples/composer/commands.ts",
+          "type": "registry:example",
+          "target": "examples/composer/commands.ts"
         }
       ],
       "categories": [
@@ -1950,12 +2094,12 @@
       "meta": {
         "variants": [
           {
-            "name": "Default",
-            "demo": "MessageInputDemo"
+            "name": "Commands",
+            "demo": "SlashMenuDemo"
           },
           {
-            "name": "States",
-            "demo": "MessageInputStatesDemo"
+            "name": "Arguments",
+            "demo": "SlashMenuArgumentsDemo"
           }
         ],
         "wide": true
@@ -2008,7 +2152,7 @@
       "name": "tool-picker-demo",
       "type": "registry:example",
       "title": "Tool Picker",
-      "description": "What the answer may reach for, turned on and off from the composer — a wrench carrying the count, and a list that says what each tool does before asking whether it should be on.",
+      "description": "What the answer may reach for, turned on and off from the composer — a list that says what each tool does before asking whether it should be on, and the ones that are on stood beside the wrench in their own colours.",
       "registryDependencies": [
         "https://ui.aiellie.dev/r/tool-picker.json",
         "https://ui.aiellie.dev/r/message-input.json",

@@ -3,7 +3,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { fontVariables } from "@/lib/fonts"
 import { cn } from "@/lib/utils"
-    
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -16,8 +16,9 @@ export default function RootLayout({
       className={cn("font-sans antialiased", fontVariables)}
     >
       <body>
-        <ThemeProvider>{children}
-        <ThemeToggle className="fixed right-4 bottom-4 z-50" />
+        <ThemeProvider>
+          {children}
+          <ThemeToggle className="fixed right-4 bottom-4 z-50" />
         </ThemeProvider>
       </body>
     </html>

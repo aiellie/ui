@@ -11,9 +11,9 @@ import {
 import { TooltipProvider } from "@/components/ui/tooltip"
 
 /**
- * The control at the end of the field is whichever one the field is asking for:
- * voice while there is nothing written, send once there is, and stop while an
- * answer is coming back.
+ * The control at the end of the field is whichever one the field is asking
+ * for: send once there is something to send, and stop while an answer is
+ * coming back.
  */
 export function MessageInputDemo() {
   const [status, setStatus] = React.useState<ChatStatus>("ready")
@@ -36,8 +36,8 @@ export function MessageInputDemo() {
     status === "streaming"
       ? "Answering, so the control is stop."
       : value.trim()
-        ? "Something to send, so the control is send."
-        : (outcome ?? "Empty, so the control offers voice.")
+        ? "Something to send, so send is lit."
+        : (outcome ?? "Nothing to send, so send is dimmed.")
 
   return (
     <TooltipProvider>
@@ -57,7 +57,6 @@ export function MessageInputDemo() {
               setStatus("ready")
               setOutcome("Stopped.")
             }}
-            onVoice={() => setOutcome("Voice chat.")}
           />
         </MessageInput>
         <p className="ps-1 text-xs text-muted-foreground">{note}</p>
@@ -72,7 +71,9 @@ export function MessageInputStatesDemo() {
     <TooltipProvider>
       <div className="flex w-full max-w-sm flex-col gap-4">
         <div className="flex flex-col gap-1.5">
-          <p className="ps-1 text-xs text-muted-foreground">Empty — voice</p>
+          <p className="ps-1 text-xs text-muted-foreground">
+            Empty — send, dimmed
+          </p>
           <MessageInput value="" onValueChange={() => {}}>
             <MessageInputField placeholder="Send a message…" />
             <MessageInputSubmit />

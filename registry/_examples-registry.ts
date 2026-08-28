@@ -663,6 +663,58 @@ export const examples: Registry["items"] = [
     },
   },
   {
+    name: "composer-demo",
+    type: "registry:example",
+    title: "Composer",
+    description:
+      "A message being written: an at sign naming the people and agents it can reach, and a row under the field — not inside it — for the model answering and how hard it should think.",
+    registryDependencies: [
+      "composer",
+      "effort-menu",
+      "mentions",
+      "model-picker",
+      "models",
+      "tooltip",
+    ],
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react", "ai"],
+    files: [
+      {
+        path: "examples/composer/composer.tsx",
+        type: "registry:example",
+        target: "examples/composer/composer.tsx",
+      },
+    ],
+    categories: ["composer"],
+    meta: {
+      variants: [{ name: "Default", demo: "ComposerDemo" }],
+      wide: true,
+    },
+  },
+  {
+    name: "message-input-demo",
+    type: "registry:example",
+    title: "Message Input",
+    description:
+      "A message being written and sent, with the control at the end of the field turning from send to stop while an answer comes back.",
+    registryDependencies: ["message-input", "tooltip"],
+    dependencies: ["ai"],
+    files: [
+      {
+        path: "examples/composer/message-input.tsx",
+        type: "registry:example",
+        target: "examples/composer/message-input.tsx",
+      },
+    ],
+    categories: ["composer"],
+    meta: {
+      variants: [
+        { name: "Default", demo: "MessageInputDemo" },
+        { name: "States", demo: "MessageInputStatesDemo" },
+      ],
+      wide: true,
+    },
+  },
+  {
     name: "mentions-demo",
     type: "registry:example",
     title: "Mentions",
@@ -697,25 +749,30 @@ export const examples: Registry["items"] = [
     },
   },
   {
-    name: "message-input-demo",
+    name: "slash-menu-demo",
     type: "registry:example",
-    title: "Message Input",
+    title: "Slash Menu",
     description:
-      "A message being written and sent, with the control at the end of the field changing between voice, send and stop as the field and the answer do.",
-    registryDependencies: ["message-input", "tooltip"],
-    dependencies: ["ai"],
+      "A slash at the head of the composer opening what it can run, with the example catalogue it draws them from.",
+    registryDependencies: ["slash-menu", "message-input", "tooltip"],
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
     files: [
       {
-        path: "examples/composer/message-input.tsx",
+        path: "examples/composer/slash-menu.tsx",
         type: "registry:example",
-        target: "examples/composer/message-input.tsx",
+        target: "examples/composer/slash-menu.tsx",
+      },
+      {
+        path: "examples/composer/commands.ts",
+        type: "registry:example",
+        target: "examples/composer/commands.ts",
       },
     ],
     categories: ["composer"],
     meta: {
       variants: [
-        { name: "Default", demo: "MessageInputDemo" },
-        { name: "States", demo: "MessageInputStatesDemo" },
+        { name: "Commands", demo: "SlashMenuDemo" },
+        { name: "Arguments", demo: "SlashMenuArgumentsDemo" },
       ],
       wide: true,
     },
@@ -755,7 +812,7 @@ export const examples: Registry["items"] = [
     type: "registry:example",
     title: "Tool Picker",
     description:
-      "What the answer may reach for, turned on and off from the composer — a wrench carrying the count, and a list that says what each tool does before asking whether it should be on.",
+      "What the answer may reach for, turned on and off from the composer — a list that says what each tool does before asking whether it should be on, and the ones that are on stood beside the wrench in their own colours.",
     registryDependencies: [
       "tool-picker",
       "message-input",

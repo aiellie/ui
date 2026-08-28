@@ -12,7 +12,7 @@ export default function Page() {
               Agents
             </h1>
           </div>
-          <p className="text-foreground/50 mt-1.5 max-w-md text-[13.5px] leading-relaxed">
+          <p className="mt-1.5 max-w-md text-[13.5px] leading-relaxed text-foreground/50">
             Longer-running surfaces — plans, tool calls, and the traces they
             leave behind.
           </p>

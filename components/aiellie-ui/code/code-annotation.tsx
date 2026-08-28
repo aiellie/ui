@@ -38,8 +38,10 @@ const MARK_TONES: Record<CodeAnnotationTone, string> = {
   error: "text-red-600 dark:text-red-400",
 }
 
-export interface CodeAnnotationProps
-  extends Omit<React.ComponentProps<"aside">, "children"> {
+export interface CodeAnnotationProps extends Omit<
+  React.ComponentProps<"aside">,
+  "children"
+> {
   tone?: CodeAnnotationTone
   children: React.ReactNode
   /** Offered when the note is something the reader can be done with. */

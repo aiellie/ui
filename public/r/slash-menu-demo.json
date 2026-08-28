@@ -1,0 +1,46 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "slash-menu-demo",
+  "title": "Slash Menu",
+  "description": "A slash at the head of the composer opening what it can run, with the example catalogue it draws them from.",
+  "dependencies": [
+    "@hugeicons/core-free-icons",
+    "@hugeicons/react"
+  ],
+  "registryDependencies": [
+    "https://ui.aiellie.dev/r/slash-menu.json",
+    "https://ui.aiellie.dev/r/message-input.json",
+    "https://ui.aiellie.dev/r/tooltip.json"
+  ],
+  "files": [
+    {
+      "path": "examples/composer/slash-menu.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { HugeiconsIcon } from \"@hugeicons/react\"\n\nimport {\n  MessageInput,\n  MessageInputField,\n  MessageInputSubmit,\n} from \"@/components/aiellie-ui/composer/message-input\"\nimport {\n  SlashMenu,\n  SlashMenuEmpty,\n  SlashMenuGroupLabel,\n  SlashMenuItem,\n  useSlashCommands,\n  type SlashCommand,\n} from \"@/components/aiellie-ui/composer/slash-menu\"\nimport { TooltipProvider } from \"@/components/ui/tooltip\"\nimport { commands } from \"@/examples/composer/commands\"\n\nconst catalogue: SlashCommand[] = commands.map((command) => ({\n  ...command,\n  icon: <HugeiconsIcon icon={command.icon} className=\"size-3.5\" />,\n}))\n\n/** The ones that cannot be run on the spot, since the field is where the rest goes. */\nconst waiting: SlashCommand[] = catalogue\n  .filter((command) => command.argument)\n  .map((command) => ({ ...command, group: undefined }))\n\n/** The matches, still in the order the list gave them, under their headings. */\nfunction grouped(matches: readonly SlashCommand[]) {\n  const groups = new Map<string, SlashCommand[]>()\n  for (const match of matches) {\n    const key = match.group ?? \"\"\n    const existing = groups.get(key)\n    if (existing) existing.push(match)\n    else groups.set(key, [match])\n  }\n  return [...groups]\n}\n\nfunction CommandComposer({\n  items,\n  placeholder,\n  onRun,\n  onSend,\n}: {\n  items: SlashCommand[]\n  placeholder: string\n  onRun?: (command: SlashCommand) => void\n  onSend: (message: string) => void\n}) {\n  const [value, setValue] = React.useState(\"\")\n  const slash = useSlashCommands({\n    value,\n    onValueChange: setValue,\n    commands: items,\n    onRun,\n  })\n\n  return (\n    <TooltipProvider>\n      <MessageInput value={value} onValueChange={setValue} onSubmit={onSend}>\n        <MessageInputField placeholder={placeholder} {...slash.fieldProps} />\n        <MessageInputSubmit />\n      </MessageInput>\n\n      <SlashMenu controller={slash}>\n        {slash.matches.length ? (\n          grouped(slash.matches).map(([group, matches]) => (\n            <React.Fragment key={group}>\n              {group ? (\n                <SlashMenuGroupLabel>{group}</SlashMenuGroupLabel>\n              ) : null}\n              {matches.map((command) => (\n                <SlashMenuItem\n                  key={command.id}\n                  command={command}\n                  controller={slash}\n                />\n              ))}\n            </React.Fragment>\n          ))\n        ) : (\n          <SlashMenuEmpty>No command by that name.</SlashMenuEmpty>\n        )}\n      </SlashMenu>\n    </TooltipProvider>\n  )\n}\n\n/**\n * A slash at the start of the field for the catalogue, arrows to move through\n * it, Enter to take the one in hand. A command that wants nothing else runs on\n * the spot and empties the field; one that wants an argument is written in and\n * left waiting for it.\n */\nexport function SlashMenuDemo() {\n  const [line, setLine] = React.useState<string | null>(null)\n\n  return (\n    <div className=\"flex w-full max-w-md flex-col gap-2\">\n      <CommandComposer\n        items={catalogue}\n        placeholder=\"Try /model or /clear…\"\n        onRun={(command) => setLine(`Ran /${command.name}`)}\n        onSend={setLine}\n      />\n      <p className=\"min-h-4 ps-1 text-xs text-muted-foreground\">\n        {line ?? \"Type / at the start of the field.\"}\n      </p>\n    </div>\n  )\n}\n\n/** Only the ones that want something after the name, so every one of them waits. */\nexport function SlashMenuArgumentsDemo() {\n  const [line, setLine] = React.useState<string | null>(null)\n\n  return (\n    <div className=\"flex w-full max-w-md flex-col gap-2\">\n      <CommandComposer\n        items={waiting}\n        placeholder=\"Try /review…\"\n        onSend={setLine}\n      />\n      <p className=\"min-h-4 ps-1 text-xs text-muted-foreground\">\n        {line ?? \"Take one and the caret waits after it.\"}\n      </p>\n    </div>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/composer/slash-menu.tsx"
+    },
+    {
+      "path": "examples/composer/commands.ts",
+      "content": "import {\n  AiBrain01Icon,\n  Book02Icon,\n  Bug01Icon,\n  EraserIcon,\n  FoldVerticalIcon,\n  HelpCircleIcon,\n  TestTube01Icon,\n} from \"@hugeicons/core-free-icons\"\nimport type { IconSvgElement } from \"@hugeicons/react\"\n\n/** Example data. What a slash reaches for in a coding agent's composer. */\nexport interface Command {\n  id: string\n  name: string\n  description: string\n  /** What the ones that want something after the name want. */\n  argument?: string\n  group: string\n  icon: IconSvgElement\n}\n\nexport const commands: Command[] = [\n  {\n    id: \"model\",\n    name: \"model\",\n    description: \"Change which model answers, from here on\",\n    argument: \"<name>\",\n    group: \"Session\",\n    icon: AiBrain01Icon,\n  },\n  {\n    id: \"clear\",\n    name: \"clear\",\n    description: \"Forget the thread and start again\",\n    group: \"Session\",\n    icon: EraserIcon,\n  },\n  {\n    id: \"compact\",\n    name: \"compact\",\n    description: \"Fold what has been said into a summary and carry on\",\n    argument: \"<focus>\",\n    group: \"Session\",\n    icon: FoldVerticalIcon,\n  },\n  {\n    id: \"init\",\n    name: \"init\",\n    description: \"Write the file that tells an agent about this repository\",\n    group: \"Repository\",\n    icon: Book02Icon,\n  },\n  {\n    id: \"review\",\n    name: \"review\",\n    description: \"Read the diff for what it will cost later\",\n    argument: \"<path>\",\n    group: \"Repository\",\n    icon: Bug01Icon,\n  },\n  {\n    id: \"test\",\n    name: \"test\",\n    description: \"Run the tests, or only the ones that match\",\n    argument: \"<pattern>\",\n    group: \"Repository\",\n    icon: TestTube01Icon,\n  },\n  {\n    id: \"help\",\n    name: \"help\",\n    description: \"List everything that can be typed here\",\n    group: \"Help\",\n    icon: HelpCircleIcon,\n  },\n]\n",
+      "type": "registry:example",
+      "target": "examples/composer/commands.ts"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Commands",
+        "demo": "SlashMenuDemo"
+      },
+      {
+        "name": "Arguments",
+        "demo": "SlashMenuArgumentsDemo"
+      }
+    ],
+    "wide": true
+  },
+  "categories": [
+    "composer"
+  ],
+  "type": "registry:example"
+}

@@ -1,18 +1,15 @@
-"use client";
+"use client"
 
-import { useMemo, type ComponentProps } from "react";
+import { useMemo, type ComponentProps } from "react"
 import {
   Copy01Icon,
   Tick02Icon,
   CommandLineIcon,
-} from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { cn } from "@/lib/utils";
+} from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
+import { cn } from "@/lib/utils"
+import { tokenizeCommand, TOKEN_COLORS } from "@/lib/highlight"
 import {
-  tokenizeCommand,
-  TOKEN_COLORS,
-} from "@/lib/highlight";
-import {  
   codeScroll,
   ghostButton,
   iconSwap,
@@ -20,16 +17,16 @@ import {
   iconSwapOut,
   mono,
   paper,
-} from "@/components/aiellie-ui/actions";
+} from "@/components/aiellie-ui/actions"
 
-export type PackageManager = "npm" | "pnpm" | "bun" | "yarn";
+export type PackageManager = "npm" | "pnpm" | "bun" | "yarn"
 
 export const PACKAGE_MANAGERS: readonly PackageManager[] = [
   "npm",
   "pnpm",
   "bun",
   "yarn",
-];
+]
 
 /** What each manager calls to run a package it has not installed. */
 const RUNNERS: Record<PackageManager, string> = {
@@ -37,20 +34,20 @@ const RUNNERS: Record<PackageManager, string> = {
   pnpm: "pnpm dlx",
   bun: "bunx",
   yarn: "yarn dlx",
-};
+}
 
 /**
  * The line as it is actually run. Exported so a caller copies exactly what is
  * on screen instead of rebuilding the runner prefix itself.
  */
 export function resolveCommand(manager: PackageManager, command: string) {
-  return `${RUNNERS[manager]} ${command}`;
+  return `${RUNNERS[manager]} ${command}`
 }
 
 export interface CodeSnippetTab {
-  name: string;
+  name: string
   /** The whole line this tab runs, runner prefix and all. */
-  command: string;
+  command: string
 }
 
 export interface CodeSnippetProps extends Omit<
@@ -62,27 +59,27 @@ export interface CodeSnippetProps extends Omit<
    * (`shadcn@latest add …`), the whole line when none does. Unused under
    * `tabs`, since each tab carries its own.
    */
-  command?: string;
+  command?: string
   /**
    * Tabs for the package manager running `command`, paired with
    * `onManagerChange`. Leave both off — and pass no `tabs` — for a card with
    * no tabs at all, which runs `command` as it stands.
    */
-  manager?: PackageManager;
-  onManagerChange?: (manager: PackageManager) => void;
-  managers?: readonly PackageManager[];
+  manager?: PackageManager
+  onManagerChange?: (manager: PackageManager) => void
+  managers?: readonly PackageManager[]
   /**
    * Tabs of the caller's own in place of the managers, for lines that differ
    * by more than their runner. Paired with `active` and `onActiveChange`.
    */
-  tabs?: readonly CodeSnippetTab[];
-  active?: number;
-  onActiveChange?: (index: number) => void;
+  tabs?: readonly CodeSnippetTab[]
+  active?: number
+  onActiveChange?: (index: number) => void
   /** Colours the line's parts — program, flags, versions, URLs — like code. */
-  highlight?: boolean;
+  highlight?: boolean
   /** Handed the resolved line, so the caller never rebuilds the prefix. */
-  onCopy: (resolved: string) => void;
-  copied?: boolean;
+  onCopy: (resolved: string) => void
+  copied?: boolean
 }
 
 export function CodeSnippet({
@@ -106,30 +103,30 @@ export function CodeSnippet({
     ? tabs.map((tab) => tab.name)
     : manager
       ? managers
-      : [];
+      : []
 
   /* An out-of-range index would otherwise show a line no tab is holding. */
   const index = tabs
     ? Math.min(Math.max(active, 0), tabs.length - 1)
     : manager
       ? managers.indexOf(manager)
-      : -1;
+      : -1
 
   const resolved = tabs
     ? (tabs[index]?.command ?? "")
     : manager
       ? resolveCommand(manager, command)
-      : command;
+      : command
 
   const tokens = useMemo(
     () => (highlight ? tokenizeCommand(resolved) : null),
     [highlight, resolved]
-  );
+  )
 
   const select = (at: number) => {
-    if (tabs) onActiveChange?.(at);
-    else onManagerChange?.(managers[at]);
-  };
+    if (tabs) onActiveChange?.(at)
+    else onManagerChange?.(managers[at])
+  }
 
   /* One button, sitting in the header when there is one and coming down to the
      line when there is not. */
@@ -154,7 +151,7 @@ export function CodeSnippet({
         strokeWidth={2}
       />
     </button>
-  );
+  )
 
   return (
     <div
@@ -178,7 +175,7 @@ export function CodeSnippet({
           />
           <div role="tablist" className="-ms-0.5 flex items-center gap-0.5">
             {labels.map((label, at) => {
-              const selected = at === index;
+              const selected = at === index
 
               return (
                 <button
@@ -197,7 +194,7 @@ export function CodeSnippet({
                 >
                   {label}
                 </button>
-              );
+              )
             })}
           </div>
           {copyButton}
@@ -238,5 +235,5 @@ export function CodeSnippet({
         {labels.length === 0 && copyButton}
       </div>
     </div>
-  );
+  )
 }

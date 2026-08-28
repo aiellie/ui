@@ -1,6 +1,6 @@
-"use client";
+"use client"
 
-import { Bubble, BubbleContent } from "@/components/ui/bubble";
+import { Bubble, BubbleContent } from "@/components/ui/bubble"
 import {
   Message,
   MessageAvatar,
@@ -8,7 +8,7 @@ import {
   MessageFooter,
   MessageGroup,
   MessageHeader,
-} from "@/components/ui/message";
+} from "@/components/ui/message"
 
 export function MessageDemo() {
   return (
@@ -32,7 +32,7 @@ export function MessageDemo() {
         </MessageContent>
       </Message>
     </MessageGroup>
-  );
+  )
 }
 
 export function MessageMetaDemo() {
@@ -59,7 +59,7 @@ export function MessageMetaDemo() {
         </MessageContent>
       </Message>
     </MessageGroup>
-  );
+  )
 }
 
 export function MessageGhostDemo() {
@@ -85,5 +85,5 @@ export function MessageGhostDemo() {
         </MessageContent>
       </Message>
     </MessageGroup>
-  );
+  )
 }

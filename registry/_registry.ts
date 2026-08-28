@@ -12,5 +12,13 @@ export const registry: Registry = {
   $schema: "https://ui.shadcn.com/schema/registry.json",
   name: "aiellie-ui",
   homepage: "https://ui.aiellie.dev",
-  items: [...aiellieui, ...components, ...ui, ...examples, ...lib, ...hooks, ...icons],
+  items: [
+    ...aiellieui,
+    ...components,
+    ...ui,
+    ...examples,
+    ...lib,
+    ...hooks,
+    ...icons,
+  ],
 }

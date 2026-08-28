@@ -3,7 +3,6 @@
 import * as React from "react"
 import {
   AiMagicIcon,
-  ArrowDown01Icon,
   PencilEdit02Icon,
   SquareUnlock01Icon,
   TaskDaily01Icon,
@@ -20,7 +19,7 @@ import {
   MenuSeparator,
   MenuTrigger,
 } from "@/components/aiellie-ui/menu"
-import { Button } from "@/components/ui/button"
+import { TooltipIconButton } from "@/components/aiellie-ui/tooltip-icon-button"
 import { cn } from "@/lib/utils"
 
 /**
@@ -193,10 +192,10 @@ function ApprovalModeMenu({
 }
 
 /**
- * The mode in force, as the thing that opens the list. Ghost and small like
- * the pickers it sits beside — in a composer this is next to the field, and a
- * control with a border competes with the field for the attention that belongs
- * to the writing.
+ * The mode in force, as the glyph that opens the list. `TooltipIconButton`
+ * is the control: ghost, square, and carrying the name on a hover, so a
+ * composer row of glyphs still says which mode is on without taking a word's
+ * width to do it.
  *
  * It turns destructive along with the mode. That is the point of the trigger
  * rather than a nicety: a composer sat in full access looks exactly like one
@@ -209,11 +208,11 @@ function ApprovalModeMenu({
 function ApprovalModeMenuTrigger({
   className,
   children,
-  showIcon = true,
   ...props
-}: React.ComponentProps<typeof MenuTrigger> & { showIcon?: boolean }) {
+}: React.ComponentProps<typeof MenuTrigger>) {
   const { value, modes } = useApprovalModeMenuContext("ApprovalModeMenuTrigger")
   const mode = findApprovalMode(value, modes)
+  const name = mode?.name ?? "Approval mode"
 
   return (
     <MenuTrigger
@@ -222,15 +221,13 @@ function ApprovalModeMenuTrigger({
         mode ? `Approval mode: ${mode.name}` : "Choose an approval mode"
       }
       render={
-        <Button
+        <TooltipIconButton
           type="button"
-          variant="ghost"
-          size="sm"
+          tooltip={name}
+          side="top"
           data-destructive={mode?.destructive || undefined}
           className={cn(
-            // `w-fit` because a Button is `width: auto` and a menu put in a
-            // column would otherwise be stretched the width of the column.
-            "w-fit gap-1.5 font-medium text-muted-foreground hover:text-foreground",
+            "size-7 border text-muted-foreground hover:text-foreground",
             // Two conditions to the ghost variant's one, so these win on
             // specificity without either being written `!important`.
             "data-destructive:text-destructive data-destructive:hover:bg-destructive/10 data-destructive:hover:text-destructive data-destructive:aria-expanded:bg-destructive/10 data-destructive:aria-expanded:text-destructive dark:data-destructive:hover:bg-destructive/20 dark:data-destructive:aria-expanded:bg-destructive/20",
@@ -240,25 +237,15 @@ function ApprovalModeMenuTrigger({
       }
       {...props}
     >
-      {children ?? (
-        <>
-          {showIcon && mode ? (
-            <HugeiconsIcon
-              aria-hidden
-              icon={mode.icon}
-              strokeWidth={1.75}
-              className="size-3.5 opacity-70"
-            />
-          ) : null}
-          {mode?.name ?? "Approval mode"}
+      {children ??
+        (mode ? (
           <HugeiconsIcon
             aria-hidden
-            icon={ArrowDown01Icon}
+            icon={mode.icon}
             strokeWidth={1.75}
-            className="size-3 opacity-60"
+            className="size-3.5 opacity-70"
           />
-        </>
-      )}
+        ) : null)}
     </MenuTrigger>
   )
 }

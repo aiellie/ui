@@ -26,7 +26,22 @@ const people: MentionItem[] = users.map((user) => ({
   handle: user.handle,
   description: user.role,
   group: "People",
-  icon: <span className="text-[10px] font-medium">{user.initials}</span>,
+  // The initials stay under the picture rather than being replaced by it: the
+  // avatars come off a host this list does not control, and a name with a blank
+  // disc against it reads worse than one that simply never got a picture.
+  icon: (
+    <>
+      <span className="text-[10px] font-medium">{user.initials}</span>
+      {/* eslint-disable-next-line @next/next/no-img-element -- a plain img
+          rather than next/image, because this file is copied into projects
+          that are not necessarily Next ones. */}
+      <img
+        src={user.avatar}
+        alt=""
+        className="absolute inset-0 size-full object-cover"
+      />
+    </>
+  ),
 }))
 
 const bots: MentionItem[] = agents.map((agent) => ({
@@ -35,7 +50,18 @@ const bots: MentionItem[] = agents.map((agent) => ({
   handle: agent.handle,
   description: agent.description,
   group: "Agents",
-  icon: <HugeiconsIcon icon={agent.icon} className="size-3.5" />,
+  // The glyph stays underneath for the same reason the initials do.
+  icon: (
+    <>
+      <HugeiconsIcon icon={agent.icon} className="size-3.5" />
+      {/* eslint-disable-next-line @next/next/no-img-element -- as above. */}
+      <img
+        src={agent.avatar}
+        alt=""
+        className="absolute inset-0 size-full object-cover"
+      />
+    </>
+  ),
 }))
 
 /** The matches, still in the order the list gave them, under their headings. */

@@ -1,6 +1,6 @@
 import {
   BrowserIcon,
-  ComputerTerminal01Icon,
+  TerminalIcon,
   FileAddIcon,
   FileEditIcon,
   FileSearchIcon,
@@ -62,6 +62,7 @@ interface Tool {
   /** One line, in the present tense, on what a call to it does. */
   description: string
   icon: IconSvgElement
+  color: string
 }
 
 /**
@@ -77,7 +78,8 @@ const tools: Tool[] = [
     name: "Bash",
     category: "agents",
     description: "Execute bash commands in a shell session",
-    icon: ComputerTerminal01Icon,
+    icon: TerminalIcon,
+    color: "bg-blue-500/5 text-blue-500 border-blue-500/20",
   },
   {
     id: "read",
@@ -85,6 +87,7 @@ const tools: Tool[] = [
     category: "agents",
     description: "Read a file from the sandbox filesystem",
     icon: FileViewIcon,
+    color: "bg-green-500/5 text-green-500 border-green-500/20",
   },
   {
     id: "write",
@@ -92,6 +95,7 @@ const tools: Tool[] = [
     category: "agents",
     description: "Write a file to the sandbox filesystem",
     icon: FileAddIcon,
+    color: "bg-yellow-500/5 text-yellow-500 border-yellow-500/20",
   },
   {
     id: "edit",
@@ -99,6 +103,7 @@ const tools: Tool[] = [
     category: "agents",
     description: "Perform string replacement in a file",
     icon: FileEditIcon,
+    color: "bg-purple-500/5 text-purple-500 border-purple-500/20",
   },
   {
     id: "glob",
@@ -106,6 +111,7 @@ const tools: Tool[] = [
     category: "agents",
     description: "Fast file pattern matching using glob patterns",
     icon: FileSearchIcon,
+    color: "bg-pink-500/5 text-pink-500 border-pink-500/20",
   },
   {
     id: "grep",
@@ -113,6 +119,7 @@ const tools: Tool[] = [
     category: "agents",
     description: "Text search using regex patterns",
     icon: TextSearchIcon,
+    color: "bg-orange-500/5 text-orange-500 border-orange-500/20",
   },
   {
     id: "web_fetch",
@@ -120,6 +127,7 @@ const tools: Tool[] = [
     category: "agents",
     description: "Fetch content from a URL",
     icon: BrowserIcon,
+    color: "bg-teal-500/5 text-teal-500 border-teal-500/20",
   },
   {
     id: "web_search",
@@ -127,6 +135,7 @@ const tools: Tool[] = [
     category: "agents",
     description: "Search the web for information",
     icon: GlobalSearchIcon,
+    color: "bg-indigo-500/5 text-indigo-500 border-indigo-500/20",
   },
 ]
 

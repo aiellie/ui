@@ -84,7 +84,7 @@ function InlineCodeCopy({
       onClick={() => copyToClipboard(value)}
       className={cn(
         inlineCodeChip,
-        "group/inline-code inline-flex cursor-pointer items-center gap-1 align-baseline text-foreground/85 outline-none transition-colors duration-150 hover:bg-foreground/[0.10] focus-visible:ring-1 focus-visible:ring-foreground/20 motion-reduce:transition-none dark:hover:bg-foreground/[0.14]",
+        "group/inline-code inline-flex cursor-pointer items-center gap-1 align-baseline text-foreground/85 transition-colors duration-150 outline-none hover:bg-foreground/[0.10] focus-visible:ring-1 focus-visible:ring-foreground/20 motion-reduce:transition-none dark:hover:bg-foreground/[0.14]",
         className
       )}
       {...props}
@@ -106,7 +106,7 @@ function InlineCodeLink({ className, ...props }: React.ComponentProps<"a">) {
       data-slot="inline-code-link"
       className={cn(
         inlineCodeChip,
-        "cursor-pointer text-foreground/85 underline decoration-foreground/25 underline-offset-3 outline-none transition-colors duration-150 hover:bg-foreground/[0.10] hover:decoration-foreground/60 focus-visible:ring-1 focus-visible:ring-foreground/20 motion-reduce:transition-none dark:hover:bg-foreground/[0.14]",
+        "cursor-pointer text-foreground/85 underline decoration-foreground/25 underline-offset-3 transition-colors duration-150 outline-none hover:bg-foreground/[0.10] hover:decoration-foreground/60 focus-visible:ring-1 focus-visible:ring-foreground/20 motion-reduce:transition-none dark:hover:bg-foreground/[0.14]",
         className
       )}
       {...props}
