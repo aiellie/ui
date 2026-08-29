@@ -101,4 +101,24 @@ export const components: Registry["items"] = [
       },
     ],
   },
+  {
+    name: "command-menu",
+    type: "registry:component",
+    title: "Command Menu",
+    description:
+      "Everything one keystroke away: a ⌘K palette any trigger can open, filtering names, categories and keywords through one field, wired as a real combobox so the keyboard and a screen reader get the same list.",
+    dependencies: [
+      "@base-ui/react",
+      "@hugeicons/core-free-icons",
+      "@hugeicons/react",
+    ],
+    registryDependencies: ["actions", "kbd", "utils"],
+    files: [
+      {
+        path: "components/aiellie-ui/command-menu.tsx",
+        type: "registry:component",
+        target: "components/aiellie-ui/command-menu.tsx",
+      },
+    ],
+  },
 ]

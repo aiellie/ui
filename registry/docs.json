@@ -5203,6 +5203,45 @@
       "DemoVariant"
     ]
   },
+  "command-menu": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/command-menu",
+        "names": [
+          "CommandMenu",
+          "CommandGroup",
+          "CommandItem",
+          "CommandMenuProps",
+          "openCommandMenu"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "CommandMenu",
+        "props": [
+          {
+            "name": "groups",
+            "type": "CommandGroup[]",
+            "optional": false
+          },
+          {
+            "name": "placeholder",
+            "type": "string",
+            "optional": true,
+            "default": "\"Search…\""
+          }
+        ],
+        "extends": []
+      }
+    ],
+    "exports": [
+      "CommandGroup",
+      "CommandItem",
+      "CommandMenuProps",
+      "openCommandMenu"
+    ]
+  },
   "kbd": {
     "imports": [
       {

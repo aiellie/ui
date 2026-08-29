@@ -1245,6 +1245,29 @@
       ]
     },
     {
+      "name": "command-menu",
+      "type": "registry:component",
+      "title": "Command Menu",
+      "description": "Everything one keystroke away: a ⌘K palette any trigger can open, filtering names, categories and keywords through one field, wired as a real combobox so the keyboard and a screen reader get the same list.",
+      "dependencies": [
+        "@base-ui/react",
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/actions.json",
+        "https://ui.aiellie.dev/r/kbd.json",
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/command-menu.tsx",
+          "type": "registry:component",
+          "target": "components/aiellie-ui/command-menu.tsx"
+        }
+      ]
+    },
+    {
       "name": "kbd",
       "type": "registry:ui",
       "title": "Kbd",

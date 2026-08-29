@@ -2,120 +2,70 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { ArrowRight01Icon, Github01Icon } from "@hugeicons/core-free-icons"
+import { ArrowRight01Icon, Search01Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 
-import {
-  CodeSnippet,
-  type PackageManager,
-} from "@/components/aiellie-ui/code/code-snippet"
-import { Button } from "@/components/ui/button"
-import { AgentCardDemo } from "@/examples/cards/agent"
-import { ChatCardDemo } from "@/examples/cards/chat-card"
-import { ImageGeneratorDemo } from "@/examples/cards/image-generator"
+import { openCommandMenu } from "@/components/aiellie-ui/command-menu"
+import { MeshGradientBackground } from "@/components/aiellie-ui/mesh-gradient"
+import { Kbd } from "@/components/ui/kbd"
 
 /**
- * The front door, and the argument in one screen: say what the registry is in
- * a line, then let three of its cards do the talking — a chat arriving, a
- * generator waiting to be asked, an agent stopping to ask permission. Live
- * cards rather than screenshots, because "every state is designed" is a
- * claim screenshots cannot make.
+ * The front door as a poster: the house indigo moving, one sentence, and the
+ * two ways in — search everything, or walk the shelves. Nothing else. The
+ * elements make their own case on their own pages; a homepage restating them
+ * in miniature was three demos fighting for a glance, and the glance lost.
  *
- * A client file for the same reason `elements-browser.tsx` is one: the cards
- * are components, and a resolved component cannot cross the server boundary.
+ * A client file because the search trigger opens the palette the header
+ * mounts, and the gradient is a shader.
  */
-
-const INSTALL = "shadcn@latest add https://ui.aiellie.dev/r/chat-card.json"
-
-function InstallLine() {
-  const [copied, setCopied] = React.useState(false)
-  const [manager, setManager] = React.useState<PackageManager>("npm")
-
-  React.useEffect(() => {
-    if (!copied) return
-    const id = setTimeout(() => setCopied(false), 1600)
-    return () => clearTimeout(id)
-  }, [copied])
-
-  return (
-    <CodeSnippet
-      command={INSTALL}
-      manager={manager}
-      onManagerChange={setManager}
-      copied={copied}
-      onCopy={() => setCopied(true)}
-      className="w-full max-w-xl"
-    />
-  )
-}
-
 export function Home() {
   return (
-    <div className="flex flex-col gap-14 px-6 pt-16 pb-24 md:pt-24">
-      <section className="mx-auto flex w-full max-w-3xl flex-col items-start gap-5">
-        {/* The name, not the mechanism: what kind of registry this is can be
-            read off the install line two inches down. */}
-        <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
-          aiellie ui
-        </p>
-        <h1 className="text-4xl font-semibold tracking-tight text-balance md:text-5xl">
-          The elements an AI chat is made of.
-        </h1>
-        <p className="max-w-xl text-base text-pretty text-muted-foreground">
-          Messages, composers, code, tool calls, agents — built on Base UI for
-          React 19, every state designed, and each one installable on its own as
-          source you keep.
-        </p>
-
-        <InstallLine />
-
-        <div className="flex items-center gap-2">
-          {/* `nativeButton={false}` because these really are links wearing the
-              button's clothes — Base UI otherwise expects a <button> and says
-              so, loudly, in the console. */}
-          <Button nativeButton={false} render={<Link href="/elements" />}>
-            Browse the elements
-            <HugeiconsIcon icon={ArrowRight01Icon} data-icon="inline-end" />
-          </Button>
-          <Button
-            variant="outline"
-            nativeButton={false}
-            render={
-              <a
-                href="https://github.com/aiellie/ui"
-                target="_blank"
-                rel="noreferrer"
-              />
-            }
-          >
-            <HugeiconsIcon icon={Github01Icon} data-icon="inline-start" />
-            GitHub
-          </Button>
-        </div>
-      </section>
-
-      {/* The proof. Three cards, live: try the composer, answer the agent's
-          question, ask the Painter for something. */}
-      <section
-        aria-label="Live examples"
-        className="mx-auto grid w-full max-w-6xl items-start justify-items-center gap-6 md:grid-cols-2 xl:grid-cols-3"
+    <div className="h-[calc(100svh-var(--header-height))] w-full">
+      <MeshGradientBackground
+        speed={0.4}
+        className="h-full rounded-none border-0"
       >
-        <ChatCardDemo />
-        <ImageGeneratorDemo />
-        <div className="md:col-span-2 xl:col-span-1 xl:justify-self-center">
-          <AgentCardDemo />
-        </div>
-      </section>
+        <div className="flex h-full items-center justify-center p-6">
+          {/* The same glass every popup on the site wears, holding the words
+              still while the wash moves. */}
+          <div className="flex w-full max-w-md flex-col items-center gap-6 rounded-3xl border border-border/40 bg-background/70 p-8 text-center shadow-2xl backdrop-blur-xl sm:p-10 dark:bg-popover/70">
+            <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+              aiellie ui
+            </p>
+            <h1 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              The elements an AI chat is made of.
+            </h1>
 
-      <p className="mx-auto text-xs text-muted-foreground">
-        40 elements · MIT · generated docs on every card ·{" "}
-        <Link
-          href="/elements"
-          className="underline decoration-border underline-offset-4 transition-colors hover:text-foreground motion-reduce:transition-none"
-        >
-          see all of them
-        </Link>
-      </p>
+            <button
+              type="button"
+              onClick={openCommandMenu}
+              className="flex h-11 w-full cursor-pointer items-center gap-2.5 rounded-xl border border-border/60 bg-background/60 px-3.5 text-sm text-muted-foreground transition-colors hover:bg-background/80 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:outline-none motion-reduce:transition-none"
+            >
+              <HugeiconsIcon
+                aria-hidden
+                icon={Search01Icon}
+                strokeWidth={1.75}
+                className="size-4 shrink-0"
+              />
+              <span className="flex-1 text-start">Search the elements…</span>
+              <Kbd>⌘K</Kbd>
+            </button>
+
+            <Link
+              href="/elements"
+              className="group flex items-center gap-1 text-sm font-medium text-primary transition-colors hover:text-primary/80 motion-reduce:transition-none"
+            >
+              Browse the elements
+              <HugeiconsIcon
+                aria-hidden
+                icon={ArrowRight01Icon}
+                strokeWidth={2}
+                className="size-4 transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none"
+              />
+            </Link>
+          </div>
+        </div>
+      </MeshGradientBackground>
     </div>
   )
 }

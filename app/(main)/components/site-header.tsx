@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils"
 
 import { NavButton, type NavPage } from "./nav-button"
 import { Rules, type RuleDoc } from "./rules"
+import { SiteSearch, SiteSearchTrigger } from "./site-search"
 
 // The nav lists what is finished — a stub in it costs more than a short nav.
 const pages: NavPage[] = [
@@ -35,10 +36,14 @@ export function SiteHeader({ docs }: { docs: RuleDoc[] }) {
             <NavButton key={page.href} {...page} />
           ))}
         </nav>
-        {/* Stood apart from the nav at the far end: it opens a panel over the
-            page rather than going anywhere, and a destination is the one thing
-            a button sitting in a run of links claims to be. */}
-        <Rules docs={docs} className="ms-auto" />
+        {/* Stood apart from the nav at the far end: these open panels over
+            the page rather than going anywhere, and a destination is the one
+            thing a button sitting in a run of links claims to be. The search
+            trigger is only a way in — the palette itself is mounted once,
+            beside it, and ⌘K reaches it from any page. */}
+        <SiteSearchTrigger className="ms-auto" />
+        <SiteSearch />
+        <Rules docs={docs} />
         <ThemeToggle />
         {/* The source stands with the controls rather than in the nav: the
             nav's buttons light up for the section on screen, and a link that
