@@ -3,16 +3,27 @@
 import {
   Home02Icon,
   AiElementsIcon,
-  AiSwapIcon,
+  Github01Icon,
 } from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
+
+import { ghostButton } from "@/components/aiellie-ui/actions"
 import { ThemeToggle } from "@/components/theme-toggle"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import { cn } from "@/lib/utils"
+
 import { NavButton, type NavPage } from "./nav-button"
 import { Rules, type RuleDoc } from "./rules"
 
+// The nav lists what is finished — a stub in it costs more than a short nav.
 const pages: NavPage[] = [
   { href: "/", label: "Home", icon: Home02Icon },
   { href: "/elements", label: "Elements", icon: AiElementsIcon },
-  { href: "/playground", label: "Playground", icon: AiSwapIcon },
 ]
 
 export function SiteHeader({ docs }: { docs: RuleDoc[] }) {
@@ -29,6 +40,32 @@ export function SiteHeader({ docs }: { docs: RuleDoc[] }) {
             a button sitting in a run of links claims to be. */}
         <Rules docs={docs} className="ms-auto" />
         <ThemeToggle />
+        {/* The source stands with the controls rather than in the nav: the
+            nav's buttons light up for the section on screen, and a link that
+            leaves the site has no section to light. The tooltip describes it,
+            but a tooltip is not a name — hence the explicit label. */}
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger
+              render={
+                <a
+                  href="https://github.com/aiellie/ui"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="GitHub repository"
+                  className={cn(ghostButton, "size-7 shrink-0 rounded-lg")}
+                />
+              }
+            >
+              <HugeiconsIcon
+                icon={Github01Icon}
+                strokeWidth={1.75}
+                className="size-4"
+              />
+            </TooltipTrigger>
+            <TooltipContent side="bottom">GitHub</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
     </header>
   )

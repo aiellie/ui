@@ -7,25 +7,21 @@ site itself is the changelog.
 
 ## Now
 
-- A homepage that shows the thing: a composed chat scene built from the
-  elements, the one-line install, and the way into `/elements`.
 - An accessibility pass to the standard DESIGN.md already claims: every
   visual state announced, real tab semantics where tabs are claimed, the
   muted text ramp held to contrast.
-- Tool calls that ask first: an awaiting-approval state with approve and deny,
-  a cancel on a running call, and a call streaming its arguments in — the
-  states an agent's day is actually made of.
+- The composer's keyboard debts: arrow keys that hold their row in the slash
+  menu, an Escape that stays escaped, an Enter that agrees with the stop.
+- A cancel on a running tool call, and a call streaming its arguments in.
 - The mobile pass: the collapsed rail, the docs drawer and the stage verified
   on real widths, not just plausible ones.
 
 ## Next
 
-- The assembled chat as an installable block, wired to a real streaming
-  backend rather than a script.
-- Working cards: an image generator, a video generator — generation demos a
-  reader can point at their own key and run, not just look at.
-- Agent cards: beyond generation, the shapes an agent's work takes — runs,
-  approvals, handoffs.
+- The assembled chat wired to a real streaming backend rather than a script —
+  the generators already run on the reader's own key; the chat should too.
+- More agent cards: runs, handoffs, a queue — the shapes an agent's day takes
+  beyond one approval.
 - A playground worth the tab: the elements composable on a scratch surface.
 
 ## Later

@@ -21,6 +21,7 @@
     "registry:build": "tsx scripts/build-docs.ts && tsx scripts/build-registry.ts && shadcn build"
   },
   "dependencies": {
+    "@ai-sdk/google": "^4.0.56",
     "@base-ui/react": "^1.7.0",
     "@hugeicons/core-free-icons": "^4.3.0",
     "@hugeicons/react": "^1.1.10",

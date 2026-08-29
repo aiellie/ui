@@ -509,9 +509,11 @@
           "ToolCallTrigger",
           "ToolCallName",
           "ToolCallSummary",
+          "ToolCallApproval",
           "ToolCallPanel",
           "ToolCallSection",
           "ToolCallCode",
+          "ToolCallApprovalProps",
           "ToolCallProps",
           "ToolCallStatus"
         ]
@@ -564,6 +566,44 @@
         ]
       },
       {
+        "name": "ToolCallApproval",
+        "description": "The question an `awaiting` call is asking, with the two answers beside it. It renders only while the status is `awaiting`, so a caller mounts it once and the approval clears itself the moment the answer moves the status on — a question still standing after it was answered is the worst kind of stale. It sits outside the collapsible panel on purpose: what the call *wants to do* is behind the chevron for whoever cares, but the asking cannot be — a question hidden in a drawer is a run that looks stuck. Approve is filled and deny is not, which is a recommendation, not a trick: the agent asked because it thinks the step is right, and the buttons say so while leaving no doubt both are real answers.",
+        "props": [
+          {
+            "name": "approveLabel",
+            "type": "string",
+            "optional": true,
+            "default": "\"Approve\""
+          },
+          {
+            "name": "children",
+            "type": "React.ReactNode",
+            "optional": true,
+            "description": "The question. The default asks plainly; a caller can say what is at stake.",
+            "default": "\"Run this?\""
+          },
+          {
+            "name": "denyLabel",
+            "type": "string",
+            "optional": true,
+            "default": "\"Deny\""
+          },
+          {
+            "name": "onApprove",
+            "type": "() => void",
+            "optional": true
+          },
+          {
+            "name": "onDeny",
+            "type": "() => void",
+            "optional": true
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"div\">, \"children\">"
+        ]
+      },
+      {
         "name": "ToolCallPanel",
         "description": "`collapsePanel` animates the height Base UI measures for it, so the panel opens to whatever it actually contains rather than to a number this file would have to guess and keep true.",
         "props": [],
@@ -600,6 +640,7 @@
       }
     ],
     "exports": [
+      "ToolCallApprovalProps",
       "ToolCallProps",
       "ToolCallStatus"
     ]
@@ -2342,7 +2383,7 @@
     "components": [
       {
         "name": "ChatCard",
-        "description": "A chat, framed: somewhere to put a thread, a composer under it, and a strip across the top saying whose thread it is. This is the frame and nothing else — it holds no messages, owns no state and knows nothing about what a message is. Its whole job is the shape a chat takes: a header that stays, a middle that scrolls, and a foot that does not move when the middle grows.",
+        "description": "A chat, framed: somewhere to put a thread, a composer under it, and whoever the thread belongs to across the top — a `ChatAvatar` floating over the messages by default, or a `ChatCardHeader` bar where a card wants one. This is the frame and nothing else — it holds no messages, owns no state and knows nothing about what a message is. Its whole job is the shape a chat takes: a top that stays, a middle that scrolls, and a foot that does not move when the middle grows. A column, not a grid: the earlier grid named its rows, so a card led by a floating avatar — which has no header row — had to re-declare them or leave a spare row's height under the composer. Flex hands the thread whatever the parts around it leave, however many of them a card has.",
         "props": [],
         "extends": [
           "React.ComponentProps<\"div\">"
@@ -2601,7 +2642,7 @@
     "components": [
       {
         "name": "ChatAvatar",
-        "description": "Whose thread this is, said at the top of the thread rather than in a bar across it. The cluster is the first thing inside the scrolling thread and sticks there once the thread moves under it, so messages pass behind the glass and thin out rather than stopping at a border. That is the whole of what makes it read as floating: the messages go somewhere, and what they go behind is plainly the same surface they are on. It wants to be the first child of `ChatCardThread` — it bleeds sideways by that thread's own padding so the glass reaches the card's edges rather than ending in a stripe short of them. A card wearing this has no `ChatCardHeader`, since this is the header. Say so with `grid-rows-[1fr_auto]` on the `ChatCard`: its rows are header, thread, foot in that order, and a card given only two of them otherwise hands the thread the header's row and leaves the spare height under the composer.",
+        "description": "Whose thread this is, said at the top of the thread rather than in a bar across it. The cluster is the first thing inside the scrolling thread and sticks there once the thread moves under it, so messages pass behind the glass and thin out rather than stopping at a border. That is the whole of what makes it read as floating: the messages go somewhere, and what they go behind is plainly the same surface they are on. It wants to be the first child of `ChatCardThread` — it bleeds sideways by that thread's own padding so the glass reaches the card's edges rather than ending in a stripe short of them. A card wearing this has no `ChatCardHeader`, since this is the header — and that costs nothing to say: the card is a column, so the thread simply takes whatever a header would have held.",
         "props": [
           {
             "name": "floating",
@@ -2693,6 +2734,294 @@
       "ChatAvatarImageProps",
       "ChatAvatarNameProps",
       "ChatAvatarProps"
+    ]
+  },
+  "media": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/media",
+        "names": [
+          "MediaFrame",
+          "MediaImage",
+          "MediaVideo",
+          "MediaBadge",
+          "MediaFrameProps",
+          "MediaImageProps",
+          "MediaVideoProps"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "MediaFrame",
+        "props": [
+          {
+            "name": "aspect",
+            "type": "MediaAspect",
+            "optional": true,
+            "default": "\"square\""
+          },
+          {
+            "name": "busy",
+            "type": "boolean",
+            "optional": true,
+            "description": "Nothing to show yet — the run is still going. The frame shimmers on its own; without this it shimmers only until the media inside it loads.",
+            "default": "false"
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "MediaImage",
+        "props": [
+          {
+            "name": "alt",
+            "type": "string",
+            "optional": false,
+            "description": "Required, not defaulted: a generated picture has no filename to lean on, so the prompt that made it is the only honest description there is."
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<\"img\">"
+        ]
+      },
+      {
+        "name": "MediaVideo",
+        "props": [
+          {
+            "name": "label",
+            "type": "string",
+            "optional": false,
+            "description": "What the clip shows, for anyone who cannot watch it."
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<\"video\">"
+        ]
+      },
+      {
+        "name": "MediaBadge",
+        "description": "A word pinned to the frame's corner — \"Sample\", a duration, a size. Glass, because it sits on a picture whose colours nobody chose in advance.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"span\">"
+        ]
+      }
+    ],
+    "exports": [
+      "MediaFrameProps",
+      "MediaImageProps",
+      "MediaVideoProps"
+    ]
+  },
+  "key-field": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/key-field",
+        "names": [
+          "KeyField",
+          "KeyFieldProps",
+          "useStoredKey"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "KeyField",
+        "props": [
+          {
+            "name": "label",
+            "type": "React.ReactNode",
+            "optional": false
+          },
+          {
+            "name": "storageKey",
+            "type": "string",
+            "optional": false,
+            "description": "Where the key lives in storage. Scope it: `\"aiellie:gemini-key\"`."
+          },
+          {
+            "name": "hint",
+            "type": "React.ReactNode",
+            "optional": true,
+            "description": "Where the key goes. Every field should be able to answer that.",
+            "default": "\"Kept in this browser's storage and sent only to the provider.\""
+          },
+          {
+            "name": "placeholder",
+            "type": "string",
+            "optional": true,
+            "default": "\"Paste an API key…\""
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"div\">, \"children\">"
+        ]
+      }
+    ],
+    "exports": [
+      "KeyFieldProps",
+      "useStoredKey"
+    ]
+  },
+  "generator-card": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/generator-card",
+        "names": [
+          "GeneratorCard",
+          "GeneratorRun",
+          "GeneratorEmpty",
+          "GeneratorCardProps",
+          "GeneratorPersona"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "GeneratorCard",
+        "props": [
+          {
+            "name": "persona",
+            "type": "GeneratorPersona",
+            "optional": false
+          },
+          {
+            "name": "busy",
+            "type": "boolean",
+            "optional": true,
+            "description": "A run is going: the send becomes a stop, which `onStop` answers.",
+            "default": "false"
+          },
+          {
+            "name": "onPrompt",
+            "type": "(prompt: string) => void",
+            "optional": true,
+            "description": "What a submitted prompt starts."
+          },
+          {
+            "name": "onStop",
+            "type": "() => void",
+            "optional": true
+          },
+          {
+            "name": "placeholder",
+            "type": "string",
+            "optional": true,
+            "default": "\"Describe it…\""
+          },
+          {
+            "name": "settings",
+            "type": "React.ReactNode",
+            "optional": true,
+            "description": "The panel behind the gear — a `KeyField`, a model note, whatever the generator can be handed. No gear renders when there is nothing to set."
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<typeof ChatCard>, \"onSubmit\">"
+        ]
+      },
+      {
+        "name": "GeneratorRun",
+        "description": "One exchange: what was asked, then what came of it. The prompt keeps the asker's side of the thread and the outcome the maker's, so a card with three runs in it reads as the conversation it was.",
+        "props": [
+          {
+            "name": "prompt",
+            "type": "string",
+            "optional": false
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "GeneratorEmpty",
+        "description": "What the card says before it has made anything. Rendered by the caller only while the thread is empty — a greeting that hangs around under real work stops being a greeting.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"p\">"
+        ]
+      }
+    ],
+    "exports": [
+      "GeneratorCardProps",
+      "GeneratorPersona"
+    ]
+  },
+  "agent-card": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/agent-card",
+        "names": [
+          "AgentStateChip",
+          "AgentCard",
+          "AgentCardProps",
+          "AgentPersona",
+          "AgentState",
+          "AgentStateChipProps"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "AgentStateChip",
+        "description": "The state, worn as a chip: a dot that can be read at a distance and the word for anyone closer. A `status` region, so the moment the run turns to `awaiting` is announced rather than discovered.",
+        "props": [
+          {
+            "name": "state",
+            "type": "AgentState",
+            "optional": false
+          },
+          {
+            "name": "labels",
+            "type": "Partial<Record<AgentState, string>>",
+            "optional": true,
+            "description": "A project's own words for the states, where the defaults are not them."
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<\"span\">"
+        ]
+      },
+      {
+        "name": "AgentCard",
+        "props": [
+          {
+            "name": "persona",
+            "type": "AgentPersona",
+            "optional": false
+          },
+          {
+            "name": "footer",
+            "type": "React.ReactNode",
+            "optional": true,
+            "description": "A composer, a run button, a report line — whatever stands in the foot."
+          },
+          {
+            "name": "labels",
+            "type": "Partial<Record<AgentState, string>>",
+            "optional": true
+          },
+          {
+            "name": "state",
+            "type": "AgentState",
+            "optional": true,
+            "default": "\"idle\""
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<typeof ChatCard>"
+        ]
+      }
+    ],
+    "exports": [
+      "AgentCardProps",
+      "AgentPersona",
+      "AgentState",
+      "AgentStateChipProps"
     ]
   },
   "empty-state": {
@@ -4545,6 +4874,46 @@
     "components": [],
     "exports": [
       "cn"
+    ]
+  },
+  "avatars": {
+    "imports": [
+      {
+        "module": "@/lib/avatars",
+        "names": [
+          "avatarFor",
+          "AvatarOptions",
+          "sampleImageFor"
+        ]
+      }
+    ],
+    "components": [],
+    "exports": [
+      "avatarFor",
+      "AvatarOptions",
+      "sampleImageFor"
+    ]
+  },
+  "generation": {
+    "imports": [
+      {
+        "module": "@/lib/generation",
+        "names": [
+          "GeneratedMedia",
+          "generateImageWithGemini",
+          "generateVideoWithGemini",
+          "IMAGE_MODEL",
+          "VIDEO_MODEL"
+        ]
+      }
+    ],
+    "components": [],
+    "exports": [
+      "GeneratedMedia",
+      "generateImageWithGemini",
+      "generateVideoWithGemini",
+      "IMAGE_MODEL",
+      "VIDEO_MODEL"
     ]
   },
   "highlight": {

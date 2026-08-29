@@ -21,6 +21,35 @@ export const lib: Registry["items"] = [
     ],
   },
   {
+    name: "avatars",
+    type: "registry:lib",
+    title: "Avatars",
+    description:
+      "The portrait service, in one place: a deterministic marbled image for any name — every persona gets a face nobody had to draw — plus the sample-image form the generator demos paint with when there is no key.",
+    files: [
+      {
+        path: "lib/avatars.ts",
+        type: "registry:lib",
+        target: "lib/avatars.ts",
+      },
+    ],
+  },
+  {
+    name: "generation",
+    type: "registry:lib",
+    title: "Generation",
+    description:
+      "Image and video generation from the browser on the reader's own key — Gemini for pictures, Veo started and then polled for footage — every call abortable, because a stop button that stops nothing is a decoration.",
+    dependencies: ["ai", "@ai-sdk/google"],
+    files: [
+      {
+        path: "lib/generation.ts",
+        type: "registry:lib",
+        target: "lib/generation.ts",
+      },
+    ],
+  },
+  {
     name: "highlight",
     type: "registry:lib",
     title: "Highlight",

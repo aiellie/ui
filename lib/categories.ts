@@ -2,7 +2,7 @@ import {
   SquareTerminalIcon,
   MessageSquareDotIcon,
   BubbleChatEditIcon,
-  BubbleChatSparkIcon,
+  Cards01Icon,
 } from "@hugeicons/core-free-icons"
 import type { IconSvgElement } from "@hugeicons/react"
 
@@ -18,14 +18,14 @@ export interface RegistryCategory {
  * each one a label over the examples that fell into it.
  */
 export const registryCategories: RegistryCategory[] = [
-  /* Journey order, not alphabetical: the assembled chat first, then the
-     messages inside it, the composer under it, and the code the answers
-     carry. */
+  /* Journey order, not alphabetical: the finished cards first — a chat, a
+     generator, an agent, each one something whole — then the messages inside
+     them, the composer under them, and the code the answers carry. */
   {
-    name: "Chat",
-    slug: "chat",
+    name: "Cards",
+    slug: "cards",
     hidden: false,
-    icon: BubbleChatSparkIcon,
+    icon: Cards01Icon,
   },
   {
     name: "Messages",

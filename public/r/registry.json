@@ -94,7 +94,7 @@
       "name": "tool-call",
       "type": "registry:ui",
       "title": "Tool Call",
-      "description": "A tool being called and what it gave back, folded away behind the one line worth reading without opening it — queued, turning, finished or failed, with the arguments and the result each under their own heading.",
+      "description": "A tool being called and what it gave back, folded away behind the one line worth reading without opening it — queued, awaiting approval, turning, finished or failed, with approve and deny standing where the run stopped, and the arguments and result each under their own heading.",
       "dependencies": [
         "@base-ui/react",
         "@hugeicons/core-free-icons",
@@ -102,6 +102,7 @@
       ],
       "registryDependencies": [
         "https://ui.aiellie.dev/r/actions.json",
+        "https://ui.aiellie.dev/r/button.json",
         "https://ui.aiellie.dev/r/utils.json"
       ],
       "files": [
@@ -544,7 +545,7 @@
       "name": "chat-card",
       "type": "registry:ui",
       "title": "Chat Card",
-      "description": "A chat, framed: a header that stays, a middle that scrolls and follows the newest message until the reader scrolls up, and a foot for the composer that does not move when the thread grows.",
+      "description": "A chat, framed: a top that stays — a floating avatar by default, a bar where a card wants one — a middle that scrolls and follows the newest message until the reader scrolls up, and a foot for the composer that does not move when the thread grows.",
       "registryDependencies": [
         "https://ui.aiellie.dev/r/utils.json"
       ],
@@ -611,6 +612,95 @@
           "path": "components/aiellie-ui/chat-avatar.tsx",
           "type": "registry:ui",
           "target": "components/aiellie-ui/chat-avatar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "media",
+      "type": "registry:ui",
+      "title": "Media",
+      "description": "The frame a generated picture or clip arrives in: it holds its aspect for the whole wait, shimmers until the pixels land, and lets them fade in over the placeholder rather than mounting on top of it — with a corner badge for the word the result needs to carry.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/actions.json",
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/media.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/media.tsx"
+        }
+      ]
+    },
+    {
+      "name": "key-field",
+      "type": "registry:ui",
+      "title": "Key Field",
+      "description": "A credential of the reader's own, kept in the reader's own browser: a masked field that saves to localStorage as it is typed, a reveal for a screen nobody else is watching, and a line under it saying where the key goes — because a secret box should answer that.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/tooltip-icon-button.json",
+        "https://ui.aiellie.dev/r/input.json",
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/key-field.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/key-field.tsx"
+        }
+      ]
+    },
+    {
+      "name": "generator-card",
+      "type": "registry:ui",
+      "title": "Generator Card",
+      "description": "A generator framed as the chat it really is: a persona floating at the top, prompts going down the thread and what they made coming back up it, a settings popover for the key, and a send that turns into a stop while a run is going.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/chat-avatar.json",
+        "https://ui.aiellie.dev/r/chat-card.json",
+        "https://ui.aiellie.dev/r/message-input.json",
+        "https://ui.aiellie.dev/r/menu.json",
+        "https://ui.aiellie.dev/r/tooltip-icon-button.json",
+        "https://ui.aiellie.dev/r/bubble.json",
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "dependencies": [
+        "@base-ui/react",
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react",
+        "ai"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/generator-card.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/generator-card.tsx"
+        }
+      ]
+    },
+    {
+      "name": "agent-card",
+      "type": "registry:ui",
+      "title": "Agent Card",
+      "description": "An agent at work on a card: the persona floating at the top, the run coming down the thread in the chat's own parts, and a state chip that answers the only question a glance is asking — does it need me — with the same amber an awaiting tool call wears.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/chat.json",
+        "https://ui.aiellie.dev/r/chat-avatar.json",
+        "https://ui.aiellie.dev/r/chat-card.json",
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "dependencies": [
+        "@hugeicons/react"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/agent-card.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/agent-card.tsx"
         }
       ]
     },
@@ -1088,16 +1178,16 @@
       "name": "chat-card-demo",
       "type": "registry:example",
       "title": "Chat Card",
-      "description": "A whole little chat in one frame — header, thread and composer — following a thread as it arrives, and holding an opening screen when there is nothing in it yet.",
+      "description": "The card every card here is built on: an avatar floating over the thread on glass, messages thinning out beneath it, a composer in the foot — following an arriving thread, holding a group, and opening empty.",
       "registryDependencies": [
         "https://ui.aiellie.dev/r/chat-card.json",
-        "https://ui.aiellie.dev/r/empty-state.json",
+        "https://ui.aiellie.dev/r/chat-avatar.json",
+        "https://ui.aiellie.dev/r/avatars.json",
         "https://ui.aiellie.dev/r/message-input.json",
-        "https://ui.aiellie.dev/r/suggestions.json",
+        "https://ui.aiellie.dev/r/timestamps.json",
         "https://ui.aiellie.dev/r/tooltip-icon-button.json",
         "https://ui.aiellie.dev/r/typing-indicator.json",
-        "https://ui.aiellie.dev/r/bubble.json",
-        "https://ui.aiellie.dev/r/message.json"
+        "https://ui.aiellie.dev/r/bubble.json"
       ],
       "dependencies": [
         "@hugeicons/core-free-icons",
@@ -1105,13 +1195,13 @@
       ],
       "files": [
         {
-          "path": "examples/messages/chat-card.tsx",
+          "path": "examples/cards/chat-card.tsx",
           "type": "registry:example",
-          "target": "examples/messages/chat-card.tsx"
+          "target": "examples/cards/chat-card.tsx"
         }
       ],
       "categories": [
-        "chat"
+        "cards"
       ],
       "meta": {
         "variants": [
@@ -1121,11 +1211,131 @@
           },
           {
             "name": "Arriving",
-            "demo": "ChatCardLiveDemo"
+            "demo": "ChatCardArrivingDemo"
           },
           {
-            "name": "Empty",
-            "demo": "ChatCardEmptyDemo"
+            "name": "Group",
+            "demo": "ChatCardGroupDemo"
+          },
+          {
+            "name": "Opening",
+            "demo": "ChatCardOpeningDemo"
+          }
+        ],
+        "wide": true
+      }
+    },
+    {
+      "name": "image-generator-demo",
+      "type": "registry:example",
+      "title": "Image Generator",
+      "description": "Generation as the chat it really is: prompts down the thread, pictures back up it. Paste a Gemini key in the settings and it runs the real model from your browser; without one, the Painter does abstracts and says so.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/generator-card.json",
+        "https://ui.aiellie.dev/r/key-field.json",
+        "https://ui.aiellie.dev/r/media.json",
+        "https://ui.aiellie.dev/r/message-actions.json",
+        "https://ui.aiellie.dev/r/avatars.json",
+        "https://ui.aiellie.dev/r/generation.json"
+      ],
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "files": [
+        {
+          "path": "examples/cards/image-generator.tsx",
+          "type": "registry:example",
+          "target": "examples/cards/image-generator.tsx"
+        }
+      ],
+      "categories": [
+        "cards"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Default",
+            "demo": "ImageGeneratorDemo"
+          },
+          {
+            "name": "States",
+            "demo": "ImageGeneratorStatesDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "video-generator-demo",
+      "type": "registry:example",
+      "title": "Video Generator",
+      "description": "The same card pointed at Veo, with the states video actually has: a render measured in minutes, an elapsed count so the wait reads as spent rather than hung, and a storyboard standing in when there is no key.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/generator-card.json",
+        "https://ui.aiellie.dev/r/key-field.json",
+        "https://ui.aiellie.dev/r/media.json",
+        "https://ui.aiellie.dev/r/avatars.json",
+        "https://ui.aiellie.dev/r/generation.json"
+      ],
+      "dependencies": [
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "examples/cards/video-generator.tsx",
+          "type": "registry:example",
+          "target": "examples/cards/video-generator.tsx"
+        }
+      ],
+      "categories": [
+        "cards"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Default",
+            "demo": "VideoGeneratorDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "agent-card-demo",
+      "type": "registry:example",
+      "title": "Agent Card",
+      "description": "An agent at work: thinking, calling tools, and — the state that makes it an agent — stopping to ask before it writes anything. The Reviewer variant reads a diff, because a transcript is whatever the work was.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/agent-card.json",
+        "https://ui.aiellie.dev/r/chat.json",
+        "https://ui.aiellie.dev/r/code-block.json",
+        "https://ui.aiellie.dev/r/code-diff.json",
+        "https://ui.aiellie.dev/r/button.json",
+        "https://ui.aiellie.dev/r/avatars.json"
+      ],
+      "dependencies": [
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "examples/cards/agent.tsx",
+          "type": "registry:example",
+          "target": "examples/cards/agent.tsx"
+        }
+      ],
+      "categories": [
+        "cards"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Researcher",
+            "demo": "AgentCardDemo"
+          },
+          {
+            "name": "Reviewer",
+            "demo": "AgentReviewerDemo"
           }
         ],
         "wide": true
@@ -1140,6 +1350,7 @@
         "https://ui.aiellie.dev/r/chat.json",
         "https://ui.aiellie.dev/r/add-menu.json",
         "https://ui.aiellie.dev/r/approval-mode-menu.json",
+        "https://ui.aiellie.dev/r/chat-avatar.json",
         "https://ui.aiellie.dev/r/chat-card.json",
         "https://ui.aiellie.dev/r/citations.json",
         "https://ui.aiellie.dev/r/effort-menu.json",
@@ -1153,8 +1364,8 @@
         "https://ui.aiellie.dev/r/tool-picker.json",
         "https://ui.aiellie.dev/r/tooltip-icon-button.json",
         "https://ui.aiellie.dev/r/typing-indicator.json",
-        "https://ui.aiellie.dev/r/message.json",
-        "https://ui.aiellie.dev/r/tooltip.json"
+        "https://ui.aiellie.dev/r/tooltip.json",
+        "https://ui.aiellie.dev/r/avatars.json"
       ],
       "dependencies": [
         "@base-ui/react",
@@ -1164,13 +1375,13 @@
       ],
       "files": [
         {
-          "path": "examples/messages/chat.tsx",
+          "path": "examples/cards/chat.tsx",
           "type": "registry:example",
-          "target": "examples/messages/chat.tsx"
+          "target": "examples/cards/chat.tsx"
         }
       ],
       "categories": [
-        "chat"
+        "cards"
       ],
       "meta": {
         "variants": [
@@ -2246,7 +2457,7 @@
         }
       ],
       "categories": [
-        "chat"
+        "composer"
       ],
       "meta": {
         "variants": [
@@ -2696,51 +2907,6 @@
       }
     },
     {
-      "name": "chat-avatar-demo",
-      "type": "registry:example",
-      "title": "Chat Avatar",
-      "description": "The header as a floating cluster: a portrait and a name held at the top of the thread, with the messages running behind the glass and thinning out under it — one face, a group's overlapped, and the plain version for a thread with nothing in it yet.",
-      "registryDependencies": [
-        "https://ui.aiellie.dev/r/chat-avatar.json",
-        "https://ui.aiellie.dev/r/chat-card.json",
-        "https://ui.aiellie.dev/r/message-input.json",
-        "https://ui.aiellie.dev/r/timestamps.json",
-        "https://ui.aiellie.dev/r/tooltip-icon-button.json",
-        "https://ui.aiellie.dev/r/bubble.json"
-      ],
-      "dependencies": [
-        "@hugeicons/core-free-icons",
-        "@hugeicons/react"
-      ],
-      "files": [
-        {
-          "path": "examples/messages/chat-avatar.tsx",
-          "type": "registry:example",
-          "target": "examples/messages/chat-avatar.tsx"
-        }
-      ],
-      "categories": [
-        "chat"
-      ],
-      "meta": {
-        "variants": [
-          {
-            "name": "Default",
-            "demo": "ChatAvatarDemo"
-          },
-          {
-            "name": "Group",
-            "demo": "ChatAvatarGroupDemo"
-          },
-          {
-            "name": "Opening",
-            "demo": "ChatAvatarOpeningDemo"
-          }
-        ],
-        "wide": true
-      }
-    },
-    {
       "name": "utils",
       "type": "registry:lib",
       "title": "Utils",
@@ -2754,6 +2920,36 @@
           "path": "lib/utils.ts",
           "type": "registry:lib",
           "target": "lib/utils.ts"
+        }
+      ]
+    },
+    {
+      "name": "avatars",
+      "type": "registry:lib",
+      "title": "Avatars",
+      "description": "The portrait service, in one place: a deterministic marbled image for any name — every persona gets a face nobody had to draw — plus the sample-image form the generator demos paint with when there is no key.",
+      "files": [
+        {
+          "path": "lib/avatars.ts",
+          "type": "registry:lib",
+          "target": "lib/avatars.ts"
+        }
+      ]
+    },
+    {
+      "name": "generation",
+      "type": "registry:lib",
+      "title": "Generation",
+      "description": "Image and video generation from the browser on the reader's own key — Gemini for pictures, Veo started and then polled for footage — every call abortable, because a stop button that stops nothing is a decoration.",
+      "dependencies": [
+        "ai",
+        "@ai-sdk/google"
+      ],
+      "files": [
+        {
+          "path": "lib/generation.ts",
+          "type": "registry:lib",
+          "target": "lib/generation.ts"
         }
       ]
     },

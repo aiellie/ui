@@ -22,31 +22,121 @@ export const examples: Registry["items"] = [
     type: "registry:example",
     title: "Chat Card",
     description:
-      "A whole little chat in one frame — header, thread and composer — following a thread as it arrives, and holding an opening screen when there is nothing in it yet.",
+      "The card every card here is built on: an avatar floating over the thread on glass, messages thinning out beneath it, a composer in the foot — following an arriving thread, holding a group, and opening empty.",
     registryDependencies: [
       "chat-card",
-      "empty-state",
+      "chat-avatar",
+      "avatars",
       "message-input",
-      "suggestions",
+      "timestamps",
       "tooltip-icon-button",
       "typing-indicator",
       "bubble",
-      "message",
     ],
     dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
     files: [
       {
-        path: "examples/messages/chat-card.tsx",
+        path: "examples/cards/chat-card.tsx",
         type: "registry:example",
-        target: "examples/messages/chat-card.tsx",
+        target: "examples/cards/chat-card.tsx",
       },
     ],
-    categories: ["chat"],
+    categories: ["cards"],
     meta: {
       variants: [
         { name: "Default", demo: "ChatCardDemo" },
-        { name: "Arriving", demo: "ChatCardLiveDemo" },
-        { name: "Empty", demo: "ChatCardEmptyDemo" },
+        { name: "Arriving", demo: "ChatCardArrivingDemo" },
+        { name: "Group", demo: "ChatCardGroupDemo" },
+        { name: "Opening", demo: "ChatCardOpeningDemo" },
+      ],
+      wide: true,
+    },
+  },
+  {
+    name: "image-generator-demo",
+    type: "registry:example",
+    title: "Image Generator",
+    description:
+      "Generation as the chat it really is: prompts down the thread, pictures back up it. Paste a Gemini key in the settings and it runs the real model from your browser; without one, the Painter does abstracts and says so.",
+    registryDependencies: [
+      "generator-card",
+      "key-field",
+      "media",
+      "message-actions",
+      "avatars",
+      "generation",
+    ],
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    files: [
+      {
+        path: "examples/cards/image-generator.tsx",
+        type: "registry:example",
+        target: "examples/cards/image-generator.tsx",
+      },
+    ],
+    categories: ["cards"],
+    meta: {
+      variants: [
+        { name: "Default", demo: "ImageGeneratorDemo" },
+        { name: "States", demo: "ImageGeneratorStatesDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "video-generator-demo",
+    type: "registry:example",
+    title: "Video Generator",
+    description:
+      "The same card pointed at Veo, with the states video actually has: a render measured in minutes, an elapsed count so the wait reads as spent rather than hung, and a storyboard standing in when there is no key.",
+    registryDependencies: [
+      "generator-card",
+      "key-field",
+      "media",
+      "avatars",
+      "generation",
+    ],
+    dependencies: ["@hugeicons/core-free-icons"],
+    files: [
+      {
+        path: "examples/cards/video-generator.tsx",
+        type: "registry:example",
+        target: "examples/cards/video-generator.tsx",
+      },
+    ],
+    categories: ["cards"],
+    meta: {
+      variants: [{ name: "Default", demo: "VideoGeneratorDemo" }],
+      wide: false,
+    },
+  },
+  {
+    name: "agent-card-demo",
+    type: "registry:example",
+    title: "Agent Card",
+    description:
+      "An agent at work: thinking, calling tools, and — the state that makes it an agent — stopping to ask before it writes anything. The Reviewer variant reads a diff, because a transcript is whatever the work was.",
+    registryDependencies: [
+      "agent-card",
+      "chat",
+      "code-block",
+      "code-diff",
+      "button",
+      "avatars",
+    ],
+    dependencies: ["@hugeicons/core-free-icons"],
+    files: [
+      {
+        path: "examples/cards/agent.tsx",
+        type: "registry:example",
+        target: "examples/cards/agent.tsx",
+      },
+    ],
+    categories: ["cards"],
+    meta: {
+      variants: [
+        { name: "Researcher", demo: "AgentCardDemo" },
+        { name: "Reviewer", demo: "AgentReviewerDemo" },
       ],
       wide: true,
     },
@@ -61,6 +151,7 @@ export const examples: Registry["items"] = [
       "chat",
       "add-menu",
       "approval-mode-menu",
+      "chat-avatar",
       "chat-card",
       "citations",
       "effort-menu",
@@ -74,8 +165,8 @@ export const examples: Registry["items"] = [
       "tool-picker",
       "tooltip-icon-button",
       "typing-indicator",
-      "message",
       "tooltip",
+      "avatars",
     ],
     dependencies: [
       "@base-ui/react",
@@ -85,12 +176,12 @@ export const examples: Registry["items"] = [
     ],
     files: [
       {
-        path: "examples/messages/chat.tsx",
+        path: "examples/cards/chat.tsx",
         type: "registry:example",
-        target: "examples/messages/chat.tsx",
+        target: "examples/cards/chat.tsx",
       },
     ],
-    categories: ["chat"],
+    categories: ["cards"],
     meta: {
       variants: [
         { name: "Default", demo: "ChatDemo" },
@@ -771,7 +862,7 @@ export const examples: Registry["items"] = [
         target: "examples/composer/empty-state.tsx",
       },
     ],
-    categories: ["chat"],
+    categories: ["composer"],
     meta: {
       variants: [{ name: "Default", demo: "EmptyStateDemo" }],
       wide: false,
@@ -1087,38 +1178,6 @@ export const examples: Registry["items"] = [
         { name: "On hover", demo: "MessageActionsOnHoverDemo" },
       ],
       wide: false,
-    },
-  },
-  {
-    name: "chat-avatar-demo",
-    type: "registry:example",
-    title: "Chat Avatar",
-    description:
-      "The header as a floating cluster: a portrait and a name held at the top of the thread, with the messages running behind the glass and thinning out under it — one face, a group's overlapped, and the plain version for a thread with nothing in it yet.",
-    registryDependencies: [
-      "chat-avatar",
-      "chat-card",
-      "message-input",
-      "timestamps",
-      "tooltip-icon-button",
-      "bubble",
-    ],
-    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
-    files: [
-      {
-        path: "examples/messages/chat-avatar.tsx",
-        type: "registry:example",
-        target: "examples/messages/chat-avatar.tsx",
-      },
-    ],
-    categories: ["chat"],
-    meta: {
-      variants: [
-        { name: "Default", demo: "ChatAvatarDemo" },
-        { name: "Group", demo: "ChatAvatarGroupDemo" },
-        { name: "Opening", demo: "ChatAvatarOpeningDemo" },
-      ],
-      wide: true,
     },
   },
 ]

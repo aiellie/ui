@@ -58,6 +58,7 @@ import {
 import { Timestamp } from "@/components/aiellie-ui/timestamps"
 import {
   ToolCall,
+  ToolCallApproval,
   ToolCallCode,
   ToolCallName,
   ToolCallPanel,
@@ -125,6 +126,17 @@ export type ChatPart =
       status?: ToolCallStatus
       arguments?: string
       result?: string
+      /**
+       * Rendered while the status is `awaiting` — the question the run is
+       * stopped on, and what answering it does. The handlers live in the data
+       * because the data is where the run lives: whoever scripted the parts
+       * is the only one who knows what an approval unblocks.
+       */
+      approval?: {
+        question?: React.ReactNode
+        onApprove?: () => void
+        onDeny?: () => void
+      }
     }
   /** Prose, whole. Takes nodes, so an answer can carry its own citation marks. */
   | { type: "text"; text: React.ReactNode }
@@ -255,6 +267,17 @@ export function ChatTurnPart({ part }: { part: ChatPart }) {
               <ToolCallSummary>{part.summary}</ToolCallSummary>
             ) : null}
           </ToolCallTrigger>
+          {/* Mounted whenever the part carries one — the approval renders
+              itself only while the status is `awaiting`, so answering it
+              clears the question without this file keeping score. */}
+          {part.approval ? (
+            <ToolCallApproval
+              onApprove={part.approval.onApprove}
+              onDeny={part.approval.onDeny}
+            >
+              {part.approval.question}
+            </ToolCallApproval>
+          ) : null}
           {/* No panel at all when there is nothing in it: a chevron that opens
               onto an empty box is worse than a row that plainly does not open. */}
           {part.arguments || part.result ? (

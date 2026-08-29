@@ -6,6 +6,7 @@ import {
   ArrowRight01Icon,
   Cancel01Icon,
   CircleIcon,
+  Hold01Icon,
   Loading03Icon,
   Tick02Icon,
 } from "@hugeicons/core-free-icons"
@@ -18,9 +19,17 @@ import {
   mono,
   paper,
 } from "@/components/aiellie-ui/actions"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
-export type ToolCallStatus = "pending" | "running" | "done" | "error"
+/**
+ * `awaiting` is its own state rather than a flavour of `pending`, because the
+ * two ask opposite things of the reader: a queued call needs nothing and an
+ * awaiting one cannot move until somebody answers it. An agent that stops to
+ * ask is the whole point of letting it hold tools at all.
+ */
+export type ToolCallStatus =
+  "pending" | "awaiting" | "running" | "done" | "error"
 
 /**
  * What each state is called when it is read out. Overridable, since a project
@@ -29,6 +38,7 @@ export type ToolCallStatus = "pending" | "running" | "done" | "error"
  */
 const defaultLabels: Record<ToolCallStatus, string> = {
   pending: "Queued",
+  awaiting: "Needs approval",
   running: "Running",
   done: "Finished",
   error: "Failed",
@@ -36,6 +46,9 @@ const defaultLabels: Record<ToolCallStatus, string> = {
 
 const STATUS_ICONS: Record<ToolCallStatus, IconSvgElement> = {
   pending: CircleIcon,
+  /* A raised palm, not a clock: the call is not waiting its turn, it is
+     waiting on the reader. */
+  awaiting: Hold01Icon,
   running: Loading03Icon,
   done: Tick02Icon,
   error: Cancel01Icon,
@@ -87,22 +100,41 @@ export interface ToolCallProps extends Collapsible.Root.Props {
  * because it is the one thing three different parts each need and nothing
  * between them would otherwise carry.
  */
-function ToolCall({ status = "done", className, ...props }: ToolCallProps) {
+function ToolCall({
+  status = "done",
+  className,
+  children,
+  ...props
+}: ToolCallProps) {
+  const settled = status === "done" || status === "error"
+
   return (
     <StatusContext.Provider value={status}>
       <Collapsible.Root
         data-slot="tool-call"
         data-status={status}
-        /* Announced once it settles, never interrupted for: a tool finishing
-           is worth knowing and is not worth cutting a sentence in half. */
+        /* `aria-busy` only defers how assistive tech reads the subtree while
+           it changes — it announces nothing by itself. The announcing is the
+           status region below, whose text appears when the run settles. */
         aria-busy={status === "running" || undefined}
         className={cn(
           paper,
           "group/tool-call w-full max-w-lg overflow-hidden rounded-2xl",
+          /* Dashed is an offer not yet taken — the same border grammar as
+             `suggestions`, on the one state where the call is an offer. */
+          status === "awaiting" && "border-dashed",
           className
         )}
         {...props}
-      />
+      >
+        {children}
+        {/* Polite and text-keyed: the words appear once, when the run reaches
+            an end, which is what actually makes a screen reader speak — the
+            visible mark only changes shape, and a shape says nothing aloud. */}
+        <span role="status" className="sr-only">
+          {settled ? defaultLabels[status] : ""}
+        </span>
+      </Collapsible.Root>
     </StatusContext.Provider>
   )
 }
@@ -137,6 +169,9 @@ function ToolCallTrigger({
           "shrink-0",
           status === "error" && "text-destructive",
           status === "done" && "text-emerald-600 dark:text-emerald-400",
+          /* Amber, the same tone a warning annotation wears: something needs
+             a person, and nothing is wrong yet. */
+          status === "awaiting" && "text-amber-600 dark:text-amber-400",
           status === "running" && "text-foreground/60",
           status === "pending" && "text-foreground/25"
         )}
@@ -187,6 +222,66 @@ function ToolCallSummary({
       )}
       {...props}
     />
+  )
+}
+
+export interface ToolCallApprovalProps extends Omit<
+  React.ComponentProps<"div">,
+  "children"
+> {
+  /** The question. The default asks plainly; a caller can say what is at stake. */
+  children?: React.ReactNode
+  onApprove?: () => void
+  onDeny?: () => void
+  approveLabel?: string
+  denyLabel?: string
+}
+
+/**
+ * The question an `awaiting` call is asking, with the two answers beside it.
+ * It renders only while the status is `awaiting`, so a caller mounts it once
+ * and the approval clears itself the moment the answer moves the status on —
+ * a question still standing after it was answered is the worst kind of stale.
+ *
+ * It sits outside the collapsible panel on purpose: what the call *wants to
+ * do* is behind the chevron for whoever cares, but the asking cannot be —
+ * a question hidden in a drawer is a run that looks stuck.
+ *
+ * Approve is filled and deny is not, which is a recommendation, not a trick:
+ * the agent asked because it thinks the step is right, and the buttons say
+ * so while leaving no doubt both are real answers.
+ */
+function ToolCallApproval({
+  children = "Run this?",
+  onApprove,
+  onDeny,
+  approveLabel = "Approve",
+  denyLabel = "Deny",
+  className,
+  ...props
+}: ToolCallApprovalProps) {
+  const status = React.useContext(StatusContext)
+  if (status !== "awaiting") return null
+
+  return (
+    <div
+      data-slot="tool-call-approval"
+      className={cn(
+        "flex items-center gap-2 border-t border-dashed border-border/60 px-3.5 py-2.5",
+        className
+      )}
+      {...props}
+    >
+      <span className="min-w-0 flex-1 truncate text-[12px] text-foreground/70">
+        {children}
+      </span>
+      <Button size="sm" variant="ghost" onClick={onDeny}>
+        {denyLabel}
+      </Button>
+      <Button size="sm" onClick={onApprove}>
+        {approveLabel}
+      </Button>
+    </div>
   )
 }
 
@@ -270,6 +365,7 @@ function ToolCallCode({
 
 export {
   ToolCall,
+  ToolCallApproval,
   ToolCallCode,
   ToolCallName,
   ToolCallPanel,

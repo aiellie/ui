@@ -31,10 +31,9 @@ export interface ChatAvatarProps extends React.ComponentProps<"div"> {
  * that thread's own padding so the glass reaches the card's edges rather than
  * ending in a stripe short of them.
  *
- * A card wearing this has no `ChatCardHeader`, since this is the header. Say so
- * with `grid-rows-[1fr_auto]` on the `ChatCard`: its rows are header, thread,
- * foot in that order, and a card given only two of them otherwise hands the
- * thread the header's row and leaves the spare height under the composer.
+ * A card wearing this has no `ChatCardHeader`, since this is the header — and
+ * that costs nothing to say: the card is a column, so the thread simply takes
+ * whatever a header would have held.
  */
 export function ChatAvatar({
   floating = true,

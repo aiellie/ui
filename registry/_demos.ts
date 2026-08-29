@@ -39,7 +39,9 @@ import {
   AddCircleIcon,
   LayoutBottomIcon,
   Attachment01Icon,
-  UserCircle02Icon,
+  AiImageIcon,
+  AiVideo01Icon,
+  AiSearch02Icon,
 } from "@hugeicons/core-free-icons"
 import type { IconSvgElement } from "@hugeicons/react"
 import type { RegistryItem } from "shadcn/schema"
@@ -58,9 +60,11 @@ import * as toolCallDemos from "@/examples/coding/tool-call"
 import * as codeSnippetDemos from "@/examples/coding/code-snippet"
 import * as bubbleDemos from "@/examples/messages/bubble"
 import * as messageDemos from "@/examples/messages/message"
-import * as chatCardDemos from "@/examples/messages/chat-card"
-import * as chatDemos from "@/examples/messages/chat"
-import * as chatAvatarDemos from "@/examples/messages/chat-avatar"
+import * as chatCardDemos from "@/examples/cards/chat-card"
+import * as chatDemos from "@/examples/cards/chat"
+import * as imageGeneratorDemos from "@/examples/cards/image-generator"
+import * as videoGeneratorDemos from "@/examples/cards/video-generator"
+import * as agentCardDemos from "@/examples/cards/agent"
 import * as messageActionsDemos from "@/examples/messages/message-actions"
 import * as emptyStateDemos from "@/examples/composer/empty-state"
 import * as attachmentsDemos from "@/examples/composer/attachments"
@@ -214,9 +218,17 @@ const exampleDemos: Record<string, ExampleDemos> = {
     icon: AiChat02Icon,
     components: { ...chatDemos },
   },
-  "chat-avatar-demo": {
-    icon: UserCircle02Icon,
-    components: { ...chatAvatarDemos },
+  "image-generator-demo": {
+    icon: AiImageIcon,
+    components: { ...imageGeneratorDemos },
+  },
+  "video-generator-demo": {
+    icon: AiVideo01Icon,
+    components: { ...videoGeneratorDemos },
+  },
+  "agent-card-demo": {
+    icon: AiSearch02Icon,
+    components: { ...agentCardDemos },
   },
   "message-actions-demo": {
     icon: Comment01Icon,

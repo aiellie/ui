@@ -20,12 +20,12 @@ import {
   type ChatPart,
 } from "@/components/aiellie-ui/chat"
 import {
-  ChatCardActions,
-  ChatCardDescription,
-  ChatCardFooter,
-  ChatCardHeader,
-  ChatCardTitle,
-} from "@/components/aiellie-ui/chat-card"
+  ChatAvatar,
+  ChatAvatarActions,
+  ChatAvatarImage,
+  ChatAvatarName,
+} from "@/components/aiellie-ui/chat-avatar"
+import { ChatCardFooter } from "@/components/aiellie-ui/chat-card"
 import { Citation, type Source } from "@/components/aiellie-ui/citations"
 import { type AddAction } from "@/components/aiellie-ui/composer/add-menu"
 import {
@@ -73,7 +73,7 @@ import { ResponseCodeBlock } from "@/components/aiellie-ui/response"
 import { Suggestions } from "@/components/aiellie-ui/suggestions"
 import { TooltipIconButton } from "@/components/aiellie-ui/tooltip-icon-button"
 import { TypingIndicator } from "@/components/aiellie-ui/typing-indicator"
-import { MessageAvatar } from "@/components/ui/message"
+import { avatarFor } from "@/lib/avatars"
 import { TooltipProvider } from "@/components/ui/tooltip"
 
 /* ---------------------------------------------------------------------------
@@ -280,23 +280,26 @@ const commands: SlashCommand[] = [
   { id: "diff", name: "diff", description: "Show what has changed" },
 ]
 
-/** The strip across the top: whose thread it is, and the way to start another. */
-function Header({ subtitle }: { subtitle: string }) {
+/**
+ * Whose thread it is, floating over it: the same cluster every card on this
+ * page wears, so the assembled chat reads as the big sibling of the cards
+ * beside it rather than a different product.
+ */
+function Header() {
   return (
-    <ChatCardHeader>
-      <MessageAvatar className="size-7 text-[11px] font-medium text-muted-foreground">
-        E
-      </MessageAvatar>
-      <div className="min-w-0">
-        <ChatCardTitle>Ellie</ChatCardTitle>
-        <ChatCardDescription>{subtitle}</ChatCardDescription>
-      </div>
-      <ChatCardActions>
+    <ChatAvatar>
+      <ChatAvatarImage
+        src={avatarFor("ellie")}
+        fallback="E"
+        className="size-10"
+      />
+      <ChatAvatarName render={<button type="button" />}>Ellie</ChatAvatarName>
+      <ChatAvatarActions side="end">
         <TooltipIconButton tooltip="New chat">
           <HugeiconsIcon icon={PlusSignIcon} />
         </TooltipIconButton>
-      </ChatCardActions>
-    </ChatCardHeader>
+      </ChatAvatarActions>
+    </ChatAvatar>
   )
 }
 
@@ -500,9 +503,8 @@ export function ChatDemo() {
   return (
     <TooltipProvider>
       <Chat className="max-w-2xl">
-        <Header subtitle="Rollout thread" />
-
         <ChatThread>
+          <Header />
           {messages.map((message) => (
             <ChatThreadItem
               key={message.id}
@@ -595,9 +597,8 @@ export function ChatOpeningDemo() {
   return (
     <TooltipProvider>
       <Chat className="max-w-2xl">
-        <Header subtitle="Nothing asked yet" />
-
         <ChatThread>
+          {sent ? <Header /> : null}
           {sent ? (
             <ChatThreadItem scrollAnchor>
               <ChatTurn

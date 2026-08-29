@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "avatars",
+  "title": "Avatars",
+  "description": "The portrait service, in one place: a deterministic marbled image for any name — every persona gets a face nobody had to draw — plus the sample-image form the generator demos paint with when there is no key.",
+  "files": [
+    {
+      "path": "lib/avatars.ts",
+      "content": "/**\n * The portrait service. `images.aiellie.app` paints a deterministic marbled\n * image for any name it is asked for — the same name always returns the same\n * picture — which is exactly what a set of agent personas needs: every agent\n * gets a face nobody had to draw, and the face survives a redeploy.\n *\n * One module owns the URL shape so a demo never writes the host by hand;\n * when the service moves or grows a parameter, this is the whole edit.\n */\n\nconst HOST = \"https://images.aiellie.app\"\n\n/** URL-safe: the service keys on the path segment, so the name has to be one. */\nfunction slugOf(name: string) {\n  return (\n    name\n      .toLowerCase()\n      .replace(/[^a-z0-9]+/g, \"-\")\n      .replace(/^-+|-+$/g, \"\") || \"anonymous\"\n  )\n}\n\nexport interface AvatarOptions {\n  /** Corner radius baked into the image itself. 0 by default — the elements\n   * round their own corners, and a picture that arrives pre-rounded fights\n   * whatever frame it is put in. */\n  radius?: number\n}\n\n/** The portrait for a name — an agent's, a person's, a room's. */\nexport function avatarFor(name: string, { radius = 0 }: AvatarOptions = {}) {\n  return `${HOST}/${slugOf(name)}.png?mode=image&radius=${radius}`\n}\n\n/**\n * The same service asked for a picture rather than a portrait. A sample\n * generator for demos: every prompt gets its own abstract, so a generation\n * card can be tried — typed into, waited on, given something back — without\n * anybody's API key. The `seed` varies repeat runs of one prompt, because a\n * generator that returns the identical picture twice reads as broken.\n */\nexport function sampleImageFor(prompt: string, seed = 0) {\n  return avatarFor(seed ? `${prompt} ${seed}` : prompt)\n}\n",
+      "type": "registry:lib",
+      "target": "lib/avatars.ts"
+    }
+  ],
+  "type": "registry:lib"
+}

@@ -24,6 +24,13 @@ const nextConfig: NextConfig = {
       { source: "/design", destination: "/elements", permanent: true },
       { source: "/design/:slug", destination: "/elements", permanent: true },
       { source: "/tokens", destination: "/elements", permanent: true },
+      /* The avatar's demos live on the chat card now — the floating cluster
+         is the card's default header, not a sibling element. */
+      {
+        source: "/elements/chat-avatar",
+        destination: "/elements/chat-card",
+        permanent: true,
+      },
     ]
   },
 }

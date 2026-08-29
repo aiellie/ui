@@ -93,13 +93,13 @@ export const aiellieui: Registry["items"] = [
     type: "registry:ui",
     title: "Tool Call",
     description:
-      "A tool being called and what it gave back, folded away behind the one line worth reading without opening it — queued, turning, finished or failed, with the arguments and the result each under their own heading.",
+      "A tool being called and what it gave back, folded away behind the one line worth reading without opening it — queued, awaiting approval, turning, finished or failed, with approve and deny standing where the run stopped, and the arguments and result each under their own heading.",
     dependencies: [
       "@base-ui/react",
       "@hugeicons/core-free-icons",
       "@hugeicons/react",
     ],
-    registryDependencies: ["actions", "utils"],
+    registryDependencies: ["actions", "button", "utils"],
     files: [
       {
         path: "components/aiellie-ui/tool-call.tsx",
@@ -466,7 +466,7 @@ export const aiellieui: Registry["items"] = [
     type: "registry:ui",
     title: "Chat Card",
     description:
-      "A chat, framed: a header that stays, a middle that scrolls and follows the newest message until the reader scrolls up, and a foot for the composer that does not move when the thread grows.",
+      "A chat, framed: a top that stays — a floating avatar by default, a bar where a card wants one — a middle that scrolls and follows the newest message until the reader scrolls up, and a foot for the composer that does not move when the thread grows.",
     registryDependencies: ["utils"],
     files: [
       {
@@ -527,6 +527,82 @@ export const aiellieui: Registry["items"] = [
         path: "components/aiellie-ui/chat-avatar.tsx",
         type: "registry:ui",
         target: "components/aiellie-ui/chat-avatar.tsx",
+      },
+    ],
+  },
+  {
+    name: "media",
+    type: "registry:ui",
+    title: "Media",
+    description:
+      "The frame a generated picture or clip arrives in: it holds its aspect for the whole wait, shimmers until the pixels land, and lets them fade in over the placeholder rather than mounting on top of it — with a corner badge for the word the result needs to carry.",
+    registryDependencies: ["actions", "utils"],
+    files: [
+      {
+        path: "components/aiellie-ui/media.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/media.tsx",
+      },
+    ],
+  },
+  {
+    name: "key-field",
+    type: "registry:ui",
+    title: "Key Field",
+    description:
+      "A credential of the reader's own, kept in the reader's own browser: a masked field that saves to localStorage as it is typed, a reveal for a screen nobody else is watching, and a line under it saying where the key goes — because a secret box should answer that.",
+    registryDependencies: ["tooltip-icon-button", "input", "utils"],
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    files: [
+      {
+        path: "components/aiellie-ui/key-field.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/key-field.tsx",
+      },
+    ],
+  },
+  {
+    name: "generator-card",
+    type: "registry:ui",
+    title: "Generator Card",
+    description:
+      "A generator framed as the chat it really is: a persona floating at the top, prompts going down the thread and what they made coming back up it, a settings popover for the key, and a send that turns into a stop while a run is going.",
+    registryDependencies: [
+      "chat-avatar",
+      "chat-card",
+      "message-input",
+      "menu",
+      "tooltip-icon-button",
+      "bubble",
+      "utils",
+    ],
+    dependencies: [
+      "@base-ui/react",
+      "@hugeicons/core-free-icons",
+      "@hugeicons/react",
+      "ai",
+    ],
+    files: [
+      {
+        path: "components/aiellie-ui/generator-card.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/generator-card.tsx",
+      },
+    ],
+  },
+  {
+    name: "agent-card",
+    type: "registry:ui",
+    title: "Agent Card",
+    description:
+      "An agent at work on a card: the persona floating at the top, the run coming down the thread in the chat's own parts, and a state chip that answers the only question a glance is asking — does it need me — with the same amber an awaiting tool call wears.",
+    registryDependencies: ["chat", "chat-avatar", "chat-card", "utils"],
+    dependencies: ["@hugeicons/react"],
+    files: [
+      {
+        path: "components/aiellie-ui/agent-card.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/agent-card.tsx",
       },
     ],
   },

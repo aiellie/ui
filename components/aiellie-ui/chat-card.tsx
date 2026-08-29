@@ -5,20 +5,26 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 
 /**
- * A chat, framed: somewhere to put a thread, a composer under it, and a strip
- * across the top saying whose thread it is.
+ * A chat, framed: somewhere to put a thread, a composer under it, and whoever
+ * the thread belongs to across the top — a `ChatAvatar` floating over the
+ * messages by default, or a `ChatCardHeader` bar where a card wants one.
  *
  * This is the frame and nothing else — it holds no messages, owns no state and
  * knows nothing about what a message is. Its whole job is the shape a chat
- * takes: a header that stays, a middle that scrolls, and a foot that does not
+ * takes: a top that stays, a middle that scrolls, and a foot that does not
  * move when the middle grows.
+ *
+ * A column, not a grid: the earlier grid named its rows, so a card led by a
+ * floating avatar — which has no header row — had to re-declare them or leave
+ * a spare row's height under the composer. Flex hands the thread whatever the
+ * parts around it leave, however many of them a card has.
  */
 export function ChatCard({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="chat-card"
       className={cn(
-        "grid h-120 w-full grid-rows-[auto_1fr_auto] overflow-hidden rounded-2xl border border-border/60 bg-background",
+        "flex h-120 w-full flex-col overflow-hidden rounded-2xl border border-border/60 bg-background",
         // A card with a thread in it is a small window onto a page, so it takes
         // the page's own surface in dark rather than sitting on top of it.
         "dark:bg-background",
@@ -146,7 +152,7 @@ export function ChatCardThread({
       ref={ref}
       data-slot="chat-card-thread"
       className={cn(
-        "flex min-h-0 flex-col gap-3 overflow-y-auto overscroll-contain p-3",
+        "flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto overscroll-contain p-3",
         className
       )}
       {...props}
@@ -167,10 +173,7 @@ export function ChatCardFooter({
   return (
     <footer
       data-slot="chat-card-footer"
-      className={cn(
-        "flex flex-col gap-2 border-border/60 p-3",
-        className
-      )}
+      className={cn("flex flex-col gap-2 border-border/60 p-3", className)}
       {...props}
     />
   )
