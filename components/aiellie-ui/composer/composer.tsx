@@ -15,7 +15,10 @@ import {
 import {
   MessageInput,
   MessageInputField,
+  MessageInputLine,
+  messageInputStack,
   MessageInputSubmit,
+  MessageInputToolbar,
   type MessageInputFieldProps,
   type MessageInputProps,
   type MessageInputSubmitProps,
@@ -23,18 +26,16 @@ import {
 import { cn } from "@/lib/utils"
 
 /**
- * The whole of what a message is written in: the field with its send, the
- * names an at sign can reach, and a row underneath for what the message is
- * being sent with.
+ * The whole of what a message is written in: `message-input`'s three courses —
+ * the files above the line, the add and the send either side of the field on
+ * it, and what the message is being sent with underneath — with the names an
+ * at sign can reach wired into the field.
  *
- * The row is under the input, not in it. A control sat inside the field is
- * competing with the text for the same line — it shrinks as the message grows,
- * and every control added takes another inch off the writing. Stood on its own
- * row below, it keeps its label at any width and there is somewhere to put the
- * next one — tools, effort, approval — without the field paying for it.
- *
- * The parts are `message-input`'s and `mentions`', arranged. Nothing here
- * re-implements them: this is the shape they take together.
+ * That arrangement is not defined here. It is `message-input`'s, so a composer
+ * hand-wired from that element alone stands in the same shape as this one; the
+ * parts below are those parts under the names a composer calls them by, plus
+ * the two things this file adds — the mention menu the field answers to, and
+ * the text held here so the menu can rewrite it.
  */
 type ComposerContextValue = {
   value: string
@@ -160,7 +161,10 @@ export function Composer({
   )
 }
 
-/** The message being written and the send that takes it: one row, one form. */
+/**
+ * The form, stacked into the three courses and drawing nothing itself: the
+ * only edge in a composer is the field's own.
+ */
 export function ComposerInput({
   className,
   ...props
@@ -176,6 +180,20 @@ export function ComposerInput({
       value={value}
       onValueChange={setValue}
       onSubmit={onSubmit}
+      className={cn(messageInputStack, className)}
+      {...props}
+    />
+  )
+}
+
+/** The line, under the name a composer calls it by. */
+export function ComposerLine({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
+  return (
+    <MessageInputLine
+      data-slot="composer-line"
       className={className}
       {...props}
     />
@@ -203,33 +221,29 @@ export function ComposerField({ className, ...props }: ComposerFieldProps) {
     <MessageInputField
       data-slot="composer-field"
       {...mergeProps<"input">(mentions?.fieldProps, props)}
-      className={cn("h-9 rounded-xl", className)}
+      className={className}
     />
   )
 }
 
-/** The send, sized to stand level with the field it sits beside. */
-export function ComposerSubmit({
-  className,
-  ...props
-}: MessageInputSubmitProps) {
-  return <MessageInputSubmit className={cn("size-9", className)} {...props} />
+/**
+ * The send, at the right-hand end of the line rather than on the row below:
+ * sending is an act on this message, not a setting for it, so it stands beside
+ * the field it is sending — opposite the control that adds to it.
+ */
+export function ComposerSubmit(props: MessageInputSubmitProps) {
+  return <MessageInputSubmit data-slot="composer-submit" {...props} />
 }
 
-/**
- * The row under the input. What the message is being sent with goes here —
- * which model is answering, and whatever else the composer grows — outside the
- * field rather than inside it, so the writing keeps the whole line.
- */
+/** The row underneath, under the name a composer calls it by. */
 export function ComposerToolbar({
   className,
   ...props
 }: React.ComponentProps<"div">) {
   return (
-    <div
+    <MessageInputToolbar
       data-slot="composer-toolbar"
-      role="toolbar"
-      className={cn("flex items-center gap-1", className)}
+      className={className}
       {...props}
     />
   )

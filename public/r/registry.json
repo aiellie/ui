@@ -485,7 +485,7 @@
       "name": "composer",
       "type": "registry:ui",
       "title": "Composer",
-      "description": "The whole of what a message is written in: the field, the names an at sign can reach, and a row under the field for what the message is being sent with — the model answering it, and the send.",
+      "description": "The whole of what a message is written in, in the three courses every composer here stands by: the files it carries above the box, the plus and the field inside it, and what the message is being sent with on a row below it — outside the box, so the writing keeps its own line and the box keeps its height.",
       "registryDependencies": [
         "https://ui.aiellie.dev/r/mentions.json",
         "https://ui.aiellie.dev/r/message-input.json",
@@ -1040,6 +1040,53 @@
           "target": "components/ui/message-scroller.tsx"
         }
       ]
+    },
+    {
+      "name": "chat-card-demo",
+      "type": "registry:example",
+      "title": "Chat Card",
+      "description": "A whole little chat in one frame — header, thread and composer — following a thread as it arrives, and holding an opening screen when there is nothing in it yet.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/chat-card.json",
+        "https://ui.aiellie.dev/r/empty-state.json",
+        "https://ui.aiellie.dev/r/message-input.json",
+        "https://ui.aiellie.dev/r/suggestions.json",
+        "https://ui.aiellie.dev/r/tooltip-icon-button.json",
+        "https://ui.aiellie.dev/r/typing-indicator.json",
+        "https://ui.aiellie.dev/r/bubble.json",
+        "https://ui.aiellie.dev/r/message.json"
+      ],
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "files": [
+        {
+          "path": "examples/messages/chat-card.tsx",
+          "type": "registry:example",
+          "target": "examples/messages/chat-card.tsx"
+        }
+      ],
+      "categories": [
+        "chat"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Default",
+            "demo": "ChatCardDemo"
+          },
+          {
+            "name": "Arriving",
+            "demo": "ChatCardLiveDemo"
+          },
+          {
+            "name": "Empty",
+            "demo": "ChatCardEmptyDemo"
+          }
+        ],
+        "wide": true
+      }
     },
     {
       "name": "code-block-demo",
@@ -2003,12 +2050,16 @@
       "name": "composer-demo",
       "type": "registry:example",
       "title": "Composer",
-      "description": "A message being written: an at sign naming the people and agents it can reach, and a row under the field — not inside it — for the model answering and how hard it should think.",
+      "description": "A message being written, whole: the files it carries above the box, the plus and the field inside it, and everything it is being sent with on the row below — the model, the tools, the effort, the approval mode and the send.",
       "registryDependencies": [
         "https://ui.aiellie.dev/r/composer.json",
+        "https://ui.aiellie.dev/r/add-menu.json",
+        "https://ui.aiellie.dev/r/approval-mode-menu.json",
+        "https://ui.aiellie.dev/r/attachments.json",
         "https://ui.aiellie.dev/r/effort-menu.json",
         "https://ui.aiellie.dev/r/mentions.json",
         "https://ui.aiellie.dev/r/model-picker.json",
+        "https://ui.aiellie.dev/r/tool-picker.json",
         "https://ui.aiellie.dev/r/models.json",
         "https://ui.aiellie.dev/r/tooltip.json"
       ],
@@ -2032,6 +2083,10 @@
           {
             "name": "Default",
             "demo": "ComposerDemo"
+          },
+          {
+            "name": "Bare",
+            "demo": "ComposerBareDemo"
           }
         ],
         "wide": true
@@ -2112,10 +2167,10 @@
       "description": "A mixed set of files with a way back off each one, the same set stood under a composer field, the three things an upload can be doing, and the square form for a row that is mostly pictures.",
       "registryDependencies": [
         "https://ui.aiellie.dev/r/attachments.json",
+        "https://ui.aiellie.dev/r/add-menu.json",
+        "https://ui.aiellie.dev/r/message-input.json",
         "https://ui.aiellie.dev/r/button.json",
-        "https://ui.aiellie.dev/r/composer.json",
-        "https://ui.aiellie.dev/r/tooltip.json",
-        "https://ui.aiellie.dev/r/tooltip-icon-button.json"
+        "https://ui.aiellie.dev/r/tooltip.json"
       ],
       "dependencies": [
         "@hugeicons/core-free-icons",
@@ -2160,6 +2215,7 @@
       "description": "An at sign in the message input opening the people and agents it can name, with the example lists it draws them from.",
       "registryDependencies": [
         "https://ui.aiellie.dev/r/mentions.json",
+        "https://ui.aiellie.dev/r/add-menu.json",
         "https://ui.aiellie.dev/r/message-input.json",
         "https://ui.aiellie.dev/r/tooltip.json"
       ],
@@ -2208,6 +2264,7 @@
       "description": "A slash at the head of the composer opening what it can run, with the example catalogue it draws them from.",
       "registryDependencies": [
         "https://ui.aiellie.dev/r/slash-menu.json",
+        "https://ui.aiellie.dev/r/add-menu.json",
         "https://ui.aiellie.dev/r/message-input.json",
         "https://ui.aiellie.dev/r/tooltip.json"
       ],
@@ -2251,8 +2308,10 @@
       "description": "The model a message is being written to, changed from the composer rather than from a settings page — each row saying what its model is for, and the ones the plan does not reach shown locked rather than hidden.",
       "registryDependencies": [
         "https://ui.aiellie.dev/r/model-picker.json",
+        "https://ui.aiellie.dev/r/add-menu.json",
         "https://ui.aiellie.dev/r/message-input.json",
         "https://ui.aiellie.dev/r/models.json",
+        "https://ui.aiellie.dev/r/providers.json",
         "https://ui.aiellie.dev/r/tooltip.json"
       ],
       "files": [
@@ -2294,6 +2353,7 @@
       "description": "What the answer may reach for, turned on and off from the composer — a list that says what each tool does before asking whether it should be on, and the ones that are on stood beside the wrench in their own colours.",
       "registryDependencies": [
         "https://ui.aiellie.dev/r/tool-picker.json",
+        "https://ui.aiellie.dev/r/add-menu.json",
         "https://ui.aiellie.dev/r/message-input.json",
         "https://ui.aiellie.dev/r/model-picker.json",
         "https://ui.aiellie.dev/r/tools.json",
@@ -2334,6 +2394,7 @@
       "description": "How much a run may do without being asked again, set from the composer — five modes, each saying what it means before it is taken, and the one that never asks turning the control red so a session left in it says so unopened.",
       "registryDependencies": [
         "https://ui.aiellie.dev/r/approval-mode-menu.json",
+        "https://ui.aiellie.dev/r/add-menu.json",
         "https://ui.aiellie.dev/r/message-input.json",
         "https://ui.aiellie.dev/r/model-picker.json",
         "https://ui.aiellie.dev/r/tooltip.json"
@@ -2373,6 +2434,7 @@
       "description": "How hard the model should think, set from the composer — a slider whose stops are named so the ladder need not be guessed at, and a trigger of bars that fill as it moves.",
       "registryDependencies": [
         "https://ui.aiellie.dev/r/effort-menu.json",
+        "https://ui.aiellie.dev/r/add-menu.json",
         "https://ui.aiellie.dev/r/message-input.json",
         "https://ui.aiellie.dev/r/model-picker.json",
         "https://ui.aiellie.dev/r/tool-picker.json",
@@ -2413,6 +2475,7 @@
       "description": "The prompt an agent runs under, picked rather than pasted — each row saying how it changes the answer, the words a choice actually sets, and a catalogue of the project's own handed in whole.",
       "registryDependencies": [
         "https://ui.aiellie.dev/r/prompt-menu.json",
+        "https://ui.aiellie.dev/r/add-menu.json",
         "https://ui.aiellie.dev/r/message-input.json",
         "https://ui.aiellie.dev/r/model-picker.json",
         "https://ui.aiellie.dev/r/instructions.json",
@@ -2532,53 +2595,6 @@
           }
         ],
         "wide": false
-      }
-    },
-    {
-      "name": "chat-card-demo",
-      "type": "registry:example",
-      "title": "Chat Card",
-      "description": "A whole little chat in one frame — header, thread and composer — following a thread as it arrives, and holding an opening screen when there is nothing in it yet.",
-      "registryDependencies": [
-        "https://ui.aiellie.dev/r/chat-card.json",
-        "https://ui.aiellie.dev/r/empty-state.json",
-        "https://ui.aiellie.dev/r/message-input.json",
-        "https://ui.aiellie.dev/r/suggestions.json",
-        "https://ui.aiellie.dev/r/tooltip-icon-button.json",
-        "https://ui.aiellie.dev/r/typing-indicator.json",
-        "https://ui.aiellie.dev/r/bubble.json",
-        "https://ui.aiellie.dev/r/message.json"
-      ],
-      "dependencies": [
-        "@hugeicons/core-free-icons",
-        "@hugeicons/react"
-      ],
-      "files": [
-        {
-          "path": "examples/messages/chat-card.tsx",
-          "type": "registry:example",
-          "target": "examples/messages/chat-card.tsx"
-        }
-      ],
-      "categories": [
-        "chat"
-      ],
-      "meta": {
-        "variants": [
-          {
-            "name": "Default",
-            "demo": "ChatCardDemo"
-          },
-          {
-            "name": "Arriving",
-            "demo": "ChatCardLiveDemo"
-          },
-          {
-            "name": "Empty",
-            "demo": "ChatCardEmptyDemo"
-          }
-        ],
-        "wide": true
       }
     },
     {

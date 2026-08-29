@@ -97,6 +97,72 @@ export const MessageInput = ({
   )
 }
 
+/* ------------------------------------------------------------------------- *
+ * The shape a composer takes
+ * ------------------------------------------------------------------------- */
+
+/**
+ * Three courses rather than one row, which is the arrangement every composer
+ * built on this input stands in:
+ *
+ *   the files it carries       — above the line
+ *   the line it is written on  — the add on the left, the field, the send on
+ *                                the right, both controls outside the field
+ *   what it is being sent with — the row underneath
+ *
+ * The two controls that act on *this message* — the one that adds to it and
+ * the one that sends it — stand either side of the field, outside it, so the
+ * writing keeps the whole of the box and the two ends of the line are the two
+ * ends of writing a message. Everything else is a setting on the message
+ * rather than an act on it, and settings go under: a picker sat on the line
+ * would take room from the writing and put a decision between the field and
+ * the send.
+ *
+ * The form still wraps all three. `MessageInputSubmit` is the form's submit
+ * button, so a line left outside the form would be a send that cannot send.
+ *
+ * Passed as a class rather than made the default: the input is also a bare
+ * field with a send on the end of it — a reply row in a chat card, the states
+ * this element demonstrates — and that shape has only the one course.
+ */
+export const messageInputStack = "flex-col items-stretch gap-2"
+
+/**
+ * The line the message is written on: what adds to it, the field, and what
+ * sends it, in that order and level with each other.
+ *
+ * The controls are siblings of the field rather than things tucked inside it,
+ * so the field is a box with only writing in it and is free to grow into
+ * whatever the line has left.
+ */
+export const MessageInputLine = ({
+  className,
+  ...props
+}: React.ComponentProps<"div">) => (
+  <div
+    data-slot="message-input-line"
+    className={cn("flex w-full items-center gap-2", className)}
+    {...props}
+  />
+)
+
+/**
+ * The row under the line: what the message is being sent with — which model is
+ * answering, what it may reach for, how hard it should think. Not the send,
+ * which belongs on the line beside the field it is sending.
+ */
+export const MessageInputToolbar = ({
+  className,
+  ...props
+}: React.ComponentProps<"div">) => (
+  <div
+    data-slot="message-input-toolbar"
+    role="toolbar"
+    className={cn("flex items-center gap-1", className)}
+    {...props}
+  />
+)
+
 /**
  * Exported so a composer that outgrows a single line can dress a textarea to
  * match rather than guessing at these values.

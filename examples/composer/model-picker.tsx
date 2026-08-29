@@ -3,9 +3,17 @@
 import * as React from "react"
 
 import {
+  AddMenu,
+  AddMenuContent,
+  AddMenuTrigger,
+} from "@/components/aiellie-ui/composer/add-menu"
+import {
   MessageInput,
   MessageInputField,
+  MessageInputLine,
+  messageInputStack,
   MessageInputSubmit,
+  MessageInputToolbar,
 } from "@/components/aiellie-ui/composer/message-input"
 import {
   ModelPicker,
@@ -53,20 +61,23 @@ export function ModelPickerComposerDemo() {
     <TooltipProvider>
       <div className="flex w-full max-w-sm flex-col gap-2">
         <MessageInput
-          className="flex-col items-stretch gap-1 rounded-2xl border border-border/60 bg-background p-1.5 dark:bg-popover"
+          className={messageInputStack}
           onSubmit={(message) => setSent(message)}
         >
-          <MessageInputField
-            placeholder="Send a message…"
-            className="h-9 border-transparent bg-transparent px-2 focus-visible:border-transparent"
-          />
-          <div className="flex items-center justify-between gap-2">
+          <MessageInputLine>
+            <AddMenu>
+              <AddMenuTrigger />
+              <AddMenuContent side="top" />
+            </AddMenu>
+            <MessageInputField placeholder="Send a message…" />
+            <MessageInputSubmit />
+          </MessageInputLine>
+          <MessageInputToolbar>
             <ModelPicker value={model} onValueChange={setModel}>
               <ModelPickerTrigger />
               <ModelPickerContent side="top" />
             </ModelPicker>
-            <MessageInputSubmit className="size-7" />
-          </div>
+          </MessageInputToolbar>
         </MessageInput>
         <p className="ps-1 text-xs text-muted-foreground">
           {sent

@@ -10,9 +10,22 @@ import { HugeiconsIcon } from "@hugeicons/react"
 import type { ChatStatus } from "ai"
 
 import {
+  AddMenu,
+  AddMenuContent,
+  AddMenuTrigger,
+  type AddAction,
+} from "@/components/aiellie-ui/composer/add-menu"
+import {
+  ApprovalModeMenu,
+  ApprovalModeMenuContent,
+  ApprovalModeMenuTrigger,
+  findApprovalMode,
+} from "@/components/aiellie-ui/composer/approval-mode-menu"
+import {
   Composer,
   ComposerField,
   ComposerInput,
+  ComposerLine,
   ComposerSubmit,
   ComposerToolbar,
 } from "@/components/aiellie-ui/composer/composer"
@@ -28,6 +41,13 @@ import {
   ModelPickerContent,
   ModelPickerTrigger,
 } from "@/components/aiellie-ui/composer/model-picker"
+import {
+  ToolPicker,
+  ToolPickerActive,
+  ToolPickerContent,
+  ToolPickerTrigger,
+} from "@/components/aiellie-ui/composer/tool-picker"
+import { Attachment, Attachments } from "@/components/aiellie-ui/attachments"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { findModel } from "@/lib/models"
 
@@ -83,14 +103,53 @@ const mentions: MentionItem[] = [
   },
 ]
 
+interface CarriedFile {
+  id: string
+  name: string
+  size: number
+}
+
+/** What the plus can find in a demo that has no filesystem behind it. */
+const carriable: CarriedFile[] = [
+  { id: "roadmap", name: "Roadmap.pdf", size: 2_413_000 },
+  { id: "budget", name: "Budget.xlsx", size: 184_000 },
+  { id: "dashboard", name: "Dashboard.png", size: 840_000 },
+]
+
+const carriableById = new Map(carriable.map((file) => [file.id, file] as const))
+
 /**
- * The field, the names an at sign reaches, and the row underneath saying who
- * is answering — one composer rather than three controls that happen to have
- * been put near each other.
+ * The plus's catalogue, cut down to what this demo can actually produce. The
+ * shape is the default one's — a heading, a row that opens another menu, a
+ * file at the bottom of it — with the connectors left out, since a demo that
+ * cannot reach Drive should not offer it.
+ */
+const addActions: AddAction[] = [
+  {
+    id: "files",
+    group: "Attach",
+    label: "Recent files",
+    items: carriable.map((file) => ({ id: file.id, label: file.name })),
+  },
+  { id: "link", group: "Attach", label: "Paste a link", shortcut: "⌘L" },
+]
+
+/**
+ * The whole of it, in the order the parts belong in: the files it carries
+ * above the line, the plus and the send either side of the field on it, and
+ * everything the message is being sent with on the row underneath — who is
+ * answering, what it may reach for, how hard it should think, and how much it
+ * may do unattended.
+ *
+ * Nothing here arranges any of that. The three courses are `composer`'s own
+ * parts; this file only says which controls stand on the row.
  */
 export function ComposerDemo() {
   const [model, setModel] = React.useState("claude-opus-5")
   const [effort, setEffort] = React.useState("medium")
+  const [tools, setTools] = React.useState<string[]>(["read", "grep"])
+  const [mode, setMode] = React.useState("auto")
+  const [carrying, setCarrying] = React.useState<CarriedFile[]>([])
   const [status, setStatus] = React.useState<ChatStatus>("ready")
   const [sent, setSent] = React.useState<string | null>(null)
   const answering = findModel(model)?.name ?? model
@@ -101,12 +160,21 @@ export function ComposerDemo() {
     return () => clearTimeout(id)
   }, [status])
 
+  const carry = (action: AddAction) => {
+    const file = carriableById.get(action.id)
+    // The link row opens something a demo has not got.
+    if (!file) return
+    setCarrying((list) =>
+      list.some((item) => item.id === file.id) ? list : [...list, file]
+    )
+  }
+
   const thinking = findEffort(effort)?.name.toLowerCase() ?? effort
   const note =
     status === "streaming"
       ? `${answering} is answering.`
       : sent
-        ? `Sent to ${answering} on ${thinking} effort: ${sent}`
+        ? `Sent to ${answering} on ${thinking} effort, under ${findApprovalMode(mode)?.name.toLowerCase()}${carrying.length ? `, carrying ${carrying.length} ${carrying.length === 1 ? "file" : "files"}` : ""}.`
         : `Writing to ${answering}, thinking ${thinking}. Type @ for people and agents.`
 
   return (
@@ -120,21 +188,89 @@ export function ComposerDemo() {
           }}
         >
           <ComposerInput>
-            <ComposerField placeholder="Send a message, @ to name someone…" />
-            <ComposerSubmit status={status} onStop={() => setStatus("ready")} />
+            {carrying.length ? (
+              <Attachments>
+                {carrying.map((file) => (
+                  <Attachment
+                    key={file.id}
+                    name={file.name}
+                    size={file.size}
+                    onRemove={() =>
+                      setCarrying((list) =>
+                        list.filter((item) => item.id !== file.id)
+                      )
+                    }
+                  />
+                ))}
+              </Attachments>
+            ) : null}
+
+            <ComposerLine>
+              <AddMenu actions={addActions} onSelect={carry}>
+                <AddMenuTrigger />
+                <AddMenuContent side="top" />
+              </AddMenu>
+              <ComposerField placeholder="Send a message, @ to name someone…" />
+              <ComposerSubmit
+                status={status}
+                onStop={() => setStatus("ready")}
+              />
+            </ComposerLine>
+
+            <ComposerToolbar>
+              <ModelPicker value={model} onValueChange={setModel}>
+                <ModelPickerTrigger />
+                <ModelPickerContent side="top" />
+              </ModelPicker>
+              <ToolPicker value={tools} onValueChange={setTools}>
+                <ToolPickerTrigger />
+                <ToolPickerContent side="top" />
+                <ToolPickerActive />
+              </ToolPicker>
+              <EffortMenu value={effort} onValueChange={setEffort}>
+                <EffortMenuTrigger />
+                <EffortMenuContent side="top" />
+              </EffortMenu>
+              <ApprovalModeMenu value={mode} onValueChange={setMode}>
+                <ApprovalModeMenuTrigger />
+                <ApprovalModeMenuContent side="top" />
+              </ApprovalModeMenu>
+            </ComposerToolbar>
           </ComposerInput>
-          <ComposerToolbar>
-            <ModelPicker value={model} onValueChange={setModel}>
-              <ModelPickerTrigger />
-              <ModelPickerContent side="top" />
-            </ModelPicker>
-            <EffortMenu value={effort} onValueChange={setEffort}>
-              <EffortMenuTrigger />
-              <EffortMenuContent side="top" />
-            </EffortMenu>
-          </ComposerToolbar>
         </Composer>
         <p className="min-h-4 ps-1 text-xs text-muted-foreground">{note}</p>
+      </div>
+    </TooltipProvider>
+  )
+}
+
+/**
+ * The line on its own, with nothing under it: a plus, a field and a send. Worth
+ * showing, because the shape is not a thing you grow into — the line here is
+ * the line up there, and a composer that starts this bare has somewhere to put
+ * the first picker without moving anything the reader had already found.
+ */
+export function ComposerBareDemo() {
+  const [sent, setSent] = React.useState<string | null>(null)
+
+  return (
+    <TooltipProvider>
+      <div className="flex w-full max-w-sm flex-col gap-2">
+        <Composer onSubmit={(message) => setSent(message)}>
+          <ComposerInput>
+            <ComposerLine>
+              <AddMenu>
+                <AddMenuTrigger />
+                <AddMenuContent side="top" />
+              </AddMenu>
+              <ComposerField placeholder="Send a message…" />
+              <ComposerSubmit />
+            </ComposerLine>
+          </ComposerInput>
+        </Composer>
+        <p className="min-h-4 ps-1 text-xs text-muted-foreground">
+          {sent ? `Sent: ${sent}` : "The line, with nothing standing under it."}
+        </p>
       </div>
     </TooltipProvider>
   )

@@ -1,18 +1,21 @@
 "use client"
 
 import * as React from "react"
-import { Attachment01Icon } from "@hugeicons/core-free-icons"
-import { HugeiconsIcon } from "@hugeicons/react"
 
 import { Attachment, Attachments } from "@/components/aiellie-ui/attachments"
 import {
-  Composer,
-  ComposerField,
-  ComposerInput,
-  ComposerSubmit,
-  ComposerToolbar,
-} from "@/components/aiellie-ui/composer/composer"
-import { TooltipIconButton } from "@/components/aiellie-ui/tooltip-icon-button"
+  AddMenu,
+  AddMenuContent,
+  AddMenuTrigger,
+  type AddAction,
+} from "@/components/aiellie-ui/composer/add-menu"
+import {
+  MessageInput,
+  MessageInputField,
+  MessageInputLine,
+  messageInputStack,
+  MessageInputSubmit,
+} from "@/components/aiellie-ui/composer/message-input"
 import { Button } from "@/components/ui/button"
 import { TooltipProvider } from "@/components/ui/tooltip"
 
@@ -41,12 +44,14 @@ const files: DemoFile[] = [
   { id: "tokens", name: "design-tokens.zip", size: 1_100_000 },
 ]
 
-/** The set, minus whatever has been taken off, with a way to put it all back. */
+/** The set, minus whatever has been taken off, with the ways back on. */
 function useRemovable(ids: readonly string[]) {
   const [kept, setKept] = React.useState<readonly string[]>(ids)
 
   return {
     files: files.filter((file) => kept.includes(file.id)),
+    add: (id: string) =>
+      setKept((current) => (current.includes(id) ? current : [...current, id])),
     remove: (id: string) =>
       setKept((current) => current.filter((k) => k !== id)),
     reset: () => setKept(ids),
@@ -92,30 +97,35 @@ export function AttachmentsDemo() {
   )
 }
 
+/** The set as the plus offers it: one row per file, and nothing else. */
+const attachable: AddAction[] = [
+  {
+    id: "files",
+    group: "Attach",
+    label: "Recent files",
+    items: files.map((file) => ({ id: file.id, label: file.name })),
+  },
+]
+
 /**
- * Where they actually live: under the field, above the row that says what the
- * message is being sent with. The composer grows a line taller and the writing
- * keeps the whole of its own.
+ * Where they actually live: above the box, outside it, with the writing left
+ * the whole of its own line and the toolbar below untouched. The composer
+ * grows a row taller and the box stays exactly the box it was.
  */
 export function AttachmentsComposerDemo() {
-  const { files: kept, remove, reset, empty } = useRemovable(["brief", "shot"])
+  const { files: kept, add, remove, empty } = useRemovable(["brief", "shot"])
   const [value, setValue] = React.useState("")
 
   return (
     <TooltipProvider>
-      <Composer
-        className="w-full"
+      <MessageInput
+        className={messageInputStack}
         value={value}
         onValueChange={setValue}
         onSubmit={() => setValue("")}
       >
-        <ComposerInput>
-          <ComposerField placeholder="Ask about the rollout…" />
-          <ComposerSubmit />
-        </ComposerInput>
-
         {empty ? null : (
-          <Attachments className="pt-1">
+          <Attachments>
             {kept.map((file) => (
               <Attachment
                 key={file.id}
@@ -128,16 +138,15 @@ export function AttachmentsComposerDemo() {
           </Attachments>
         )}
 
-        <ComposerToolbar>
-          <TooltipIconButton
-            tooltip="Attach files"
-            onClick={reset}
-            className="size-8"
-          >
-            <HugeiconsIcon icon={Attachment01Icon} />
-          </TooltipIconButton>
-        </ComposerToolbar>
-      </Composer>
+        <MessageInputLine>
+          <AddMenu actions={attachable} onSelect={(action) => add(action.id)}>
+            <AddMenuTrigger />
+            <AddMenuContent side="top" />
+          </AddMenu>
+          <MessageInputField placeholder="Ask about the rollout…" />
+          <MessageInputSubmit />
+        </MessageInputLine>
+      </MessageInput>
     </TooltipProvider>
   )
 }

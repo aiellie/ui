@@ -419,7 +419,7 @@ export const aiellieui: Registry["items"] = [
     type: "registry:ui",
     title: "Composer",
     description:
-      "The whole of what a message is written in: the field, the names an at sign can reach, and a row under the field for what the message is being sent with — the model answering it, and the send.",
+      "The whole of what a message is written in, in the three courses every composer here stands by: the files it carries above the box, the plus and the field inside it, and what the message is being sent with on a row below it — outside the box, so the writing keeps its own line and the box keeps its height.",
     registryDependencies: ["mentions", "message-input", "utils"],
     dependencies: ["@base-ui/react"],
     files: [

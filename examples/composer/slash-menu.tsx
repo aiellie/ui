@@ -4,8 +4,15 @@ import * as React from "react"
 import { HugeiconsIcon } from "@hugeicons/react"
 
 import {
+  AddMenu,
+  AddMenuContent,
+  AddMenuTrigger,
+} from "@/components/aiellie-ui/composer/add-menu"
+import {
   MessageInput,
   MessageInputField,
+  MessageInputLine,
+  messageInputStack,
   MessageInputSubmit,
 } from "@/components/aiellie-ui/composer/message-input"
 import {
@@ -62,9 +69,20 @@ function CommandComposer({
 
   return (
     <TooltipProvider>
-      <MessageInput value={value} onValueChange={setValue} onSubmit={onSend}>
-        <MessageInputField placeholder={placeholder} {...slash.fieldProps} />
-        <MessageInputSubmit />
+      <MessageInput
+        className={messageInputStack}
+        value={value}
+        onValueChange={setValue}
+        onSubmit={onSend}
+      >
+        <MessageInputLine>
+          <AddMenu>
+            <AddMenuTrigger />
+            <AddMenuContent side="top" />
+          </AddMenu>
+          <MessageInputField placeholder={placeholder} {...slash.fieldProps} />
+          <MessageInputSubmit />
+        </MessageInputLine>
       </MessageInput>
 
       <SlashMenu controller={slash}>

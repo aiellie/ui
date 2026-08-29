@@ -44,3 +44,6 @@ https://github.com/aiellie
 35. make elements page a sink of all them
 36. mobile mode
 37. make demo card into a chat card vibe
+38. add beautify to prompt composer to make stronger prompt
+39. build the chat card and everything off that
+40. heres how to organize. create a chat card block at the root and all the components for it. same for code. do a code block.

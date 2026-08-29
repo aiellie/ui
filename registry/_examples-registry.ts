@@ -18,6 +18,40 @@ import type { Registry } from "shadcn/schema"
  */
 export const examples: Registry["items"] = [
   {
+    name: "chat-card-demo",
+    type: "registry:example",
+    title: "Chat Card",
+    description:
+      "A whole little chat in one frame — header, thread and composer — following a thread as it arrives, and holding an opening screen when there is nothing in it yet.",
+    registryDependencies: [
+      "chat-card",
+      "empty-state",
+      "message-input",
+      "suggestions",
+      "tooltip-icon-button",
+      "typing-indicator",
+      "bubble",
+      "message",
+    ],
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    files: [
+      {
+        path: "examples/messages/chat-card.tsx",
+        type: "registry:example",
+        target: "examples/messages/chat-card.tsx",
+      },
+    ],
+    categories: ["chat"],
+    meta: {
+      variants: [
+        { name: "Default", demo: "ChatCardDemo" },
+        { name: "Arriving", demo: "ChatCardLiveDemo" },
+        { name: "Empty", demo: "ChatCardEmptyDemo" },
+      ],
+      wide: true,
+    },
+  },
+  {
     name: "code-block-demo",
     type: "registry:example",
     title: "Code Block",
@@ -619,12 +653,16 @@ export const examples: Registry["items"] = [
     type: "registry:example",
     title: "Composer",
     description:
-      "A message being written: an at sign naming the people and agents it can reach, and a row under the field — not inside it — for the model answering and how hard it should think.",
+      "A message being written, whole: the files it carries above the box, the plus and the field inside it, and everything it is being sent with on the row below — the model, the tools, the effort, the approval mode and the send.",
     registryDependencies: [
       "composer",
+      "add-menu",
+      "approval-mode-menu",
+      "attachments",
       "effort-menu",
       "mentions",
       "model-picker",
+      "tool-picker",
       "models",
       "tooltip",
     ],
@@ -638,7 +676,10 @@ export const examples: Registry["items"] = [
     ],
     categories: ["chat"],
     meta: {
-      variants: [{ name: "Default", demo: "ComposerDemo" }],
+      variants: [
+        { name: "Default", demo: "ComposerDemo" },
+        { name: "Bare", demo: "ComposerBareDemo" },
+      ],
       wide: true,
     },
   },
@@ -695,10 +736,10 @@ export const examples: Registry["items"] = [
       "A mixed set of files with a way back off each one, the same set stood under a composer field, the three things an upload can be doing, and the square form for a row that is mostly pictures.",
     registryDependencies: [
       "attachments",
+      "add-menu",
+      "message-input",
       "button",
-      "composer",
       "tooltip",
-      "tooltip-icon-button",
     ],
     dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
     files: [
@@ -725,7 +766,7 @@ export const examples: Registry["items"] = [
     title: "Mentions",
     description:
       "An at sign in the message input opening the people and agents it can name, with the example lists it draws them from.",
-    registryDependencies: ["mentions", "message-input", "tooltip"],
+    registryDependencies: ["mentions", "add-menu", "message-input", "tooltip"],
     dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
     files: [
       {
@@ -759,7 +800,12 @@ export const examples: Registry["items"] = [
     title: "Slash Menu",
     description:
       "A slash at the head of the composer opening what it can run, with the example catalogue it draws them from.",
-    registryDependencies: ["slash-menu", "message-input", "tooltip"],
+    registryDependencies: [
+      "slash-menu",
+      "add-menu",
+      "message-input",
+      "tooltip",
+    ],
     dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
     files: [
       {
@@ -790,8 +836,10 @@ export const examples: Registry["items"] = [
       "The model a message is being written to, changed from the composer rather than from a settings page — each row saying what its model is for, and the ones the plan does not reach shown locked rather than hidden.",
     registryDependencies: [
       "model-picker",
+      "add-menu",
       "message-input",
       "models",
+      "providers",
       "tooltip",
     ],
     files: [
@@ -820,6 +868,7 @@ export const examples: Registry["items"] = [
       "What the answer may reach for, turned on and off from the composer — a list that says what each tool does before asking whether it should be on, and the ones that are on stood beside the wrench in their own colours.",
     registryDependencies: [
       "tool-picker",
+      "add-menu",
       "message-input",
       "model-picker",
       "tools",
@@ -850,6 +899,7 @@ export const examples: Registry["items"] = [
       "How much a run may do without being asked again, set from the composer — five modes, each saying what it means before it is taken, and the one that never asks turning the control red so a session left in it says so unopened.",
     registryDependencies: [
       "approval-mode-menu",
+      "add-menu",
       "message-input",
       "model-picker",
       "tooltip",
@@ -879,6 +929,7 @@ export const examples: Registry["items"] = [
       "How hard the model should think, set from the composer — a slider whose stops are named so the ladder need not be guessed at, and a trigger of bars that fill as it moves.",
     registryDependencies: [
       "effort-menu",
+      "add-menu",
       "message-input",
       "model-picker",
       "tool-picker",
@@ -909,6 +960,7 @@ export const examples: Registry["items"] = [
       "The prompt an agent runs under, picked rather than pasted — each row saying how it changes the answer, the words a choice actually sets, and a catalogue of the project's own handed in whole.",
     registryDependencies: [
       "prompt-menu",
+      "add-menu",
       "message-input",
       "model-picker",
       "instructions",
@@ -986,40 +1038,6 @@ export const examples: Registry["items"] = [
         { name: "On hover", demo: "MessageActionsOnHoverDemo" },
       ],
       wide: false,
-    },
-  },
-  {
-    name: "chat-card-demo",
-    type: "registry:example",
-    title: "Chat Card",
-    description:
-      "A whole little chat in one frame — header, thread and composer — following a thread as it arrives, and holding an opening screen when there is nothing in it yet.",
-    registryDependencies: [
-      "chat-card",
-      "empty-state",
-      "message-input",
-      "suggestions",
-      "tooltip-icon-button",
-      "typing-indicator",
-      "bubble",
-      "message",
-    ],
-    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
-    files: [
-      {
-        path: "examples/messages/chat-card.tsx",
-        type: "registry:example",
-        target: "examples/messages/chat-card.tsx",
-      },
-    ],
-    categories: ["chat"],
-    meta: {
-      variants: [
-        { name: "Default", demo: "ChatCardDemo" },
-        { name: "Arriving", demo: "ChatCardLiveDemo" },
-        { name: "Empty", demo: "ChatCardEmptyDemo" },
-      ],
-      wide: true,
     },
   },
   {

@@ -12,8 +12,15 @@ import {
   type MentionItem,
 } from "@/components/aiellie-ui/composer/mentions"
 import {
+  AddMenu,
+  AddMenuContent,
+  AddMenuTrigger,
+} from "@/components/aiellie-ui/composer/add-menu"
+import {
   MessageInput,
   MessageInputField,
+  MessageInputLine,
+  messageInputStack,
   MessageInputSubmit,
 } from "@/components/aiellie-ui/composer/message-input"
 import { TooltipProvider } from "@/components/ui/tooltip"
@@ -90,9 +97,23 @@ function MentionsComposer({
 
   return (
     <TooltipProvider>
-      <MessageInput value={value} onValueChange={setValue} onSubmit={onSend}>
-        <MessageInputField placeholder={placeholder} {...mentions.fieldProps} />
-        <MessageInputSubmit />
+      <MessageInput
+        className={messageInputStack}
+        value={value}
+        onValueChange={setValue}
+        onSubmit={onSend}
+      >
+        <MessageInputLine>
+          <AddMenu>
+            <AddMenuTrigger />
+            <AddMenuContent side="top" />
+          </AddMenu>
+          <MessageInputField
+            placeholder={placeholder}
+            {...mentions.fieldProps}
+          />
+          <MessageInputSubmit />
+        </MessageInputLine>
       </MessageInput>
 
       <Mentions controller={mentions}>

@@ -335,9 +335,11 @@ function AddMenu({
  * empty page to click on.
  *
  * `TooltipIconButton` is the control, as on every other composer menu: ghost,
- * round, and carrying its name on a hover. `render` is passed straight
- * through, so a composer with a control of its own keeps it and only borrows
- * the behaviour.
+ * round, and carrying its name on a hover. Sized to the send it stands
+ * opposite — the two ends of the line are the two acts on the message, and a
+ * plus a shade smaller than the send would read as a lesser one. `render` is
+ * passed straight through, so a composer with a control of its own keeps it
+ * and only borrows the behaviour.
  */
 function AddMenuTrigger({
   className,
@@ -354,7 +356,7 @@ function AddMenuTrigger({
           tooltip="Add"
           side="top"
           className={cn(
-            "size-7 rounded-full text-muted-foreground hover:text-foreground",
+            " shrink-0 rounded-full text-muted-foreground hover:text-foreground border border-border",
             // On the glyph rather than the button: the button is round, so
             // turning it would move nothing but its focus ring.
             "[&>svg]:transition-transform [&>svg]:duration-200 aria-expanded:[&>svg]:rotate-45 motion-reduce:[&>svg]:transition-none",

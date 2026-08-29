@@ -11,9 +11,17 @@ import {
   findEffort,
 } from "@/components/aiellie-ui/composer/effort-menu"
 import {
+  AddMenu,
+  AddMenuContent,
+  AddMenuTrigger,
+} from "@/components/aiellie-ui/composer/add-menu"
+import {
   MessageInput,
   MessageInputField,
+  MessageInputLine,
+  messageInputStack,
   MessageInputSubmit,
+  MessageInputToolbar,
 } from "@/components/aiellie-ui/composer/message-input"
 import {
   ModelPicker,
@@ -65,14 +73,18 @@ export function EffortMenuComposerDemo() {
     <TooltipProvider>
       <div className="flex w-full max-w-sm flex-col gap-2">
         <MessageInput
-          className="flex-col items-stretch gap-1 rounded-2xl border border-border/60 bg-background p-1.5 dark:bg-popover"
+          className={messageInputStack}
           onSubmit={(message) => setSent(message)}
         >
-          <MessageInputField
-            placeholder="Ask it something hard…"
-            className="h-9 border-transparent bg-transparent px-2 focus-visible:border-transparent"
-          />
-          <div className="flex items-center gap-1">
+          <MessageInputLine>
+            <AddMenu>
+              <AddMenuTrigger />
+              <AddMenuContent side="top" />
+            </AddMenu>
+            <MessageInputField placeholder="Ask it something hard…" />
+            <MessageInputSubmit />
+          </MessageInputLine>
+          <MessageInputToolbar>
             <EffortMenu value={effort} onValueChange={setEffort}>
               <EffortMenuTrigger />
               <EffortMenuContent side="top" />
@@ -85,8 +97,7 @@ export function EffortMenuComposerDemo() {
               <ModelPickerTrigger />
               <ModelPickerContent side="top" />
             </ModelPicker>
-            <MessageInputSubmit className="ms-auto size-7" />
-          </div>
+          </MessageInputToolbar>
         </MessageInput>
         <p className="ps-1 text-xs text-muted-foreground">
           {sent

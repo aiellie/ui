@@ -24,7 +24,10 @@ import {
 import {
   MessageInput,
   MessageInputField,
+  MessageInputLine,
+  messageInputStack,
   MessageInputSubmit,
+  MessageInputToolbar,
 } from "@/components/aiellie-ui/composer/message-input"
 import {
   ModelPicker,
@@ -151,11 +154,11 @@ export function AddMenuComposerDemo() {
     <TooltipProvider>
       <div className="flex w-full max-w-sm flex-col gap-2">
         <MessageInput
-          className="flex-col items-stretch gap-1 rounded-2xl border border-border/60 bg-background p-1.5 dark:bg-popover"
+          className={messageInputStack}
           onSubmit={(message) => setSent(message)}
         >
           {attached.length ? (
-            <Attachments className="px-1 pt-1">
+            <Attachments>
               {attached.map((file) => (
                 <Attachment
                   key={file.id}
@@ -170,21 +173,22 @@ export function AddMenuComposerDemo() {
               ))}
             </Attachments>
           ) : null}
-          <MessageInputField
-            placeholder="Say something…"
-            className="h-9 border-transparent bg-transparent px-2 focus-visible:border-transparent"
-          />
-          <div className="flex items-center gap-1">
+
+          <MessageInputLine>
             <AddMenu actions={composerActions} onSelect={add}>
               <AddMenuTrigger />
               <AddMenuContent side="top" />
             </AddMenu>
+            <MessageInputField placeholder="Say something…" />
+            <MessageInputSubmit />
+          </MessageInputLine>
+
+          <MessageInputToolbar>
             <ModelPicker value={model} onValueChange={setModel}>
               <ModelPickerTrigger showIcon={false} />
               <ModelPickerContent side="top" />
             </ModelPicker>
-            <MessageInputSubmit className="ms-auto size-7" />
-          </div>
+          </MessageInputToolbar>
         </MessageInput>
         <p className="ps-1 text-xs text-muted-foreground">
           {sent
