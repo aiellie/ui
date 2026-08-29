@@ -1,7 +1,11 @@
 "use client"
 
 import * as React from "react"
-import { MoreHorizontalIcon, Settings01Icon } from "@hugeicons/core-free-icons"
+import {
+  BubbleChatTemporaryIcon,
+  MoreHorizontalIcon,
+  Settings01Icon,
+} from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 
 import {
@@ -15,9 +19,8 @@ import {
 } from "@/components/aiellie-ui/chat-card"
 import {
   EmptyState,
-  EmptyStateComposer,
-  EmptyStateContent,
   EmptyStateDescription,
+  EmptyStateMedia,
   EmptyStateTitle,
 } from "@/components/aiellie-ui/composer/empty-state"
 import {
@@ -59,20 +62,27 @@ function Turns({ turns }: { turns: Turn[] }) {
   )
 }
 
+const ellie = "https://images.aiellie.app/chatcard.png?mode=image&radius=0"
+
 function Header() {
   return (
     <ChatCardHeader>
-      <MessageAvatar className="size-7 text-[11px] font-medium text-muted-foreground">
+      <MessageAvatar className="relative size-7 text-[11px] font-medium text-muted-foreground">
         E
+        {/* eslint-disable-next-line @next/next/no-img-element -- a plain img
+            rather than next/image, because this file is copied into projects
+            that are not necessarily Next ones. */}
+        <img
+          src={ellie}
+          alt=""
+          className="absolute inset-0 size-full object-cover"
+        />
       </MessageAvatar>
       <div className="min-w-0">
         <ChatCardTitle>Ellie</ChatCardTitle>
         <ChatCardDescription>Rollout thread</ChatCardDescription>
       </div>
       <ChatCardActions>
-        <TooltipIconButton tooltip="Settings">
-          <HugeiconsIcon icon={Settings01Icon} />
-        </TooltipIconButton>
         <TooltipIconButton tooltip="More">
           <HugeiconsIcon icon={MoreHorizontalIcon} />
         </TooltipIconButton>
@@ -177,30 +187,35 @@ export function ChatCardEmptyDemo() {
   return (
     <ChatCard className="max-w-sm">
       <Header />
-      <EmptyState className="p-3">
-        <div />
-        <EmptyStateContent>
+      {/* The greeting takes the thread's place: the card already splits itself
+          into a header, a middle that grows and a foot, so an opening screen is
+          the same frame with words where the messages will go. */}
+      <ChatCardThread>
+        <EmptyState className="flex-1">
+          <EmptyStateMedia>
+            <HugeiconsIcon icon={BubbleChatTemporaryIcon} />
+          </EmptyStateMedia>
           <EmptyStateTitle className="text-base">
             Nothing here yet
           </EmptyStateTitle>
           <EmptyStateDescription className="text-xs">
             Ask about the rollout, or pick one of these.
           </EmptyStateDescription>
-          <EmptyStateComposer>
-            <MessageInput value={value} onValueChange={setValue}>
-              <MessageInputField placeholder="Ask anything…" />
-              <MessageInputSubmit />
-            </MessageInput>
-            <Suggestions
-              variant="list"
-              suggestions={prompts}
-              onSuggestion={setValue}
-              selectedSuggestion={prompts.includes(value) ? value : null}
-              className="max-w-full self-stretch"
-            />
-          </EmptyStateComposer>
-        </EmptyStateContent>
-      </EmptyState>
+        </EmptyState>
+      </ChatCardThread>
+      <ChatCardFooter>
+        <Suggestions
+          variant="list"
+          suggestions={prompts}
+          onSuggestion={setValue}
+          selectedSuggestion={prompts.includes(value) ? value : null}
+          className="max-w-full self-stretch"
+        />
+        <MessageInput value={value} onValueChange={setValue}>
+          <MessageInputField placeholder="Ask anything…" />
+          <MessageInputSubmit />
+        </MessageInput>
+      </ChatCardFooter>
     </ChatCard>
   )
 }

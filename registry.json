@@ -581,7 +581,7 @@
       "name": "empty-state",
       "type": "registry:ui",
       "title": "Empty State",
-      "description": "The screen a conversation starts from: what the conversation is set to across the top, the invitation in the middle, and the composer with its prompts beneath — laid out as rows so the field lands in the same place on every screen height.",
+      "description": "What a screen says while there is nothing on it yet: a mark, a line to open with and a line under it, centred in whatever room they are given.",
       "registryDependencies": [
         "https://ui.aiellie.dev/r/utils.json"
       ],
@@ -728,6 +728,28 @@
           "path": "components/aiellie-ui/composer/prompt-menu.tsx",
           "type": "registry:ui",
           "target": "components/aiellie-ui/composer/prompt-menu.tsx"
+        }
+      ]
+    },
+    {
+      "name": "add-menu",
+      "type": "registry:ui",
+      "title": "Add Menu",
+      "description": "The plus on a composer, and everything a message can carry that is not typed — a tree rather than a list, so the connector, the folder inside it and the file inside that are rows in the same menu at whatever depth the catalogue puts them, and a choice made four levels down comes back as one entry rather than a path.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/menu.json",
+        "https://ui.aiellie.dev/r/tooltip-icon-button.json",
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/composer/add-menu.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/composer/add-menu.tsx"
         }
       ]
     },
@@ -2055,14 +2077,9 @@
       "name": "empty-state-demo",
       "type": "registry:example",
       "title": "Empty State",
-      "description": "An opening screen with the model and the settings across the top, the greeting under them, and the composer with its prompts — as a strip of chips, and as a column of things to ask.",
+      "description": "The greeting an opening screen leads with — a mark, a title and the line under it, centred in the room they are handed.",
       "registryDependencies": [
-        "https://ui.aiellie.dev/r/empty-state.json",
-        "https://ui.aiellie.dev/r/message-input.json",
-        "https://ui.aiellie.dev/r/model-picker.json",
-        "https://ui.aiellie.dev/r/suggestions.json",
-        "https://ui.aiellie.dev/r/tooltip-icon-button.json",
-        "https://ui.aiellie.dev/r/kbd.json"
+        "https://ui.aiellie.dev/r/empty-state.json"
       ],
       "dependencies": [
         "@hugeicons/core-free-icons",
@@ -2083,13 +2100,9 @@
           {
             "name": "Default",
             "demo": "EmptyStateDemo"
-          },
-          {
-            "name": "Prompt list",
-            "demo": "EmptyStateListDemo"
           }
         ],
-        "wide": true
+        "wide": false
       }
     },
     {
@@ -2436,6 +2449,49 @@
           {
             "name": "Own prompts",
             "demo": "PromptMenuOwnDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "add-menu-demo",
+      "type": "registry:example",
+      "title": "Add Menu",
+      "description": "The plus a composer keeps for everything that is not typed — a connector, the folder inside it and the file inside that, walked down without a dialog opening, and what it lands on drawn above the field where it can be taken off again.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/add-menu.json",
+        "https://ui.aiellie.dev/r/attachments.json",
+        "https://ui.aiellie.dev/r/message-input.json",
+        "https://ui.aiellie.dev/r/model-picker.json",
+        "https://ui.aiellie.dev/r/tooltip.json"
+      ],
+      "dependencies": [
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "examples/composer/add-menu.tsx",
+          "type": "registry:example",
+          "target": "examples/composer/add-menu.tsx"
+        }
+      ],
+      "categories": [
+        "chat"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Default",
+            "demo": "AddMenuDemo"
+          },
+          {
+            "name": "Composer",
+            "demo": "AddMenuComposerDemo"
+          },
+          {
+            "name": "Own catalogue",
+            "demo": "AddMenuOwnDemo"
           }
         ],
         "wide": false

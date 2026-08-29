@@ -43,3 +43,4 @@ https://github.com/aiellie
 34. add a roadmap
 35. make elements page a sink of all them
 36. mobile mode
+37. make demo card into a chat card vibe

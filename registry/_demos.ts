@@ -35,6 +35,7 @@ import {
   ShieldKeyIcon,
   SignalFull01Icon,
   QuillWrite01Icon,
+  AddCircleIcon,
   LayoutBottomIcon,
   Attachment01Icon,
   UserCircle02Icon,
@@ -69,6 +70,7 @@ import * as toolPickerDemos from "@/examples/composer/tool-picker"
 import * as approvalModeMenuDemos from "@/examples/composer/approval-mode-menu"
 import * as effortMenuDemos from "@/examples/composer/effort-menu"
 import * as promptMenuDemos from "@/examples/composer/prompt-menu"
+import * as addMenuDemos from "@/examples/composer/add-menu"
 import * as messageContextMenuDemos from "@/examples/messages/message-context-menu"
 import * as messageHighlightToolbarDemos from "@/examples/messages/message-highlight-toolbar"
 import * as messageStatusDemos from "@/examples/messages/message-status"
@@ -197,6 +199,10 @@ const exampleDemos: Record<string, ExampleDemos> = {
   "prompt-menu-demo": {
     icon: QuillWrite01Icon,
     components: { ...promptMenuDemos },
+  },
+  "add-menu-demo": {
+    icon: AddCircleIcon,
+    components: { ...addMenuDemos },
   },
   "chat-card-demo": {
     icon: ChatBotIcon,

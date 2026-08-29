@@ -18,10 +18,10 @@ export function ChatCard({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="chat-card"
       className={cn(
-        "grid h-96 w-full grid-rows-[auto_1fr_auto] overflow-hidden rounded-2xl border border-border/60 bg-background",
+        "grid h-120 w-full grid-rows-[auto_1fr_auto] overflow-hidden rounded-2xl border border-border/60 bg-background",
         // A card with a thread in it is a small window onto a page, so it takes
         // the page's own surface in dark rather than sitting on top of it.
-        "dark:bg-input/20",
+        "dark:bg-background",
         className
       )}
       {...props}
@@ -146,7 +146,7 @@ export function ChatCardThread({
       ref={ref}
       data-slot="chat-card-thread"
       className={cn(
-        "flex min-h-0 flex-col gap-3 overflow-y-auto overscroll-contain p-3",
+        "flex min-h-0 flex-col gap-3 overflow-y-none overscroll-contain p-3",
         className
       )}
       {...props}
@@ -168,7 +168,7 @@ export function ChatCardFooter({
     <footer
       data-slot="chat-card-footer"
       className={cn(
-        "flex flex-col gap-2 border-t border-border/60 p-3",
+        "flex flex-col gap-2 border-border/60 p-3",
         className
       )}
       {...props}

@@ -501,7 +501,7 @@ export const aiellieui: Registry["items"] = [
     type: "registry:ui",
     title: "Empty State",
     description:
-      "The screen a conversation starts from: what the conversation is set to across the top, the invitation in the middle, and the composer with its prompts beneath — laid out as rows so the field lands in the same place on every screen height.",
+      "What a screen says while there is nothing on it yet: a mark, a line to open with and a line under it, centred in whatever room they are given.",
     registryDependencies: ["utils"],
     files: [
       {
@@ -616,6 +616,22 @@ export const aiellieui: Registry["items"] = [
         path: "components/aiellie-ui/composer/prompt-menu.tsx",
         type: "registry:ui",
         target: "components/aiellie-ui/composer/prompt-menu.tsx",
+      },
+    ],
+  },
+  {
+    name: "add-menu",
+    type: "registry:ui",
+    title: "Add Menu",
+    description:
+      "The plus on a composer, and everything a message can carry that is not typed — a tree rather than a list, so the connector, the folder inside it and the file inside that are rows in the same menu at whatever depth the catalogue puts them, and a choice made four levels down comes back as one entry rather than a path.",
+    registryDependencies: ["menu", "tooltip-icon-button", "utils"],
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    files: [
+      {
+        path: "components/aiellie-ui/composer/add-menu.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/composer/add-menu.tsx",
       },
     ],
   },

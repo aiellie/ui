@@ -671,15 +671,8 @@ export const examples: Registry["items"] = [
     type: "registry:example",
     title: "Empty State",
     description:
-      "An opening screen with the model and the settings across the top, the greeting under them, and the composer with its prompts — as a strip of chips, and as a column of things to ask.",
-    registryDependencies: [
-      "empty-state",
-      "message-input",
-      "model-picker",
-      "suggestions",
-      "tooltip-icon-button",
-      "kbd",
-    ],
+      "The greeting an opening screen leads with — a mark, a title and the line under it, centred in the room they are handed.",
+    registryDependencies: ["empty-state"],
     dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
     files: [
       {
@@ -690,11 +683,8 @@ export const examples: Registry["items"] = [
     ],
     categories: ["chat"],
     meta: {
-      variants: [
-        { name: "Default", demo: "EmptyStateDemo" },
-        { name: "Prompt list", demo: "EmptyStateListDemo" },
-      ],
-      wide: true,
+      variants: [{ name: "Default", demo: "EmptyStateDemo" }],
+      wide: false,
     },
   },
   {
@@ -939,6 +929,37 @@ export const examples: Registry["items"] = [
         { name: "Composer", demo: "PromptMenuComposerDemo" },
         { name: "The text", demo: "PromptMenuTextDemo" },
         { name: "Own prompts", demo: "PromptMenuOwnDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "add-menu-demo",
+    type: "registry:example",
+    title: "Add Menu",
+    description:
+      "The plus a composer keeps for everything that is not typed — a connector, the folder inside it and the file inside that, walked down without a dialog opening, and what it lands on drawn above the field where it can be taken off again.",
+    registryDependencies: [
+      "add-menu",
+      "attachments",
+      "message-input",
+      "model-picker",
+      "tooltip",
+    ],
+    dependencies: ["@hugeicons/core-free-icons"],
+    files: [
+      {
+        path: "examples/composer/add-menu.tsx",
+        type: "registry:example",
+        target: "examples/composer/add-menu.tsx",
+      },
+    ],
+    categories: ["chat"],
+    meta: {
+      variants: [
+        { name: "Default", demo: "AddMenuDemo" },
+        { name: "Composer", demo: "AddMenuComposerDemo" },
+        { name: "Own catalogue", demo: "AddMenuOwnDemo" },
       ],
       wide: false,
     },
