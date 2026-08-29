@@ -1,0 +1,35 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "media-demo",
+  "title": "Media",
+  "description": "The frame in its three moments — waiting empty, a picture arriving over the shimmer, and settled with its badge — and the shapes a generation is asked into, holding their room.",
+  "registryDependencies": [
+    "https://ui.aiellie.dev/r/media.json",
+    "https://ui.aiellie.dev/r/avatars.json"
+  ],
+  "files": [
+    {
+      "path": "examples/media/media.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport {\n  MediaBadge,\n  MediaFrame,\n  MediaImage,\n} from \"@/components/aiellie-ui/media\"\nimport { sampleImageFor } from \"@/lib/avatars\"\n\n/**\n * The frame in its three moments: waiting with nothing, waiting over a\n * picture still arriving, and settled with the badge saying what the picture\n * is. Together, because the point of the frame is that nothing around it\n * moves as one moment becomes the next.\n */\nexport function MediaDemo() {\n  return (\n    <div className=\"grid w-full max-w-lg grid-cols-3 items-start gap-3\">\n      <MediaFrame busy aspect=\"square\" />\n      <MediaFrame aspect=\"square\">\n        <MediaImage\n          src={sampleImageFor(\"a marble made of dusk\")}\n          alt=\"A sample abstract\"\n        />\n      </MediaFrame>\n      <MediaFrame aspect=\"square\">\n        <MediaBadge>Sample</MediaBadge>\n        <MediaImage\n          src={sampleImageFor(\"a marble made of noon\")}\n          alt=\"A sample abstract, badged\"\n        />\n      </MediaFrame>\n    </div>\n  )\n}\n\n/** The shapes a generation is asked into, holding their room while empty. */\nexport function MediaAspectsDemo() {\n  return (\n    <div className=\"flex w-full max-w-lg items-start gap-3\">\n      <MediaFrame busy aspect=\"square\" className=\"flex-1\" />\n      <MediaFrame busy aspect=\"video\" className=\"flex-2\" />\n      <MediaFrame busy aspect=\"portrait\" className=\"flex-1\" />\n    </div>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/media/media.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Moments",
+        "demo": "MediaDemo"
+      },
+      {
+        "name": "Aspects",
+        "demo": "MediaAspectsDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "media"
+  ],
+  "type": "registry:example"
+}

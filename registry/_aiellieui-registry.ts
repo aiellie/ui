@@ -279,7 +279,7 @@ export const aiellieui: Registry["items"] = [
     type: "registry:ui",
     title: "Reasoning",
     description:
-      "The thinking behind an answer, folded away: open while it runs and closed once it is done, counting the seconds it takes and leaving the decision with the reader the moment they disagree with it.",
+      "The work behind an answer as the tree it actually was: steps with glyphs, statuses and the fact worth pinning to each, and steps made of steps folding level by level — open while it runs, counting the seconds, and closed once it is done.",
     registryDependencies: ["actions", "utils"],
     dependencies: [
       "@base-ui/react",
@@ -295,12 +295,12 @@ export const aiellieui: Registry["items"] = [
     ],
   },
   {
-    name: "citations",
+    name: "sources",
     type: "registry:ui",
-    title: "Citations",
+    title: "Sources",
     description:
-      "Numbered marks in the prose and the sources they point at underneath — the number in the sentence, the name a hover away, and the list folded until somebody wants to check the answer.",
-    registryDependencies: ["actions", "tooltip", "utils"],
+      "What the answer was drawn from, folded under it and counted on the trigger — each source a numbered row with its title, the line the answer took from it, and where it came from.",
+    registryDependencies: ["actions", "utils"],
     dependencies: [
       "@base-ui/react",
       "@hugeicons/core-free-icons",
@@ -308,9 +308,69 @@ export const aiellieui: Registry["items"] = [
     ],
     files: [
       {
-        path: "components/aiellie-ui/citations.tsx",
+        path: "components/aiellie-ui/sources.tsx",
         type: "registry:ui",
-        target: "components/aiellie-ui/citations.tsx",
+        target: "components/aiellie-ui/sources.tsx",
+      },
+    ],
+  },
+  {
+    name: "inline-citation",
+    type: "registry:ui",
+    title: "Inline Citation",
+    description:
+      "A numbered mark in the prose, pointing at the sources listed under the answer — the number in the sentence, the name a hover away, and a real link underneath so a middle click still works.",
+    registryDependencies: ["sources", "tooltip", "utils"],
+    files: [
+      {
+        path: "components/aiellie-ui/inline-citation.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/inline-citation.tsx",
+      },
+    ],
+  },
+  {
+    name: "media-gallery",
+    type: "registry:ui",
+    title: "Media Gallery",
+    description:
+      "A run's variations side by side, one of them chosen: every tile a real button, the chosen one wearing the ring, and the choice living with whoever is about to do something with it.",
+    registryDependencies: ["utils"],
+    files: [
+      {
+        path: "components/aiellie-ui/media-gallery.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/media-gallery.tsx",
+      },
+    ],
+  },
+  {
+    name: "image-compare",
+    type: "registry:ui",
+    title: "Image Compare",
+    description:
+      "Two versions of one picture under a divider the reader drags — driven by a real range input, so the keyboard moves it and a screen reader gets a slider rather than silence.",
+    registryDependencies: ["actions", "utils"],
+    files: [
+      {
+        path: "components/aiellie-ui/image-compare.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/image-compare.tsx",
+      },
+    ],
+  },
+  {
+    name: "ratio-menu",
+    type: "registry:ui",
+    title: "Ratio Menu",
+    description:
+      "The frame a generation is asked to fill, chosen from the composer's toolbar — the trigger wears the chosen proportions as an empty frame, and the rows name them the way a person would.",
+    registryDependencies: ["menu", "tooltip-icon-button", "utils"],
+    files: [
+      {
+        path: "components/aiellie-ui/composer/ratio-menu.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/composer/ratio-menu.tsx",
       },
     ],
   },
@@ -487,7 +547,7 @@ export const aiellieui: Registry["items"] = [
       "attachments",
       "bubble",
       "chat-card",
-      "citations",
+      "sources",
       "message",
       "message-actions",
       "message-input",
@@ -568,6 +628,7 @@ export const aiellieui: Registry["items"] = [
     description:
       "A generator framed as the chat it really is: a persona floating at the top, prompts going down the thread and what they made coming back up it, a settings popover for the key, and a send that turns into a stop while a run is going.",
     registryDependencies: [
+      "add-menu",
       "chat-avatar",
       "chat-card",
       "message-input",

@@ -1,12 +1,28 @@
 "use client"
 
 import * as React from "react"
-import { AiImageIcon, Download01Icon } from "@hugeicons/core-free-icons"
+import {
+  AiImageIcon,
+  Cancel01Icon,
+  Download01Icon,
+  Image01Icon,
+} from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 
+import { type AddAction } from "@/components/aiellie-ui/composer/add-menu"
+import {
+  EmptyState,
+  EmptyStateDescription,
+  EmptyStateMedia,
+  EmptyStateTitle,
+} from "@/components/aiellie-ui/composer/empty-state"
+import {
+  RatioMenu,
+  RatioMenuContent,
+  RatioMenuTrigger,
+} from "@/components/aiellie-ui/composer/ratio-menu"
 import {
   GeneratorCard,
-  GeneratorEmpty,
   GeneratorRun,
 } from "@/components/aiellie-ui/generator-card"
 import { KeyField, useStoredKey } from "@/components/aiellie-ui/key-field"
@@ -21,9 +37,10 @@ import {
 } from "@/components/aiellie-ui/message-actions"
 import { avatarFor, sampleImageFor } from "@/lib/avatars"
 import { generateImageWithGemini, IMAGE_MODEL } from "@/lib/generation"
+import { cn } from "@/lib/utils"
 
 /**
- * Where the reader's key lives. One storage key across every generator demo,
+ * Where the reader's key lives. One storage key across every generator block,
  * so pasting it into one card arms them all.
  */
 const GEMINI_KEY = "aiellie:gemini-key"
@@ -34,28 +51,47 @@ const painter = {
   icon: AiImageIcon,
 }
 
+/** The frame each ratio takes — arbitrary values where the media element's
+ * three named aspects do not reach. */
+const RATIO_FRAMES: Record<string, string> = {
+  "1:1": "aspect-square",
+  "3:2": "aspect-[3/2]",
+  "16:9": "aspect-video",
+  "3:4": "aspect-[3/4]",
+  "9:16": "aspect-[9/16]",
+}
+
 interface Run {
   id: number
   prompt: string
   status: "making" | "done" | "failed"
+  ratio: string
   src?: string
   /** Painted by the sample service rather than a model — and it says so. */
   sample?: boolean
+  /** The run this one took as its starting point. */
+  referenceId?: number
   error?: string
 }
 
 /**
- * A generator anyone can try, and a real one for anyone with a key.
+ * The image generator, whole: a block, not a gallery of states.
  *
- * Without a key the card paints an abstract from the sample service, waits a
- * believable moment, and wears a "Sample" badge — so the interaction can be
- * felt (typed into, waited on, given something back) with no credential and
- * no cost. With a Gemini key in the settings, the same prompt goes to
- * `gemini-2.5-flash-image` from this browser, and nowhere else.
+ * It opens on its own explanation, takes prompts through the same composer a
+ * chat uses — the plus holds the reference, the row under the field holds the
+ * frame — and lives its states instead of exhibiting them: the empty state
+ * until the first ask, the shimmer while a run goes, the picture when it
+ * lands, the apology when it does not.
+ *
+ * Without a key the card paints an abstract from the sample service and wears
+ * a "Sample" badge; with a Gemini key in the settings the same prompt runs on
+ * the real model, from this browser, and nowhere else.
  */
 export function ImageGeneratorDemo() {
   const [key] = useStoredKey(GEMINI_KEY)
   const [runs, setRuns] = React.useState<Run[]>([])
+  const [ratio, setRatio] = React.useState("1:1")
+  const [referenceId, setReferenceId] = React.useState<number>()
   const ids = React.useRef(0)
   const aborts = React.useRef(new Map<number, AbortController>())
 
@@ -71,22 +107,51 @@ export function ImageGeneratorDemo() {
       list.map((run) => (run.id === id ? { ...run, ...changes } : run))
     )
 
+  const lastDone = [...runs].reverse().find((run) => run.status === "done")
+
+  /* The plus holds the one thing an image run can be handed besides words:
+     what to start from. Reported like any other entry; the block keeps the
+     choice and pins it under the thread until it is used or dismissed. */
+  const addActions: AddAction[] = [
+    {
+      id: "reference-last",
+      group: "Reference",
+      label: "Start from the last result",
+      icon: Image01Icon,
+      disabled: !lastDone,
+      description: lastDone ? undefined : "Nothing has been made yet.",
+    },
+  ]
+
   const make = async (prompt: string) => {
     const id = (ids.current += 1)
     const controller = new AbortController()
     aborts.current.set(id, controller)
-    setRuns((list) => [...list, { id, prompt, status: "making", sample: !key }])
+    const reference = referenceId
+    setReferenceId(undefined)
+    setRuns((list) => [
+      ...list,
+      {
+        id,
+        prompt,
+        status: "making",
+        ratio,
+        sample: !key,
+        referenceId: reference,
+      },
+    ])
 
     try {
       if (key) {
         const image = await generateImageWithGemini({
           apiKey: key,
           prompt,
+          aspectRatio: ratio,
           signal: controller.signal,
         })
         patch(id, { status: "done", src: image.src })
       } else {
-        /* The wait is part of the demo: a sample that lands instantly skips
+        /* The wait is part of the block: a sample that lands instantly skips
            the state the card exists to design for. */
         await new Promise((resolve, reject) => {
           const timer = setTimeout(resolve, 2_000 + Math.random() * 1_500)
@@ -95,7 +160,12 @@ export function ImageGeneratorDemo() {
             reject(new Error("Stopped"))
           })
         })
-        patch(id, { status: "done", src: sampleImageFor(prompt, id) })
+        patch(id, {
+          status: "done",
+          /* A reference seeds the sample near its source, so "start from the
+             last result" visibly rhymes with it rather than being a claim. */
+          src: sampleImageFor(prompt, (reference ?? 0) * 100 + id),
+        })
       }
     } catch (error) {
       if (controller.signal.aborted) {
@@ -120,6 +190,18 @@ export function ImageGeneratorDemo() {
       onPrompt={make}
       onStop={() => aborts.current.forEach((controller) => controller.abort())}
       placeholder="Describe a picture…"
+      addActions={addActions}
+      onAdd={(action) => {
+        if (action.id === "reference-last" && lastDone) {
+          setReferenceId(lastDone.id)
+        }
+      }}
+      toolbar={
+        <RatioMenu value={ratio} onValueChange={setRatio}>
+          <RatioMenuTrigger showLabel />
+          <RatioMenuContent side="top" />
+        </RatioMenu>
+      }
       settings={
         <div className="flex flex-col gap-2">
           <KeyField
@@ -135,12 +217,25 @@ export function ImageGeneratorDemo() {
       }
     >
       {runs.length === 0 ? (
-        <GeneratorEmpty>
-          Ask for anything. No key? The Painter does abstracts.
-        </GeneratorEmpty>
+        <EmptyState className="m-auto">
+          <EmptyStateMedia>
+            <HugeiconsIcon icon={AiImageIcon} />
+          </EmptyStateMedia>
+          <EmptyStateTitle>Ask for a picture</EmptyStateTitle>
+          <EmptyStateDescription>
+            The frame is set under the field, a reference lives behind the plus,
+            and your own key goes in the settings — without one, the Painter
+            does abstracts.
+          </EmptyStateDescription>
+        </EmptyState>
       ) : (
         runs.map((run) => (
           <GeneratorRun key={run.id} prompt={run.prompt}>
+            {run.referenceId ? (
+              <p className="text-[11px] text-muted-foreground">
+                Starting from run {run.referenceId}
+              </p>
+            ) : null}
             {run.status === "failed" ? (
               <p className="text-xs text-destructive">
                 {run.error ?? "The run went wrong."}{" "}
@@ -157,9 +252,8 @@ export function ImageGeneratorDemo() {
               </p>
             ) : (
               <MediaFrame
-                aspect="square"
                 busy={run.status === "making"}
-                className="max-w-64"
+                className={cn("max-w-64", RATIO_FRAMES[run.ratio])}
               >
                 {run.sample && run.status === "done" ? (
                   <MediaBadge>Sample</MediaBadge>
@@ -187,38 +281,19 @@ export function ImageGeneratorDemo() {
           </GeneratorRun>
         ))
       )}
-    </GeneratorCard>
-  )
-}
 
-/**
- * The three shapes a run can be in, side by side and standing still — the
- * states are the design surface, and a page should be able to read them
- * without catching a live one at the right moment.
- */
-export function ImageGeneratorStatesDemo() {
-  return (
-    <GeneratorCard persona={painter} busy placeholder="Describe a picture…">
-      <GeneratorRun prompt="A marble made of dusk">
-        <MediaFrame aspect="square" className="max-w-64">
-          <MediaBadge>Sample</MediaBadge>
-          <MediaImage
-            src={sampleImageFor("a marble made of dusk")}
-            alt="Generated: a marble made of dusk"
-          />
-        </MediaFrame>
-      </GeneratorRun>
-      <GeneratorRun prompt="The same, but at noon">
-        <MediaFrame aspect="square" busy className="max-w-64" />
-      </GeneratorRun>
-      <GeneratorRun prompt="Now as an oil painting">
-        <p className="text-xs text-destructive">
-          The provider refused the prompt.{" "}
-          <button type="button" className="underline underline-offset-2">
-            Try again
-          </button>
-        </p>
-      </GeneratorRun>
+      {/* The chosen reference, pinned where the next run will start — dashed,
+          because it is an offer not yet taken. */}
+      {referenceId ? (
+        <button
+          type="button"
+          onClick={() => setReferenceId(undefined)}
+          className="flex w-fit items-center gap-1.5 rounded-full border border-dashed border-border px-2.5 py-1 text-[11px] text-muted-foreground transition-colors hover:text-foreground motion-reduce:transition-none"
+        >
+          Next run starts from run {referenceId}
+          <HugeiconsIcon icon={Cancel01Icon} className="size-3" />
+        </button>
+      ) : null}
     </GeneratorCard>
   )
 }

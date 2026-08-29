@@ -19,7 +19,7 @@ import {
   SourcesContent,
   SourcesTrigger,
   type Source,
-} from "@/components/aiellie-ui/citations"
+} from "@/components/aiellie-ui/sources"
 import {
   AddMenu,
   AddMenuContent,

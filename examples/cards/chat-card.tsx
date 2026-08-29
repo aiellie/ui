@@ -1,15 +1,19 @@
 "use client"
 
 import * as React from "react"
-import { PencilEdit02Icon, Video01Icon } from "@hugeicons/core-free-icons"
+import {
+  BubbleChatIcon,
+  PencilEdit02Icon,
+  Video01Icon,
+} from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 
+import { Attachment, Attachments } from "@/components/aiellie-ui/attachments"
 import {
   ChatAvatar,
   ChatAvatarActions,
   ChatAvatarImage,
   ChatAvatarName,
-  ChatAvatarStack,
 } from "@/components/aiellie-ui/chat-avatar"
 import {
   ChatCard,
@@ -17,187 +21,153 @@ import {
   ChatCardThread,
 } from "@/components/aiellie-ui/chat-card"
 import {
+  AddMenu,
+  AddMenuContent,
+  AddMenuTrigger,
+  type AddAction,
+} from "@/components/aiellie-ui/composer/add-menu"
+import {
+  EmptyState,
+  EmptyStateDescription,
+  EmptyStateMedia,
+  EmptyStateTitle,
+} from "@/components/aiellie-ui/composer/empty-state"
+import {
   MessageInput,
   MessageInputField,
+  MessageInputLine,
+  messageInputStack,
   MessageInputSubmit,
 } from "@/components/aiellie-ui/composer/message-input"
-import { Timestamp } from "@/components/aiellie-ui/timestamps"
+import { MessageStatus } from "@/components/aiellie-ui/message-status"
 import { TooltipIconButton } from "@/components/aiellie-ui/tooltip-icon-button"
 import { TypingIndicator } from "@/components/aiellie-ui/typing-indicator"
 import { Bubble, BubbleContent } from "@/components/ui/bubble"
 import { avatarFor } from "@/lib/avatars"
 
-const HOUR = 3_600_000
-
-/** One moment per mount, so the stamps read consistently while it is open. */
-function useMountedAt() {
-  return React.useState(() => Date.now())[0]
-}
-
-type Turn = { id: number; from: "me" | "them"; text: string }
-
-/* Long enough to overflow the card, which is the point of the default demo:
-   the messages have to have somewhere to go before it is clear that where
-   they go is behind the glass. */
-const thread: Turn[] = [
-  { id: 1, from: "them", text: "Did the flag land in the end?" },
-  { id: 2, from: "me", text: "Last night, behind rollout.tuesday." },
-  { id: 3, from: "them", text: "Staff first, or everyone at once?" },
-  { id: 4, from: "me", text: "Staff first. Everyone on Thursday." },
-  { id: 5, from: "them", text: "Good — I'll warn support this afternoon." },
-  {
-    id: 6,
-    from: "me",
-    text: "The note is in the rollout doc if they want the detail.",
-  },
-  { id: 7, from: "them", text: "Perfect. Thank you!" },
-]
-
-function Turns({ turns }: { turns: Turn[] }) {
-  return (
-    <>
-      {turns.map((turn) => (
-        <Bubble
-          key={turn.id}
-          align={turn.from === "me" ? "end" : "start"}
-          variant={turn.from === "me" ? "default" : "muted"}
-        >
-          <BubbleContent>{turn.text}</BubbleContent>
-        </Bubble>
-      ))}
-    </>
-  )
-}
-
 const ines = avatarFor("ines")
 
-function InesHeader() {
-  return (
-    <ChatAvatar>
-      <ChatAvatarActions side="start">
-        <TooltipIconButton tooltip="New message">
-          <HugeiconsIcon icon={PencilEdit02Icon} />
-        </TooltipIconButton>
-      </ChatAvatarActions>
-
-      <ChatAvatarImage src={ines} fallback="IB" className="size-10" />
-      <ChatAvatarName render={<button type="button" />}>
-        Inés Bonilla
-      </ChatAvatarName>
-
-      <ChatAvatarActions side="end">
-        <TooltipIconButton tooltip="Call">
-          <HugeiconsIcon icon={Video01Icon} />
-        </TooltipIconButton>
-      </ChatAvatarActions>
-    </ChatAvatar>
-  )
+interface CarriedFile {
+  id: string
+  name: string
+  size?: number
 }
 
-/**
- * The card as it is meant to be worn: the avatar floating over the thread
- * rather than barred across the top of it, so messages thin out into the
- * glass instead of stopping at a border. Everything else on this page — the
- * generators, the agents, the assembled chat — is this card with different
- * things in the thread.
- */
-export function ChatCardDemo() {
-  const now = useMountedAt()
-  const [turns, setTurns] = React.useState(thread)
-
-  return (
-    <ChatCard className="max-w-sm">
-      <ChatCardThread>
-        <InesHeader />
-        <Timestamp variant="separator" date={now - 26 * HOUR} format="day" />
-        <Turns turns={turns} />
-      </ChatCardThread>
-      <ChatCardFooter>
-        <MessageInput
-          onSubmit={(message) =>
-            setTurns((previous) => [
-              ...previous,
-              { id: previous.length + 1, from: "me", text: message },
-            ])
-          }
-        >
-          <MessageInputField placeholder="Reply…" />
-          <MessageInputSubmit />
-        </MessageInput>
-      </ChatCardFooter>
-    </ChatCard>
-  )
+interface Turn {
+  id: number
+  from: "me" | "them"
+  text: string
+  files?: CarriedFile[]
 }
 
-/**
- * The card following a thread that is still arriving: the newest message
- * stays in view, and scrolling up stops it being pulled back — glance at the
- * glass while the messages pass under it.
- */
-export function ChatCardArrivingDemo() {
-  const [turns, setTurns] = React.useState(thread.slice(0, 1))
-
-  React.useEffect(() => {
-    const id = setInterval(() => {
-      setTurns((previous) => {
-        if (previous.length >= thread.length) return thread.slice(0, 1)
-        return [...previous, thread[previous.length]]
-      })
-    }, 2200)
-    return () => clearInterval(id)
-  }, [])
-
-  return (
-    <ChatCard className="max-w-sm">
-      <ChatCardThread>
-        <InesHeader />
-        <Turns turns={turns} />
-        {turns.length < thread.length ? (
-          <TypingIndicator label="Inés is typing" />
-        ) : null}
-      </ChatCardThread>
-      <ChatCardFooter>
-        <MessageInput>
-          <MessageInputField placeholder="Reply…" />
-          <MessageInputSubmit />
-        </MessageInput>
-      </ChatCardFooter>
-    </ChatCard>
-  )
-}
-
-const party = [
-  { id: "marta", initials: "MO", name: "Marta" },
-  { id: "sam", initials: "SW", name: "Sam" },
-  { id: "kenji", initials: "KW", name: "Kenji" },
+/* What Inés says back, in order — enough that a conversation can be had
+   before the script laps itself. */
+const replies = [
+  "Perfect timing — I was about to ask.",
+  "Got it. I'll fold that into the doc.",
+  "Agreed. Thursday still holds?",
+  "Nice. Send the note to support too?",
 ]
 
+/** The files the plus can put on the message, keyed by catalogue id. */
+const carriable = new Map<string, CarriedFile>([
+  ["upload", { id: "upload", name: "rollout-notes.md", size: 4_812 }],
+  [
+    "photos-library",
+    { id: "photos-library", name: "IMG_0412.jpg", size: 1_284_301 },
+  ],
+  [
+    "drive-roadmap",
+    { id: "drive-roadmap", name: "Roadmap.pdf", size: 2_412_881 },
+  ],
+  ["drive-budget", { id: "drive-budget", name: "Budget.xlsx", size: 88_202 }],
+  [
+    "drive-kickoff",
+    { id: "drive-kickoff", name: "Kickoff.docx", size: 219_004 },
+  ],
+])
+
 /**
- * A group thread, where the header has three faces to fit and no more room
- * to fit them in — so they overlap and shrink rather than the cluster
- * growing.
+ * The chat card as a block: a whole, working direct-message card.
+ *
+ * Not a gallery of its states — it opens empty and explains itself, and every
+ * other state is reached by using it: send something and the message carries
+ * its tick, attach something from the plus and the chips ride above the
+ * field until the send takes them, and Inés types back on her own time.
+ * Everything the block is made of installs separately; this file is only the
+ * conversation between the parts.
  */
-export function ChatCardGroupDemo() {
-  const now = useMountedAt()
+export function ChatCardDemo() {
+  const [turns, setTurns] = React.useState<Turn[]>([])
+  const [carrying, setCarrying] = React.useState<CarriedFile[]>([])
+  const [typing, setTyping] = React.useState(false)
+  const ids = React.useRef(0)
+  const replied = React.useRef(0)
+  const timers = React.useRef<ReturnType<typeof setTimeout>[]>([])
+
+  React.useEffect(() => {
+    const running = timers.current
+    return () => running.forEach(clearTimeout)
+  }, [])
+
+  const add = (action: AddAction) => {
+    const file = carriable.get(action.id)
+    // The catalogue is deeper than the demo's pretend filesystem; a row it
+    // has no file for simply adds nothing.
+    if (!file) return
+    setCarrying((list) =>
+      list.some((item) => item.id === file.id) ? list : [...list, file]
+    )
+  }
+
+  /* Derived from the list rather than read off the ref: the render is not
+     allowed to peek at `ids`, and the last of my messages is what the tick
+     belongs to anyway. */
+  const lastMine = [...turns].reverse().find((turn) => turn.from === "me")
+
+  const send = (message: string) => {
+    setTurns((list) => [
+      ...list,
+      {
+        id: (ids.current += 1),
+        from: "me",
+        text: message,
+        files: carrying.length ? carrying : undefined,
+      },
+    ])
+    setCarrying([])
+
+    /* She reads, then types, then answers — the three beats a real reply
+       has, so the typing indicator earns its moment on screen. */
+    timers.current.push(
+      setTimeout(() => setTyping(true), 900),
+      setTimeout(() => {
+        setTyping(false)
+        setTurns((list) => [
+          ...list,
+          {
+            id: (ids.current += 1),
+            from: "them",
+            text: replies[replied.current++ % replies.length],
+          },
+        ])
+      }, 2_600)
+    )
+  }
 
   return (
     <ChatCard className="max-w-sm">
       <ChatCardThread>
-        <ChatAvatar>
-          <ChatAvatarStack>
-            {party.map((person) => (
-              <ChatAvatarImage
-                key={person.id}
-                src={avatarFor(person.name)}
-                fallback={
-                  <span className="text-[11px]">{person.initials}</span>
-                }
-                className="size-10"
-              />
-            ))}
-          </ChatAvatarStack>
+        <ChatAvatar floating={turns.length > 0}>
+          <ChatAvatarActions side="start">
+            <TooltipIconButton tooltip="New message">
+              <HugeiconsIcon icon={PencilEdit02Icon} />
+            </TooltipIconButton>
+          </ChatAvatarActions>
+
+          <ChatAvatarImage src={ines} fallback="IB" className="size-10" />
           <ChatAvatarName render={<button type="button" />}>
-            Rollout, 3 people
+            Inés Bonilla
           </ChatAvatarName>
 
           <ChatAvatarActions side="end">
@@ -207,42 +177,79 @@ export function ChatCardGroupDemo() {
           </ChatAvatarActions>
         </ChatAvatar>
 
-        <Timestamp variant="separator" date={now - 2 * HOUR} format="time" />
-        <Turns turns={thread} />
+        {turns.length === 0 ? (
+          <EmptyState className="m-auto">
+            <EmptyStateMedia>
+              <HugeiconsIcon icon={BubbleChatIcon} />
+            </EmptyStateMedia>
+            <EmptyStateTitle>No messages yet</EmptyStateTitle>
+            <EmptyStateDescription>
+              Say something — files, photos and the connectors live behind the
+              plus, and she types back.
+            </EmptyStateDescription>
+          </EmptyState>
+        ) : (
+          turns.map((turn) => (
+            <div
+              key={turn.id}
+              className={
+                turn.from === "me"
+                  ? "flex flex-col items-end gap-1"
+                  : "flex flex-col items-start gap-1"
+              }
+            >
+              {turn.files?.length ? (
+                <Attachments className="justify-end">
+                  {turn.files.map((file) => (
+                    <Attachment
+                      key={file.id}
+                      name={file.name}
+                      size={file.size}
+                    />
+                  ))}
+                </Attachments>
+              ) : null}
+              <Bubble
+                align={turn.from === "me" ? "end" : "start"}
+                variant={turn.from === "me" ? "default" : "muted"}
+              >
+                <BubbleContent>{turn.text}</BubbleContent>
+              </Bubble>
+              {turn.from === "me" && turn.id === lastMine?.id ? (
+                <MessageStatus status="delivered" />
+              ) : null}
+            </div>
+          ))
+        )}
+        {typing ? <TypingIndicator label="Inés is typing" /> : null}
       </ChatCardThread>
-      <ChatCardFooter>
-        <MessageInput>
-          <MessageInputField placeholder="Message the group…" />
-          <MessageInputSubmit />
-        </MessageInput>
-      </ChatCardFooter>
-    </ChatCard>
-  )
-}
 
-/**
- * `floating={false}`, for a thread with nothing in it yet. There is nothing
- * to float over, and glass over an empty card is a pane of it over a blank
- * wall.
- */
-export function ChatCardOpeningDemo() {
-  return (
-    <ChatCard className="max-w-sm">
-      <ChatCardThread className="items-center">
-        <ChatAvatar floating={false} className="w-full pt-6">
-          <ChatAvatarImage src={ines} fallback="IB" className="size-10" />
-          <ChatAvatarName render={<button type="button" />}>
-            Inés Bonilla
-          </ChatAvatarName>
-        </ChatAvatar>
-        <p className="text-xs text-muted-foreground">
-          No messages yet. Say something.
-        </p>
-      </ChatCardThread>
       <ChatCardFooter>
-        <MessageInput>
-          <MessageInputField placeholder="Message Inés…" />
-          <MessageInputSubmit />
+        <MessageInput onSubmit={send} className={messageInputStack}>
+          {carrying.length ? (
+            <Attachments>
+              {carrying.map((file) => (
+                <Attachment
+                  key={file.id}
+                  name={file.name}
+                  size={file.size}
+                  onRemove={() =>
+                    setCarrying((list) =>
+                      list.filter((item) => item.id !== file.id)
+                    )
+                  }
+                />
+              ))}
+            </Attachments>
+          ) : null}
+          <MessageInputLine>
+            <AddMenu onSelect={add}>
+              <AddMenuTrigger />
+              <AddMenuContent side="top" />
+            </AddMenu>
+            <MessageInputField placeholder="Message Inés…" />
+            <MessageInputSubmit />
+          </MessageInputLine>
         </MessageInput>
       </ChatCardFooter>
     </ChatCard>

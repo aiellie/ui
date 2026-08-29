@@ -3,6 +3,7 @@ import {
   MessageSquareDotIcon,
   BubbleChatEditIcon,
   Cards01Icon,
+  Image01Icon,
 } from "@hugeicons/core-free-icons"
 import type { IconSvgElement } from "@hugeicons/react"
 
@@ -38,6 +39,12 @@ export const registryCategories: RegistryCategory[] = [
     slug: "composer",
     hidden: false,
     icon: BubbleChatEditIcon,
+  },
+  {
+    name: "Media",
+    slug: "media",
+    hidden: false,
+    icon: Image01Icon,
   },
   {
     name: "Coding",

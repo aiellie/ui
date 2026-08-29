@@ -1,0 +1,36 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "media-gallery-demo",
+  "title": "Media Gallery",
+  "description": "Four variations with one chosen — the ring on the pick, the rest a shade back — and the same grid as a filmstrip of takes.",
+  "registryDependencies": [
+    "https://ui.aiellie.dev/r/media-gallery.json",
+    "https://ui.aiellie.dev/r/media.json",
+    "https://ui.aiellie.dev/r/avatars.json"
+  ],
+  "files": [
+    {
+      "path": "examples/media/media-gallery.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport {\n  MediaGallery,\n  MediaGalleryItem,\n} from \"@/components/aiellie-ui/media-gallery\"\nimport { MediaFrame, MediaImage } from \"@/components/aiellie-ui/media\"\nimport { sampleImageFor } from \"@/lib/avatars\"\n\nconst PROMPT = \"a lighthouse in a violet storm\"\n\n/**\n * Four variations, one chosen. The choice lives out here because picking a\n * variation is usually the same event as doing something with it — which the\n * caption underneath stands in for.\n */\nexport function MediaGalleryDemo() {\n  const [selected, setSelected] = React.useState(0)\n\n  return (\n    <div className=\"flex w-full max-w-sm flex-col gap-2\">\n      <MediaGallery columns={2}>\n        {[0, 1, 2, 3].map((variation) => (\n          <MediaGalleryItem\n            key={variation}\n            selected={selected === variation}\n            onClick={() => setSelected(variation)}\n            aria-label={`Variation ${variation + 1}`}\n          >\n            <MediaFrame aspect=\"square\" className=\"rounded-none\">\n              <MediaImage\n                src={sampleImageFor(PROMPT, variation + 1)}\n                alt={`Variation ${variation + 1} of: ${PROMPT}`}\n              />\n            </MediaFrame>\n          </MediaGalleryItem>\n        ))}\n      </MediaGallery>\n      <p className=\"text-[11px] text-muted-foreground\">\n        Variation {selected + 1} will be upscaled.\n      </p>\n    </div>\n  )\n}\n\n/** A filmstrip: the same pick, laid out for a row of takes. */\nexport function MediaGalleryStripDemo() {\n  const [selected, setSelected] = React.useState(1)\n\n  return (\n    <MediaGallery columns={4} className=\"max-w-md\">\n      {[0, 1, 2, 3].map((take) => (\n        <MediaGalleryItem\n          key={take}\n          selected={selected === take}\n          onClick={() => setSelected(take)}\n          aria-label={`Take ${take + 1}`}\n        >\n          <MediaFrame aspect=\"portrait\" className=\"rounded-none\">\n            <MediaImage\n              src={sampleImageFor(\"takes of a dusk marble\", take + 10)}\n              alt={`Take ${take + 1}`}\n            />\n          </MediaFrame>\n        </MediaGalleryItem>\n      ))}\n    </MediaGallery>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/media/media-gallery.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Variations",
+        "demo": "MediaGalleryDemo"
+      },
+      {
+        "name": "Filmstrip",
+        "demo": "MediaGalleryStripDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "media"
+  ],
+  "type": "registry:example"
+}

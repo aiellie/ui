@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "media-gallery",
+  "title": "Media Gallery",
+  "description": "A run's variations side by side, one of them chosen: every tile a real button, the chosen one wearing the ring, and the choice living with whoever is about to do something with it.",
+  "registryDependencies": [
+    "https://ui.aiellie.dev/r/utils.json"
+  ],
+  "files": [
+    {
+      "path": "components/aiellie-ui/media-gallery.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\n/**\n * A run's results side by side, one of them chosen.\n *\n * Generators come back with variations, and the act the grid exists for is\n * picking: which of the four gets kept, upscaled, sent on. So every tile is a\n * real button, the chosen one wears the ring, and the choice itself lives\n * with the caller — picking a variation is usually the same event as doing\n * something with it, and a grid holding that state privately would only have\n * to hand it straight back.\n */\n\nexport interface MediaGalleryProps extends React.ComponentProps<\"div\"> {\n  /** Columns at the grid's own width. Two reads as a contact sheet; four is\n   * a filmstrip and wants the room to be one. */\n  columns?: 2 | 3 | 4\n}\n\nexport function MediaGallery({\n  columns = 2,\n  className,\n  ...props\n}: MediaGalleryProps) {\n  return (\n    <div\n      data-slot=\"media-gallery\"\n      role=\"group\"\n      className={cn(\n        \"grid w-full gap-2\",\n        columns === 2 && \"grid-cols-2\",\n        columns === 3 && \"grid-cols-3\",\n        columns === 4 && \"grid-cols-4\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nexport interface MediaGalleryItemProps extends React.ComponentProps<\"button\"> {\n  selected?: boolean\n}\n\n/**\n * One tile. The ring says chosen and `aria-pressed` says it out loud; the\n * media inside keeps its own corners clipped by the tile, so a `MediaFrame`\n * dropped straight in lines up without either knowing about the other.\n */\nexport function MediaGalleryItem({\n  selected = false,\n  className,\n  children,\n  ...props\n}: MediaGalleryItemProps) {\n  return (\n    <button\n      type=\"button\"\n      data-slot=\"media-gallery-item\"\n      data-selected={selected || undefined}\n      aria-pressed={selected}\n      className={cn(\n        \"relative cursor-pointer overflow-hidden rounded-xl transition-[box-shadow,opacity] duration-150 outline-none motion-reduce:transition-none\",\n        /* The ring rides inside the tile's own edge so neighbours never\n           overlap it, and the unchosen dim a shade rather than the chosen\n           one shouting — four bright tiles and one ring reads faster than\n           three grey ones and a spotlight. */\n        selected\n          ? \"ring-2 ring-primary ring-inset\"\n          : \"opacity-80 hover:opacity-100 focus-visible:opacity-100\",\n        \"focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-inset\",\n        className\n      )}\n      {...props}\n    >\n      {children}\n    </button>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "components/aiellie-ui/media-gallery.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

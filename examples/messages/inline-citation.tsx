@@ -2,15 +2,9 @@
 
 import * as React from "react"
 
-import {
-  Citation,
-  SourceItem,
-  Sources,
-  SourcesContent,
-  SourcesTrigger,
-  type Source,
-} from "@/components/aiellie-ui/citations"
+import { Citation } from "@/components/aiellie-ui/inline-citation"
 import { Response } from "@/components/aiellie-ui/response"
+import { type Source } from "@/components/aiellie-ui/sources"
 import { Bubble, BubbleContent, BubbleGroup } from "@/components/ui/bubble"
 
 const sources: Source[] = [
@@ -36,12 +30,12 @@ const sources: Source[] = [
   },
 ]
 
-/** The marks in the prose, and the list they point at underneath it. */
-export function CitationsDemo() {
+/** The marks in the prose — hover one for the source, click it to go there. */
+export function InlineCitationDemo() {
   return (
     <BubbleGroup className="w-full max-w-sm">
       <Bubble variant="ghost">
-        <BubbleContent className="flex flex-col gap-2">
+        <BubbleContent>
           <Response>
             {/* The marks sit tight against the word they follow: a newline
                 before one in the source becomes a space in the sentence, and
@@ -57,30 +51,8 @@ export function CitationsDemo() {
               <Citation source={sources[2]} index={3} />.
             </p>
           </Response>
-          <Sources>
-            <SourcesTrigger count={sources.length} />
-            <SourcesContent>
-              {sources.map((source, index) => (
-                <SourceItem key={source.id} source={source} index={index + 1} />
-              ))}
-            </SourcesContent>
-          </Sources>
         </BubbleContent>
       </Bubble>
     </BubbleGroup>
-  )
-}
-
-/** The list on its own, open, for an answer that is mostly its sources. */
-export function CitationsSourcesDemo() {
-  return (
-    <Sources defaultOpen className="w-full max-w-sm">
-      <SourcesTrigger count={sources.length} />
-      <SourcesContent>
-        {sources.map((source, index) => (
-          <SourceItem key={source.id} source={source} index={index + 1} />
-        ))}
-      </SourcesContent>
-    </Sources>
   )
 }

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ratio-menu-demo",
+  "title": "Ratio Menu",
+  "description": "The frame menu on the row where it lives, wearing the chosen proportions on its trigger — and the bare trigger, for a toolbar with no room for the word.",
+  "registryDependencies": [
+    "https://ui.aiellie.dev/r/ratio-menu.json",
+    "https://ui.aiellie.dev/r/message-input.json",
+    "https://ui.aiellie.dev/r/tooltip.json"
+  ],
+  "files": [
+    {
+      "path": "examples/composer/ratio-menu.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport {\n  RatioMenu,\n  RatioMenuContent,\n  RatioMenuTrigger,\n  findRatio,\n} from \"@/components/aiellie-ui/composer/ratio-menu\"\nimport {\n  MessageInput,\n  MessageInputField,\n  MessageInputLine,\n  messageInputStack,\n  MessageInputSubmit,\n  MessageInputToolbar,\n} from \"@/components/aiellie-ui/composer/message-input\"\nimport { TooltipProvider } from \"@/components/ui/tooltip\"\n\n/**\n * The menu where it lives: on the row under a generator's field, wearing the\n * chosen frame so the toolbar answers \"what shape\" at a glance.\n */\nexport function RatioMenuDemo() {\n  const [ratio, setRatio] = React.useState(\"16:9\")\n\n  return (\n    <TooltipProvider>\n      <div className=\"flex w-full max-w-md flex-col gap-2\">\n        <MessageInput className={messageInputStack}>\n          <MessageInputLine>\n            <MessageInputField placeholder=\"Describe a picture…\" />\n            <MessageInputSubmit />\n          </MessageInputLine>\n          <MessageInputToolbar>\n            <RatioMenu value={ratio} onValueChange={setRatio}>\n              <RatioMenuTrigger showLabel />\n              <RatioMenuContent side=\"top\" />\n            </RatioMenu>\n          </MessageInputToolbar>\n        </MessageInput>\n        <p className=\"min-h-4 ps-1 text-xs text-muted-foreground\">\n          The next run fills a {findRatio(ratio)?.name.toLowerCase()} frame (\n          {ratio}).\n        </p>\n      </div>\n    </TooltipProvider>\n  )\n}\n\n/** The bare trigger, for a toolbar with no room for the word. */\nexport function RatioMenuBareDemo() {\n  return (\n    <TooltipProvider>\n      <RatioMenu defaultValue=\"3:4\">\n        <RatioMenuTrigger />\n        <RatioMenuContent />\n      </RatioMenu>\n    </TooltipProvider>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/composer/ratio-menu.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "On the toolbar",
+        "demo": "RatioMenuDemo"
+      },
+      {
+        "name": "Bare",
+        "demo": "RatioMenuBareDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "composer"
+  ],
+  "type": "registry:example"
+}

@@ -35,16 +35,20 @@ export const IMAGE_MODEL = "gemini-2.5-flash-image"
 export async function generateImageWithGemini({
   apiKey,
   prompt,
+  aspectRatio,
   signal,
 }: {
   apiKey: string
   prompt: string
+  /** `w:h`, as the ratio menu speaks it. */
+  aspectRatio?: string
   signal?: AbortSignal
 }): Promise<GeneratedMedia> {
   const google = createGoogleGenerativeAI({ apiKey })
   const result = await generateImage({
     model: google.image(IMAGE_MODEL),
     prompt,
+    aspectRatio: aspectRatio as `${number}:${number}` | undefined,
     abortSignal: signal,
   })
 
@@ -75,11 +79,14 @@ function wait(ms: number, signal?: AbortSignal) {
 export async function generateVideoWithGemini({
   apiKey,
   prompt,
+  aspectRatio,
   signal,
   onPoll,
 }: {
   apiKey: string
   prompt: string
+  /** `w:h`, as the ratio menu speaks it. */
+  aspectRatio?: string
   signal?: AbortSignal
   /** Fired on every ask, so a card can say the wait is being spent, not hung. */
   onPoll?: (elapsedMs: number) => void
@@ -93,6 +100,7 @@ export async function generateVideoWithGemini({
   const { operation } = await experimental_startVideo({
     model,
     prompt,
+    aspectRatio: aspectRatio as `${number}:${number}` | undefined,
     abortSignal: signal,
   })
 

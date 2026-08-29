@@ -36,6 +36,7 @@ import { HugeiconsIcon } from "@hugeicons/react"
 
 import {
   Menu,
+  MenuCheckboxItem,
   MenuContent,
   MenuGroup,
   MenuGroupLabel,
@@ -105,6 +106,14 @@ interface AddAction {
   group?: string
   /** What it opens rather than what it does. Any depth. */
   items?: AddAction[]
+  /**
+   * Present — true or false — makes the row a checkbox that reports through
+   * `onSelect` like any other entry; the caller flips the value and hands the
+   * tree back. That is how a set of tools lives inside the plus: choosing one
+   * is not an act on the message, it is a setting, and the row says so by
+   * keeping the menu open and wearing the tick.
+   */
+  checked?: boolean
   /** What this one entry does. The menu's own `onSelect` hears about it too. */
   onSelect?: (action: AddAction) => void
 }
@@ -356,7 +365,7 @@ function AddMenuTrigger({
           tooltip="Add"
           side="top"
           className={cn(
-            " shrink-0 rounded-full text-muted-foreground hover:text-foreground border border-border",
+            "shrink-0 rounded-full border border-border text-muted-foreground hover:text-foreground",
             // On the glyph rather than the button: the button is round, so
             // turning it would move nothing but its focus ring.
             "[&>svg]:transition-transform [&>svg]:duration-200 aria-expanded:[&>svg]:rotate-45 motion-reduce:[&>svg]:transition-none",
@@ -442,10 +451,25 @@ function AddMenuItem({
         >
           <AddMenuRowContent action={action} />
         </MenuSubTrigger>
-        <MenuSubContent>
+        <MenuSubContent className="max-h-[min(26rem,calc(100svh-5rem))] overflow-y-auto overscroll-contain">
           <AddMenuList actions={action.items} />
         </MenuSubContent>
       </MenuSub>
+    )
+  }
+
+  if (action.checked !== undefined) {
+    return (
+      <MenuCheckboxItem
+        data-slot="add-menu-checkbox-item"
+        checked={action.checked}
+        disabled={action.disabled}
+        onCheckedChange={() => select(action)}
+        className={cn("items-start", className)}
+      >
+        <AddMenuRowContent action={action} />
+        {/* No shortcut on a checkbox row: the tick holds the end of it. */}
+      </MenuCheckboxItem>
     )
   }
 
@@ -535,7 +559,15 @@ function AddMenuContent({
   return (
     <MenuContent
       data-slot="add-menu-content"
-      className={cn("w-60 max-w-[calc(100vw-2rem)]", className)}
+      className={cn(
+        "w-60 max-w-[calc(100vw-2rem)]",
+        /* A catalogue grows; a viewport does not. Past the cap the menu
+           scrolls inside itself, the same way the typeahead popups do —
+           a plus that opens taller than the screen has nothing under it
+           to click. */
+        "max-h-[min(26rem,calc(100svh-5rem))] overflow-y-auto overscroll-contain",
+        className
+      )}
       {...props}
     >
       {children ?? <AddMenuList actions={actions} />}

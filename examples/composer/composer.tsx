@@ -5,6 +5,7 @@ import {
   AiBrain01Icon,
   AiSearch02Icon,
   Bug01Icon,
+  Wrench01Icon,
 } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import type { ChatStatus } from "ai"
@@ -42,15 +43,10 @@ import {
   ModelPickerContent,
   ModelPickerTrigger,
 } from "@/components/aiellie-ui/composer/model-picker"
-import {
-  ToolPicker,
-  ToolPickerActive,
-  ToolPickerContent,
-  ToolPickerTrigger,
-} from "@/components/aiellie-ui/composer/tool-picker"
 import { Attachment, Attachments } from "@/components/aiellie-ui/attachments"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { findModel } from "@/lib/models"
+import { tools as toolCatalogue } from "@/lib/tools"
 
 /** Kept short and kept here: a composer demo should not need a directory. */
 const mentions: MentionItem[] = [
@@ -136,6 +132,29 @@ const addActions: AddAction[] = [
 ]
 
 /**
+ * The tools, folded into the plus rather than standing on the toolbar.
+ * Which tools are on is a setting, not a fifth control: the row under the
+ * field stays for what changes per message, and the plus — the door to
+ * everything a message can be given — is where a set of capabilities
+ * belongs. Checkbox rows keep the menu open, so three tools cost one visit.
+ */
+function toolsEntry(active: string[]): AddAction {
+  return {
+    id: "tools",
+    group: "Tools",
+    label: active.length ? `Tools — ${active.length} on` : "Tools",
+    icon: Wrench01Icon,
+    items: toolCatalogue.map((tool) => ({
+      id: `tool-${tool.id}`,
+      label: tool.name,
+      description: tool.description,
+      icon: tool.icon,
+      checked: active.includes(tool.id),
+    })),
+  }
+}
+
+/**
  * The whole of it, in the order the parts belong in: the files it carries
  * above the line, the plus and the send either side of the field on it, and
  * everything the message is being sent with on the row underneath.
@@ -166,6 +185,13 @@ export function ComposerDemo() {
   }, [status])
 
   const carry = (action: AddAction) => {
+    if (action.id.startsWith("tool-")) {
+      const id = action.id.slice("tool-".length)
+      setTools((list) =>
+        list.includes(id) ? list.filter((tool) => tool !== id) : [...list, id]
+      )
+      return
+    }
     const file = carriableById.get(action.id)
     // The link row opens something a demo has not got.
     if (!file) return
@@ -211,7 +237,10 @@ export function ComposerDemo() {
             ) : null}
 
             <ComposerLine>
-              <AddMenu actions={addActions} onSelect={carry}>
+              <AddMenu
+                actions={[...addActions, toolsEntry(tools)]}
+                onSelect={carry}
+              >
                 <AddMenuTrigger />
                 <AddMenuContent side="top" />
               </AddMenu>
@@ -227,11 +256,6 @@ export function ComposerDemo() {
                 <ApprovalModeMenuTrigger />
                 <ApprovalModeMenuContent side="top" />
               </ApprovalModeMenu>
-              <ToolPicker value={tools} onValueChange={setTools}>
-                <ToolPickerTrigger />
-                <ToolPickerContent side="top" />
-                <ToolPickerActive />
-              </ToolPicker>
 
               <ComposerToolbarGroup end>
                 <ModelPicker value={model} onValueChange={setModel}>

@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { AiSearch02Icon } from "@hugeicons/core-free-icons"
 
 import { AgentCard, type AgentState } from "@/components/aiellie-ui/agent-card"
 import {
@@ -10,22 +11,30 @@ import {
   type ChatPart,
 } from "@/components/aiellie-ui/chat"
 import {
-  CodeBlock,
-  CodeBlockHeader,
-  CodeBlockTitle,
-} from "@/components/aiellie-ui/code/code-block"
-import { CodeDiffBody } from "@/components/aiellie-ui/code/code-diff"
-import { Button } from "@/components/ui/button"
-import { AiSearch02Icon } from "@hugeicons/core-free-icons"
+  AddMenu,
+  AddMenuContent,
+  AddMenuTrigger,
+} from "@/components/aiellie-ui/composer/add-menu"
+import {
+  ApprovalModeMenu,
+  ApprovalModeMenuContent,
+  ApprovalModeMenuTrigger,
+} from "@/components/aiellie-ui/composer/approval-mode-menu"
+import {
+  MessageInput,
+  MessageInputField,
+  MessageInputLine,
+  messageInputStack,
+  MessageInputSubmit,
+  MessageInputToolbar,
+} from "@/components/aiellie-ui/composer/message-input"
+import {
+  ModelPicker,
+  ModelPickerContent,
+  ModelPickerTrigger,
+} from "@/components/aiellie-ui/composer/model-picker"
+import { TooltipProvider } from "@/components/ui/tooltip"
 import { avatarFor } from "@/lib/avatars"
-
-/**
- * The Researcher, run: given a question, it thinks, reads, and then — the
- * moment this card exists for — stops and asks before it writes anything.
- * An agent's day is made of exactly these states, and `awaiting` is the one
- * that separates an agent from an autocomplete: the run is not stuck, it is
- * waiting on you, and the card says so from the state chip down to the call.
- */
 
 /* The same persona the composer's mention menu offers — one Researcher,
    one face, wherever it turns up. */
@@ -45,16 +54,40 @@ const REPORT_ARGS = `{
   "length": "short"
 }`
 
-/** The frame the run opens on — also what a replay resets to. */
+/** The frame a run opens on. */
 const OPENING: ChatPart[] = [
   { type: "reasoning", thinking: true, steps: thinking },
 ]
 
+/**
+ * The agent as a block: ask it something and watch the day it has.
+ *
+ * The composer is real — a question goes in at the bottom and a run comes
+ * back down the thread — and so are the settings under it: the approval mode
+ * is not a decoration, it decides whether the write stops to ask. On
+ * `manual` the run parks at "Waiting on you" with approve and deny standing
+ * in the call; on `auto` or `full access` the same call approves itself and
+ * the chip never leaves "Working". That is the whole grammar of an agent,
+ * on one card.
+ */
 export function AgentCardDemo() {
+  const [question, setQuestion] = React.useState(
+    "What changed in the rollout this week?"
+  )
+  const [cycle, setCycle] = React.useState(0)
   const [state, setState] = React.useState<AgentState>("working")
   const [parts, setParts] = React.useState<ChatPart[]>(OPENING)
+  const [mode, setMode] = React.useState("manual")
+  const [model, setModel] = React.useState("claude-opus-5")
   const timers = React.useRef<ReturnType<typeof setTimeout>[]>([])
-  const [cycle, setCycle] = React.useState(0)
+
+  /* Read at the moment the run reaches the write, not at the moment the run
+     was scheduled: flipping the mode while it is still searching should
+     count, and re-running the whole script on a settings change would not. */
+  const modeRef = React.useRef(mode)
+  React.useEffect(() => {
+    modeRef.current = mode
+  }, [mode])
 
   /* Swap the last part for its settled form and let the close of the answer
      follow it. Stable, because the scripted beats close over it. */
@@ -121,11 +154,9 @@ export function AgentCardDemo() {
     )
   }, [settle])
 
-  /* The run up to the question, on timers; everything after it on the
-     reader's answer. A script that approves itself would demo the one thing
-     this card is not. The effect only schedules — the opening frame is the
-     initial state, and a replay resets it from the button's own handler —
-     so no render is spent re-saying what is already on screen. */
+  /* The run up to the write, on timers; the write itself on whichever answer
+     the approval mode gives. The effect only schedules — the opening frame
+     is state the render already has. */
   React.useEffect(() => {
     const searched: ChatPart[] = [
       { type: "reasoning", duration: 2, steps: thinking },
@@ -142,6 +173,22 @@ export function AgentCardDemo() {
     running.push(
       setTimeout(() => setParts(searched), 1800),
       setTimeout(() => {
+        /* Auto and full access do not stop to ask; everything else does. */
+        if (modeRef.current === "auto" || modeRef.current === "full-access") {
+          setParts([
+            ...searched,
+            {
+              type: "tool",
+              name: "write_report",
+              summary: "rollout/notes.md",
+              status: "awaiting",
+              arguments: REPORT_ARGS,
+            },
+          ])
+          approve()
+          return
+        }
+
         setState("awaiting")
         setParts([
           ...searched,
@@ -167,112 +214,56 @@ export function AgentCardDemo() {
     }
   }, [cycle, approve, deny])
 
+  const ask = (next: string) => {
+    setQuestion(next)
+    setState("working")
+    setParts(OPENING)
+    setCycle((count) => count + 1)
+  }
+
   const messages: ChatMessage[] = [
-    { id: "q", role: "user", text: "What changed in the rollout this week?" },
-    { id: "a", role: "assistant", parts },
+    { id: `q-${cycle}`, role: "user", text: question },
+    { id: `a-${cycle}`, role: "assistant", parts },
   ]
 
-  const settled = state === "done" || state === "failed"
-
   return (
-    <AgentCard
-      persona={{
-        name: researcher.name,
-        avatar: researcher.avatar,
-        icon: researcher.icon,
-      }}
-      state={state}
-      className="max-w-md"
-      footer={
-        settled ? (
-          <Button
-            size="sm"
-            variant="outline"
-            className="self-center"
-            onClick={() => {
-              setState("working")
-              setParts(OPENING)
-              setCycle((count) => count + 1)
-            }}
+    <TooltipProvider>
+      <AgentCard
+        persona={researcher}
+        state={state}
+        className="max-w-md"
+        footer={
+          <MessageInput onSubmit={ask} className={messageInputStack}>
+            <MessageInputLine>
+              <AddMenu>
+                <AddMenuTrigger />
+                <AddMenuContent side="top" />
+              </AddMenu>
+              <MessageInputField placeholder="Ask the Researcher…" />
+              <MessageInputSubmit />
+            </MessageInputLine>
+            <MessageInputToolbar>
+              <ApprovalModeMenu value={mode} onValueChange={setMode}>
+                <ApprovalModeMenuTrigger />
+                <ApprovalModeMenuContent side="top" />
+              </ApprovalModeMenu>
+              <ModelPicker value={model} onValueChange={setModel}>
+                <ModelPickerTrigger className="ms-auto" />
+                <ModelPickerContent side="top" />
+              </ModelPicker>
+            </MessageInputToolbar>
+          </MessageInput>
+        }
+      >
+        {messages.map((message) => (
+          <ChatThreadItem
+            key={message.id}
+            scrollAnchor={message.role === "user"}
           >
-            Run it again
-          </Button>
-        ) : null
-      }
-    >
-      {messages.map((message) => (
-        <ChatThreadItem key={message.id} scrollAnchor={message.role === "user"}>
-          <ChatTurn message={message} />
-        </ChatThreadItem>
-      ))}
-    </AgentCard>
-  )
-}
-
-const DIFF = `@@ -410,7 +410,9 @@ export function Attachment({
--  const label = name
-+  const stem = splitName(name).stem
-+  const label = stem || name
-   return (
-     <button type="button" aria-label={label}>`
-
-/**
- * The Reviewer, reading a diff — an agent whose answer is not prose but a
- * verdict over code, which is why the coding family renders inside the same
- * thread the chat parts do. A transcript is whatever the work was.
- */
-export function AgentReviewerDemo() {
-  const verdict: ChatMessage[] = [
-    { id: "q", role: "user", text: "Review the attachment label change." },
-    {
-      id: "a",
-      role: "assistant",
-      parts: [
-        {
-          type: "reasoning",
-          duration: 1,
-          steps: [
-            "One hunk, one behaviour change: the label loses its extension.",
-          ],
-        },
-        {
-          type: "tool",
-          name: "read_diff",
-          summary: "1 file",
-          status: "done",
-        },
-      ],
-    },
-  ]
-
-  return (
-    <AgentCard
-      persona={{
-        name: "Reviewer",
-        avatar: avatarFor("reviewer"),
-      }}
-      state="done"
-      className="max-w-md"
-    >
-      {verdict.map((message) => (
-        <ChatThreadItem key={message.id} scrollAnchor={message.role === "user"}>
-          <ChatTurn message={message} />
-        </ChatThreadItem>
-      ))}
-      <ChatThreadItem>
-        <CodeBlock className="max-w-full">
-          <CodeBlockHeader>
-            <CodeBlockTitle>attachments.tsx</CodeBlockTitle>
-          </CodeBlockHeader>
-          <CodeDiffBody diff={DIFF} lineNumbers={false} />
-        </CodeBlock>
-      </ChatThreadItem>
-      <ChatThreadItem>
-        <p className="text-sm text-foreground/80">
-          Sound. The fallback to the full name covers a file that is all
-          extension — worth a demo case before it merges.
-        </p>
-      </ChatThreadItem>
-    </AgentCard>
+            <ChatTurn message={message} />
+          </ChatThreadItem>
+        ))}
+      </AgentCard>
+    </TooltipProvider>
   )
 }

@@ -22,16 +22,19 @@ export const examples: Registry["items"] = [
     type: "registry:example",
     title: "Chat Card",
     description:
-      "The card every card here is built on: an avatar floating over the thread on glass, messages thinning out beneath it, a composer in the foot — following an arriving thread, holding a group, and opening empty.",
+      "A whole, working direct-message card: it opens on its own explanation, the plus attaches files that ride above the field until the send takes them, sent messages carry their tick, and she types back on her own time.",
     registryDependencies: [
       "chat-card",
       "chat-avatar",
-      "avatars",
+      "add-menu",
+      "attachments",
+      "empty-state",
       "message-input",
-      "timestamps",
+      "message-status",
       "tooltip-icon-button",
       "typing-indicator",
       "bubble",
+      "avatars",
     ],
     dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
     files: [
@@ -43,12 +46,7 @@ export const examples: Registry["items"] = [
     ],
     categories: ["cards"],
     meta: {
-      variants: [
-        { name: "Default", demo: "ChatCardDemo" },
-        { name: "Arriving", demo: "ChatCardArrivingDemo" },
-        { name: "Group", demo: "ChatCardGroupDemo" },
-        { name: "Opening", demo: "ChatCardOpeningDemo" },
-      ],
+      variants: [{ name: "Chat card", demo: "ChatCardDemo" }],
       wide: true,
     },
   },
@@ -57,14 +55,18 @@ export const examples: Registry["items"] = [
     type: "registry:example",
     title: "Image Generator",
     description:
-      "Generation as the chat it really is: prompts down the thread, pictures back up it. Paste a Gemini key in the settings and it runs the real model from your browser; without one, the Painter does abstracts and says so.",
+      "The image generator as one working block: it opens on its own explanation, the frame is set under the field, a reference lives behind the plus, and a Gemini key in the settings runs the real model from your browser — without one, the Painter does abstracts and says so.",
     registryDependencies: [
       "generator-card",
+      "add-menu",
+      "empty-state",
       "key-field",
       "media",
       "message-actions",
+      "ratio-menu",
       "avatars",
       "generation",
+      "utils",
     ],
     dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
     files: [
@@ -76,10 +78,7 @@ export const examples: Registry["items"] = [
     ],
     categories: ["cards"],
     meta: {
-      variants: [
-        { name: "Default", demo: "ImageGeneratorDemo" },
-        { name: "States", demo: "ImageGeneratorStatesDemo" },
-      ],
+      variants: [{ name: "Image generator", demo: "ImageGeneratorDemo" }],
       wide: false,
     },
   },
@@ -88,15 +87,19 @@ export const examples: Registry["items"] = [
     type: "registry:example",
     title: "Video Generator",
     description:
-      "The same card pointed at Veo, with the states video actually has: a render measured in minutes, an elapsed count so the wait reads as spent rather than hung, and a storyboard standing in when there is no key.",
+      "The video generator as one working block, with the states footage actually has: wide or tall set under the field, the plus continuing the last shot, a render measured in minutes with an elapsed count, and a storyboard standing in when there is no key.",
     registryDependencies: [
       "generator-card",
+      "add-menu",
+      "empty-state",
       "key-field",
       "media",
+      "ratio-menu",
       "avatars",
       "generation",
+      "utils",
     ],
-    dependencies: ["@hugeicons/core-free-icons"],
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
     files: [
       {
         path: "examples/cards/video-generator.tsx",
@@ -106,7 +109,7 @@ export const examples: Registry["items"] = [
     ],
     categories: ["cards"],
     meta: {
-      variants: [{ name: "Default", demo: "VideoGeneratorDemo" }],
+      variants: [{ name: "Video generator", demo: "VideoGeneratorDemo" }],
       wide: false,
     },
   },
@@ -115,13 +118,15 @@ export const examples: Registry["items"] = [
     type: "registry:example",
     title: "Agent Card",
     description:
-      "An agent at work: thinking, calling tools, and — the state that makes it an agent — stopping to ask before it writes anything. The Reviewer variant reads a diff, because a transcript is whatever the work was.",
+      "The agent as one working block: ask it something at the bottom and watch the day it has — thinking, a search, and a write that stops to ask. The approval mode under the field is not a decoration: on manual the run parks at Waiting on you; on auto the same call approves itself.",
     registryDependencies: [
       "agent-card",
       "chat",
-      "code-block",
-      "code-diff",
-      "button",
+      "add-menu",
+      "approval-mode-menu",
+      "message-input",
+      "model-picker",
+      "tooltip",
       "avatars",
     ],
     dependencies: ["@hugeicons/core-free-icons"],
@@ -134,10 +139,7 @@ export const examples: Registry["items"] = [
     ],
     categories: ["cards"],
     meta: {
-      variants: [
-        { name: "Researcher", demo: "AgentCardDemo" },
-        { name: "Reviewer", demo: "AgentReviewerDemo" },
-      ],
+      variants: [{ name: "Researcher", demo: "AgentCardDemo" }],
       wide: true,
     },
   },
@@ -146,27 +148,19 @@ export const examples: Registry["items"] = [
     type: "registry:example",
     title: "Chat",
     description:
-      "Everything in this registry standing in one frame: a thread of agentic turns — thinking, tool calls, an answer with its sources, a code block — and a composer carrying files, mentions, slash commands, the model, the tools, the effort and the approval mode.",
+      "A plain text chat, whole: a person and an assistant trading words. It opens on its own explanation with three prompts on offer, the plus attaches, the model is chosen under the field, and the answer streams back a word at a time.",
     registryDependencies: [
       "chat",
-      "add-menu",
-      "approval-mode-menu",
       "chat-avatar",
       "chat-card",
-      "citations",
-      "effort-menu",
       "empty-state",
-      "mentions",
-      "message-input",
       "model-picker",
-      "response",
-      "slash-menu",
       "suggestions",
-      "tool-picker",
       "tooltip-icon-button",
       "typing-indicator",
       "tooltip",
       "avatars",
+      "models",
     ],
     dependencies: [
       "@base-ui/react",
@@ -183,10 +177,7 @@ export const examples: Registry["items"] = [
     ],
     categories: ["cards"],
     meta: {
-      variants: [
-        { name: "Default", demo: "ChatDemo" },
-        { name: "Opening", demo: "ChatOpeningDemo" },
-      ],
+      variants: [{ name: "Chat", demo: "ChatDemo" }],
       wide: true,
     },
   },
@@ -578,8 +569,9 @@ export const examples: Registry["items"] = [
     type: "registry:example",
     title: "Reasoning",
     description:
-      "Thinking unfolding a step at a time and folding itself away when the answer arrives, and the same panel read back from a transcript with the time it took.",
+      "Thinking unfolding a step at a time — and the work log it becomes at depth: steps with glyphs and durations, branches folding inside branches, a live one still turning, and a transcript read back with the time it took.",
     registryDependencies: ["reasoning", "bubble"],
+    dependencies: ["@hugeicons/core-free-icons"],
     files: [
       {
         path: "examples/messages/reasoning.tsx",
@@ -591,30 +583,52 @@ export const examples: Registry["items"] = [
     meta: {
       variants: [
         { name: "Thinking", demo: "ReasoningDemo" },
+        { name: "Workflow", demo: "ReasoningWorkflowDemo" },
+        { name: "Live", demo: "ReasoningWorkflowLiveDemo" },
         { name: "Settled", demo: "ReasoningSettledDemo" },
       ],
       wide: false,
     },
   },
   {
-    name: "citations-demo",
+    name: "inline-citation-demo",
     type: "registry:example",
-    title: "Citations",
+    title: "Inline Citation",
     description:
-      "An answer carrying numbered marks that name their source on hover, with the list of them folded underneath — and the list on its own for an answer that is mostly its sources.",
-    registryDependencies: ["citations", "response", "bubble"],
+      "An answer carrying numbered marks that name their source on hover and go there on a click — the marks alone; the list they point at is the sources element.",
+    registryDependencies: ["inline-citation", "sources", "response", "bubble"],
     files: [
       {
-        path: "examples/messages/citations.tsx",
+        path: "examples/messages/inline-citation.tsx",
         type: "registry:example",
-        target: "examples/messages/citations.tsx",
+        target: "examples/messages/inline-citation.tsx",
+      },
+    ],
+    categories: ["messages"],
+    meta: {
+      variants: [{ name: "In an answer", demo: "InlineCitationDemo" }],
+      wide: false,
+    },
+  },
+  {
+    name: "sources-demo",
+    type: "registry:example",
+    title: "Sources",
+    description:
+      "What an answer was drawn from, folded and counted the way it sits under one — and open, for an answer that is mostly its sources.",
+    registryDependencies: ["sources"],
+    files: [
+      {
+        path: "examples/messages/sources.tsx",
+        type: "registry:example",
+        target: "examples/messages/sources.tsx",
       },
     ],
     categories: ["messages"],
     meta: {
       variants: [
-        { name: "In an answer", demo: "CitationsDemo" },
-        { name: "Sources", demo: "CitationsSourcesDemo" },
+        { name: "Folded", demo: "SourcesDemo" },
+        { name: "Open", demo: "SourcesOpenDemo" },
       ],
       wide: false,
     },
@@ -793,7 +807,7 @@ export const examples: Registry["items"] = [
     type: "registry:example",
     title: "Composer",
     description:
-      "A message being written, whole: the files it carries above the box, the plus and the field inside it, and everything it is being sent with on the row below — the model, the tools, the effort, the approval mode and the send.",
+      "A message being written, whole: the files it carries above the box, the plus and the field inside it, and everything it is being sent with on the row below — the model, the effort, the approval mode and the send, with the tools folded into the plus where a setting belongs.",
     registryDependencies: [
       "composer",
       "add-menu",
@@ -802,8 +816,8 @@ export const examples: Registry["items"] = [
       "effort-menu",
       "mentions",
       "model-picker",
-      "tool-picker",
       "models",
+      "tools",
       "tooltip",
     ],
     dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react", "ai"],
@@ -1176,6 +1190,98 @@ export const examples: Registry["items"] = [
       variants: [
         { name: "Default", demo: "MessageActionsDemo" },
         { name: "On hover", demo: "MessageActionsOnHoverDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "ratio-menu-demo",
+    type: "registry:example",
+    title: "Ratio Menu",
+    description:
+      "The frame menu on the row where it lives, wearing the chosen proportions on its trigger — and the bare trigger, for a toolbar with no room for the word.",
+    registryDependencies: ["ratio-menu", "message-input", "tooltip"],
+    files: [
+      {
+        path: "examples/composer/ratio-menu.tsx",
+        type: "registry:example",
+        target: "examples/composer/ratio-menu.tsx",
+      },
+    ],
+    categories: ["composer"],
+    meta: {
+      variants: [
+        { name: "On the toolbar", demo: "RatioMenuDemo" },
+        { name: "Bare", demo: "RatioMenuBareDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "media-demo",
+    type: "registry:example",
+    title: "Media",
+    description:
+      "The frame in its three moments — waiting empty, a picture arriving over the shimmer, and settled with its badge — and the shapes a generation is asked into, holding their room.",
+    registryDependencies: ["media", "avatars"],
+    files: [
+      {
+        path: "examples/media/media.tsx",
+        type: "registry:example",
+        target: "examples/media/media.tsx",
+      },
+    ],
+    categories: ["media"],
+    meta: {
+      variants: [
+        { name: "Moments", demo: "MediaDemo" },
+        { name: "Aspects", demo: "MediaAspectsDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "media-gallery-demo",
+    type: "registry:example",
+    title: "Media Gallery",
+    description:
+      "Four variations with one chosen — the ring on the pick, the rest a shade back — and the same grid as a filmstrip of takes.",
+    registryDependencies: ["media-gallery", "media", "avatars"],
+    files: [
+      {
+        path: "examples/media/media-gallery.tsx",
+        type: "registry:example",
+        target: "examples/media/media-gallery.tsx",
+      },
+    ],
+    categories: ["media"],
+    meta: {
+      variants: [
+        { name: "Variations", demo: "MediaGalleryDemo" },
+        { name: "Filmstrip", demo: "MediaGalleryStripDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "image-compare-demo",
+    type: "registry:example",
+    title: "Image Compare",
+    description:
+      "A re-generation against its source under a draggable divider — the whole surface is one real slider, so the arrow keys move it too — and the controlled form, parked where the caller says.",
+    registryDependencies: ["image-compare", "avatars"],
+    files: [
+      {
+        path: "examples/media/image-compare.tsx",
+        type: "registry:example",
+        target: "examples/media/image-compare.tsx",
+      },
+    ],
+    categories: ["media"],
+    meta: {
+      variants: [
+        { name: "Compare", demo: "ImageCompareDemo" },
+        { name: "Controlled", demo: "ImageCompareControlledDemo" },
       ],
       wide: false,
     },

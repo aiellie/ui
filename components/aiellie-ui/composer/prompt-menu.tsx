@@ -288,8 +288,13 @@ function PromptMenuContent({
       data-slot="prompt-menu-content"
       // Wider than a menu of words needs to be, because these rows are not
       // words: each carries the sentence that is the only thing telling one
-      // prompt from the next.
-      className={cn("w-72 max-w-[calc(100vw-2rem)]", className)}
+      // prompt from the next. And capped, because a prompt library grows —
+      // past the cap the menu scrolls inside itself.
+      className={cn(
+        "w-72 max-w-[calc(100vw-2rem)]",
+        "max-h-[min(26rem,calc(100svh-5rem))] overflow-y-auto overscroll-contain",
+        className
+      )}
       {...props}
     >
       {children ?? (

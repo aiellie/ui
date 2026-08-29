@@ -11,7 +11,7 @@ import {
 } from "@/components/aiellie-ui/code/code-snippet"
 import { Button } from "@/components/ui/button"
 import { AgentCardDemo } from "@/examples/cards/agent"
-import { ChatCardArrivingDemo } from "@/examples/cards/chat-card"
+import { ChatCardDemo } from "@/examples/cards/chat-card"
 import { ImageGeneratorDemo } from "@/examples/cards/image-generator"
 
 /**
@@ -53,8 +53,10 @@ export function Home() {
   return (
     <div className="flex flex-col gap-14 px-6 pt-16 pb-24 md:pt-24">
       <section className="mx-auto flex w-full max-w-3xl flex-col items-start gap-5">
+        {/* The name, not the mechanism: what kind of registry this is can be
+            read off the install line two inches down. */}
         <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
-          A shadcn-style registry
+          aiellie ui
         </p>
         <h1 className="text-4xl font-semibold tracking-tight text-balance md:text-5xl">
           The elements an AI chat is made of.
@@ -98,7 +100,7 @@ export function Home() {
         aria-label="Live examples"
         className="mx-auto grid w-full max-w-6xl items-start justify-items-center gap-6 md:grid-cols-2 xl:grid-cols-3"
       >
-        <ChatCardArrivingDemo />
+        <ChatCardDemo />
         <ImageGeneratorDemo />
         <div className="md:col-span-2 xl:col-span-1 xl:justify-self-center">
           <AgentCardDemo />

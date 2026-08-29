@@ -1,11 +1,24 @@
 "use client"
 
 import * as React from "react"
-import { AiVideo01Icon } from "@hugeicons/core-free-icons"
+import { AiVideo01Icon, Film01Icon } from "@hugeicons/core-free-icons"
+import { HugeiconsIcon } from "@hugeicons/react"
 
+import { type AddAction } from "@/components/aiellie-ui/composer/add-menu"
+import {
+  EmptyState,
+  EmptyStateDescription,
+  EmptyStateMedia,
+  EmptyStateTitle,
+} from "@/components/aiellie-ui/composer/empty-state"
+import {
+  RatioMenu,
+  RatioMenuContent,
+  RatioMenuTrigger,
+  type Ratio,
+} from "@/components/aiellie-ui/composer/ratio-menu"
 import {
   GeneratorCard,
-  GeneratorEmpty,
   GeneratorRun,
 } from "@/components/aiellie-ui/generator-card"
 import { KeyField, useStoredKey } from "@/components/aiellie-ui/key-field"
@@ -17,8 +30,9 @@ import {
 } from "@/components/aiellie-ui/media"
 import { avatarFor, sampleImageFor } from "@/lib/avatars"
 import { generateVideoWithGemini, VIDEO_MODEL } from "@/lib/generation"
+import { cn } from "@/lib/utils"
 
-/** The same storage key the image card uses: one paste arms every card. */
+/** The same storage key the image block uses: one paste arms every card. */
 const GEMINI_KEY = "aiellie:gemini-key"
 
 const director = {
@@ -27,12 +41,26 @@ const director = {
   icon: AiVideo01Icon,
 }
 
+/** The frames Veo will actually shoot in — no square, no stills ratios. */
+const VIDEO_RATIOS: Ratio[] = [
+  { id: "16:9", name: "Wide", ratio: 16 / 9 },
+  { id: "9:16", name: "Tall", ratio: 9 / 16 },
+]
+
+const RATIO_FRAMES: Record<string, string> = {
+  "16:9": "aspect-video",
+  "9:16": "aspect-[9/16] max-w-52",
+}
+
 interface Run {
   id: number
   prompt: string
   status: "making" | "done" | "failed"
+  ratio: string
   src?: string
   sample?: boolean
+  /** The run this shot continues from. */
+  continuesId?: number
   error?: string
   /** How long the run has been going — video is minutes, and a wait with no
    * number on it reads as a hang. */
@@ -78,9 +106,18 @@ function SampleStoryboard({ prompt, seed }: { prompt: string; seed: number }) {
 
 const seconds = (ms: number) => `${Math.round(ms / 1000)}s`
 
+/**
+ * The video generator, whole. Same block grammar as the image card beside
+ * it — the explanation until the first ask, the plus for what a shot can
+ * continue from, the frame under the field — with the states footage
+ * actually has: a render measured in minutes, an elapsed count so the wait
+ * reads as spent rather than hung, and a storyboard standing in when there
+ * is no key.
+ */
 export function VideoGeneratorDemo() {
   const [key] = useStoredKey(GEMINI_KEY)
   const [runs, setRuns] = React.useState<Run[]>([])
+  const [ratio, setRatio] = React.useState("16:9")
   const ids = React.useRef(0)
   const aborts = React.useRef(new Map<number, AbortController>())
 
@@ -94,13 +131,34 @@ export function VideoGeneratorDemo() {
       list.map((run) => (run.id === id ? { ...run, ...changes } : run))
     )
 
-  const make = async (prompt: string) => {
+  const lastDone = [...runs].reverse().find((run) => run.status === "done")
+
+  const addActions: AddAction[] = [
+    {
+      id: "continue-last",
+      group: "Continue",
+      label: "Pick up from the last shot",
+      icon: Film01Icon,
+      disabled: !lastDone,
+      description: lastDone ? undefined : "Nothing has been shot yet.",
+    },
+  ]
+
+  const make = async (prompt: string, continuesId?: number) => {
     const id = (ids.current += 1)
     const controller = new AbortController()
     aborts.current.set(id, controller)
     setRuns((list) => [
       ...list,
-      { id, prompt, status: "making", sample: !key, elapsed: 0 },
+      {
+        id,
+        prompt,
+        status: "making",
+        ratio,
+        sample: !key,
+        continuesId,
+        elapsed: 0,
+      },
     ])
 
     try {
@@ -108,6 +166,7 @@ export function VideoGeneratorDemo() {
         const video = await generateVideoWithGemini({
           apiKey: key,
           prompt,
+          aspectRatio: ratio,
           signal: controller.signal,
           onPoll: (elapsed) => patch(id, { elapsed }),
         })
@@ -155,10 +214,22 @@ export function VideoGeneratorDemo() {
     <GeneratorCard
       persona={director}
       busy={busy}
-      onPrompt={make}
+      onPrompt={(prompt) => void make(prompt)}
       onStop={() => aborts.current.forEach((controller) => controller.abort())}
       placeholder="Describe a shot…"
       className="max-w-md"
+      addActions={addActions}
+      onAdd={(action) => {
+        if (action.id === "continue-last" && lastDone) {
+          void make(`${lastDone.prompt}, continued`, lastDone.id)
+        }
+      }}
+      toolbar={
+        <RatioMenu value={ratio} onValueChange={setRatio} ratios={VIDEO_RATIOS}>
+          <RatioMenuTrigger showLabel />
+          <RatioMenuContent side="top" />
+        </RatioMenu>
+      }
       settings={
         <div className="flex flex-col gap-2">
           <KeyField
@@ -175,12 +246,25 @@ export function VideoGeneratorDemo() {
       }
     >
       {runs.length === 0 ? (
-        <GeneratorEmpty>
-          Describe a shot. No key? The Director storyboards it instead.
-        </GeneratorEmpty>
+        <EmptyState className="m-auto">
+          <EmptyStateMedia>
+            <HugeiconsIcon icon={AiVideo01Icon} />
+          </EmptyStateMedia>
+          <EmptyStateTitle>Describe a shot</EmptyStateTitle>
+          <EmptyStateDescription>
+            Wide or tall is set under the field, the plus continues the last
+            shot, and your own key goes in the settings — without one, the
+            Director storyboards it instead.
+          </EmptyStateDescription>
+        </EmptyState>
       ) : (
         runs.map((run) => (
           <GeneratorRun key={run.id} prompt={run.prompt}>
+            {run.continuesId ? (
+              <p className="text-[11px] text-muted-foreground">
+                Continuing shot {run.continuesId}
+              </p>
+            ) : null}
             {run.status === "failed" ? (
               <p className="text-xs text-destructive">
                 {run.error ?? "The run went wrong."}{" "}
@@ -189,14 +273,17 @@ export function VideoGeneratorDemo() {
                   className="underline underline-offset-2"
                   onClick={() => {
                     setRuns((list) => list.filter((r) => r.id !== run.id))
-                    void make(run.prompt)
+                    void make(run.prompt, run.continuesId)
                   }}
                 >
                   Try again
                 </button>
               </p>
             ) : (
-              <MediaFrame aspect="video" busy={run.status === "making"}>
+              <MediaFrame
+                busy={run.status === "making"}
+                className={cn(RATIO_FRAMES[run.ratio])}
+              >
                 {run.status === "done" && run.sample ? (
                   <>
                     <MediaBadge>Sample storyboard</MediaBadge>

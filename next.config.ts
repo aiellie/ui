@@ -31,6 +31,13 @@ const nextConfig: NextConfig = {
         destination: "/elements/chat-card",
         permanent: true,
       },
+      /* Citations split into the marks and the list; the list is the half a
+         reader would call the page. */
+      {
+        source: "/elements/citations",
+        destination: "/elements/sources",
+        permanent: true,
+      },
     ]
   },
 }

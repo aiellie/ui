@@ -1,0 +1,35 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "image-compare-demo",
+  "title": "Image Compare",
+  "description": "A re-generation against its source under a draggable divider — the whole surface is one real slider, so the arrow keys move it too — and the controlled form, parked where the caller says.",
+  "registryDependencies": [
+    "https://ui.aiellie.dev/r/image-compare.json",
+    "https://ui.aiellie.dev/r/avatars.json"
+  ],
+  "files": [
+    {
+      "path": "examples/media/image-compare.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport {\n  ImageCompare,\n  ImageCompareAfter,\n  ImageCompareBefore,\n  ImageCompareLabel,\n} from \"@/components/aiellie-ui/image-compare\"\nimport { sampleImageFor } from \"@/lib/avatars\"\n\n/**\n * A re-generation against its source: drag the divider, or focus it and use\n * the arrow keys — the whole surface is one real slider.\n */\nexport function ImageCompareDemo() {\n  return (\n    <ImageCompare\n      aspect=\"square\"\n      className=\"max-w-sm\"\n      label=\"Compare the two versions\"\n    >\n      <ImageCompareBefore\n        src={sampleImageFor(\"a marble made of dusk\")}\n        alt=\"The first version\"\n      />\n      <ImageCompareAfter\n        src={sampleImageFor(\"a marble made of dusk\", 7)}\n        alt=\"The re-generated version\"\n      />\n      <ImageCompareLabel side=\"start\">Before</ImageCompareLabel>\n      <ImageCompareLabel side=\"end\">After</ImageCompareLabel>\n    </ImageCompare>\n  )\n}\n\n/** Held by the caller — here parked near the start so the change leads. */\nexport function ImageCompareControlledDemo() {\n  const [position, setPosition] = React.useState(24)\n\n  return (\n    <div className=\"flex w-full max-w-sm flex-col gap-2\">\n      <ImageCompare\n        aspect=\"video\"\n        position={position}\n        onPositionChange={setPosition}\n        label=\"Compare the two crops\"\n      >\n        <ImageCompareBefore\n          src={sampleImageFor(\"a wide marble evening\")}\n          alt=\"The first crop\"\n        />\n        <ImageCompareAfter\n          src={sampleImageFor(\"a wide marble evening\", 3)}\n          alt=\"The recoloured crop\"\n        />\n      </ImageCompare>\n      <p className=\"text-[11px] text-muted-foreground tabular-nums\">\n        Divider at {position}%.\n      </p>\n    </div>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/media/image-compare.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Compare",
+        "demo": "ImageCompareDemo"
+      },
+      {
+        "name": "Controlled",
+        "demo": "ImageCompareControlledDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "media"
+  ],
+  "type": "registry:example"
+}

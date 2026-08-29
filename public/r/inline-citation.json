@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "inline-citation",
+  "title": "Inline Citation",
+  "description": "A numbered mark in the prose, pointing at the sources listed under the answer — the number in the sentence, the name a hover away, and a real link underneath so a middle click still works.",
+  "registryDependencies": [
+    "https://ui.aiellie.dev/r/sources.json",
+    "https://ui.aiellie.dev/r/tooltip.json",
+    "https://ui.aiellie.dev/r/utils.json"
+  ],
+  "files": [
+    {
+      "path": "components/aiellie-ui/inline-citation.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport { originOf, type Source } from \"@/components/aiellie-ui/sources\"\nimport {\n  Tooltip,\n  TooltipContent,\n  TooltipProvider,\n  TooltipTrigger,\n} from \"@/components/ui/tooltip\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface CitationProps extends Omit<\n  React.ComponentProps<\"a\">,\n  \"children\"\n> {\n  source: Source\n  /** Its place in the list under the answer, which is what the chip shows. */\n  index: number\n}\n\n/**\n * A numbered mark in the prose, pointing at one of the sources listed under\n * the answer — the `sources` element is the list it points at, and the number\n * here is the number there.\n *\n * Small, and the number rather than the name: a citation interrupts a\n * sentence, and a sentence with three domain names dropped into it is no\n * longer a sentence. The name is a hover away and a click away, which is\n * where it belongs.\n *\n * A real link, so the usual things work on it — a middle click, a long press,\n * a copied address — none of which survive a div with a handler.\n */\nexport function Citation({\n  source,\n  index,\n  className,\n  ...props\n}: CitationProps) {\n  return (\n    <TooltipProvider>\n      <Tooltip>\n        <TooltipTrigger\n          render={\n            <a\n              data-slot=\"citation\"\n              href={source.url}\n              target=\"_blank\"\n              rel=\"noreferrer noopener\"\n              aria-label={`Source ${index}: ${source.title}`}\n              className={cn(\n                \"mx-0.5 inline-flex h-4 min-w-4 -translate-y-px cursor-pointer items-center justify-center rounded-full bg-foreground/[0.08] px-1 align-middle text-[10px] font-medium text-muted-foreground tabular-nums no-underline transition-colors duration-150 hover:bg-foreground/[0.14] hover:text-foreground focus-visible:ring-1 focus-visible:ring-ring/50 motion-reduce:transition-none dark:bg-foreground/[0.12] dark:hover:bg-foreground/[0.2]\",\n                className\n              )}\n              {...props}\n            >\n              {index}\n            </a>\n          }\n        />\n        <TooltipContent side=\"top\" className=\"max-w-xs flex-col items-start\">\n          <span className=\"font-medium\">{source.title}</span>\n          <span className=\"opacity-70\">{originOf(source)}</span>\n        </TooltipContent>\n      </Tooltip>\n    </TooltipProvider>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "components/aiellie-ui/inline-citation.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

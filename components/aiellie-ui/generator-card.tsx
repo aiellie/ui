@@ -18,9 +18,18 @@ import {
   ChatCardThread,
 } from "@/components/aiellie-ui/chat-card"
 import {
+  AddMenu,
+  AddMenuContent,
+  AddMenuTrigger,
+  type AddAction,
+} from "@/components/aiellie-ui/composer/add-menu"
+import {
   MessageInput,
   MessageInputField,
+  MessageInputLine,
+  messageInputStack,
   MessageInputSubmit,
+  MessageInputToolbar,
 } from "@/components/aiellie-ui/composer/message-input"
 import { menuPopup } from "@/components/aiellie-ui/menu"
 import { TooltipIconButton } from "@/components/aiellie-ui/tooltip-icon-button"
@@ -64,6 +73,18 @@ export interface GeneratorCardProps extends Omit<
    * generator can be handed. No gear renders when there is nothing to set.
    */
   settings?: React.ReactNode
+  /**
+   * The plus's catalogue — references, mainly: the image a generation should
+   * start from, the style to hold to. Defaults to the composer's own tree.
+   */
+  addActions?: AddAction[]
+  onAdd?: (action: AddAction) => void
+  /**
+   * The row under the field — the ratio, the model, whatever the run is set
+   * with. The settings gear holds what is set once; this row holds what is
+   * set per prompt, which is why it earns a place on the composer itself.
+   */
+  toolbar?: React.ReactNode
 }
 
 export function GeneratorCard({
@@ -73,6 +94,9 @@ export function GeneratorCard({
   onStop,
   placeholder = "Describe it…",
   settings,
+  addActions,
+  onAdd,
+  toolbar,
   className,
   children,
   ...props
@@ -103,9 +127,23 @@ export function GeneratorCard({
       </ChatCardThread>
 
       <ChatCardFooter>
-        <MessageInput onSubmit={onPrompt}>
-          <MessageInputField placeholder={placeholder} />
-          <MessageInputSubmit status={status} onStop={onStop} />
+        <MessageInput
+          onSubmit={onPrompt}
+          className={toolbar ? messageInputStack : undefined}
+        >
+          <MessageInputLine>
+            <AddMenu actions={addActions} onSelect={onAdd}>
+              <AddMenuTrigger />
+              <AddMenuContent side="top" />
+            </AddMenu>
+            <MessageInputField placeholder={placeholder} />
+            <MessageInputSubmit status={status} onStop={onStop} />
+          </MessageInputLine>
+          {/* No empty row: a generator with nothing to set per prompt is a
+              plus, a field and a send. */}
+          {toolbar ? (
+            <MessageInputToolbar>{toolbar}</MessageInputToolbar>
+          ) : null}
         </MessageInput>
       </ChatCardFooter>
     </ChatCard>

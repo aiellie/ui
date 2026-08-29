@@ -1,0 +1,33 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "inline-citation-demo",
+  "title": "Inline Citation",
+  "description": "An answer carrying numbered marks that name their source on hover and go there on a click — the marks alone; the list they point at is the sources element.",
+  "registryDependencies": [
+    "https://ui.aiellie.dev/r/inline-citation.json",
+    "https://ui.aiellie.dev/r/sources.json",
+    "https://ui.aiellie.dev/r/response.json",
+    "https://ui.aiellie.dev/r/bubble.json"
+  ],
+  "files": [
+    {
+      "path": "examples/messages/inline-citation.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport { Citation } from \"@/components/aiellie-ui/inline-citation\"\nimport { Response } from \"@/components/aiellie-ui/response\"\nimport { type Source } from \"@/components/aiellie-ui/sources\"\nimport { Bubble, BubbleContent, BubbleGroup } from \"@/components/ui/bubble\"\n\nconst sources: Source[] = [\n  {\n    id: \"notes\",\n    title: \"Rollout notes — week of the 12th\",\n    url: \"https://example.com/notes/rollout\",\n    snippet:\n      \"Ship dark on Tuesday, staff first, everyone once the migration lands.\",\n  },\n  {\n    id: \"thread\",\n    title: \"#launch — Marta on holding the date\",\n    url: \"https://example.com/threads/launch\",\n    origin: \"Slack\",\n    snippet: \"I'd rather hold it than turn it on over a half-finished index.\",\n  },\n  {\n    id: \"flags\",\n    title: \"flags.rollout in production\",\n    url: \"https://example.com/flags/rollout\",\n    origin: \"Dashboard\",\n  },\n]\n\n/** The marks in the prose — hover one for the source, click it to go there. */\nexport function InlineCitationDemo() {\n  return (\n    <BubbleGroup className=\"w-full max-w-sm\">\n      <Bubble variant=\"ghost\">\n        <BubbleContent>\n          <Response>\n            {/* The marks sit tight against the word they follow: a newline\n                before one in the source becomes a space in the sentence, and\n                a citation floating off its own clause reads as a footnote to\n                the full stop instead. */}\n            <p>\n              It shipped behind a flag on Tuesday and is on for staff only\n              <Citation source={sources[0]} index={1} />. Marta asked for it to\n              be held until the migration lands\n              <Citation source={sources[1]} index={2} />, which is why{\" \"}\n              <code>flags.rollout</code> still reads <code>staff</code> in\n              production\n              <Citation source={sources[2]} index={3} />.\n            </p>\n          </Response>\n        </BubbleContent>\n      </Bubble>\n    </BubbleGroup>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/messages/inline-citation.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "In an answer",
+        "demo": "InlineCitationDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "messages"
+  ],
+  "type": "registry:example"
+}

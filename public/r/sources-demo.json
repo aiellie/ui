@@ -1,0 +1,34 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "sources-demo",
+  "title": "Sources",
+  "description": "What an answer was drawn from, folded and counted the way it sits under one — and open, for an answer that is mostly its sources.",
+  "registryDependencies": [
+    "https://ui.aiellie.dev/r/sources.json"
+  ],
+  "files": [
+    {
+      "path": "examples/messages/sources.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport {\n  SourceItem,\n  Sources,\n  SourcesContent,\n  SourcesTrigger,\n  type Source,\n} from \"@/components/aiellie-ui/sources\"\n\nconst sources: Source[] = [\n  {\n    id: \"notes\",\n    title: \"Rollout notes — week of the 12th\",\n    url: \"https://example.com/notes/rollout\",\n    snippet:\n      \"Ship dark on Tuesday, staff first, everyone once the migration lands.\",\n  },\n  {\n    id: \"thread\",\n    title: \"#launch — Marta on holding the date\",\n    url: \"https://example.com/threads/launch\",\n    origin: \"Slack\",\n    snippet: \"I'd rather hold it than turn it on over a half-finished index.\",\n  },\n  {\n    id: \"flags\",\n    title: \"flags.rollout in production\",\n    url: \"https://example.com/flags/rollout\",\n    origin: \"Dashboard\",\n  },\n]\n\n/** Folded and counted, the way it sits under an answer. */\nexport function SourcesDemo() {\n  return (\n    <Sources className=\"w-full max-w-sm\">\n      <SourcesTrigger count={sources.length} />\n      <SourcesContent>\n        {sources.map((source, index) => (\n          <SourceItem key={source.id} source={source} index={index + 1} />\n        ))}\n      </SourcesContent>\n    </Sources>\n  )\n}\n\n/** The list open, for an answer that is mostly its sources. */\nexport function SourcesOpenDemo() {\n  return (\n    <Sources defaultOpen className=\"w-full max-w-sm\">\n      <SourcesTrigger count={sources.length} />\n      <SourcesContent>\n        {sources.map((source, index) => (\n          <SourceItem key={source.id} source={source} index={index + 1} />\n        ))}\n      </SourcesContent>\n    </Sources>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/messages/sources.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Folded",
+        "demo": "SourcesDemo"
+      },
+      {
+        "name": "Open",
+        "demo": "SourcesOpenDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "messages"
+  ],
+  "type": "registry:example"
+}

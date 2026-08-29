@@ -322,7 +322,7 @@
       "name": "reasoning",
       "type": "registry:ui",
       "title": "Reasoning",
-      "description": "The thinking behind an answer, folded away: open while it runs and closed once it is done, counting the seconds it takes and leaving the decision with the reader the moment they disagree with it.",
+      "description": "The work behind an answer as the tree it actually was: steps with glyphs, statuses and the fact worth pinning to each, and steps made of steps folding level by level — open while it runs, counting the seconds, and closed once it is done.",
       "registryDependencies": [
         "https://ui.aiellie.dev/r/actions.json",
         "https://ui.aiellie.dev/r/utils.json"
@@ -341,13 +341,12 @@
       ]
     },
     {
-      "name": "citations",
+      "name": "sources",
       "type": "registry:ui",
-      "title": "Citations",
-      "description": "Numbered marks in the prose and the sources they point at underneath — the number in the sentence, the name a hover away, and the list folded until somebody wants to check the answer.",
+      "title": "Sources",
+      "description": "What the answer was drawn from, folded under it and counted on the trigger — each source a numbered row with its title, the line the answer took from it, and where it came from.",
       "registryDependencies": [
         "https://ui.aiellie.dev/r/actions.json",
-        "https://ui.aiellie.dev/r/tooltip.json",
         "https://ui.aiellie.dev/r/utils.json"
       ],
       "dependencies": [
@@ -357,9 +356,78 @@
       ],
       "files": [
         {
-          "path": "components/aiellie-ui/citations.tsx",
+          "path": "components/aiellie-ui/sources.tsx",
           "type": "registry:ui",
-          "target": "components/aiellie-ui/citations.tsx"
+          "target": "components/aiellie-ui/sources.tsx"
+        }
+      ]
+    },
+    {
+      "name": "inline-citation",
+      "type": "registry:ui",
+      "title": "Inline Citation",
+      "description": "A numbered mark in the prose, pointing at the sources listed under the answer — the number in the sentence, the name a hover away, and a real link underneath so a middle click still works.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/sources.json",
+        "https://ui.aiellie.dev/r/tooltip.json",
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/inline-citation.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/inline-citation.tsx"
+        }
+      ]
+    },
+    {
+      "name": "media-gallery",
+      "type": "registry:ui",
+      "title": "Media Gallery",
+      "description": "A run's variations side by side, one of them chosen: every tile a real button, the chosen one wearing the ring, and the choice living with whoever is about to do something with it.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/media-gallery.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/media-gallery.tsx"
+        }
+      ]
+    },
+    {
+      "name": "image-compare",
+      "type": "registry:ui",
+      "title": "Image Compare",
+      "description": "Two versions of one picture under a divider the reader drags — driven by a real range input, so the keyboard moves it and a screen reader gets a slider rather than silence.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/actions.json",
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/image-compare.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/image-compare.tsx"
+        }
+      ]
+    },
+    {
+      "name": "ratio-menu",
+      "type": "registry:ui",
+      "title": "Ratio Menu",
+      "description": "The frame a generation is asked to fill, chosen from the composer's toolbar — the trigger wears the chosen proportions as an empty frame, and the rows name them the way a person would.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/menu.json",
+        "https://ui.aiellie.dev/r/tooltip-icon-button.json",
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/composer/ratio-menu.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/composer/ratio-menu.tsx"
         }
       ]
     },
@@ -567,7 +635,7 @@
         "https://ui.aiellie.dev/r/attachments.json",
         "https://ui.aiellie.dev/r/bubble.json",
         "https://ui.aiellie.dev/r/chat-card.json",
-        "https://ui.aiellie.dev/r/citations.json",
+        "https://ui.aiellie.dev/r/sources.json",
         "https://ui.aiellie.dev/r/message.json",
         "https://ui.aiellie.dev/r/message-actions.json",
         "https://ui.aiellie.dev/r/message-input.json",
@@ -660,6 +728,7 @@
       "title": "Generator Card",
       "description": "A generator framed as the chat it really is: a persona floating at the top, prompts going down the thread and what they made coming back up it, a settings popover for the key, and a send that turns into a stop while a run is going.",
       "registryDependencies": [
+        "https://ui.aiellie.dev/r/add-menu.json",
         "https://ui.aiellie.dev/r/chat-avatar.json",
         "https://ui.aiellie.dev/r/chat-card.json",
         "https://ui.aiellie.dev/r/message-input.json",
@@ -1178,16 +1247,19 @@
       "name": "chat-card-demo",
       "type": "registry:example",
       "title": "Chat Card",
-      "description": "The card every card here is built on: an avatar floating over the thread on glass, messages thinning out beneath it, a composer in the foot — following an arriving thread, holding a group, and opening empty.",
+      "description": "A whole, working direct-message card: it opens on its own explanation, the plus attaches files that ride above the field until the send takes them, sent messages carry their tick, and she types back on her own time.",
       "registryDependencies": [
         "https://ui.aiellie.dev/r/chat-card.json",
         "https://ui.aiellie.dev/r/chat-avatar.json",
-        "https://ui.aiellie.dev/r/avatars.json",
+        "https://ui.aiellie.dev/r/add-menu.json",
+        "https://ui.aiellie.dev/r/attachments.json",
+        "https://ui.aiellie.dev/r/empty-state.json",
         "https://ui.aiellie.dev/r/message-input.json",
-        "https://ui.aiellie.dev/r/timestamps.json",
+        "https://ui.aiellie.dev/r/message-status.json",
         "https://ui.aiellie.dev/r/tooltip-icon-button.json",
         "https://ui.aiellie.dev/r/typing-indicator.json",
-        "https://ui.aiellie.dev/r/bubble.json"
+        "https://ui.aiellie.dev/r/bubble.json",
+        "https://ui.aiellie.dev/r/avatars.json"
       ],
       "dependencies": [
         "@hugeicons/core-free-icons",
@@ -1206,20 +1278,8 @@
       "meta": {
         "variants": [
           {
-            "name": "Default",
+            "name": "Chat card",
             "demo": "ChatCardDemo"
-          },
-          {
-            "name": "Arriving",
-            "demo": "ChatCardArrivingDemo"
-          },
-          {
-            "name": "Group",
-            "demo": "ChatCardGroupDemo"
-          },
-          {
-            "name": "Opening",
-            "demo": "ChatCardOpeningDemo"
           }
         ],
         "wide": true
@@ -1229,14 +1289,18 @@
       "name": "image-generator-demo",
       "type": "registry:example",
       "title": "Image Generator",
-      "description": "Generation as the chat it really is: prompts down the thread, pictures back up it. Paste a Gemini key in the settings and it runs the real model from your browser; without one, the Painter does abstracts and says so.",
+      "description": "The image generator as one working block: it opens on its own explanation, the frame is set under the field, a reference lives behind the plus, and a Gemini key in the settings runs the real model from your browser — without one, the Painter does abstracts and says so.",
       "registryDependencies": [
         "https://ui.aiellie.dev/r/generator-card.json",
+        "https://ui.aiellie.dev/r/add-menu.json",
+        "https://ui.aiellie.dev/r/empty-state.json",
         "https://ui.aiellie.dev/r/key-field.json",
         "https://ui.aiellie.dev/r/media.json",
         "https://ui.aiellie.dev/r/message-actions.json",
+        "https://ui.aiellie.dev/r/ratio-menu.json",
         "https://ui.aiellie.dev/r/avatars.json",
-        "https://ui.aiellie.dev/r/generation.json"
+        "https://ui.aiellie.dev/r/generation.json",
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "dependencies": [
         "@hugeicons/core-free-icons",
@@ -1255,12 +1319,8 @@
       "meta": {
         "variants": [
           {
-            "name": "Default",
+            "name": "Image generator",
             "demo": "ImageGeneratorDemo"
-          },
-          {
-            "name": "States",
-            "demo": "ImageGeneratorStatesDemo"
           }
         ],
         "wide": false
@@ -1270,16 +1330,21 @@
       "name": "video-generator-demo",
       "type": "registry:example",
       "title": "Video Generator",
-      "description": "The same card pointed at Veo, with the states video actually has: a render measured in minutes, an elapsed count so the wait reads as spent rather than hung, and a storyboard standing in when there is no key.",
+      "description": "The video generator as one working block, with the states footage actually has: wide or tall set under the field, the plus continuing the last shot, a render measured in minutes with an elapsed count, and a storyboard standing in when there is no key.",
       "registryDependencies": [
         "https://ui.aiellie.dev/r/generator-card.json",
+        "https://ui.aiellie.dev/r/add-menu.json",
+        "https://ui.aiellie.dev/r/empty-state.json",
         "https://ui.aiellie.dev/r/key-field.json",
         "https://ui.aiellie.dev/r/media.json",
+        "https://ui.aiellie.dev/r/ratio-menu.json",
         "https://ui.aiellie.dev/r/avatars.json",
-        "https://ui.aiellie.dev/r/generation.json"
+        "https://ui.aiellie.dev/r/generation.json",
+        "https://ui.aiellie.dev/r/utils.json"
       ],
       "dependencies": [
-        "@hugeicons/core-free-icons"
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
       ],
       "files": [
         {
@@ -1294,7 +1359,7 @@
       "meta": {
         "variants": [
           {
-            "name": "Default",
+            "name": "Video generator",
             "demo": "VideoGeneratorDemo"
           }
         ],
@@ -1305,13 +1370,15 @@
       "name": "agent-card-demo",
       "type": "registry:example",
       "title": "Agent Card",
-      "description": "An agent at work: thinking, calling tools, and — the state that makes it an agent — stopping to ask before it writes anything. The Reviewer variant reads a diff, because a transcript is whatever the work was.",
+      "description": "The agent as one working block: ask it something at the bottom and watch the day it has — thinking, a search, and a write that stops to ask. The approval mode under the field is not a decoration: on manual the run parks at Waiting on you; on auto the same call approves itself.",
       "registryDependencies": [
         "https://ui.aiellie.dev/r/agent-card.json",
         "https://ui.aiellie.dev/r/chat.json",
-        "https://ui.aiellie.dev/r/code-block.json",
-        "https://ui.aiellie.dev/r/code-diff.json",
-        "https://ui.aiellie.dev/r/button.json",
+        "https://ui.aiellie.dev/r/add-menu.json",
+        "https://ui.aiellie.dev/r/approval-mode-menu.json",
+        "https://ui.aiellie.dev/r/message-input.json",
+        "https://ui.aiellie.dev/r/model-picker.json",
+        "https://ui.aiellie.dev/r/tooltip.json",
         "https://ui.aiellie.dev/r/avatars.json"
       ],
       "dependencies": [
@@ -1332,10 +1399,6 @@
           {
             "name": "Researcher",
             "demo": "AgentCardDemo"
-          },
-          {
-            "name": "Reviewer",
-            "demo": "AgentReviewerDemo"
           }
         ],
         "wide": true
@@ -1345,27 +1408,19 @@
       "name": "chat-demo",
       "type": "registry:example",
       "title": "Chat",
-      "description": "Everything in this registry standing in one frame: a thread of agentic turns — thinking, tool calls, an answer with its sources, a code block — and a composer carrying files, mentions, slash commands, the model, the tools, the effort and the approval mode.",
+      "description": "A plain text chat, whole: a person and an assistant trading words. It opens on its own explanation with three prompts on offer, the plus attaches, the model is chosen under the field, and the answer streams back a word at a time.",
       "registryDependencies": [
         "https://ui.aiellie.dev/r/chat.json",
-        "https://ui.aiellie.dev/r/add-menu.json",
-        "https://ui.aiellie.dev/r/approval-mode-menu.json",
         "https://ui.aiellie.dev/r/chat-avatar.json",
         "https://ui.aiellie.dev/r/chat-card.json",
-        "https://ui.aiellie.dev/r/citations.json",
-        "https://ui.aiellie.dev/r/effort-menu.json",
         "https://ui.aiellie.dev/r/empty-state.json",
-        "https://ui.aiellie.dev/r/mentions.json",
-        "https://ui.aiellie.dev/r/message-input.json",
         "https://ui.aiellie.dev/r/model-picker.json",
-        "https://ui.aiellie.dev/r/response.json",
-        "https://ui.aiellie.dev/r/slash-menu.json",
         "https://ui.aiellie.dev/r/suggestions.json",
-        "https://ui.aiellie.dev/r/tool-picker.json",
         "https://ui.aiellie.dev/r/tooltip-icon-button.json",
         "https://ui.aiellie.dev/r/typing-indicator.json",
         "https://ui.aiellie.dev/r/tooltip.json",
-        "https://ui.aiellie.dev/r/avatars.json"
+        "https://ui.aiellie.dev/r/avatars.json",
+        "https://ui.aiellie.dev/r/models.json"
       ],
       "dependencies": [
         "@base-ui/react",
@@ -1386,12 +1441,8 @@
       "meta": {
         "variants": [
           {
-            "name": "Default",
+            "name": "Chat",
             "demo": "ChatDemo"
-          },
-          {
-            "name": "Opening",
-            "demo": "ChatOpeningDemo"
           }
         ],
         "wide": true
@@ -2025,10 +2076,13 @@
       "name": "reasoning-demo",
       "type": "registry:example",
       "title": "Reasoning",
-      "description": "Thinking unfolding a step at a time and folding itself away when the answer arrives, and the same panel read back from a transcript with the time it took.",
+      "description": "Thinking unfolding a step at a time — and the work log it becomes at depth: steps with glyphs and durations, branches folding inside branches, a live one still turning, and a transcript read back with the time it took.",
       "registryDependencies": [
         "https://ui.aiellie.dev/r/reasoning.json",
         "https://ui.aiellie.dev/r/bubble.json"
+      ],
+      "dependencies": [
+        "@hugeicons/core-free-icons"
       ],
       "files": [
         {
@@ -2047,6 +2101,14 @@
             "demo": "ReasoningDemo"
           },
           {
+            "name": "Workflow",
+            "demo": "ReasoningWorkflowDemo"
+          },
+          {
+            "name": "Live",
+            "demo": "ReasoningWorkflowLiveDemo"
+          },
+          {
             "name": "Settled",
             "demo": "ReasoningSettledDemo"
           }
@@ -2055,20 +2117,21 @@
       }
     },
     {
-      "name": "citations-demo",
+      "name": "inline-citation-demo",
       "type": "registry:example",
-      "title": "Citations",
-      "description": "An answer carrying numbered marks that name their source on hover, with the list of them folded underneath — and the list on its own for an answer that is mostly its sources.",
+      "title": "Inline Citation",
+      "description": "An answer carrying numbered marks that name their source on hover and go there on a click — the marks alone; the list they point at is the sources element.",
       "registryDependencies": [
-        "https://ui.aiellie.dev/r/citations.json",
+        "https://ui.aiellie.dev/r/inline-citation.json",
+        "https://ui.aiellie.dev/r/sources.json",
         "https://ui.aiellie.dev/r/response.json",
         "https://ui.aiellie.dev/r/bubble.json"
       ],
       "files": [
         {
-          "path": "examples/messages/citations.tsx",
+          "path": "examples/messages/inline-citation.tsx",
           "type": "registry:example",
-          "target": "examples/messages/citations.tsx"
+          "target": "examples/messages/inline-citation.tsx"
         }
       ],
       "categories": [
@@ -2078,11 +2141,39 @@
         "variants": [
           {
             "name": "In an answer",
-            "demo": "CitationsDemo"
+            "demo": "InlineCitationDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "sources-demo",
+      "type": "registry:example",
+      "title": "Sources",
+      "description": "What an answer was drawn from, folded and counted the way it sits under one — and open, for an answer that is mostly its sources.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/sources.json"
+      ],
+      "files": [
+        {
+          "path": "examples/messages/sources.tsx",
+          "type": "registry:example",
+          "target": "examples/messages/sources.tsx"
+        }
+      ],
+      "categories": [
+        "messages"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Folded",
+            "demo": "SourcesDemo"
           },
           {
-            "name": "Sources",
-            "demo": "CitationsSourcesDemo"
+            "name": "Open",
+            "demo": "SourcesOpenDemo"
           }
         ],
         "wide": false
@@ -2359,7 +2450,7 @@
       "name": "composer-demo",
       "type": "registry:example",
       "title": "Composer",
-      "description": "A message being written, whole: the files it carries above the box, the plus and the field inside it, and everything it is being sent with on the row below — the model, the tools, the effort, the approval mode and the send.",
+      "description": "A message being written, whole: the files it carries above the box, the plus and the field inside it, and everything it is being sent with on the row below — the model, the effort, the approval mode and the send, with the tools folded into the plus where a setting belongs.",
       "registryDependencies": [
         "https://ui.aiellie.dev/r/composer.json",
         "https://ui.aiellie.dev/r/add-menu.json",
@@ -2368,8 +2459,8 @@
         "https://ui.aiellie.dev/r/effort-menu.json",
         "https://ui.aiellie.dev/r/mentions.json",
         "https://ui.aiellie.dev/r/model-picker.json",
-        "https://ui.aiellie.dev/r/tool-picker.json",
         "https://ui.aiellie.dev/r/models.json",
+        "https://ui.aiellie.dev/r/tools.json",
         "https://ui.aiellie.dev/r/tooltip.json"
       ],
       "dependencies": [
@@ -2901,6 +2992,140 @@
           {
             "name": "On hover",
             "demo": "MessageActionsOnHoverDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "ratio-menu-demo",
+      "type": "registry:example",
+      "title": "Ratio Menu",
+      "description": "The frame menu on the row where it lives, wearing the chosen proportions on its trigger — and the bare trigger, for a toolbar with no room for the word.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/ratio-menu.json",
+        "https://ui.aiellie.dev/r/message-input.json",
+        "https://ui.aiellie.dev/r/tooltip.json"
+      ],
+      "files": [
+        {
+          "path": "examples/composer/ratio-menu.tsx",
+          "type": "registry:example",
+          "target": "examples/composer/ratio-menu.tsx"
+        }
+      ],
+      "categories": [
+        "composer"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "On the toolbar",
+            "demo": "RatioMenuDemo"
+          },
+          {
+            "name": "Bare",
+            "demo": "RatioMenuBareDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "media-demo",
+      "type": "registry:example",
+      "title": "Media",
+      "description": "The frame in its three moments — waiting empty, a picture arriving over the shimmer, and settled with its badge — and the shapes a generation is asked into, holding their room.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/media.json",
+        "https://ui.aiellie.dev/r/avatars.json"
+      ],
+      "files": [
+        {
+          "path": "examples/media/media.tsx",
+          "type": "registry:example",
+          "target": "examples/media/media.tsx"
+        }
+      ],
+      "categories": [
+        "media"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Moments",
+            "demo": "MediaDemo"
+          },
+          {
+            "name": "Aspects",
+            "demo": "MediaAspectsDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "media-gallery-demo",
+      "type": "registry:example",
+      "title": "Media Gallery",
+      "description": "Four variations with one chosen — the ring on the pick, the rest a shade back — and the same grid as a filmstrip of takes.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/media-gallery.json",
+        "https://ui.aiellie.dev/r/media.json",
+        "https://ui.aiellie.dev/r/avatars.json"
+      ],
+      "files": [
+        {
+          "path": "examples/media/media-gallery.tsx",
+          "type": "registry:example",
+          "target": "examples/media/media-gallery.tsx"
+        }
+      ],
+      "categories": [
+        "media"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Variations",
+            "demo": "MediaGalleryDemo"
+          },
+          {
+            "name": "Filmstrip",
+            "demo": "MediaGalleryStripDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "image-compare-demo",
+      "type": "registry:example",
+      "title": "Image Compare",
+      "description": "A re-generation against its source under a draggable divider — the whole surface is one real slider, so the arrow keys move it too — and the controlled form, parked where the caller says.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/image-compare.json",
+        "https://ui.aiellie.dev/r/avatars.json"
+      ],
+      "files": [
+        {
+          "path": "examples/media/image-compare.tsx",
+          "type": "registry:example",
+          "target": "examples/media/image-compare.tsx"
+        }
+      ],
+      "categories": [
+        "media"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Compare",
+            "demo": "ImageCompareDemo"
+          },
+          {
+            "name": "Controlled",
+            "demo": "ImageCompareControlledDemo"
           }
         ],
         "wide": false

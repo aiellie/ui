@@ -42,6 +42,10 @@ import {
   AiImageIcon,
   AiVideo01Icon,
   AiSearch02Icon,
+  Image01Icon,
+  Album02Icon,
+  Exchange01Icon,
+  AspectRatioIcon,
 } from "@hugeicons/core-free-icons"
 import type { IconSvgElement } from "@hugeicons/react"
 import type { RegistryItem } from "shadcn/schema"
@@ -82,7 +86,12 @@ import * as messageHighlightToolbarDemos from "@/examples/messages/message-highl
 import * as messageStatusDemos from "@/examples/messages/message-status"
 import * as quotedMessageDemos from "@/examples/messages/quoted-message"
 import * as reactionsDemos from "@/examples/messages/reactions"
-import * as citationsDemos from "@/examples/messages/citations"
+import * as inlineCitationDemos from "@/examples/messages/inline-citation"
+import * as sourcesDemos from "@/examples/messages/sources"
+import * as mediaDemos from "@/examples/media/media"
+import * as mediaGalleryDemos from "@/examples/media/media-gallery"
+import * as imageCompareDemos from "@/examples/media/image-compare"
+import * as ratioMenuDemos from "@/examples/composer/ratio-menu"
 import * as reasoningDemos from "@/examples/messages/reasoning"
 import * as responseDemos from "@/examples/messages/response"
 import * as streamingTextDemos from "@/examples/messages/streaming-text"
@@ -246,9 +255,29 @@ const exampleDemos: Record<string, ExampleDemos> = {
     icon: AiBrain01Icon,
     components: { ...reasoningDemos },
   },
-  "citations-demo": {
+  "inline-citation-demo": {
+    icon: Tag01Icon,
+    components: { ...inlineCitationDemos },
+  },
+  "sources-demo": {
     icon: Link02Icon,
-    components: { ...citationsDemos },
+    components: { ...sourcesDemos },
+  },
+  "media-demo": {
+    icon: Image01Icon,
+    components: { ...mediaDemos },
+  },
+  "media-gallery-demo": {
+    icon: Album02Icon,
+    components: { ...mediaGalleryDemos },
+  },
+  "image-compare-demo": {
+    icon: Exchange01Icon,
+    components: { ...imageCompareDemos },
+  },
+  "ratio-menu-demo": {
+    icon: AspectRatioIcon,
+    components: { ...ratioMenuDemos },
   },
   "response-demo": {
     icon: ParagraphIcon,

@@ -1475,14 +1475,20 @@
           "ReasoningTrigger",
           "ReasoningContent",
           "ReasoningStep",
-          "ReasoningProps"
+          "ReasoningBranch",
+          "ReasoningBranchTrigger",
+          "ReasoningBranchContent",
+          "ReasoningBranchTriggerProps",
+          "ReasoningProps",
+          "ReasoningStepProps",
+          "ReasoningStepStatus"
         ]
       }
     ],
     "components": [
       {
         "name": "Reasoning",
-        "description": "The thinking behind an answer, folded away. Open while it is happening and closed once it is done, unless the reader says otherwise: watching it think is worth something, and a finished answer with its whole reasoning still unfolded above it buries the part that was asked for. A reader who opens or closes it takes that decision off the component for the rest of the run.",
+        "description": "The root, folded away. Open while it is happening and closed once it is done, unless the reader says otherwise: watching it think is worth something, and a finished answer with its whole reasoning still unfolded above it buries the part that was asked for. A reader who opens or closes it takes that decision off the component for the rest of the run.",
         "props": [
           {
             "name": "duration",
@@ -1512,7 +1518,7 @@
       },
       {
         "name": "ReasoningContent",
-        "description": "The thinking itself, set apart by a rule down the start edge rather than a box: it is an aside to the answer, and a panel would give it the weight of another message.",
+        "description": "The work itself, set apart by a rule down the start edge rather than a box: it is an aside to the answer, and a panel would give it the weight of another message. Branches repeat the same rule one level in, so depth is read off the rules the way a thread's replies are.",
         "props": [],
         "extends": [
           "Collapsible.Panel.Props"
@@ -1520,56 +1526,103 @@
       },
       {
         "name": "ReasoningStep",
-        "description": "One step of it. Steps are what reasoning actually looks like when it is streamed — a line at a time, each a small conclusion — and spacing them says so without numbering anything.",
+        "description": "One step. A bare one — no glyph, no status — is a sentence, exactly as this element began; given a glyph it becomes a row in a work log, and the two kinds sit in the same list without either looking like a visitor.",
+        "props": [
+          {
+            "name": "detail",
+            "type": "React.ReactNode",
+            "optional": true,
+            "description": "The small fact pinned to the row's end — \"42s\", \"12 files\". Set apart in tabular figures so a column of them lines up."
+          },
+          {
+            "name": "icon",
+            "type": "IconSvgElement",
+            "optional": true,
+            "description": "The glyph for what the step did — a browser, a pen, a file."
+          },
+          {
+            "name": "status",
+            "type": "ReasoningStepStatus",
+            "optional": true,
+            "description": "How the step stands. It recolours the glyph and, when there is no glyph, supplies one — a spinner while running is the only mark that moves."
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "ReasoningBranch",
+        "description": "A step that was made of steps. Its own collapsible, so a run four levels deep folds level by level rather than all at once — the reader opens exactly the part of the work they are asking about. Open by default while its status is `running`, for the same reason the root is: the step being watched is the one still going.",
+        "props": [
+          {
+            "name": "status",
+            "type": "ReasoningStepStatus",
+            "optional": true
+          }
+        ],
+        "extends": [
+          "Collapsible.Root.Props"
+        ]
+      },
+      {
+        "name": "ReasoningBranchTrigger",
+        "description": "The branch's own row. It reads like any step — glyph, words, the fact at the end — with the chevron saying it opens; the whole row is the button, so a pointer never has to find the chevron itself.",
+        "props": [
+          {
+            "name": "detail",
+            "type": "React.ReactNode",
+            "optional": true
+          },
+          {
+            "name": "icon",
+            "type": "IconSvgElement",
+            "optional": true
+          },
+          {
+            "name": "status",
+            "type": "ReasoningStepStatus",
+            "optional": true
+          }
+        ],
+        "extends": [
+          "Collapsible.Trigger.Props"
+        ]
+      },
+      {
+        "name": "ReasoningBranchContent",
+        "description": "The steps the branch was made of, one rule further in — the same rule the root drew, because a level is a level wherever it starts.",
         "props": [],
         "extends": [
-          "React.ComponentProps<\"p\">"
+          "Collapsible.Panel.Props"
         ]
       }
     ],
     "exports": [
-      "ReasoningProps"
+      "ReasoningBranchTriggerProps",
+      "ReasoningProps",
+      "ReasoningStepProps",
+      "ReasoningStepStatus"
     ]
   },
-  "citations": {
+  "sources": {
     "imports": [
       {
-        "module": "@/components/aiellie-ui/citations",
+        "module": "@/components/aiellie-ui/sources",
         "names": [
-          "Citation",
           "Sources",
           "SourcesTrigger",
           "SourcesContent",
           "SourceItem",
-          "CitationProps",
+          "originOf",
           "Source"
         ]
       }
     ],
     "components": [
       {
-        "name": "Citation",
-        "description": "A numbered mark in the prose, pointing at one of the sources listed under the answer. Small, and the number rather than the name: a citation interrupts a sentence, and a sentence with three domain names dropped into it is no longer a sentence. The name is a hover away and a click away, which is where it belongs. A real link, so the usual things work on it — a middle click, a long press, a copied address — none of which survive a div with a handler.",
-        "props": [
-          {
-            "name": "index",
-            "type": "number",
-            "optional": false,
-            "description": "Its place in the list under the answer, which is what the chip shows."
-          },
-          {
-            "name": "source",
-            "type": "Source",
-            "optional": false
-          }
-        ],
-        "extends": [
-          "Omit<React.ComponentProps<\"a\">, \"children\">"
-        ]
-      },
-      {
         "name": "Sources",
-        "description": "What the answer was drawn from, under it. Folded by default and counted on the trigger: the list is a claim about where the answer came from, and a reader either takes that claim on trust or wants to check it — but they read the answer first either way.",
+        "description": "Folded by default and counted on the trigger: the list is a claim about where the answer came from, and a reader either takes that claim on trust or wants to check it — but they read the answer first either way.",
         "props": [],
         "extends": [
           "Collapsible.Root.Props"
@@ -1616,8 +1669,274 @@
       }
     ],
     "exports": [
-      "CitationProps",
+      "originOf",
       "Source"
+    ]
+  },
+  "inline-citation": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/inline-citation",
+        "names": [
+          "Citation",
+          "CitationProps"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "Citation",
+        "description": "A numbered mark in the prose, pointing at one of the sources listed under the answer — the `sources` element is the list it points at, and the number here is the number there. Small, and the number rather than the name: a citation interrupts a sentence, and a sentence with three domain names dropped into it is no longer a sentence. The name is a hover away and a click away, which is where it belongs. A real link, so the usual things work on it — a middle click, a long press, a copied address — none of which survive a div with a handler.",
+        "props": [
+          {
+            "name": "index",
+            "type": "number",
+            "optional": false,
+            "description": "Its place in the list under the answer, which is what the chip shows."
+          },
+          {
+            "name": "source",
+            "type": "Source",
+            "optional": false
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"a\">, \"children\">"
+        ]
+      }
+    ],
+    "exports": [
+      "CitationProps"
+    ]
+  },
+  "media-gallery": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/media-gallery",
+        "names": [
+          "MediaGallery",
+          "MediaGalleryItem",
+          "MediaGalleryItemProps",
+          "MediaGalleryProps"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "MediaGallery",
+        "props": [
+          {
+            "name": "columns",
+            "type": "2 | 3 | 4",
+            "optional": true,
+            "description": "Columns at the grid's own width. Two reads as a contact sheet; four is a filmstrip and wants the room to be one.",
+            "default": "2"
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "MediaGalleryItem",
+        "description": "One tile. The ring says chosen and `aria-pressed` says it out loud; the media inside keeps its own corners clipped by the tile, so a `MediaFrame` dropped straight in lines up without either knowing about the other.",
+        "props": [
+          {
+            "name": "selected",
+            "type": "boolean",
+            "optional": true,
+            "default": "false"
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<\"button\">"
+        ]
+      }
+    ],
+    "exports": [
+      "MediaGalleryItemProps",
+      "MediaGalleryProps"
+    ]
+  },
+  "image-compare": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/image-compare",
+        "names": [
+          "ImageCompare",
+          "ImageCompareBefore",
+          "ImageCompareAfter",
+          "ImageCompareLabel",
+          "ImageCompareImageProps",
+          "ImageCompareProps"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "ImageCompare",
+        "props": [
+          {
+            "name": "aspect",
+            "type": "\"square\" | \"video\" | \"portrait\"",
+            "optional": true,
+            "description": "The frame's shape, since the pictures fill whatever they are given.",
+            "default": "\"square\""
+          },
+          {
+            "name": "defaultPosition",
+            "type": "number",
+            "optional": true,
+            "default": "50"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "optional": true,
+            "description": "What the slider is called to assistive tech.",
+            "default": "\"Compare versions\""
+          },
+          {
+            "name": "onPositionChange",
+            "type": "(position: number) => void",
+            "optional": true
+          },
+          {
+            "name": "position",
+            "type": "number",
+            "optional": true
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "ImageCompareBefore",
+        "description": "The earlier version, underneath, whole.",
+        "props": [
+          {
+            "name": "alt",
+            "type": "string",
+            "optional": false
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<\"img\">"
+        ]
+      },
+      {
+        "name": "ImageCompareAfter",
+        "description": "The later version, on top, clipped at the divider — clipped rather than resized, so the two stay pixel-aligned and the divider reveals instead of squashing.",
+        "props": [
+          {
+            "name": "alt",
+            "type": "string",
+            "optional": false
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<\"img\">"
+        ]
+      },
+      {
+        "name": "ImageCompareLabel",
+        "description": "The word pinned to each half — \"Before\" at the start, \"After\" at the end — in the corner its half keeps whatever the divider does.",
+        "props": [
+          {
+            "name": "side",
+            "type": "\"start\" | \"end\"",
+            "optional": true,
+            "default": "\"start\""
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<\"span\">"
+        ]
+      }
+    ],
+    "exports": [
+      "ImageCompareImageProps",
+      "ImageCompareProps"
+    ]
+  },
+  "ratio-menu": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/composer/ratio-menu",
+        "names": [
+          "RatioMenu",
+          "RatioMenuTrigger",
+          "RatioMenuContent",
+          "findRatio",
+          "Ratio",
+          "RatioMenuProps"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "RatioMenu",
+        "props": [
+          {
+            "name": "children",
+            "type": "React.ReactNode",
+            "optional": true
+          },
+          {
+            "name": "defaultValue",
+            "type": "string",
+            "optional": true,
+            "default": "\"1:1\""
+          },
+          {
+            "name": "onValueChange",
+            "type": "(value: string) => void",
+            "optional": true
+          },
+          {
+            "name": "ratios",
+            "type": "Ratio[]",
+            "optional": true,
+            "default": "defaultRatios"
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "optional": true
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<typeof Menu>, \"children\">"
+        ]
+      },
+      {
+        "name": "RatioMenuTrigger",
+        "description": "The trigger wears the chosen frame, so the toolbar answers \"what shape\" at a glance the way the model picker answers \"who\". `showLabel` adds the word for a toolbar with room to say it.",
+        "props": [
+          {
+            "name": "showLabel",
+            "type": "boolean",
+            "optional": true,
+            "default": "false"
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<typeof MenuTrigger>"
+        ]
+      },
+      {
+        "name": "RatioMenuContent",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<typeof MenuContent>"
+        ]
+      }
+    ],
+    "exports": [
+      "findRatio",
+      "Ratio",
+      "RatioMenuProps"
     ]
   },
   "response": {
@@ -2889,11 +3208,22 @@
             "optional": false
           },
           {
+            "name": "addActions",
+            "type": "AddAction[]",
+            "optional": true,
+            "description": "The plus's catalogue — references, mainly: the image a generation should start from, the style to hold to. Defaults to the composer's own tree."
+          },
+          {
             "name": "busy",
             "type": "boolean",
             "optional": true,
             "description": "A run is going: the send becomes a stop, which `onStop` answers.",
             "default": "false"
+          },
+          {
+            "name": "onAdd",
+            "type": "(action: AddAction) => void",
+            "optional": true
           },
           {
             "name": "onPrompt",
@@ -2917,6 +3247,12 @@
             "type": "React.ReactNode",
             "optional": true,
             "description": "The panel behind the gear — a `KeyField`, a model note, whatever the generator can be handed. No gear renders when there is nothing to set."
+          },
+          {
+            "name": "toolbar",
+            "type": "React.ReactNode",
+            "optional": true,
+            "description": "The row under the field — the ratio, the model, whatever the run is set with. The settings gear holds what is set once; this row holds what is set per prompt, which is why it earns a place on the composer itself."
           }
         ],
         "extends": [
