@@ -10,7 +10,7 @@
     "lint": "eslint",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit",
-    "registry:build": "tsx scripts/build-registry.ts && shadcn build"
+    "registry:build": "tsx scripts/build-docs.ts && tsx scripts/build-registry.ts && shadcn build"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

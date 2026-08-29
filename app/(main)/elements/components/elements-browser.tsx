@@ -6,6 +6,7 @@ import {
   ExampleCard,
   ExamplesBrowser,
 } from "@/app/(main)/components/examples-browser"
+import type { ElementDoc } from "@/components/aiellie-ui/element-docs"
 import { examplesWithDemos } from "@/registry/_demos"
 
 /**
@@ -22,9 +23,16 @@ function ElementsBrowser({ children }: { children: ReactNode }) {
   )
 }
 
-/** The card on the stage, resolved from the slug the route was asked for. */
-function ElementCard({ slug }: { slug: string }) {
-  return <ExampleCard examples={examplesWithDemos} slug={slug} />
+/**
+ * The card on the stage, resolved from the slug the route was asked for.
+ *
+ * The docs come the other way — resolved by the route, on the server, and
+ * handed through as plain data. They are a hundred kilobytes of props tables
+ * across the whole registry, and only the one being read is ever wanted, so
+ * they are passed rather than imported here the way the demos have to be.
+ */
+function ElementCard({ slug, docs }: { slug: string; docs?: ElementDoc }) {
+  return <ExampleCard examples={examplesWithDemos} slug={slug} docs={docs} />
 }
 
 export { ElementsBrowser, ElementCard }

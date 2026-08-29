@@ -4,6 +4,7 @@ import Link from "next/link"
 import {
   ArrowLeft01Icon,
   BashIcon,
+  Book02Icon,
   Cancel01Icon,
   FullScreenIcon,
   SourceCodeIcon,
@@ -54,6 +55,13 @@ type DemoToolbarProps = {
   /** The same, for the example that demos it — the button's second option. */
   demoInstallCommand?: string
   backHref?: string
+  /**
+   * Whether the reference beside this demo is showing. Paired with
+   * `onDocsOpenChange`; without that handler no button is drawn, since a
+   * toolbar has nowhere to put a panel it is not being told about.
+   */
+  docsOpen?: boolean
+  onDocsOpenChange?: (open: boolean) => void
   fullscreenHref?: string
   fullscreen?: boolean
   title?: string
@@ -81,6 +89,8 @@ function DemoToolbar({
   installCommand,
   demoInstallCommand,
   backHref,
+  docsOpen = false,
+  onDocsOpenChange,
   fullscreenHref,
   fullscreen = false,
   title,
@@ -220,6 +230,28 @@ function DemoToolbar({
           >
             <HugeiconsIcon
               icon={SourceCodeIcon}
+              strokeWidth={2}
+              className="size-3.5"
+            />
+          </TooltipIconButton>
+        ) : null}
+        {/* `aria-expanded` rather than `aria-pressed`: the button is not a
+            state of its own, it is the handle on a region that is either
+            disclosed or not, and the two roles are announced differently. The
+            lit fill says the same thing to everyone else. */}
+        {onDocsOpenChange ? (
+          <TooltipIconButton
+            tooltip={docsOpen ? "Hide docs" : "Docs"}
+            onClick={() => onDocsOpenChange(!docsOpen)}
+            aria-expanded={docsOpen}
+            data-active={docsOpen}
+            className={cn(
+              "data-[active=true]:bg-muted data-[active=true]:text-foreground",
+              "data-[active=true]:hover:bg-muted data-[active=true]:hover:text-foreground"
+            )}
+          >
+            <HugeiconsIcon
+              icon={Book02Icon}
               strokeWidth={2}
               className="size-3.5"
             />

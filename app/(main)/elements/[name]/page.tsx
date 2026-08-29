@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 
+import { docsFor } from "@/registry/_docs"
 import { examples } from "@/registry/_examples-registry"
 import { slugFor } from "@/registry/_paths"
 
@@ -28,7 +29,12 @@ export async function generateMetadata({
 
 export default async function Page({ params }: PageProps) {
   const { name } = await params
-  if (!itemFor(name)) notFound()
+  const item = itemFor(name)
+  if (!item) notFound()
 
-  return <ElementCard slug={name} />
+  /* Resolved here rather than in the browser: the reference is plain data, so
+     it crosses into the client the way the demos cannot, and resolving it on
+     this side keeps `registry/docs.json` — every element's props table, not
+     just this one's — out of the bundle. */
+  return <ElementCard slug={name} docs={docsFor(item.name)} />
 }

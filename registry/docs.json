@@ -1,0 +1,4894 @@
+{
+  "code-block": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/code/code-block",
+        "names": [
+          "CodeBlock",
+          "CodeBlockHeader",
+          "CodeBlockTitle",
+          "CodeBlockActions",
+          "CodeBlockAction",
+          "CodeBlockCopy",
+          "CodeBlockDownload",
+          "CodeBlockCaret",
+          "CodeBlockBody",
+          "CodeBlockActionProps",
+          "CodeBlockBodyProps"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "CodeBlock",
+        "description": "A block of code as a thing on the page rather than a thing inside prose: named, copyable, numbered where the numbers are being referred to, and able to be still arriving. Parts rather than props, because a header is a place and not a choice. What sits on the left of one differs by more than a flag — a filename here, a strip of file tabs there, a branch and a commit somewhere else — and a component that took `filename`, `icon` and a `header` override to cover that has admitted the override was the real API. `CodeBlockBody` keeps the props, since every one of them names a choice about how the code reads. Deliberately not a highlighter: `lib/highlight` scans, this lays out. The diff and the tabbed card want the same tokens down different rows.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"figure\">"
+        ]
+      },
+      {
+        "name": "CodeBlockHeader",
+        "description": "A `figcaption`, so what names the code is attached to the code rather than merely sitting above it. Anything can go in it; the actions take the far end for themselves. Whatever goes at the start has to be able to shrink — `min-w-0` and a `truncate` or a scroller of its own, as `CodeBlockTitle` does. The actions do not shrink, so a start that refuses to gets its own way and pushes them off the block, where the rounded corners clip them out of existence.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"figcaption\">"
+        ]
+      },
+      {
+        "name": "CodeBlockTitle",
+        "description": "What the block is called, with the badge for it, derived from the name — `use-tick.ts` and `typescript` land on the same glyph without the caller saying which of the two it passed. `icon` takes a set name to derive from (`\"mono\"` by default, `\"brand\"` for the language's own colours), an icon of your own, or `null` for a header carrying its own.",
+        "props": [
+          {
+            "name": "icon",
+            "type": "React.ReactNode | CodeIconSet",
+            "optional": true
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<\"span\">"
+        ]
+      },
+      {
+        "name": "CodeBlockActions",
+        "description": "The controls at the end of the header. They stay put rather than appearing on hover: a code block is as often read on a touch screen as pointed at, and there is nothing under them for the revealing to protect.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "CodeBlockAction",
+        "description": "One action in the header, and the seam for any that this file does not ship — a re-run, a jump to the file, an \"open in\" — so a hand-rolled one matches without copying the class string out. The two icons are stacked in a single grid cell so the tick swaps in place: a button that re-measures mid-press moves the buttons beside it, under the pointer that is still on the one being pressed.",
+        "props": [
+          {
+            "name": "children",
+            "type": "React.ReactNode",
+            "optional": false
+          },
+          {
+            "name": "done",
+            "type": "boolean",
+            "optional": true,
+            "default": "false"
+          },
+          {
+            "name": "doneChildren",
+            "type": "React.ReactNode",
+            "optional": true,
+            "description": "Shown in place of `children` while `done`; a tick unless something says it better."
+          },
+          {
+            "name": "doneTooltip",
+            "type": "React.ReactNode",
+            "optional": true,
+            "description": "What the tooltip and the name become once the action has landed."
+          },
+          {
+            "name": "tooltip",
+            "type": "React.ReactNode",
+            "optional": true
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"button\">, \"children\">"
+        ]
+      },
+      {
+        "name": "CodeBlockCopy",
+        "description": "Copies exactly what is on screen, and says so for two seconds. The state is held here rather than handed up: whether a copy has just happened is nobody else's business, and a caller made to store it would only hand it straight back. `onCopy` is there for the ones with something to add — a toast, a count — not for the tick.",
+        "props": [
+          {
+            "name": "code",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "name": "children",
+            "type": "React.ReactNode",
+            "optional": true
+          },
+          {
+            "name": "doneTooltip",
+            "type": "React.ReactNode",
+            "optional": true,
+            "description": "What the tooltip and the name become once the action has landed.",
+            "default": "\"Copied\""
+          },
+          {
+            "name": "onCopy",
+            "type": "() => void",
+            "optional": true
+          },
+          {
+            "name": "tooltip",
+            "type": "React.ReactNode",
+            "optional": true,
+            "default": "\"Copy\""
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"button\">, \"children\" | \"done\" | \"doneChildren\" | \"onCopy\">"
+        ]
+      },
+      {
+        "name": "CodeBlockDownload",
+        "description": "Saves the code as a file. It does the saving itself rather than reporting a press for the caller to act on — a control that looks like a download and does nothing until wired up is a worse default than one that works. A Blob and an object URL rather than a `data:` URI, which a long file would outgrow, and the URL is released once the browser has taken it so the page is not left holding a copy of every file it has offered.",
+        "props": [
+          {
+            "name": "code",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "name": "children",
+            "type": "React.ReactNode",
+            "optional": true
+          },
+          {
+            "name": "doneTooltip",
+            "type": "React.ReactNode",
+            "optional": true,
+            "description": "What the tooltip and the name become once the action has landed.",
+            "default": "\"Downloaded\""
+          },
+          {
+            "name": "filename",
+            "type": "string",
+            "optional": true,
+            "default": "\"snippet.txt\""
+          },
+          {
+            "name": "onDownload",
+            "type": "() => void",
+            "optional": true
+          },
+          {
+            "name": "tooltip",
+            "type": "React.ReactNode",
+            "optional": true,
+            "default": "\"Download\""
+          },
+          {
+            "name": "type",
+            "type": "string",
+            "optional": true,
+            "description": "The MIME type the file is saved as.",
+            "default": "\"text/plain;charset=utf-8\""
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"button\">, \"children\" | \"done\" | \"doneChildren\" | \"type\">"
+        ]
+      },
+      {
+        "name": "CodeBlockCaret",
+        "description": "Where the next token will land, while the code is still arriving.",
+        "props": [],
+        "extends": []
+      },
+      {
+        "name": "CodeBlockBody",
+        "description": "The code itself. `codeScroll` goes on the `pre` and `codeSurface` on the `code` inside it, wrapping every row as one block: `min-width: 100%` in a scroll container resolves against the visible width, not the scrollable one, so sizing each row would end a marked line's tint at the fold. A block tall enough to need it takes a height and a second axis from the caller — `className=\"max-h-64 overflow-y-auto\"` — rather than a `maxLines` prop that would have to decide what a line is worth.",
+        "props": [
+          {
+            "name": "code",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "name": "annotations",
+            "type": "Readonly<Record<number, React.ReactNode>>",
+            "optional": true,
+            "description": "Notes to drop in under a 1-based line, keyed by it. A tint says which line is being talked about; this says what is being said, and says it where the reader already is rather than in prose below that has to name the line again. `code-annotation` is what goes in here."
+          },
+          {
+            "name": "defaultOpenAnnotations",
+            "type": "readonly number[]",
+            "optional": true,
+            "description": "Lines whose note is already showing. The rest are a click on the marker away — a block that unfolded every note it had would be mostly notes, and the code is what the reader came for."
+          },
+          {
+            "name": "highlightLines",
+            "type": "readonly number[]",
+            "optional": true,
+            "description": "1-based lines to mark, for pointing at the part being talked about."
+          },
+          {
+            "name": "lineNumbers",
+            "type": "boolean",
+            "optional": true,
+            "default": "false"
+          },
+          {
+            "name": "palette",
+            "type": "TokenPalette",
+            "optional": true,
+            "description": "Which palette the tokens take. `mono` keeps every distinction the colour one makes and spends weight on them instead — for a block set among prose, or a page the three hues would speak over.",
+            "default": "\"color\""
+          },
+          {
+            "name": "streaming",
+            "type": "boolean",
+            "optional": true,
+            "description": "Blinks a caret after the last line while the code is still arriving.",
+            "default": "false"
+          },
+          {
+            "name": "wrap",
+            "type": "boolean",
+            "optional": true,
+            "description": "Wraps long lines instead of scrolling them, for a narrow column.",
+            "default": "false"
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"pre\">, \"children\">"
+        ]
+      }
+    ],
+    "exports": [
+      "CodeBlockActionProps",
+      "CodeBlockBodyProps"
+    ]
+  },
+  "code-diff": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/code/code-diff",
+        "names": [
+          "CodeDiffStat",
+          "CodeDiffBody",
+          "CodeDiffBodyProps",
+          "DiffKind",
+          "DiffPair",
+          "DiffRow",
+          "diffStat",
+          "pairRows",
+          "parseDiff"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "CodeDiffStat",
+        "description": "What the diff comes to, as a header carries it: `+12 −4`.",
+        "props": [
+          {
+            "name": "added",
+            "type": "number",
+            "optional": false
+          },
+          {
+            "name": "removed",
+            "type": "number",
+            "optional": false
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"span\">, \"children\">"
+        ]
+      },
+      {
+        "name": "CodeDiffBody",
+        "description": "The rows of a diff. Goes inside a `CodeBlock`, so a diff and a plain block carry the same header, the same copy, and the same surface — the only thing that differs between them is what the rows mean.",
+        "props": [
+          {
+            "name": "diff",
+            "type": "string",
+            "optional": false,
+            "description": "A unified diff, as `git diff` writes it."
+          },
+          {
+            "name": "lineNumbers",
+            "type": "boolean",
+            "optional": true,
+            "default": "true"
+          },
+          {
+            "name": "palette",
+            "type": "TokenPalette",
+            "optional": true,
+            "default": "\"color\""
+          },
+          {
+            "name": "view",
+            "type": "\"unified\" | \"split\"",
+            "optional": true,
+            "description": "`unified` reads the change as one sequence, which is how a small edit is described. `split` puts before and after side by side, which needs the width but answers \"what did this used to say\" without counting rows.",
+            "default": "\"unified\""
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"pre\">, \"children\">"
+        ]
+      }
+    ],
+    "exports": [
+      "CodeDiffBodyProps",
+      "DiffKind",
+      "DiffPair",
+      "DiffRow",
+      "diffStat",
+      "pairRows",
+      "parseDiff"
+    ]
+  },
+  "code-tabs": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/code/code-tabs",
+        "names": [
+          "CodeTabs",
+          "CodeTabsList",
+          "CodeTabsTab",
+          "CodeTabsPanel",
+          "codeTab"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "CodeTabs",
+        "description": "Several files in one block: the strip of names a code block's header takes, and the panels behind them. Base UI's tabs rather than a row of buttons, because a tab strip has keyboard behaviour a row of buttons does not — arrows move between tabs, Home and End reach the ends, and only the selected tab is a tab stop, so eleven files cost one stop rather than eleven. The value is the caller's, since picking a file is usually the same event as something else changing with it: the copy action in the same header has to be handed the file that is actually showing.",
+        "props": [],
+        "extends": [
+          "Tabs.Root.Props"
+        ]
+      },
+      {
+        "name": "CodeTabsList",
+        "description": "`contents` above, so the root disappears from the layout and the block it wraps is still the block — a tabs root that boxed the card would have to be given the card's own shape back, and the two would drift.",
+        "props": [],
+        "extends": [
+          "Tabs.List.Props"
+        ]
+      },
+      {
+        "name": "CodeTabsTab",
+        "description": "One file in the strip, wearing the badge its name earns. A strip of files is scanned rather than read — the eye is hunting for the CSS one — and a glyph is what it finds first, so the badge is on by default and the strip scrolls when the names outgrow the header. `icon` takes a set name to derive from — `\"brand\"` by default, since a strip is where colour pays for itself, `\"mono\"` for the interface glyph — an icon of your own, or `null` for the strip that really is better bare. The badge is also the slot the close control swaps into on hover: the glyph that says what the file is becomes the one that shuts it, in the place the pointer is already heading. Closing still needs an `onClose`, since a tab cannot take itself out of a list it does not own.",
+        "props": [
+          {
+            "name": "closeLabel",
+            "type": "string",
+            "optional": true
+          },
+          {
+            "name": "icon",
+            "type": "React.ReactNode | CodeIconSet",
+            "optional": true
+          },
+          {
+            "name": "onClose",
+            "type": "() => void",
+            "optional": true,
+            "description": "Offered as a cross in the badge slot, and on Delete or Backspace."
+          }
+        ],
+        "extends": [
+          "Tabs.Tab.Props"
+        ]
+      },
+      {
+        "name": "CodeTabsPanel",
+        "description": "A panel mounts when it is chosen and goes when it is not, so switching files reads as the new code arriving rather than as the old code changing under the same rows. `keepMounted` is there for the block that has to keep a scroll position, or a selection, across a switch.",
+        "props": [],
+        "extends": [
+          "Tabs.Panel.Props"
+        ]
+      }
+    ],
+    "exports": [
+      "codeTab"
+    ]
+  },
+  "terminal": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/code/terminal",
+        "names": [
+          "Terminal",
+          "TerminalBody",
+          "TerminalCaret",
+          "TerminalCommand",
+          "TerminalOutput",
+          "TerminalStatus",
+          "TerminalTone"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "Terminal",
+        "description": "A run rather than an install line: what was typed, what came back, and how it ended. `code-snippet` is the other half of this — one line, offered to be copied, which has not happened yet. This one has. The colouring is `tokenizeCommand`, the same pass the snippet uses, so a command reads the same whether it is being offered or being reported.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "TerminalBody",
+        "description": "The transcript. A `div` of rows and not a `pre`: output lines wrap, since a message from a compiler is prose and cutting it off at the fold would hide the half that says what to do about it. Commands keep their own whitespace.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "TerminalCaret",
+        "description": "Blinks where the next character would land, while a command is running.",
+        "props": [],
+        "extends": []
+      },
+      {
+        "name": "TerminalCommand",
+        "description": "A line that was typed. The prompt is its own element and `select-none`, so dragging across a transcript and copying it gives back commands you can run rather than commands with a `$` welded to the front.",
+        "props": [
+          {
+            "name": "children",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "name": "prompt",
+            "type": "React.ReactNode",
+            "optional": true,
+            "default": "\"$\""
+          },
+          {
+            "name": "running",
+            "type": "boolean",
+            "optional": true,
+            "description": "Holds a caret at the end of the line while the command is still going.",
+            "default": "false"
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"div\">, \"children\">"
+        ]
+      },
+      {
+        "name": "TerminalOutput",
+        "props": [
+          {
+            "name": "tone",
+            "type": "TerminalTone",
+            "optional": true,
+            "default": "\"default\""
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "TerminalStatus",
+        "description": "How the run ended, set apart from the output above it by a rule rather than by a colour of its own — a zero exit is not news, and a non-zero one already has the error tone to carry it.",
+        "props": [
+          {
+            "name": "code",
+            "type": "number",
+            "optional": true
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      }
+    ],
+    "exports": [
+      "TerminalTone"
+    ]
+  },
+  "tool-call": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/tool-call",
+        "names": [
+          "ToolCall",
+          "ToolCallTrigger",
+          "ToolCallName",
+          "ToolCallSummary",
+          "ToolCallPanel",
+          "ToolCallSection",
+          "ToolCallCode",
+          "ToolCallProps",
+          "ToolCallStatus"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "ToolCall",
+        "description": "A tool being called, and what it gave back. Collapsed by default: a transcript is a conversation with a tool run inside it, and unfolding every argument and every result by default buries the conversation in its own plumbing. The header is enough to know whether it is worth opening. `status` rides on context rather than being passed down part by part, because it is the one thing three different parts each need and nothing between them would otherwise carry.",
+        "props": [
+          {
+            "name": "status",
+            "type": "ToolCallStatus",
+            "optional": true,
+            "default": "\"done\""
+          }
+        ],
+        "extends": [
+          "Collapsible.Root.Props"
+        ]
+      },
+      {
+        "name": "ToolCallTrigger",
+        "description": "The row that opens it. A real `<button>` underneath by way of Base UI's trigger, so the whole row answers Space and Enter rather than only the chevron at the end of it.",
+        "props": [
+          {
+            "name": "labels",
+            "type": "Partial<Record<ToolCallStatus, string>>",
+            "optional": true
+          }
+        ],
+        "extends": [
+          "Collapsible.Trigger.Props"
+        ]
+      },
+      {
+        "name": "ToolCallName",
+        "description": "What was called. The one part of the row set in the code face.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"span\">"
+        ]
+      },
+      {
+        "name": "ToolCallSummary",
+        "description": "The one line worth reading without opening it — \"3 matches\", \"wrote 84 lines\". Takes the end of the row, so a run of calls has its summaries down one edge where they can be compared.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"span\">"
+        ]
+      },
+      {
+        "name": "ToolCallPanel",
+        "description": "`collapsePanel` animates the height Base UI measures for it, so the panel opens to whatever it actually contains rather than to a number this file would have to guess and keep true.",
+        "props": [],
+        "extends": [
+          "Collapsible.Panel.Props"
+        ]
+      },
+      {
+        "name": "ToolCallSection",
+        "description": "One labelled part of the panel — what went in, what came out. The label is a real heading for its region, so a screen reader moving through a long panel is told which half it has reached.",
+        "props": [
+          {
+            "name": "children",
+            "type": "React.ReactNode",
+            "optional": false
+          },
+          {
+            "name": "label",
+            "type": "React.ReactNode",
+            "optional": false
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"section\">, \"children\">"
+        ]
+      },
+      {
+        "name": "ToolCallCode",
+        "description": "A block of whatever the tool was handed or gave back, kept to its own whitespace and scrolling rather than wrapping — an argument object folded across three lines stops looking like an object. Not tokenized: arguments and results arrive as JSON, as text, as a table of matches, and colouring them all as one language would be wrong more often than right. Put a `CodeBlockBody` in here where the content really is code.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"pre\">"
+        ]
+      }
+    ],
+    "exports": [
+      "ToolCallProps",
+      "ToolCallStatus"
+    ]
+  },
+  "file-tree": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/code/file-tree",
+        "names": [
+          "FileTree",
+          "FileTreeNodes",
+          "FileNode",
+          "FileStatus",
+          "FileTreeNodesProps",
+          "fileTreeRow"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "FileTree",
+        "description": "The shape of a change before any of its diffs: which files a tool touched, and where they sit relative to each other. A list of paths says the same thing and says it worse — six paths sharing a prefix make the reader do the nesting in their head.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "FileTreeNodes",
+        "description": "The rows, and the keyboard behaviour a `role=\"tree\"` promises: arrows walk it, right opens a folder and then steps into it, left closes one and then steps out to its parent, Home and End reach the ends. Only the row that would be focused is in the tab order, so a hundred files cost one tab stop rather than a hundred — which is the whole reason to call this a tree rather than a list of buttons. Whether a folder is open is held here: it is nobody else's business, and a caller made to store it would only hand it straight back. Which file is *chosen* is the caller's, since choosing one is usually the same event as showing it.",
+        "props": [
+          {
+            "name": "nodes",
+            "type": "readonly FileNode[]",
+            "optional": false
+          },
+          {
+            "name": "icons",
+            "type": "CodeIconSet",
+            "optional": true,
+            "description": "Which set the file badges come from. `brand` puts each language in its own colours, which is worth it in a tree of a mixed project and noise in a tree of one language.",
+            "default": "\"mono\""
+          },
+          {
+            "name": "onSelect",
+            "type": "(name: string) => void",
+            "optional": true
+          },
+          {
+            "name": "selected",
+            "type": "string",
+            "optional": true,
+            "description": "Which file is being shown, when the tree is driving something."
+          }
+        ],
+        "extends": []
+      }
+    ],
+    "exports": [
+      "FileNode",
+      "FileStatus",
+      "FileTreeNodesProps",
+      "fileTreeRow"
+    ]
+  },
+  "code-annotation": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/code/code-annotation",
+        "names": [
+          "CodeAnnotation",
+          "CodeAnnotationProps",
+          "CodeAnnotationTone"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "CodeAnnotation",
+        "description": "A note pinned under the line it is about. `highlightLines` says which line is being talked about; this says what is being said, and says it where the reader already is — prose underneath would have to name the line again, and the reader would have to count back up to it. An `aside`, because that is what it is: related to the code around it, and not part of it. A screen reader reading the block straight through gets the code as the author wrote it, and the note as the aside it is. Set in the interface face rather than the code one — a sentence about the code is not code, and setting it in mono is the commonest way this pattern goes wrong.",
+        "props": [
+          {
+            "name": "children",
+            "type": "React.ReactNode",
+            "optional": false
+          },
+          {
+            "name": "dismissLabel",
+            "type": "string",
+            "optional": true,
+            "default": "\"Dismiss note\""
+          },
+          {
+            "name": "onDismiss",
+            "type": "() => void",
+            "optional": true,
+            "description": "Offered when the note is something the reader can be done with."
+          },
+          {
+            "name": "tone",
+            "type": "CodeAnnotationTone",
+            "optional": true,
+            "default": "\"note\""
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"aside\">, \"children\">"
+        ]
+      }
+    ],
+    "exports": [
+      "CodeAnnotationProps",
+      "CodeAnnotationTone"
+    ]
+  },
+  "inline-code": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/code/inline-code",
+        "names": [
+          "InlineCode",
+          "InlineCodeCopy",
+          "InlineCodeLink",
+          "inlineCodeChip"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "InlineCode",
+        "description": "A symbol named in a sentence: `useTick`, `--primary`, `pnpm dlx`. `response` already styles the code inside prose it is handed, so this is for the cases that styling cannot reach — a symbol that can be copied, and one that leads somewhere. Sized in `em` rather than a fixed step, so a chip in a heading and a chip in a caption each come out a shade smaller than the words around them instead of both landing on the body size. `whitespace-nowrap` because a symbol broken across a line break stops being a symbol you can search for.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"code\">"
+        ]
+      },
+      {
+        "name": "InlineCodeCopy",
+        "description": "The same chip, which copies itself. A `<button>` underneath, because pressing it does something — and the whole chip is the control rather than a glyph beside it, since a symbol short enough to be inline is shorter than the target a separate button would need. `copy` is there for the chip that shows a short form of something longer — `--primary` on screen, the whole custom property on the clipboard.",
+        "props": [
+          {
+            "name": "copy",
+            "type": "string",
+            "optional": true,
+            "description": "What lands on the clipboard, when that is not what is on screen."
+          },
+          {
+            "name": "onCopy",
+            "type": "() => void",
+            "optional": true
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"button\">, \"onCopy\">"
+        ]
+      },
+      {
+        "name": "InlineCodeLink",
+        "description": "A symbol that leads somewhere — a definition, a doc page, a line in a file. A real `<a>`, so a modified click opens a tab and the target is there in the status bar before it is clicked.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"a\">"
+        ]
+      }
+    ],
+    "exports": [
+      "inlineCodeChip"
+    ]
+  },
+  "code-snippet": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/code/code-snippet",
+        "names": [
+          "CodeSnippet",
+          "CodeSnippetProps",
+          "CodeSnippetTab",
+          "PACKAGE_MANAGERS",
+          "PackageManager",
+          "resolveCommand"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "CodeSnippet",
+        "props": [
+          {
+            "name": "onCopy",
+            "type": "(resolved: string) => void",
+            "optional": false,
+            "description": "Handed the resolved line, so the caller never rebuilds the prefix."
+          },
+          {
+            "name": "active",
+            "type": "number",
+            "optional": true,
+            "default": "0"
+          },
+          {
+            "name": "command",
+            "type": "string",
+            "optional": true,
+            "description": "The line to run: what follows the runner while a `manager` supplies one (`shadcn@latest add …`), the whole line when none does. Unused under `tabs`, since each tab carries its own.",
+            "default": "\"\""
+          },
+          {
+            "name": "copied",
+            "type": "boolean",
+            "optional": true,
+            "default": "false"
+          },
+          {
+            "name": "highlight",
+            "type": "boolean",
+            "optional": true,
+            "description": "Colours the line's parts — program, flags, versions, URLs — like code.",
+            "default": "false"
+          },
+          {
+            "name": "manager",
+            "type": "PackageManager",
+            "optional": true,
+            "description": "Tabs for the package manager running `command`, paired with `onManagerChange`. Leave both off — and pass no `tabs` — for a card with no tabs at all, which runs `command` as it stands."
+          },
+          {
+            "name": "managers",
+            "type": "readonly PackageManager[]",
+            "optional": true,
+            "default": "PACKAGE_MANAGERS"
+          },
+          {
+            "name": "onActiveChange",
+            "type": "(index: number) => void",
+            "optional": true
+          },
+          {
+            "name": "onManagerChange",
+            "type": "(manager: PackageManager) => void",
+            "optional": true
+          },
+          {
+            "name": "tabs",
+            "type": "readonly CodeSnippetTab[]",
+            "optional": true,
+            "description": "Tabs of the caller's own in place of the managers, for lines that differ by more than their runner. Paired with `active` and `onActiveChange`."
+          }
+        ],
+        "extends": [
+          "Omit<ComponentProps<\"div\">, \"children\" | \"onCopy\">"
+        ]
+      }
+    ],
+    "exports": [
+      "CodeSnippetProps",
+      "CodeSnippetTab",
+      "PACKAGE_MANAGERS",
+      "PackageManager",
+      "resolveCommand"
+    ]
+  },
+  "suggestions": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/suggestions",
+        "names": [
+          "Suggestions",
+          "SuggestionsProps"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "Suggestions",
+        "description": "The prompts on offer, drawn as bubbles: a dashed outline while a suggestion is still an offer, tinted once it has been picked. Dashes are what mark it as something to act on — a solid outline reads as a filled field — and the tinted state drops them because it is no longer a prompt. Selection lives with the caller, since picking a suggestion is usually the same event as sending it.",
+        "props": [
+          {
+            "name": "onSuggestion",
+            "type": "(suggestion: string) => void",
+            "optional": false
+          },
+          {
+            "name": "suggestions",
+            "type": "readonly string[]",
+            "optional": false
+          },
+          {
+            "name": "cycle",
+            "type": "number",
+            "optional": true,
+            "description": "Bump to replay the stagger: a new key remounts the row.",
+            "default": "0"
+          },
+          {
+            "name": "selectedSuggestion",
+            "type": "string | null",
+            "optional": true,
+            "default": "null"
+          },
+          {
+            "name": "variant",
+            "type": "\"pills\" | \"list\"",
+            "optional": true,
+            "default": "\"pills\""
+          }
+        ],
+        "extends": [
+          "Omit<ComponentProps<\"div\">, \"children\">"
+        ]
+      }
+    ],
+    "exports": [
+      "SuggestionsProps"
+    ]
+  },
+  "timestamps": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/timestamps",
+        "names": [
+          "Timestamp",
+          "TimestampRow",
+          "formatTimestamp",
+          "TimestampFormat",
+          "TimestampProps"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "Timestamp",
+        "description": "When a message was sent, as a marker: inline under a bubble, or drawn across the thread as the divider a new day starts with. The label is a `<time>` with the full moment on it, so the exact value is always a hover or a screen reader away no matter how loosely it is phrased.",
+        "props": [
+          {
+            "name": "date",
+            "type": "Date | string | number",
+            "optional": false
+          },
+          {
+            "name": "children",
+            "type": "React.ReactNode",
+            "optional": true,
+            "description": "A label of your own, for the cases a formatter cannot know about."
+          },
+          {
+            "name": "format",
+            "type": "TimestampFormat",
+            "optional": true,
+            "default": "\"auto\""
+          },
+          {
+            "name": "hour12",
+            "type": "boolean",
+            "optional": true,
+            "description": "The twelve-hour clock, unless a caller would rather have the other.",
+            "default": "true"
+          },
+          {
+            "name": "icon",
+            "type": "React.ReactNode",
+            "optional": true
+          },
+          {
+            "name": "live",
+            "type": "boolean | number",
+            "optional": true,
+            "description": "Re-stamp on an interval: `true` is every minute, a number is milliseconds.",
+            "default": "false"
+          },
+          {
+            "name": "locale",
+            "type": "string",
+            "optional": true,
+            "default": "\"en-GB\""
+          },
+          {
+            "name": "placement",
+            "type": "\"footer\" | \"side\"",
+            "optional": true,
+            "description": "Under the message, or alongside it.",
+            "default": "\"footer\""
+          },
+          {
+            "name": "showOnHover",
+            "type": "boolean",
+            "optional": true,
+            "description": "Hold the stamp back until the message is hovered or focused. Needs a `group/message` ancestor — `Message`, or `TimestampRow` — to hover against.",
+            "default": "false"
+          },
+          {
+            "name": "variant",
+            "type": "\"default\" | \"separator\" | \"border\"",
+            "optional": true,
+            "default": "\"default\""
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"div\">, \"children\">"
+        ]
+      },
+      {
+        "name": "TimestampRow",
+        "description": "A message and its stamp on one line, for `placement=\"side\"`. The row is the `group/message` a hovered stamp reveals against, and `align=\"end\"` reverses it so the stamp stays on the outside of the thread rather than crossing to the far side of a bubble that has moved.",
+        "props": [
+          {
+            "name": "align",
+            "type": "\"start\" | \"end\"",
+            "optional": true,
+            "default": "\"start\""
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      }
+    ],
+    "exports": [
+      "formatTimestamp",
+      "TimestampFormat",
+      "TimestampProps"
+    ]
+  },
+  "menu": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/menu",
+        "names": [
+          "Menu",
+          "MenuTrigger",
+          "MenuContent",
+          "MenuItem",
+          "MenuLinkItem",
+          "MenuCheckboxItem",
+          "MenuRadioGroup",
+          "MenuRadioItem",
+          "MenuGroup",
+          "MenuGroupLabel",
+          "MenuSeparator",
+          "MenuShortcut",
+          "MenuSub",
+          "MenuSubTrigger",
+          "MenuSubContent",
+          "menuItem",
+          "menuPopup"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "Menu",
+        "description": "Base UI's menu with this registry's surface on it — the popup, the rows and the rules — so anything that needs a menu is styling none of it again. The trigger is deliberately left alone: a menu hangs off whatever opens it, and every one of those already has a shape of its own. Pass `render` to make an existing control the trigger rather than nesting a button inside one.",
+        "props": [],
+        "extends": [
+          "MenuPrimitive.Root.Props"
+        ]
+      },
+      {
+        "name": "MenuTrigger",
+        "props": [],
+        "extends": [
+          "MenuPrimitive.Trigger.Props"
+        ]
+      },
+      {
+        "name": "MenuContent",
+        "props": [
+          {
+            "name": "variant",
+            "type": "\"glass\" | \"solid\"",
+            "optional": true,
+            "default": "\"glass\""
+          }
+        ],
+        "extends": [
+          "MenuPrimitive.Popup.Props",
+          "Pick<MenuPrimitive.Positioner.Props, \"align\" | \"alignOffset\" | \"side\" | \"sideOffset\" | \"collisionPadding\">"
+        ]
+      },
+      {
+        "name": "MenuItem",
+        "props": [
+          {
+            "name": "variant",
+            "type": "\"default\" | \"destructive\"",
+            "optional": true,
+            "default": "\"default\""
+          }
+        ],
+        "extends": [
+          "MenuPrimitive.Item.Props"
+        ]
+      },
+      {
+        "name": "MenuLinkItem",
+        "description": "The same row as a real link, so modified clicks keep working.",
+        "props": [],
+        "extends": [
+          "MenuPrimitive.LinkItem.Props"
+        ]
+      },
+      {
+        "name": "MenuCheckboxItem",
+        "description": "A row that keeps its own state. The indicator sits at the end rather than the start so a menu of them still reads as a list of words, and the space it takes is held whether or not it is showing.",
+        "props": [],
+        "extends": [
+          "MenuPrimitive.CheckboxItem.Props"
+        ]
+      },
+      {
+        "name": "MenuRadioGroup",
+        "props": [],
+        "extends": [
+          "MenuPrimitive.RadioGroup.Props"
+        ]
+      },
+      {
+        "name": "MenuRadioItem",
+        "props": [],
+        "extends": [
+          "MenuPrimitive.RadioItem.Props"
+        ]
+      },
+      {
+        "name": "MenuGroup",
+        "props": [],
+        "extends": [
+          "MenuPrimitive.Group.Props"
+        ]
+      },
+      {
+        "name": "MenuGroupLabel",
+        "props": [],
+        "extends": [
+          "MenuPrimitive.GroupLabel.Props"
+        ]
+      },
+      {
+        "name": "MenuSeparator",
+        "props": [],
+        "extends": [
+          "MenuPrimitive.Separator.Props"
+        ]
+      },
+      {
+        "name": "MenuShortcut",
+        "description": "The keystroke a row also answers to, set at the end of it.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"span\">"
+        ]
+      },
+      {
+        "name": "MenuSub",
+        "props": [],
+        "extends": [
+          "MenuPrimitive.SubmenuRoot.Props"
+        ]
+      },
+      {
+        "name": "MenuSubTrigger",
+        "description": "A row that opens another menu. The chevron is drawn rather than imported, and it is logical rather than left-to-right: in an RTL layout the submenu opens the other way, and an arrow pointing the wrong way is worse than none.",
+        "props": [],
+        "extends": [
+          "MenuPrimitive.SubmenuTrigger.Props"
+        ]
+      },
+      {
+        "name": "MenuSubContent",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<typeof MenuContent>"
+        ]
+      }
+    ],
+    "exports": [
+      "menuItem",
+      "menuPopup"
+    ]
+  },
+  "reactions": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/reactions",
+        "names": [
+          "Reactions",
+          "Reaction",
+          "ReactionsProps",
+          "toggleReaction"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "Reactions",
+        "description": "What a message has collected, as a row under it. This is the counted kind: a reaction is a thing several people can give, so it carries a tally and the reader's own is a state of that tally rather than a separate mark. Toggling is the whole interaction — pressing one you already gave takes it back — so each is a real toggle button and says so.",
+        "props": [
+          {
+            "name": "reactions",
+            "type": "readonly Reaction[]",
+            "optional": false
+          },
+          {
+            "name": "align",
+            "type": "\"start\" | \"end\"",
+            "optional": true,
+            "default": "\"start\""
+          },
+          {
+            "name": "onAdd",
+            "type": "() => void",
+            "optional": true,
+            "description": "Renders a trailing control for adding one that is not on the row yet."
+          },
+          {
+            "name": "onToggle",
+            "type": "(emoji: string) => void",
+            "optional": true
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"div\">, \"children\" | \"onToggle\">"
+        ]
+      }
+    ],
+    "exports": [
+      "Reaction",
+      "ReactionsProps",
+      "toggleReaction"
+    ]
+  },
+  "quoted-message": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/quoted-message",
+        "names": [
+          "QuotedMessage",
+          "QuotedMessageProps"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "QuotedMessage",
+        "description": "The message a reply is about, shown above the reply itself. It is an excerpt on purpose: a quote that repeats the whole of a long message makes the thread read twice. The rule on the start edge is what says this is borrowed text rather than the beginning of the answer. Pass `render={<button type=\"button\" />}` where the quote should jump to the original — which is what a reader expects of it, and costs nothing to wire.",
+        "props": [
+          {
+            "name": "author",
+            "type": "React.ReactNode",
+            "optional": true,
+            "description": "Who is being quoted. Omit for a quote of the reader's own message."
+          },
+          {
+            "name": "lines",
+            "type": "1 | 2 | 3",
+            "optional": true,
+            "description": "How many lines of the original to keep before it is cut.",
+            "default": "2"
+          },
+          {
+            "name": "onDismiss",
+            "type": "() => void",
+            "optional": true,
+            "description": "Offered where the quote can be called off — a composer, mainly."
+          }
+        ],
+        "extends": [
+          "useRender.ComponentProps<\"div\">"
+        ]
+      }
+    ],
+    "exports": [
+      "QuotedMessageProps"
+    ]
+  },
+  "attachments": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/attachments",
+        "names": [
+          "AttachmentIcon",
+          "Attachments",
+          "Attachment",
+          "AttachmentIconProps",
+          "AttachmentProps",
+          "AttachmentStatus",
+          "formatBytes"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "AttachmentIcon",
+        "description": "The badge a file wears. The code catalogue is asked first and wins outright: a `.ts` hung off a message should carry the same mark it carries in a code block header, or the two halves of the same interface disagree about what TypeScript looks like. Only what that catalogue has never heard of — the PDFs, the spreadsheets, the archives — falls through to the kinds above.",
+        "props": [
+          {
+            "name": "name",
+            "type": "string",
+            "optional": false,
+            "description": "The filename to read the badge off."
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "optional": true
+          },
+          {
+            "name": "set",
+            "type": "CodeIconSet",
+            "optional": true,
+            "description": "`brand` draws the languages in their own colours, as the code parts do.",
+            "default": "\"mono\""
+          },
+          {
+            "name": "type",
+            "type": "string",
+            "optional": true,
+            "description": "MIME type, consulted only when the name has no extension to go on."
+          }
+        ],
+        "extends": []
+      },
+      {
+        "name": "Attachments",
+        "description": "The files on one message, as a row that wraps. Wrapping rather than scrolling, which is the opposite of what `suggestions` does and for the opposite reason: a prompt scrolled off the end is one offer among many and losing it costs nothing, whereas a file scrolled out of sight is a file about to be sent by someone who has forgotten it is there. The composer growing a line taller is the cheaper of the two.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "Attachment",
+        "description": "One file: what it is, what it weighs, how far along it got, and the way off. The whole chip is not itself a button, though it behaves like one when `onOpen` or `href` is given. It cannot be: the remove control lives inside it, and a button inside a button is not something a browser will honour. So the openable case lays a transparent control over the chip and lets the remove button sit above that — both real controls, both in the tab order, neither nested in the other.",
+        "props": [
+          {
+            "name": "name",
+            "type": "string",
+            "optional": false,
+            "description": "The filename. Decides the badge, the kind label, and where the name is cut."
+          },
+          {
+            "name": "href",
+            "type": "string",
+            "optional": true,
+            "description": "Opens the file as a link instead — a download URL, a preview route."
+          },
+          {
+            "name": "icon",
+            "type": "React.ReactNode | CodeIconSet | null",
+            "optional": true,
+            "description": "`mono` or `brand` derive the badge from the name; anything else renderable is used as it stands; `null` drops the badge altogether. Mirrors what the code parts do with theirs."
+          },
+          {
+            "name": "meta",
+            "type": "React.ReactNode",
+            "optional": true,
+            "description": "Replaces the derived `PDF · 1.2 MB` line, whatever the status: page count, pixel dimensions, or why the upload failed."
+          },
+          {
+            "name": "onOpen",
+            "type": "() => void",
+            "optional": true,
+            "description": "Opens the file. Renders as a button covering the chip."
+          },
+          {
+            "name": "onRemove",
+            "type": "() => void",
+            "optional": true,
+            "description": "Offered where the file can still be taken off — a composer, mainly."
+          },
+          {
+            "name": "onRetry",
+            "type": "() => void",
+            "optional": true,
+            "description": "Offered on a failed upload, where the state is a question, not a report."
+          },
+          {
+            "name": "progress",
+            "type": "number",
+            "optional": true,
+            "description": "How far along, 0 to 1, while `status` is `uploading`. Left out, the chip says an upload is happening without claiming to know how far — which is the honest state for anything streaming to a host that reports no progress."
+          },
+          {
+            "name": "size",
+            "type": "number",
+            "optional": true,
+            "description": "Size in bytes."
+          },
+          {
+            "name": "src",
+            "type": "string",
+            "optional": true,
+            "description": "A thumbnail. Anything with one is drawn as the picture rather than as a glyph — an object URL, a data URL, a remote preview, whichever. Revoking an object URL once the attachment is gone is the caller's job; this element has no idea when the file it was made from stops mattering."
+          },
+          {
+            "name": "status",
+            "type": "AttachmentStatus",
+            "optional": true,
+            "default": "\"ready\""
+          },
+          {
+            "name": "type",
+            "type": "string",
+            "optional": true,
+            "description": "MIME type, for a file whose name has no extension to read."
+          },
+          {
+            "name": "variant",
+            "type": "\"chip\" | \"tile\"",
+            "optional": true,
+            "description": "`chip` is the row form and reads the name; `tile` is the square one and leads with the picture. Pick `tile` where the files are images and the thumbnail is the thing being scanned for.",
+            "default": "\"chip\""
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"div\">, \"children\">"
+        ]
+      }
+    ],
+    "exports": [
+      "AttachmentIconProps",
+      "AttachmentProps",
+      "AttachmentStatus",
+      "formatBytes"
+    ]
+  },
+  "reasoning": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/reasoning",
+        "names": [
+          "Reasoning",
+          "ReasoningTrigger",
+          "ReasoningContent",
+          "ReasoningStep",
+          "ReasoningProps"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "Reasoning",
+        "description": "The thinking behind an answer, folded away. Open while it is happening and closed once it is done, unless the reader says otherwise: watching it think is worth something, and a finished answer with its whole reasoning still unfolded above it buries the part that was asked for. A reader who opens or closes it takes that decision off the component for the rest of the run.",
+        "props": [
+          {
+            "name": "duration",
+            "type": "number",
+            "optional": true,
+            "description": "How long it took, when the caller already knows — a transcript being replayed rather than a run being watched."
+          },
+          {
+            "name": "thinking",
+            "type": "boolean",
+            "optional": true,
+            "description": "Whether the thinking is still going.",
+            "default": "false"
+          }
+        ],
+        "extends": [
+          "Omit<Collapsible.Root.Props, \"render\">"
+        ]
+      },
+      {
+        "name": "ReasoningTrigger",
+        "description": "The line that says what is happening and opens the rest. Quiet by design — it is a note about the answer rather than part of it, so it takes no border, no fill and the smallest type in the message.",
+        "props": [],
+        "extends": [
+          "Collapsible.Trigger.Props"
+        ]
+      },
+      {
+        "name": "ReasoningContent",
+        "description": "The thinking itself, set apart by a rule down the start edge rather than a box: it is an aside to the answer, and a panel would give it the weight of another message.",
+        "props": [],
+        "extends": [
+          "Collapsible.Panel.Props"
+        ]
+      },
+      {
+        "name": "ReasoningStep",
+        "description": "One step of it. Steps are what reasoning actually looks like when it is streamed — a line at a time, each a small conclusion — and spacing them says so without numbering anything.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"p\">"
+        ]
+      }
+    ],
+    "exports": [
+      "ReasoningProps"
+    ]
+  },
+  "citations": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/citations",
+        "names": [
+          "Citation",
+          "Sources",
+          "SourcesTrigger",
+          "SourcesContent",
+          "SourceItem",
+          "CitationProps",
+          "Source"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "Citation",
+        "description": "A numbered mark in the prose, pointing at one of the sources listed under the answer. Small, and the number rather than the name: a citation interrupts a sentence, and a sentence with three domain names dropped into it is no longer a sentence. The name is a hover away and a click away, which is where it belongs. A real link, so the usual things work on it — a middle click, a long press, a copied address — none of which survive a div with a handler.",
+        "props": [
+          {
+            "name": "index",
+            "type": "number",
+            "optional": false,
+            "description": "Its place in the list under the answer, which is what the chip shows."
+          },
+          {
+            "name": "source",
+            "type": "Source",
+            "optional": false
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"a\">, \"children\">"
+        ]
+      },
+      {
+        "name": "Sources",
+        "description": "What the answer was drawn from, under it. Folded by default and counted on the trigger: the list is a claim about where the answer came from, and a reader either takes that claim on trust or wants to check it — but they read the answer first either way.",
+        "props": [],
+        "extends": [
+          "Collapsible.Root.Props"
+        ]
+      },
+      {
+        "name": "SourcesTrigger",
+        "props": [
+          {
+            "name": "count",
+            "type": "number",
+            "optional": true
+          }
+        ],
+        "extends": [
+          "Collapsible.Trigger.Props"
+        ]
+      },
+      {
+        "name": "SourcesContent",
+        "props": [],
+        "extends": [
+          "Collapsible.Panel.Props"
+        ]
+      },
+      {
+        "name": "SourceItem",
+        "description": "One source. The number is the same one the prose carries, so a reader who followed a mark down here lands on something they recognise rather than having to match titles.",
+        "props": [
+          {
+            "name": "index",
+            "type": "number",
+            "optional": false
+          },
+          {
+            "name": "source",
+            "type": "Source",
+            "optional": false
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"li\">, \"children\">"
+        ]
+      }
+    ],
+    "exports": [
+      "CitationProps",
+      "Source"
+    ]
+  },
+  "response": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/response",
+        "names": [
+          "Response",
+          "ResponseTable",
+          "ResponseCodeBlock"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "Response",
+        "description": "The body of an answer, as opposed to the bubble around it: headings, lists, quotes, tables and links, set to read as prose rather than as interface. Deliberately not a markdown parser. An answer arrives as markdown, HTML or JSX depending on what is rendering it, and every project already has an opinion about which — so this styles the elements those produce and stays out of the parsing argument. Pipe your renderer's output in as children. The one thing that cannot be left to CSS is a code block, which needs a copy action and a scroll region of its own: `ResponseCodeBlock` below.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "ResponseTable",
+        "description": "A table wide enough to overflow scrolls inside its own box. Without it the page scrolls sideways instead, which moves everything else on it.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "ResponseCodeBlock",
+        "description": "A block of code in an answer: the language it is in, a copy of exactly what is on screen, and the code itself in a scroll region of its own. `codeSurface` wraps every row as one block rather than sizing each row, since `min-width: 100%` inside a scroll container resolves against the visible width — per-row backgrounds would end at the fold.",
+        "props": [
+          {
+            "name": "code",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "name": "filename",
+            "type": "string",
+            "optional": true
+          },
+          {
+            "name": "icon",
+            "type": "React.ReactNode | CodeIconSet",
+            "optional": true,
+            "description": "A set to derive the badge from, an icon of your own, or `null` for none."
+          },
+          {
+            "name": "language",
+            "type": "string",
+            "optional": true
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"figure\">, \"children\">"
+        ]
+      }
+    ],
+    "exports": []
+  },
+  "message-status": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/message-status",
+        "names": [
+          "MessageStatus",
+          "MessageStatusProps",
+          "MessageStatusValue"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "MessageStatus",
+        "description": "How far a message has got: waiting, gone, arrived, seen — or not sent, which is the only one of the five that asks something of the reader. Read is the same double tick as delivered rather than a third shape: the colour carries the difference, and the label says it outright for anyone the colour does not reach.",
+        "props": [
+          {
+            "name": "status",
+            "type": "MessageStatusValue",
+            "optional": false
+          },
+          {
+            "name": "labels",
+            "type": "Partial<Record<MessageStatusValue, string>>",
+            "optional": true
+          },
+          {
+            "name": "onRetry",
+            "type": "() => void",
+            "optional": true,
+            "description": "Offered on `failed`, where the state is a question rather than a report."
+          },
+          {
+            "name": "showLabel",
+            "type": "boolean",
+            "optional": true,
+            "default": "false"
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"span\">, \"children\">"
+        ]
+      }
+    ],
+    "exports": [
+      "MessageStatusProps",
+      "MessageStatusValue"
+    ]
+  },
+  "streaming-text": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/streaming-text",
+        "names": [
+          "StreamingText",
+          "Segment",
+          "StreamingSegment",
+          "StreamingTextProps"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "StreamingText",
+        "description": "Text that arrives a word at a time — from a model streaming tokens, or typed out from something already in hand. Words rather than characters: a character reveal cuts an identifier in half and reflows the line on every frame, and nothing reads faster for it.",
+        "props": [
+          {
+            "name": "segments",
+            "type": "readonly StreamingSegment[]",
+            "optional": false
+          },
+          {
+            "name": "count",
+            "type": "number",
+            "optional": true,
+            "description": "How many words have arrived. Omit and the text is whole; drive it from a stream and the words appear as it counts up."
+          },
+          {
+            "name": "freshWords",
+            "type": "number",
+            "optional": true,
+            "description": "How many of the newest words keep the arriving tint.",
+            "default": "2"
+          },
+          {
+            "name": "mode",
+            "type": "\"stream\" | \"typewriter\"",
+            "optional": true,
+            "description": "Reveal on a clock of its own instead, for text already in hand.",
+            "default": "\"stream\""
+          },
+          {
+            "name": "onComplete",
+            "type": "() => void",
+            "optional": true
+          },
+          {
+            "name": "showCaret",
+            "type": "boolean",
+            "optional": true,
+            "default": "true"
+          },
+          {
+            "name": "speed",
+            "type": "number",
+            "optional": true,
+            "description": "Typewriter only: words a second.",
+            "default": "10"
+          },
+          {
+            "name": "streaming",
+            "type": "boolean",
+            "optional": true,
+            "description": "Whether more is still coming: shows the caret and marks the region busy.",
+            "default": "false"
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"p\">, \"children\">"
+        ]
+      }
+    ],
+    "exports": [
+      "Segment",
+      "StreamingSegment",
+      "StreamingTextProps"
+    ]
+  },
+  "typing-indicator": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/typing-indicator",
+        "names": [
+          "TypingIndicator",
+          "TypingIndicatorProps"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "TypingIndicator",
+        "description": "The stand-in for a message not written yet. The default is a bubble because a bubble holds the place the answer will take: the thread does not jump when the words arrive, it fills in. The other variants are for the times that is the wrong promise — an assistant whose prose is not bubbled, a status line, an answer about to stream into the page a character at a time. The dots are decoration and the label is the message: a screen reader is told someone is typing rather than read three full stops.",
+        "props": [
+          {
+            "name": "align",
+            "type": "\"start\" | \"end\"",
+            "optional": true,
+            "default": "\"start\""
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "optional": true,
+            "description": "Announced always, and shown in the `label` variant.",
+            "default": "\"Typing\""
+          },
+          {
+            "name": "variant",
+            "type": "\"bubble\" | \"ghost\" | \"label\" | \"caret\"",
+            "optional": true,
+            "description": "What shape the waiting takes — a bubble holding the answer's place, the dots on their own, a line of text saying so, or the caret an answer is about to stream into.",
+            "default": "\"bubble\""
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"div\">, \"children\">"
+        ]
+      }
+    ],
+    "exports": [
+      "TypingIndicatorProps"
+    ]
+  },
+  "message-highlight-toolbar": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/message-highlight-toolbar",
+        "names": [
+          "MessageHighlight",
+          "MessageHighlightToolbar",
+          "MessageHighlightAction",
+          "MessageHighlightSeparator",
+          "MessageHighlightMenu",
+          "MessageHighlightMenuTrigger",
+          "MessageHighlightMenuContent",
+          "MessageHighlightMenuItem",
+          "useMessageHighlight"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "MessageHighlight",
+        "description": "The region a highlight toolbar watches. Wrap the message — or the whole thread — and put the toolbar inside it. The selection is read on pointer and key release rather than on every `selectionchange`: a toolbar that follows the cursor mid-drag is a toolbar moving under the hand that is drawing the selection. What dismisses it is a press somewhere else, not the selection going away. Pressing a control collapses the selection before the control has run — browsers differ on whether that can be defaulted away, and a toolbar that unmounts under its own button is worse than one that outstays a selection by a moment. The words are captured when the selection is read, so an action still has them either way.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "MessageHighlightToolbar",
+        "description": "The pill itself, over the selection that summoned it. It is mounted only while there is something selected — unlike a hover-revealed row, there is no layout to hold, since it floats over the text rather than sitting in it. The press is defaulted away at the toolbar, in the capture phase: without it the browser collapses the selection the moment a control is pressed, which unmounts the toolbar out from under the press — the menu never opens, and the action never sees the words it was about to act on. Capture, because a control that stops propagation would otherwise skip it. Base UI opens its menu from its own listener rather than from the default action, so nothing is lost by cancelling it.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "MessageHighlightAction",
+        "description": "One control in the pill. Pass `render={<Link href=\"...\" />}` to make it a real link — modified clicks then keep working, which a button swallows.",
+        "props": [
+          {
+            "name": "side",
+            "type": "TooltipSide",
+            "optional": true,
+            "default": "\"top\""
+          },
+          {
+            "name": "tooltip",
+            "type": "React.ReactNode",
+            "optional": true
+          }
+        ],
+        "extends": [
+          "useRender.ComponentProps<\"button\">"
+        ]
+      },
+      {
+        "name": "MessageHighlightSeparator",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "MessageHighlightMenu",
+        "description": "An action with more than one target — save as a note, or a memory.",
+        "props": [],
+        "extends": [
+          "MenuPrimitive.Root.Props"
+        ]
+      },
+      {
+        "name": "MessageHighlightMenuTrigger",
+        "description": "Styled like the other controls and carrying the same tooltip. Base UI merges the trigger through the tooltip's own trigger, so the one element is both without either losing its behaviour.",
+        "props": [
+          {
+            "name": "side",
+            "type": "TooltipSide",
+            "optional": true,
+            "default": "\"top\""
+          },
+          {
+            "name": "tooltip",
+            "type": "React.ReactNode",
+            "optional": true
+          }
+        ],
+        "extends": [
+          "MenuPrimitive.Trigger.Props"
+        ]
+      },
+      {
+        "name": "MessageHighlightMenuContent",
+        "description": "The shared menu surface, hung above the pill rather than below it.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<typeof MenuContent>"
+        ]
+      },
+      {
+        "name": "MessageHighlightMenuItem",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<typeof MenuItem>"
+        ]
+      }
+    ],
+    "exports": [
+      "useMessageHighlight"
+    ]
+  },
+  "message-context-menu": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/message-context-menu",
+        "names": [
+          "MessageContextMenu",
+          "MessageContextMenuTrigger",
+          "MessageContextMenuContent",
+          "MessageReactionPicker",
+          "defaultReactions"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "MessageContextMenu",
+        "description": "The menu a message answers a right click with — the actions that belong to it and the reactions that can be put on it, in the place the pointer already is. Everything below the reactions is `menu`'s own parts: `MenuItem`, `MenuSub`, `MenuSeparator`. This file adds only what a context menu needs that a dropdown does not — an area that opens it, and a row of emoji to pick from.",
+        "props": [],
+        "extends": [
+          "ContextMenuPrimitive.Root.Props"
+        ]
+      },
+      {
+        "name": "MessageContextMenuTrigger",
+        "description": "The area the menu belongs to. Base UI opens it on right click and on long press, so touch is covered without a second gesture to write. `w-fit` by default: the trigger wraps a bubble, and a full-width one would claim the empty half of the thread — a right click over nothing would open the menu for a message the pointer was nowhere near.",
+        "props": [],
+        "extends": [
+          "ContextMenuPrimitive.Trigger.Props"
+        ]
+      },
+      {
+        "name": "MessageContextMenuContent",
+        "description": "The same surface every other menu here uses, hung off the pointer rather than a control: a context menu is already where the reader is looking, so it sits closer than a dropdown does.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<typeof MenuContent>"
+        ]
+      },
+      {
+        "name": "MessageReactionPicker",
+        "description": "The reactions on offer, as a row rather than a list: emoji are read as pictures, so stacking them into a menu of rows makes six of them look like six separate decisions. They are checkbox items, not radio ones, because a reaction has to come off again — clicking the one already given takes it back, which a radio group cannot express.",
+        "props": [
+          {
+            "name": "closeOnPick",
+            "type": "boolean",
+            "optional": true,
+            "description": "Picking a reaction is the whole errand, so the menu closes behind it. Base UI keeps a checkbox item's menu open by default, which is right for a list of settings and wrong for one gesture that is already finished.",
+            "default": "true"
+          },
+          {
+            "name": "onValueChange",
+            "type": "(value: string | null) => void",
+            "optional": true
+          },
+          {
+            "name": "reactions",
+            "type": "readonly string[]",
+            "optional": true,
+            "default": "defaultReactions"
+          },
+          {
+            "name": "value",
+            "type": "string | null",
+            "optional": true,
+            "default": "null"
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"div\">, \"onChange\">"
+        ]
+      }
+    ],
+    "exports": [
+      "defaultReactions"
+    ]
+  },
+  "composer": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/composer/composer",
+        "names": [
+          "Composer",
+          "ComposerInput",
+          "ComposerLine",
+          "ComposerField",
+          "ComposerSubmit",
+          "ComposerToolbar",
+          "ComposerToolbarGroup",
+          "ComposerFieldProps",
+          "ComposerProps"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "Composer",
+        "props": [
+          {
+            "name": "defaultValue",
+            "type": "string",
+            "optional": true,
+            "default": "\"\""
+          },
+          {
+            "name": "mentions",
+            "type": "readonly MentionItem[]",
+            "optional": true,
+            "description": "The people and agents an at sign can name. Left out, the field is plain."
+          },
+          {
+            "name": "mentionsEmpty",
+            "type": "React.ReactNode",
+            "optional": true,
+            "description": "Shown when the at sign has matched nobody.",
+            "default": "\"Nobody by that name.\""
+          },
+          {
+            "name": "mentionsSide",
+            "type": "\"top\" | \"bottom\"",
+            "optional": true,
+            "description": "Which side the menu opens on. Above, for a composer at the foot of a thread.",
+            "default": "\"top\""
+          },
+          {
+            "name": "onSubmit",
+            "type": "(message: string, event: React.FormEvent<HTMLFormElement>) => void",
+            "optional": true
+          },
+          {
+            "name": "onValueChange",
+            "type": "(value: string) => void",
+            "optional": true
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "optional": true
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"div\">, \"onSubmit\" | \"defaultValue\">"
+        ]
+      },
+      {
+        "name": "ComposerInput",
+        "description": "The form, stacked into the three courses and drawing nothing itself: the only edge in a composer is the field's own.",
+        "props": [],
+        "extends": [
+          "Omit<MessageInputProps, \"value\" | \"defaultValue\" | \"onValueChange\" | \"onSubmit\">"
+        ]
+      },
+      {
+        "name": "ComposerLine",
+        "description": "The line, under the name a composer calls it by.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "ComposerField",
+        "description": "The field, wired to the mention menu when there is one. `mergeProps` rather than a spread: the menu's keys and the caller's both have to run, and the caller's runs first — a composer that wants Enter for something of its own can take it, and everything it does not take still reaches the menu.",
+        "props": [
+          {
+            "name": "style",
+            "type": "React.CSSProperties",
+            "optional": true
+          }
+        ],
+        "extends": [
+          "Omit<MessageInputFieldProps, \"style\">"
+        ]
+      },
+      {
+        "name": "ComposerSubmit",
+        "description": "The send, at the right-hand end of the line rather than on the row below: sending is an act on this message, not a setting for it, so it stands beside the field it is sending — opposite the control that adds to it.",
+        "props": [],
+        "extends": [
+          "MessageInputSubmitProps"
+        ]
+      },
+      {
+        "name": "ComposerToolbar",
+        "description": "The row underneath, under the name a composer calls it by.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "ComposerToolbarGroup",
+        "description": "A run within that row, under the name a composer calls it by.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<typeof MessageInputToolbarGroup>"
+        ]
+      }
+    ],
+    "exports": [
+      "ComposerFieldProps",
+      "ComposerProps"
+    ]
+  },
+  "mentions": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/composer/mentions",
+        "names": [
+          "Mentions",
+          "MentionsGroupLabel",
+          "MentionsMatch",
+          "MentionsItem",
+          "MentionsEmpty",
+          "MentionItem",
+          "MentionsController",
+          "useMentions",
+          "UseMentionsOptions"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "Mentions",
+        "description": "The menu itself, over the field it belongs to. Fixed to the field's own box rather than dropped into the layout: a mention menu opens over whatever is above the composer, and a menu that pushed the thread up every time somebody typed an at sign would be unusable. Portalled to the body, and not optionally. `position: fixed` resolves against the nearest ancestor carrying a transform, a filter or paint containment rather than against the window — and a composer is very often inside one: a card that animates in, a panel that blurs what is behind it. Rendered in place, the menu is measured against the window and then positioned inside that ancestor, which puts it somewhere else entirely and usually behind an `overflow: hidden`. The press is defaulted away so choosing a name does not first take the caret out of the field it is being written into.",
+        "props": [
+          {
+            "name": "children",
+            "type": "React.ReactNode",
+            "optional": false
+          },
+          {
+            "name": "controller",
+            "type": "MentionsController<Field>",
+            "optional": false
+          },
+          {
+            "name": "side",
+            "type": "\"top\" | \"bottom\"",
+            "optional": true,
+            "default": "\"top\""
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"div\">, \"children\">"
+        ]
+      },
+      {
+        "name": "MentionsGroupLabel",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "MentionsMatch",
+        "description": "A name with the part that was typed picked back out of it, so a list of six near-identical handles says which one is answering the query. A `mark` because that is the element for text picked out for reference, stripped of the yellow a browser would otherwise give it.",
+        "props": [
+          {
+            "name": "query",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "name": "text",
+            "type": "string",
+            "optional": false
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"span\">, \"children\">"
+        ]
+      },
+      {
+        "name": "MentionsItem",
+        "description": "One name. Highlighted by the keyboard as much as by the pointer, so moving with the arrows and moving with the mouse look like the same thing. The icon sits in a round frame that clips and is positioned, so `icon` can be a glyph, a pair of letters, or a picture laid over the letters it falls back to while it loads or if it never arrives.",
+        "props": [
+          {
+            "name": "controller",
+            "type": "MentionsController<Field>",
+            "optional": false
+          },
+          {
+            "name": "item",
+            "type": "MentionItem",
+            "optional": false
+          },
+          {
+            "name": "children",
+            "type": "React.ReactNode",
+            "optional": true
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"div\">, \"children\">"
+        ]
+      },
+      {
+        "name": "MentionsEmpty",
+        "description": "Shown in place of the list when nothing matches what is being typed.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      }
+    ],
+    "exports": [
+      "MentionItem",
+      "MentionsController",
+      "useMentions",
+      "UseMentionsOptions"
+    ]
+  },
+  "slash-menu": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/composer/slash-menu",
+        "names": [
+          "SlashMenu",
+          "SlashMenuGroupLabel",
+          "SlashMenuItem",
+          "SlashMenuEmpty",
+          "SlashCommand",
+          "SlashCommandsController",
+          "useSlashCommands",
+          "UseSlashCommandsOptions"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "SlashMenu",
+        "description": "The menu itself, over the field it belongs to. Fixed to the field's own box rather than dropped into the layout: a command menu opens over whatever is above the composer, and a menu that pushed the thread up every time somebody typed a slash would be unusable. Portalled to the body, and not optionally. `position: fixed` resolves against the nearest ancestor carrying a transform, a filter or paint containment rather than against the window — and a composer is very often inside one. Rendered in place, the menu is measured against the window and then positioned inside that ancestor, which puts it somewhere else entirely and usually behind an `overflow: hidden`. The press is defaulted away so taking a command does not first take the caret out of the field it is being typed into.",
+        "props": [
+          {
+            "name": "children",
+            "type": "React.ReactNode",
+            "optional": false
+          },
+          {
+            "name": "controller",
+            "type": "SlashCommandsController<Field>",
+            "optional": false
+          },
+          {
+            "name": "side",
+            "type": "\"top\" | \"bottom\"",
+            "optional": true,
+            "default": "\"top\""
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"div\">, \"children\">"
+        ]
+      },
+      {
+        "name": "SlashMenuGroupLabel",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "SlashMenuItem",
+        "description": "One command. Highlighted by the keyboard as much as by the pointer, so moving with the arrows and moving with the mouse look like the same thing. The name holds its width and the description gives way, which is the other way round from a mention row. A name is what the row is for — a command cropped to \"/rev\" is unreadable — while a description clipped at the fold still says most of what it came to say.",
+        "props": [
+          {
+            "name": "command",
+            "type": "SlashCommand",
+            "optional": false
+          },
+          {
+            "name": "controller",
+            "type": "SlashCommandsController<Field>",
+            "optional": false
+          },
+          {
+            "name": "children",
+            "type": "React.ReactNode",
+            "optional": true
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"div\">, \"children\">"
+        ]
+      },
+      {
+        "name": "SlashMenuEmpty",
+        "description": "Shown in place of the list when nothing matches what is being typed.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      }
+    ],
+    "exports": [
+      "SlashCommand",
+      "SlashCommandsController",
+      "useSlashCommands",
+      "UseSlashCommandsOptions"
+    ]
+  },
+  "chat-card": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/chat-card",
+        "names": [
+          "ChatCard",
+          "ChatCardHeader",
+          "ChatCardTitle",
+          "ChatCardDescription",
+          "ChatCardActions",
+          "ChatCardThread",
+          "ChatCardFooter",
+          "ChatCardThreadProps"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "ChatCard",
+        "description": "A chat, framed: somewhere to put a thread, a composer under it, and a strip across the top saying whose thread it is. This is the frame and nothing else — it holds no messages, owns no state and knows nothing about what a message is. Its whole job is the shape a chat takes: a header that stays, a middle that scrolls, and a foot that does not move when the middle grows.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "ChatCardHeader",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"header\">"
+        ]
+      },
+      {
+        "name": "ChatCardTitle",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"p\">"
+        ]
+      },
+      {
+        "name": "ChatCardDescription",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"p\">"
+        ]
+      },
+      {
+        "name": "ChatCardActions",
+        "description": "The controls at the end of the header, kept off the title's width.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "ChatCardThread",
+        "description": "The middle, and the only part that scrolls. For a thread with a jump-to-latest button, an anchored turn and the rest of it, put a `message-scroller` in here instead — this is the small version, for a scene a few messages long.",
+        "props": [
+          {
+            "name": "follow",
+            "type": "boolean",
+            "optional": true,
+            "description": "Keep the newest message in view as the thread grows. Held back the moment the reader scrolls up: following is a convenience, and yanking somebody back to the bottom while they are reading is not.",
+            "default": "true"
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "ChatCardFooter",
+        "description": "The foot, where the composer goes. Bordered off from the thread so a message scrolling past it is clearly behind the field rather than next to it.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"footer\">"
+        ]
+      }
+    ],
+    "exports": [
+      "ChatCardThreadProps"
+    ]
+  },
+  "chat": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/chat",
+        "names": [
+          "Chat",
+          "ChatThread",
+          "ChatThreadItem",
+          "ChatTurnPart",
+          "ChatTurnActions",
+          "ChatTurn",
+          "ChatComposer",
+          "ChatComposerProps",
+          "ChatFile",
+          "ChatMessage",
+          "ChatPart",
+          "ChatTurnProps"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "Chat",
+        "description": "The frame. `chat-card`'s, under the name of the thing being built in it — a header that stays, a middle that scrolls, a foot that does not move.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "ChatThread",
+        "description": "The middle. `message-scroller` rather than the card's own small thread, because an agentic answer is tall — a spell of thinking and three tool calls before a word of it appears — and a reader who scrolls up to re-read a tool result should not be dragged back down by the next part landing. The jump-to-latest is what makes that safe: the thread stops following, and the way back is a button rather than a scroll.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<typeof MessageScroller>"
+        ]
+      },
+      {
+        "name": "ChatThreadItem",
+        "description": "One row of the thread. Wrap each turn in one — `scrollAnchor` marks the ones a reader is brought back to, which for a chat is the question rather than the answer: an answer that has run to three screens is read from its question down, not from its last line up.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<typeof MessageScrollerItem>"
+        ]
+      },
+      {
+        "name": "ChatTurnPart",
+        "description": "One piece of an answer, drawn as whichever element that piece is.",
+        "props": [
+          {
+            "name": "part",
+            "type": "ChatPart",
+            "optional": false
+          }
+        ],
+        "extends": []
+      },
+      {
+        "name": "ChatTurnActions",
+        "description": "What an answer can be done to: copied, rated, run again. Held back until the turn is hovered or focused, so a thread of six answers is not also a wall of thirty buttons. The rating is kept here rather than asked of the caller. It is the one piece of state in this file, and it is here because a thumb that does not stay down has not registered anything: `onRate` hears about it, and the row shows it either way.",
+        "props": [
+          {
+            "name": "message",
+            "type": "ChatMessage",
+            "optional": false
+          },
+          {
+            "name": "onRate",
+            "type": "(rating: \"up\" | \"down\" | null, message: ChatMessage) => void",
+            "optional": true
+          },
+          {
+            "name": "onRetry",
+            "type": "(message: ChatMessage) => void",
+            "optional": true
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<typeof MessageActions>, \"children\">"
+        ]
+      },
+      {
+        "name": "ChatTurn",
+        "description": "One turn, drawn from what it is: a person's message is their files, their words and how far the message got; an answer is its parts in the order they arrived, with the row of what can be done to it underneath. The two sides are one component rather than two, because everything that differs between them is a branch on `role` and everything else — the width, the footer, the alignment — is the same thing twice. Two components drift the first time either is touched.",
+        "props": [
+          {
+            "name": "message",
+            "type": "ChatMessage",
+            "optional": false
+          },
+          {
+            "name": "actions",
+            "type": "React.ReactNode",
+            "optional": true,
+            "description": "Replaces the row under an answer."
+          },
+          {
+            "name": "onRetry",
+            "type": "(message: ChatMessage) => void",
+            "optional": true
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"div\">, \"children\">"
+        ]
+      },
+      {
+        "name": "ChatComposer",
+        "description": "The composer, in the arrangement `message-input` sets out: the files above the line, the plus and the send either side of the field, and whatever a chat is being sent with underneath. The pickers are `children` rather than props because they are the one part of a composer that is genuinely different per product — a chat with no tools has no tool picker, and a component taking `models`, `tools`, `effort` and `approval` as props would be re-declaring four elements that already exist.",
+        "props": [
+          {
+            "name": "addActions",
+            "type": "AddAction[]",
+            "optional": true,
+            "description": "The plus's catalogue, and what was chosen from it."
+          },
+          {
+            "name": "children",
+            "type": "React.ReactNode",
+            "optional": true,
+            "description": "What stands on the row underneath: the model, the tools, the rest."
+          },
+          {
+            "name": "fieldProps",
+            "type": "MessageInputFieldProps",
+            "optional": true,
+            "description": "Handed straight to the field. This is where a mention or slash controller's `fieldProps` go — the menus those open are the caller's to render, since both want to sit against the composer rather than inside it."
+          },
+          {
+            "name": "files",
+            "type": "readonly ChatFile[]",
+            "optional": true,
+            "description": "The files the message is carrying, drawn above the line."
+          },
+          {
+            "name": "onAdd",
+            "type": "(action: AddAction) => void",
+            "optional": true
+          },
+          {
+            "name": "onRemoveFile",
+            "type": "(file: ChatFile) => void",
+            "optional": true
+          },
+          {
+            "name": "onStop",
+            "type": "() => void",
+            "optional": true
+          },
+          {
+            "name": "placeholder",
+            "type": "string",
+            "optional": true,
+            "default": "\"Ask anything…\""
+          },
+          {
+            "name": "status",
+            "type": "ChatStatus",
+            "optional": true,
+            "description": "Turns the send into a stop while an answer is coming back."
+          }
+        ],
+        "extends": [
+          "Omit<MessageInputProps, \"children\">"
+        ]
+      }
+    ],
+    "exports": [
+      "ChatComposerProps",
+      "ChatFile",
+      "ChatMessage",
+      "ChatPart",
+      "ChatTurnProps"
+    ]
+  },
+  "chat-avatar": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/chat-avatar",
+        "names": [
+          "ChatAvatar",
+          "ChatAvatarImage",
+          "ChatAvatarStack",
+          "ChatAvatarName",
+          "ChatAvatarActions",
+          "ChatAvatarActionsProps",
+          "ChatAvatarImageProps",
+          "ChatAvatarNameProps",
+          "ChatAvatarProps"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "ChatAvatar",
+        "description": "Whose thread this is, said at the top of the thread rather than in a bar across it. The cluster is the first thing inside the scrolling thread and sticks there once the thread moves under it, so messages pass behind the glass and thin out rather than stopping at a border. That is the whole of what makes it read as floating: the messages go somewhere, and what they go behind is plainly the same surface they are on. It wants to be the first child of `ChatCardThread` — it bleeds sideways by that thread's own padding so the glass reaches the card's edges rather than ending in a stripe short of them. A card wearing this has no `ChatCardHeader`, since this is the header. Say so with `grid-rows-[1fr_auto]` on the `ChatCard`: its rows are header, thread, foot in that order, and a card given only two of them otherwise hands the thread the header's row and leaves the spare height under the composer.",
+        "props": [
+          {
+            "name": "floating",
+            "type": "boolean",
+            "optional": true,
+            "description": "Hold the cluster at the top of the thread with the glass behind it. Off, it is an ordinary centred cluster in the flow — which is what an opening screen wants, where there is nothing yet to float over.",
+            "default": "true"
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "ChatAvatarImage",
+        "description": "The portrait. Sized by `--chat-avatar-size` rather than a class, so a stack can shrink the ones inside it without reaching into their styling.",
+        "props": [
+          {
+            "name": "alt",
+            "type": "string",
+            "optional": true,
+            "description": "Left empty by default: the name is directly underneath, and a picture that reads out the same name is the same thing said twice.",
+            "default": "\"\""
+          },
+          {
+            "name": "fallback",
+            "type": "React.ReactNode",
+            "optional": true,
+            "description": "Initials, a glyph — whatever stands in when there is no picture."
+          },
+          {
+            "name": "src",
+            "type": "string",
+            "optional": true
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"div\">, \"children\">"
+        ]
+      },
+      {
+        "name": "ChatAvatarStack",
+        "description": "A group thread's portraits, overlapped. Smaller than a single one, because three faces at full size stop being a header and start being a row of avatars — and ringed in the card's own colour so the overlap reads as depth rather than as one shape cut out of another.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "ChatAvatarName",
+        "description": "The name under the portrait, as a chip rather than a heading: at this size a bare line of text on glass has nothing holding it to the cluster, and the chip is also the shape a finger is being invited to press. Pass `render={<button type=\"button\" />}` where it opens the contact — which is what the chevron is promising, so turn the chevron off where it does not.",
+        "props": [
+          {
+            "name": "chevron",
+            "type": "boolean",
+            "optional": true,
+            "description": "The mark that says the name opens something.",
+            "default": "true"
+          },
+          {
+            "name": "icon",
+            "type": "IconSvgElement",
+            "optional": true,
+            "description": "A mark before the name. Worth having where the portrait is a picture rather than a face — a product, an agent, a room — since the glyph says what kind of thing it is and the photograph on its own does not."
+          }
+        ],
+        "extends": [
+          "useRender.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "ChatAvatarActions",
+        "description": "The controls that share the floating bar with the cluster — a new message on one side, a call on the other. Taken out of the flow rather than laid beside the cluster, so the portrait stays on the card's centre line however many buttons either side collects.",
+        "props": [
+          {
+            "name": "side",
+            "type": "\"start\" | \"end\"",
+            "optional": true,
+            "default": "\"start\""
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      }
+    ],
+    "exports": [
+      "ChatAvatarActionsProps",
+      "ChatAvatarImageProps",
+      "ChatAvatarNameProps",
+      "ChatAvatarProps"
+    ]
+  },
+  "empty-state": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/composer/empty-state",
+        "names": [
+          "EmptyState",
+          "EmptyStateMedia",
+          "EmptyStateTitle",
+          "EmptyStateDescription"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "EmptyState",
+        "description": "What a screen says while there is nothing on it yet: a line to open with, and a line under it saying what to do about that. Those two things and no more. An opening screen usually wants a composer, the prompts on offer, whatever the conversation is set to across the top — but where each of those sits is a property of the screen holding them rather than of the greeting, and one component owning the layout of all of it could only ever suit the screen it was written for. This fills the room it is given and centres itself in it; put it in the middle of whatever frame you have, and arrange the rest around it.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "EmptyStateMedia",
+        "description": "The mark above the title: a soft tile with a glyph in it, which is as much picture as an empty screen wants — an illustration would promise more here than there is. It holds whatever icon it is handed rather than drawing one, since what the screen is waiting for is the screen's own business, and sizes it only where the caller has not said otherwise.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "EmptyStateTitle",
+        "description": "The line that opens the conversation. An `h1` because on the screen this is written for it is the heading — there is nothing else there to compete with it.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"h1\">"
+        ]
+      },
+      {
+        "name": "EmptyStateDescription",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"p\">"
+        ]
+      }
+    ],
+    "exports": []
+  },
+  "message-input": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/composer/message-input",
+        "names": [
+          "MessageInput",
+          "MessageInputLine",
+          "MessageInputToolbar",
+          "MessageInputToolbarGroup",
+          "MessageInputField",
+          "MessageInputSubmit",
+          "messageInputField",
+          "MessageInputFieldProps",
+          "MessageInputProps",
+          "messageInputStack",
+          "messageInputSubmit",
+          "MessageInputSubmitProps"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "MessageInput",
+        "props": [
+          {
+            "name": "defaultValue",
+            "type": "string",
+            "optional": true,
+            "default": "\"\""
+          },
+          {
+            "name": "onSubmit",
+            "type": "(message: string, event: React.FormEvent<HTMLFormElement>) => void",
+            "optional": true
+          },
+          {
+            "name": "onValueChange",
+            "type": "(value: string) => void",
+            "optional": true
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "optional": true
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"form\">, \"onSubmit\" | \"defaultValue\">"
+        ]
+      },
+      {
+        "name": "MessageInputLine",
+        "description": "The line the message is written on: what adds to it, the field, and what sends it, in that order and level with each other. The controls are siblings of the field rather than things tucked inside it, so the field is a box with only writing in it and is free to grow into whatever the line has left.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "MessageInputToolbar",
+        "description": "The row under the line: what the message is being sent with — which model is answering, what it may reach for, how hard it should think. Not the send, which belongs on the line beside the field it is sending.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "MessageInputToolbarGroup",
+        "description": "A run of controls within that row, standing as one thing rather than as however many buttons it holds. The gap inside is tighter than the row's own, which is the whole of what grouping is here: a control is nearer its own kind than it is to anything outside the run, and that holds however many are added to either side. `end` sends the run to the far end of the row, and the space that opens up in the middle is what says the two sides answer different questions — who is answering on one, what it may do on the other. Optional, and pointedly so. A toolbar of four controls reads fine as four controls; a group is worth reaching for at the point where it does not.",
+        "props": [
+          {
+            "name": "end",
+            "type": "boolean",
+            "optional": true,
+            "description": "Pushes the run to the far end of the row, away from what precedes it."
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "MessageInputField",
+        "props": [
+          {
+            "name": "className",
+            "type": "string",
+            "optional": true
+          }
+        ],
+        "extends": [
+          "Omit<InputPrimitive.Props, \"value\" | \"defaultValue\" | \"onValueChange\" | \"className\">"
+        ]
+      },
+      {
+        "name": "MessageInputSubmit",
+        "props": [
+          {
+            "name": "className",
+            "type": "string",
+            "optional": true
+          },
+          {
+            "name": "onStop",
+            "type": "() => void",
+            "optional": true
+          },
+          {
+            "name": "status",
+            "type": "ChatStatus",
+            "optional": true
+          },
+          {
+            "name": "stopTooltip",
+            "type": "string",
+            "optional": true,
+            "default": "\"Stop answering\""
+          },
+          {
+            "name": "tooltip",
+            "type": "string",
+            "optional": true,
+            "default": "\"Send message\""
+          }
+        ],
+        "extends": [
+          "Omit<TooltipIconButtonProps, \"tooltip\" | \"type\" | \"className\">"
+        ]
+      }
+    ],
+    "exports": [
+      "messageInputField",
+      "MessageInputFieldProps",
+      "MessageInputProps",
+      "messageInputStack",
+      "messageInputSubmit",
+      "MessageInputSubmitProps"
+    ]
+  },
+  "model-picker": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/composer/model-picker",
+        "names": [
+          "ModelPicker",
+          "ModelPickerTrigger",
+          "ModelPickerSearch",
+          "ModelCapabilities",
+          "ModelBadge",
+          "ModelPickerDetail",
+          "ModelPickerItem",
+          "ModelPickerEmpty",
+          "ModelPickerContent",
+          "ModelPickerProps"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "ModelPicker",
+        "description": "The open state is held here rather than left to Base UI, because a row is a submenu trigger now and clicking one of those opens a submenu instead of closing the menu. Choosing a model has to shut the whole thing, so the root needs to be something this file can close.",
+        "props": [
+          {
+            "name": "children",
+            "type": "React.ReactNode",
+            "optional": true
+          },
+          {
+            "name": "defaultValue",
+            "type": "string",
+            "optional": true,
+            "description": "Where an uncontrolled picker starts; the first model on offer otherwise."
+          },
+          {
+            "name": "icons",
+            "type": "ModelIconSet",
+            "optional": true,
+            "description": "Forces every mark into one set. Left off — which is the usual case — the models come out in colour and the houses in plain ink: the model is what is being picked, and the house is the heading it sits under. Colour on both would have the headings competing with the rows they label. `mono` for a composer that wants no colour in it at all; `brand` for a settings page where each house is the row rather than the label."
+          },
+          {
+            "name": "models",
+            "type": "Model[]",
+            "optional": true,
+            "description": "The catalogue to offer. Defaults to every model `lib/models` names.",
+            "default": "defaultModels"
+          },
+          {
+            "name": "onValueChange",
+            "type": "(id: string) => void",
+            "optional": true
+          },
+          {
+            "name": "plan",
+            "type": "ModelTier",
+            "optional": true,
+            "description": "The plan being drawn for. Models above it are shown locked rather than hidden: a picker that omits them answers \"which model is this?\" but never \"what else is there?\", which is the question that makes someone upgrade.",
+            "default": "\"pro\""
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "optional": true,
+            "description": "The chosen model's id, for a picker whose state is held outside it."
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<typeof Menu>, \"children\">"
+        ]
+      },
+      {
+        "name": "ModelPickerTrigger",
+        "description": "The model that is answering, as the mark that opens the list. `TooltipIconButton` is the control, as it is on the three menus beside it on a composer's toolbar: ghost, square, and carrying the model's name on a hover, so a row of glyphs still says which model is writing without taking a name's width to do it. The mark is the model's rather than the house's — someone running Qwen is not looking for Alibaba. `ModelIcon` falls back on its own for a model the catalogue has never heard of, so the button is never empty. `render` is passed straight through, so a composer with a control of its own keeps it and only borrows the behaviour.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<typeof MenuTrigger>"
+        ]
+      },
+      {
+        "name": "ModelPickerSearch",
+        "description": "The field the list is narrowed with. Not a menu item, so the arrow keys walk past it to the models — but printable keys have to be kept from bubbling, or Base UI's typeahead reads them as an attempt to jump to a row and drags the highlight around while the query is still being typed.",
+        "props": [
+          {
+            "name": "onValueChange",
+            "type": "(value: string) => void",
+            "optional": false
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "name": "clearLabel",
+            "type": "React.ReactNode",
+            "optional": true,
+            "default": "\"Clear search\""
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"input\">, \"value\" | \"onChange\">"
+        ]
+      },
+      {
+        "name": "ModelCapabilities",
+        "description": "A run of marks for what a model can do, read out as one list. Not used by the rows any more — they carry a name and nothing else — but still exported, for a composer that wants the marks somewhere of its own.",
+        "props": [
+          {
+            "name": "capabilities",
+            "type": "Model[\"capabilities\"]",
+            "optional": false
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<\"span\">"
+        ]
+      },
+      {
+        "name": "ModelBadge",
+        "description": "The word a model wears over its name — \"New\", \"Preview\". Defined once because the row and the detail panel both show it, and a badge that drifts between the two reads as two different things rather than one repeated.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"span\">"
+        ]
+      },
+      {
+        "name": "ModelPickerDetail",
+        "description": "What a row keeps back: what the model is for, and how much it holds.",
+        "props": [
+          {
+            "name": "model",
+            "type": "Model",
+            "optional": false
+          }
+        ],
+        "extends": []
+      },
+      {
+        "name": "ModelPickerItem",
+        "description": "One model: its mark and its name, and nothing else. What it can do, what it is for and how much it holds are all a hover away — a row of capability glyphs answers \"what can this do?\" only for someone who already knows what each glyph means, and costs every other reader the scannability of the list. Clicking chooses the model; resting on it opens what the row left out. It is a submenu trigger rather than a radio item, so the radio semantics have to be put back by hand — `aria-current` rather than `aria-checked`, since a thing with a submenu hanging off it cannot claim to be a radio button. The tick is drawn here for the same reason: there is no `RadioItemIndicator` on a trigger to inherit one from.",
+        "props": [
+          {
+            "name": "model",
+            "type": "Model",
+            "optional": false
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<typeof MenuSubTrigger>"
+        ]
+      },
+      {
+        "name": "ModelPickerEmpty",
+        "description": "What the list says when nothing is left of it.",
+        "props": [
+          {
+            "name": "query",
+            "type": "string",
+            "optional": false
+          }
+        ],
+        "extends": []
+      },
+      {
+        "name": "ModelPickerContent",
+        "description": "The list, standing each house's models under its name, narrowed by whatever is in the search field. Written from the catalogue rather than by hand, since a picker that has to be edited every time a model ships is one that goes stale. The query is dropped when the menu shuts: a picker reopened an hour later showing three models and no clue why is a picker that looks broken.",
+        "props": [
+          {
+            "name": "searchable",
+            "type": "boolean",
+            "optional": true,
+            "default": "true"
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<typeof MenuContent>"
+        ]
+      }
+    ],
+    "exports": [
+      "ModelPickerProps"
+    ]
+  },
+  "tool-picker": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/composer/tool-picker",
+        "names": [
+          "ToolPicker",
+          "ToolPickerTrigger",
+          "ToolPickerActiveTool",
+          "ToolPickerActive",
+          "ToolPickerItem",
+          "ToolPickerContent",
+          "ToolPickerActiveToolProps",
+          "ToolPickerProps"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "ToolPicker",
+        "props": [
+          {
+            "name": "children",
+            "type": "React.ReactNode",
+            "optional": true
+          },
+          {
+            "name": "defaultValue",
+            "type": "string[]",
+            "optional": true,
+            "description": "Where an uncontrolled picker starts. Nothing, deliberately: a picker that silently switched everything on would be making the decision it exists to ask about. A composer that wants the other default says so — `defaultValue={tools.map((tool) => tool.id)}`."
+          },
+          {
+            "name": "onValueChange",
+            "type": "(ids: string[]) => void",
+            "optional": true
+          },
+          {
+            "name": "tools",
+            "type": "Tool[]",
+            "optional": true,
+            "description": "The catalogue to offer. Defaults to every tool `lib/tools` names.",
+            "default": "defaultTools"
+          },
+          {
+            "name": "value",
+            "type": "string[]",
+            "optional": true,
+            "description": "The ids that are on, for a picker whose state is held outside it."
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<typeof Menu>, \"children\">"
+        ]
+      },
+      {
+        "name": "ToolPickerTrigger",
+        "description": "The thing that opens the list: a wrench, and nothing else. It used to carry the count of what was on, which is the one question `ToolPickerActive` answers better — a `3` says how many and never which, and three glyphs say both — so the trigger is left as the way in and the row beside it is what a composer is read from. `TooltipIconButton` is the control, as it is on the two menus next door: ghost, square, and carrying its name on a hover, so a composer row of glyphs still says what each one opens without taking a word's width to do it. `render` is passed straight through, so a composer with a control of its own keeps it and only borrows the behaviour.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<typeof MenuTrigger>"
+        ]
+      },
+      {
+        "name": "ToolPickerActiveTool",
+        "description": "One tool that is on, as the glyph it is drawn with and the colour the catalogue gives it. Pressing it takes the tool off: the menu is where a set is built, this row is where it is loosened, and a set that took two clicks and a scroll to loosen would send people back to sending everything. `link` rather than the ghost the trigger and the menus next door wear. Ghost paints its own fill and its own colour over a hover, and a tool that turns grey the moment it is pointed at has lost the one thing this row is for; `link` is the only variant that brings neither, so the tool's colour is the only colour on the button, at rest and under the cursor both — the hover below is that same colour again, deepened, taken from `currentColor` so it holds for a catalogue this file has never seen.",
+        "props": [
+          {
+            "name": "tool",
+            "type": "Tool",
+            "optional": false
+          },
+          {
+            "name": "tooltip",
+            "type": "string",
+            "optional": true,
+            "description": "Overrides the tool's name on the hover."
+          }
+        ],
+        "extends": [
+          "Omit<TooltipIconButtonProps, \"tooltip\">"
+        ]
+      },
+      {
+        "name": "ToolPickerActive",
+        "description": "The tools that are on, beside the picker rather than counted inside it, in the catalogue's order so the row does not reshuffle itself as it is worked. Nothing at all while nothing is on — an empty row would hold a gap open for a state that already has a name, which is the unlit wrench next to it.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "ToolPickerItem",
+        "description": "One tool. Its glyph, its name, and the line on what a call to it does — the description is the whole point of the row: `glob` and `grep` are a pair of four-letter words to anyone who has not met them, and a list of names alone would be asking the reader to already know the answer.",
+        "props": [
+          {
+            "name": "tool",
+            "type": "Tool",
+            "optional": false
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<typeof MenuCheckboxItem>, \"checked\">"
+        ]
+      },
+      {
+        "name": "ToolPickerContent",
+        "description": "The list, standing each tool under the group it belongs to. Written from the catalogue rather than by hand, since a picker that has to be edited every time a tool is added is a picker that goes stale — and a category with nothing under it is dropped by `toolsByCategory`, so a filtered list leaves no empty headings behind.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<typeof MenuContent>"
+        ]
+      }
+    ],
+    "exports": [
+      "ToolPickerActiveToolProps",
+      "ToolPickerProps"
+    ]
+  },
+  "approval-mode-menu": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/composer/approval-mode-menu",
+        "names": [
+          "ApprovalModeMenu",
+          "ApprovalModeMenuTrigger",
+          "ApprovalModeMenuItem",
+          "ApprovalModeMenuContent",
+          "ApprovalMode",
+          "ApprovalModeMenuProps",
+          "approvalModes",
+          "findApprovalMode"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "ApprovalModeMenu",
+        "props": [
+          {
+            "name": "children",
+            "type": "React.ReactNode",
+            "optional": true
+          },
+          {
+            "name": "defaultValue",
+            "type": "string",
+            "optional": true,
+            "description": "Where an uncontrolled menu starts. The first mode on offer otherwise — never the last, which is why `full-access` is at the end of the catalogue and not the top of it."
+          },
+          {
+            "name": "modes",
+            "type": "ApprovalMode[]",
+            "optional": true,
+            "description": "The modes to offer. Defaults to all five.",
+            "default": "approvalModes"
+          },
+          {
+            "name": "onValueChange",
+            "type": "(id: string) => void",
+            "optional": true
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "optional": true,
+            "description": "The chosen mode's id, for a menu whose state is held outside it."
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<typeof Menu>, \"children\">"
+        ]
+      },
+      {
+        "name": "ApprovalModeMenuTrigger",
+        "description": "The mode in force, as the glyph that opens the list. `TooltipIconButton` is the control: ghost, square, and carrying the name on a hover, so a composer row of glyphs still says which mode is on without taking a word's width to do it. It turns destructive along with the mode. That is the point of the trigger rather than a nicety: a composer sat in full access looks exactly like one sat in manual until something has already run, and the row that said so is behind a menu nobody has open. `render` is passed straight through, so a composer with a control of its own keeps it and only borrows the behaviour.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<typeof MenuTrigger>"
+        ]
+      },
+      {
+        "name": "ApprovalModeMenuItem",
+        "description": "One mode: its glyph, its name, and the line on what running under it means. The sentence wraps rather than truncating — a mode clipped at \"Writes files without asking…\" has had the half that mattered taken off it.",
+        "props": [
+          {
+            "name": "mode",
+            "type": "ApprovalMode",
+            "optional": false
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<typeof MenuRadioItem>, \"value\">"
+        ]
+      },
+      {
+        "name": "ApprovalModeMenuContent",
+        "description": "The list, written from the catalogue rather than by hand so a mode added later is one entry and not an edit here as well. The separator is placed by rule instead of being hard-coded at the fourth row: whatever the catalogue holds, the run of ordinary modes is set apart from the first destructive one, so the row that hands everything over is never the one under the pointer on the way past.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<typeof MenuContent>"
+        ]
+      }
+    ],
+    "exports": [
+      "ApprovalMode",
+      "ApprovalModeMenuProps",
+      "approvalModes",
+      "findApprovalMode"
+    ]
+  },
+  "effort-menu": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/composer/effort-menu",
+        "names": [
+          "EffortMenu",
+          "EffortBars",
+          "EffortMenuTrigger",
+          "EffortMenuSlider",
+          "EffortMenuContent",
+          "defaultEffort",
+          "Effort",
+          "effortAt",
+          "effortIndex",
+          "EffortMenuProps",
+          "efforts",
+          "findEffort"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "EffortMenu",
+        "props": [
+          {
+            "name": "children",
+            "type": "React.ReactNode",
+            "optional": true
+          },
+          {
+            "name": "defaultValue",
+            "type": "string",
+            "optional": true,
+            "description": "Where an uncontrolled menu starts; the ladder's sensible middle otherwise."
+          },
+          {
+            "name": "efforts",
+            "type": "Effort[]",
+            "optional": true,
+            "description": "The ladder to offer. Defaults to all six rungs.",
+            "default": "efforts"
+          },
+          {
+            "name": "onValueChange",
+            "type": "(id: string) => void",
+            "optional": true
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "optional": true,
+            "description": "The chosen rung's id, for a menu whose state is held outside it."
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<typeof Menu>, \"children\">"
+        ]
+      },
+      {
+        "name": "EffortBars",
+        "description": "The ladder as a glyph: one bar per rung, ascending, lit up to the one that is chosen. Drawn from spans rather than imported from the icon set — not to save a dependency, but because no set has this. An icon is a fixed picture and this is a readout: its bar count comes from the catalogue and its fill from the value, and neither is something a path can be asked for. What the set buys — one look, restyled and resized from the outside — it keeps: the bars take their colour from `currentColor` and their scale from the container, so it sits in a button beside real icons and behaves like one. `aria-hidden` throughout. The bars say the same thing as the label on whatever is carrying them, and a screen reader reading six spans afterwards is six announcements for a fact already given.",
+        "props": [
+          {
+            "name": "count",
+            "type": "number",
+            "optional": false,
+            "description": "How many rungs there are, which is how many bars get drawn."
+          },
+          {
+            "name": "level",
+            "type": "number",
+            "optional": false,
+            "description": "How far up the ladder, as an index. Below zero lights nothing."
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<\"span\">"
+        ]
+      },
+      {
+        "name": "EffortMenuTrigger",
+        "description": "The bars, as the thing that opens the ladder. `TooltipIconButton` is the control: ghost and square for the reason the pickers beside it are, with the rung's name on a hover so the glyph still says how hard it is thinking without taking a word's width to do it. `showLabel` widens it to carry the rung's name as well, for a composer with the room — the bars alone are quick to read once but not self-explaining the first time, and the name is what teaches them. `render` is passed straight through, so a composer with a control of its own keeps it and only borrows the behaviour.",
+        "props": [
+          {
+            "name": "showLabel",
+            "type": "boolean",
+            "optional": true,
+            "default": "false"
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<typeof MenuTrigger>"
+        ]
+      },
+      {
+        "name": "EffortMenuSlider",
+        "description": "The ladder itself, and the only control in the popup. It works in indices rather than ids: the slider's whole job is that the rungs are in an order, and an index *is* that order — so `step={1}` between `0` and the last rung gives the stops for free, with no mapping table to keep in step with the catalogue. The names below the track are the stops, and they are buttons: a slider is a poor way to move exactly one rung and a fine way to move four, so both are offered rather than the drag alone. They are positioned against the track rather than laid out in a row, because a row's cells centre on the cell and the thumb stops on the rung, and those are not the same place.",
+        "props": [],
+        "extends": [
+          "Omit<React.ComponentProps<typeof Slider.Root>, \"value\" | \"onValueChange\" | \"min\" | \"max\" | \"step\">"
+        ]
+      },
+      {
+        "name": "EffortMenuContent",
+        "description": "The popup: what the rung is called, what it buys, and the ladder to move it on. The bars are repeated up here beside the name because the trigger they live on is behind the popup while it is open — without them the thing being explained is hidden by the explanation.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<typeof MenuContent>"
+        ]
+      }
+    ],
+    "exports": [
+      "defaultEffort",
+      "Effort",
+      "effortAt",
+      "effortIndex",
+      "EffortMenuProps",
+      "efforts",
+      "findEffort"
+    ]
+  },
+  "prompt-menu": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/composer/prompt-menu",
+        "names": [
+          "PromptMenu",
+          "PromptMenuTrigger",
+          "PromptMenuItem",
+          "PromptMenuNoneItem",
+          "PromptMenuContent",
+          "PromptMenuProps"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "PromptMenu",
+        "props": [
+          {
+            "name": "categories",
+            "type": "InstructionCategory[]",
+            "optional": true,
+            "description": "The headings to stand them under. Defaults to the catalogue's own.",
+            "default": "defaultCategories"
+          },
+          {
+            "name": "children",
+            "type": "React.ReactNode",
+            "optional": true
+          },
+          {
+            "name": "defaultValue",
+            "type": "string",
+            "optional": true,
+            "description": "Where an uncontrolled menu starts. Nothing, deliberately: a prompt is a thing chosen, and a menu that silently stood the agent under one would be making the decision it exists to ask about."
+          },
+          {
+            "name": "instructions",
+            "type": "Instruction[]",
+            "optional": true,
+            "description": "The catalogue to offer. Defaults to every prompt `lib/instructions` names.",
+            "default": "defaultInstructions"
+          },
+          {
+            "name": "onValueChange",
+            "type": "(id: string) => void",
+            "optional": true
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "optional": true,
+            "description": "The chosen prompt's id — or an empty string for none — for a menu whose state is held outside it."
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<typeof Menu>, \"children\">"
+        ]
+      },
+      {
+        "name": "PromptMenuTrigger",
+        "description": "The prompt in force, as the thing that opens the list — or the word \"Prompt\" and an unlit control while there is none. Ghost and small like the pickers it sits beside, for the same reason theirs are: this sits next to the field, and a control with a border competes with the field for the attention that belongs to the writing. It lights while anything is set, the way the tool picker's does while any tool is on: a run under a prompt answers differently, and that should be visible without the menu being opened. `render` is passed straight through, so a composer with a control of its own keeps it and only borrows the behaviour.",
+        "props": [
+          {
+            "name": "showIcon",
+            "type": "boolean",
+            "optional": true,
+            "default": "true"
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<typeof MenuTrigger>"
+        ]
+      },
+      {
+        "name": "PromptMenuItem",
+        "description": "One prompt: its glyph, its name, and the line on how the answer changes under it. The line wraps rather than truncating — most of these names are one vague word until the sentence under them says what it means here.",
+        "props": [
+          {
+            "name": "instruction",
+            "type": "Instruction",
+            "optional": false
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<typeof MenuRadioItem>, \"value\">"
+        ]
+      },
+      {
+        "name": "PromptMenuNoneItem",
+        "description": "The way back to nothing, kept as a row where the choices are rather than a cleared setting found later — because none is a real choice here: the agent as it comes. The dashed circle is the mark for a state with nothing in it, and the row keeps the muted tone the others reserve for their sentences.",
+        "props": [],
+        "extends": [
+          "Omit<React.ComponentProps<typeof MenuRadioItem>, \"value\">"
+        ]
+      },
+      {
+        "name": "PromptMenuContent",
+        "description": "The list: none first, then each prompt stood under the group it belongs to. Written out of the catalogue rather than by hand, since a menu that has to be edited every time a prompt is added is a menu that goes stale — and a category with nothing under it is dropped by `instructionsByCategory`, so a filtered list leaves no empty headings behind.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<typeof MenuContent>"
+        ]
+      }
+    ],
+    "exports": [
+      "PromptMenuProps"
+    ]
+  },
+  "add-menu": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/composer/add-menu",
+        "names": [
+          "AddMenu",
+          "AddMenuTrigger",
+          "AddMenuItem",
+          "AddMenuList",
+          "AddMenuContent",
+          "AddAction",
+          "addActions",
+          "AddMenuProps",
+          "findAddAction"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "AddMenu",
+        "props": [
+          {
+            "name": "actions",
+            "type": "AddAction[]",
+            "optional": true,
+            "description": "The tree to offer. Defaults to the catalogue above.",
+            "default": "addActions"
+          },
+          {
+            "name": "children",
+            "type": "React.ReactNode",
+            "optional": true
+          },
+          {
+            "name": "onSelect",
+            "type": "(action: AddAction) => void",
+            "optional": true,
+            "description": "What was chosen — the entry itself, from whatever depth it was reached. Called after the entry's own `onSelect`, and for every choice in the tree, so a composer that only wants to know *that* something was added writes one handler rather than one per leaf."
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<typeof Menu>, \"children\">"
+        ]
+      },
+      {
+        "name": "AddMenuTrigger",
+        "description": "The way in: a plus, and nothing else. It carries no count and no state — unlike the pickers next door there is nothing here to be in, only things to be done, and a plus wearing a badge would be claiming otherwise. It turns forty-five degrees while the menu is open, which makes it the cross that shuts what it opened. Cheap, and it saves the one move everybody makes anyway: going back to the control they came from rather than hunting for empty page to click on. `TooltipIconButton` is the control, as on every other composer menu: ghost, round, and carrying its name on a hover. Sized to the send it stands opposite — the two ends of the line are the two acts on the message, and a plus a shade smaller than the send would read as a lesser one. `render` is passed straight through, so a composer with a control of its own keeps it and only borrows the behaviour.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<typeof MenuTrigger>"
+        ]
+      },
+      {
+        "name": "AddMenuItem",
+        "description": "One entry, drawn as whichever of the three kinds it turns out to be: a row that opens another menu, a row that goes somewhere, or a row that does something. The branch is on the data, not on the caller, which is what lets a whole tree be handed in at the root and nothing be written per level. A submenu row gets no shortcut even when the entry carries one: `menu` puts a chevron at the end of a submenu trigger, and a keystroke competing with it for the same end of the row would say the row can be pressed for something, when all it can do is open. Give the shortcut to the leaf it would land on.",
+        "props": [
+          {
+            "name": "action",
+            "type": "AddAction",
+            "optional": false
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "optional": true
+          }
+        ],
+        "extends": []
+      },
+      {
+        "name": "AddMenuList",
+        "description": "One level of the tree. Recursive by way of `AddMenuItem`, so the same twenty lines draw the top of the menu and the folder four levels under it. A run under a heading is already set apart by the heading, so it gets no rule as well; a run without one gets the rule instead. Either way a level never carries two marks for the same break, and never opens with one.",
+        "props": [
+          {
+            "name": "actions",
+            "type": "AddAction[]",
+            "optional": false
+          }
+        ],
+        "extends": []
+      },
+      {
+        "name": "AddMenuContent",
+        "description": "The menu itself, written from the tree unless something else is handed in. Wider than `menu`'s minimum, because these rows are not bare words: several end in a keystroke, and a name squeezed against its own shortcut is a name that gets truncated the first time a catalogue with longer entries is handed in. The submenus are left to size themselves — a folder of filenames and a list of five connectors have no reason to be the same width.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<typeof MenuContent>"
+        ]
+      }
+    ],
+    "exports": [
+      "AddAction",
+      "addActions",
+      "AddMenuProps",
+      "findAddAction"
+    ]
+  },
+  "tooltip-icon-button": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/tooltip-icon-button",
+        "names": [
+          "TooltipIconButton",
+          "TooltipIconButtonProps"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "TooltipIconButton",
+        "props": [
+          {
+            "name": "tooltip",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "name": "side",
+            "type": "\"top\" | \"bottom\" | \"left\" | \"right\"",
+            "optional": true,
+            "default": "\"bottom\""
+          }
+        ],
+        "extends": [
+          "ComponentPropsWithRef<typeof Button>"
+        ]
+      }
+    ],
+    "exports": [
+      "TooltipIconButtonProps"
+    ]
+  },
+  "message-actions": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/message-actions",
+        "names": [
+          "MessageActions",
+          "MessageAction",
+          "MessageActionsMenu",
+          "MessageActionsMenuTrigger",
+          "MessageActionsMenuContent",
+          "MessageActionsMenuItem",
+          "MessageActionsMenuSeparator",
+          "messageActionItem"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "MessageActions",
+        "description": "The actions that belong to one message — copy, rate, retry — with everything rarer folded into the menu at the end of the row. `showOnHover` holds the row back until the message is hovered or focused, which is how a thread stays readable: a dozen messages each wearing five buttons is a toolbar with a conversation in it. The space is held either way, so revealing the row never moves the message it belongs to.",
+        "props": [
+          {
+            "name": "showOnHover",
+            "type": "boolean",
+            "optional": true,
+            "default": "false"
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "MessageAction",
+        "description": "One icon action. `active` is for the ones that answer back — a thumbs up that stays up, a copy that has just happened — since an icon that does not change after a click leaves the reader guessing whether it took. `busy` is for the ones that take a moment: the icon turns for as long as the work is running, which is the whole feedback a retry gets before its answer arrives. The control stops taking clicks while it turns, so a slow retry cannot be fired three times over.",
+        "props": [
+          {
+            "name": "active",
+            "type": "boolean",
+            "optional": true,
+            "default": "false"
+          },
+          {
+            "name": "busy",
+            "type": "boolean",
+            "optional": true,
+            "default": "false"
+          },
+          {
+            "name": "side",
+            "type": "TooltipSide",
+            "optional": true,
+            "default": "\"top\""
+          },
+          {
+            "name": "tooltip",
+            "type": "React.ReactNode",
+            "optional": true
+          }
+        ],
+        "extends": [
+          "useRender.ComponentProps<\"button\">"
+        ]
+      },
+      {
+        "name": "MessageActionsMenu",
+        "description": "The rest of the actions, behind one control at the end of the row.",
+        "props": [],
+        "extends": [
+          "MenuPrimitive.Root.Props"
+        ]
+      },
+      {
+        "name": "MessageActionsMenuTrigger",
+        "description": "The control itself, styled like `MessageAction` and carrying the same tooltip. Base UI merges the trigger through the tooltip's own trigger, so the one element is both without either losing its behaviour.",
+        "props": [
+          {
+            "name": "side",
+            "type": "TooltipSide",
+            "optional": true,
+            "default": "\"top\""
+          },
+          {
+            "name": "tooltip",
+            "type": "React.ReactNode",
+            "optional": true,
+            "default": "\"More\""
+          }
+        ],
+        "extends": [
+          "MenuPrimitive.Trigger.Props"
+        ]
+      },
+      {
+        "name": "MessageActionsMenuContent",
+        "description": "The shared menu surface, hung the way a row at the foot of a message wants it: above the control, and lined up with the end of the row so a menu opened from the last button does not reach off the side of the thread.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<typeof MenuContent>"
+        ]
+      },
+      {
+        "name": "MessageActionsMenuItem",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<typeof MenuItem>"
+        ]
+      },
+      {
+        "name": "MessageActionsMenuSeparator",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<typeof MenuSeparator>"
+        ]
+      }
+    ],
+    "exports": [
+      "messageActionItem"
+    ]
+  },
+  "actions": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/actions",
+        "names": [
+          "ShimmerLabel",
+          "SwapLabel",
+          "codeScroll",
+          "codeSurface",
+          "collapsePanel",
+          "field",
+          "fieldInteractive",
+          "floating",
+          "ghostButton",
+          "iconSwap",
+          "iconSwapIn",
+          "iconSwapOut",
+          "inkButton",
+          "labelSwap",
+          "labelSwapIn",
+          "labelSwapOut",
+          "live",
+          "mono",
+          "paper",
+          "pressable"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "ShimmerLabel",
+        "props": [
+          {
+            "name": "active",
+            "type": "boolean",
+            "optional": true,
+            "default": "true"
+          }
+        ],
+        "extends": [
+          "ComponentProps<\"span\">"
+        ]
+      },
+      {
+        "name": "SwapLabel",
+        "props": [
+          {
+            "name": "active",
+            "type": "0 | 1",
+            "optional": false
+          },
+          {
+            "name": "children",
+            "type": "[React.ReactNode, React.ReactNode]",
+            "optional": false
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "optional": true
+          }
+        ],
+        "extends": []
+      }
+    ],
+    "exports": [
+      "codeScroll",
+      "codeSurface",
+      "collapsePanel",
+      "field",
+      "fieldInteractive",
+      "floating",
+      "ghostButton",
+      "iconSwap",
+      "iconSwapIn",
+      "iconSwapOut",
+      "inkButton",
+      "labelSwap",
+      "labelSwapIn",
+      "labelSwapOut",
+      "live",
+      "mono",
+      "paper",
+      "pressable"
+    ]
+  },
+  "floating-toolbar": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/floating-toolbar",
+        "names": [
+          "FloatingToolbar",
+          "FloatingToolbarSeparator",
+          "FloatingToolbarButton",
+          "FloatingToolbarMenu",
+          "FloatingToolbarMenuTrigger",
+          "FloatingToolbarMenuContent",
+          "FloatingToolbarMenuItem",
+          "FloatingToolbarTabs",
+          "FloatingToolbarTab",
+          "floatingToolbarItem"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "FloatingToolbar",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "FloatingToolbarSeparator",
+        "props": [],
+        "extends": [
+          "SeparatorPrimitive.Props"
+        ]
+      },
+      {
+        "name": "FloatingToolbarButton",
+        "description": "Icon control. Pass `render={<Link href=\"...\" />}` to make it a real link — modified clicks then keep working, which a button swallows.",
+        "props": [
+          {
+            "name": "side",
+            "type": "TooltipSide",
+            "optional": true,
+            "default": "\"top\""
+          },
+          {
+            "name": "tooltip",
+            "type": "React.ReactNode",
+            "optional": true
+          }
+        ],
+        "extends": [
+          "useRender.ComponentProps<\"button\">"
+        ]
+      },
+      {
+        "name": "FloatingToolbarMenu",
+        "description": "A control in the pill that opens a menu instead of acting on click — for one action with more than one target, like a copy that has two lines to offer.",
+        "props": [],
+        "extends": [
+          "MenuPrimitive.Root.Props"
+        ]
+      },
+      {
+        "name": "FloatingToolbarMenuTrigger",
+        "description": "The control itself, styled like `FloatingToolbarButton` and carrying the same tooltip. Base UI merges the trigger through the tooltip's own trigger, so the one element is both without either losing its behaviour.",
+        "props": [
+          {
+            "name": "side",
+            "type": "TooltipSide",
+            "optional": true,
+            "default": "\"top\""
+          },
+          {
+            "name": "tooltip",
+            "type": "React.ReactNode",
+            "optional": true
+          }
+        ],
+        "extends": [
+          "MenuPrimitive.Trigger.Props"
+        ]
+      },
+      {
+        "name": "FloatingToolbarMenuContent",
+        "props": [],
+        "extends": [
+          "MenuPrimitive.Popup.Props",
+          "Pick<MenuPrimitive.Positioner.Props, \"align\" | \"alignOffset\" | \"side\" | \"sideOffset\">"
+        ]
+      },
+      {
+        "name": "FloatingToolbarMenuItem",
+        "props": [],
+        "extends": [
+          "MenuPrimitive.Item.Props"
+        ]
+      },
+      {
+        "name": "FloatingToolbarTabs",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "FloatingToolbarTab",
+        "description": "Text control for `FloatingToolbarTabs`. Belongs inside one — it is a `tab`. The data-scoped hover rules are not redundant: `ghostButton` ends in a plain `hover:` tint, and a selected tab would otherwise fade to it on pointer-over. These outrank it on specificity, so the accent holds.",
+        "props": [
+          {
+            "name": "active",
+            "type": "boolean",
+            "optional": true,
+            "default": "false"
+          },
+          {
+            "name": "side",
+            "type": "TooltipSide",
+            "optional": true,
+            "default": "\"top\""
+          },
+          {
+            "name": "tooltip",
+            "type": "React.ReactNode",
+            "optional": true
+          }
+        ],
+        "extends": [
+          "useRender.ComponentProps<\"button\">"
+        ]
+      }
+    ],
+    "exports": [
+      "floatingToolbarItem"
+    ]
+  },
+  "demo-card": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/demo-card",
+        "names": [
+          "DemoCard",
+          "DemoCardProps"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "DemoCard",
+        "description": "The stage an example is shown on, and nothing else: what it is called and what it is for is a caption's business, not the frame's. It takes the height it is given rather than a height of its own, so a page that hands it the window gets a demo the size of the window. Its parent has to have a height for that to mean anything — `h-full` against an auto-height parent resolves to auto, and the frame collapses to its contents.",
+        "props": [
+          {
+            "name": "children",
+            "type": "React.ReactNode",
+            "optional": false
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "optional": true
+          },
+          {
+            "name": "toolbar",
+            "type": "React.ReactNode",
+            "optional": true,
+            "description": "The row across the card's top — a `DemoToolbar`, or nothing."
+          },
+          {
+            "name": "wide",
+            "type": "boolean",
+            "optional": true,
+            "default": "false"
+          }
+        ],
+        "extends": []
+      }
+    ],
+    "exports": [
+      "DemoCardProps"
+    ]
+  },
+  "demo-toolbar": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/demo-toolbar",
+        "names": [
+          "DemoToolbar",
+          "DemoToolbarProps"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "DemoToolbar",
+        "description": "The row an example is read under: which variant is on show, and what can be done with it — copied, opened at its source, given the whole window. A row across the top rather than a pill over the demo. A toolbar that floats has to hide to stay out of the way, and a control that hides is one a reader has to discover twice; standing in a header of its own it costs the demo nothing and is always where it was left. The tabs are buttons marked `aria-pressed`, not `role=\"tab\"` — that role promises arrow-key navigation between them, and there is nothing here to navigate to.",
+        "props": [
+          {
+            "name": "active",
+            "type": "number",
+            "optional": false
+          },
+          {
+            "name": "onActiveChange",
+            "type": "(index: number) => void",
+            "optional": false
+          },
+          {
+            "name": "variants",
+            "type": "string[]",
+            "optional": false
+          },
+          {
+            "name": "backHref",
+            "type": "string",
+            "optional": true
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "optional": true
+          },
+          {
+            "name": "demoInstallCommand",
+            "type": "string",
+            "optional": true,
+            "description": "The same, for the example that demos it — the button's second option."
+          },
+          {
+            "name": "fullscreen",
+            "type": "boolean",
+            "optional": true,
+            "default": "false"
+          },
+          {
+            "name": "fullscreenHref",
+            "type": "string",
+            "optional": true
+          },
+          {
+            "name": "href",
+            "type": "string",
+            "optional": true,
+            "description": "Source or detail route, opened by the code button."
+          },
+          {
+            "name": "installCommand",
+            "type": "string",
+            "optional": true,
+            "description": "The whole line that installs the element, under the terminal button."
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "optional": true
+          }
+        ],
+        "extends": []
+      }
+    ],
+    "exports": [
+      "DemoToolbarProps"
+    ]
+  },
+  "demos-switcher": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/demos-switcher",
+        "names": [
+          "DemosSwitcher",
+          "DemoVariant"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "DemosSwitcher",
+        "description": "One of a set of demos, shown. Which one is the caller's business rather than this component's: the control that picks is a `DemoToolbar` standing in a header of its own, and the two are siblings rather than one inside the other. Keyed on the index so switching re-mounts the demo and it arrives, rather than the old one changing into the new.",
+        "props": [
+          {
+            "name": "active",
+            "type": "number",
+            "optional": false
+          },
+          {
+            "name": "variants",
+            "type": "DemoVariant[]",
+            "optional": false
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "optional": true
+          }
+        ],
+        "extends": []
+      }
+    ],
+    "exports": [
+      "DemoVariant"
+    ]
+  },
+  "kbd": {
+    "imports": [
+      {
+        "module": "@/components/ui/kbd",
+        "names": [
+          "Kbd",
+          "KbdGroup"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "Kbd",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"kbd\">"
+        ]
+      },
+      {
+        "name": "KbdGroup",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      }
+    ],
+    "exports": []
+  },
+  "tooltip": {
+    "imports": [
+      {
+        "module": "@/components/ui/tooltip",
+        "names": [
+          "TooltipProvider",
+          "Tooltip",
+          "TooltipTrigger",
+          "TooltipContent"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "TooltipProvider",
+        "props": [],
+        "extends": [
+          "TooltipPrimitive.Provider.Props"
+        ]
+      },
+      {
+        "name": "Tooltip",
+        "props": [],
+        "extends": [
+          "TooltipPrimitive.Root.Props"
+        ]
+      },
+      {
+        "name": "TooltipTrigger",
+        "props": [],
+        "extends": [
+          "TooltipPrimitive.Trigger.Props"
+        ]
+      },
+      {
+        "name": "TooltipContent",
+        "props": [],
+        "extends": [
+          "TooltipPrimitive.Popup.Props",
+          "Pick<TooltipPrimitive.Positioner.Props, \"align\" | \"alignOffset\" | \"side\" | \"sideOffset\">"
+        ]
+      }
+    ],
+    "exports": []
+  },
+  "bubble": {
+    "imports": [
+      {
+        "module": "@/components/ui/bubble",
+        "names": [
+          "BubbleGroup",
+          "Bubble",
+          "BubbleContent",
+          "BubbleReactions"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "BubbleGroup",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "Bubble",
+        "props": [
+          {
+            "name": "align",
+            "type": "\"start\" | \"end\"",
+            "optional": true,
+            "default": "\"start\""
+          },
+          {
+            "name": "variant",
+            "type": "\"default\" | \"secondary\" | \"muted\" | \"tinted\" | \"outline\" | \"ghost\" | \"destructive\"",
+            "optional": true,
+            "default": "\"default\""
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "BubbleContent",
+        "props": [],
+        "extends": [
+          "useRender.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "BubbleReactions",
+        "props": [
+          {
+            "name": "align",
+            "type": "\"start\" | \"end\"",
+            "optional": true,
+            "default": "\"end\""
+          },
+          {
+            "name": "side",
+            "type": "\"top\" | \"bottom\"",
+            "optional": true,
+            "default": "\"bottom\""
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      }
+    ],
+    "exports": []
+  },
+  "button": {
+    "imports": [
+      {
+        "module": "@/components/ui/button",
+        "names": [
+          "Button",
+          "buttonVariants"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "Button",
+        "props": [
+          {
+            "name": "size",
+            "type": "\"default\" | \"xs\" | \"sm\" | \"lg\" | \"icon\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\"",
+            "optional": true,
+            "default": "\"default\""
+          },
+          {
+            "name": "variant",
+            "type": "\"default\" | \"outline\" | \"secondary\" | \"ghost\" | \"destructive\" | \"link\"",
+            "optional": true,
+            "default": "\"default\""
+          }
+        ],
+        "extends": [
+          "ButtonPrimitive.Props"
+        ]
+      }
+    ],
+    "exports": [
+      "buttonVariants"
+    ]
+  },
+  "input": {
+    "imports": [
+      {
+        "module": "@/components/ui/input",
+        "names": [
+          "Input"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "Input",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"input\">"
+        ]
+      }
+    ],
+    "exports": []
+  },
+  "marker": {
+    "imports": [
+      {
+        "module": "@/components/ui/marker",
+        "names": [
+          "Marker",
+          "MarkerIcon",
+          "MarkerContent",
+          "markerVariants"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "Marker",
+        "props": [
+          {
+            "name": "variant",
+            "type": "\"default\" | \"separator\" | \"border\"",
+            "optional": true,
+            "default": "\"default\""
+          }
+        ],
+        "extends": [
+          "useRender.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "MarkerIcon",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"span\">"
+        ]
+      },
+      {
+        "name": "MarkerContent",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"span\">"
+        ]
+      }
+    ],
+    "exports": [
+      "markerVariants"
+    ]
+  },
+  "message": {
+    "imports": [
+      {
+        "module": "@/components/ui/message",
+        "names": [
+          "MessageGroup",
+          "Message",
+          "MessageAvatar",
+          "MessageContent",
+          "MessageHeader",
+          "MessageFooter"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "MessageGroup",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "Message",
+        "props": [
+          {
+            "name": "align",
+            "type": "\"start\" | \"end\"",
+            "optional": true,
+            "default": "\"start\""
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "MessageAvatar",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "MessageContent",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "MessageHeader",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "MessageFooter",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      }
+    ],
+    "exports": []
+  },
+  "message-scroller": {
+    "imports": [
+      {
+        "module": "@/components/ui/message-scroller",
+        "names": [
+          "MessageScrollerProvider",
+          "MessageScroller",
+          "MessageScrollerViewport",
+          "MessageScrollerContent",
+          "MessageScrollerItem",
+          "MessageScrollerButton",
+          "useMessageScroller",
+          "useMessageScrollerScrollable",
+          "useMessageScrollerVisibility"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "MessageScrollerProvider",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<typeof MessageScrollerPrimitive.Provider>"
+        ]
+      },
+      {
+        "name": "MessageScroller",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<typeof MessageScrollerPrimitive.Root>"
+        ]
+      },
+      {
+        "name": "MessageScrollerViewport",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<typeof MessageScrollerPrimitive.Viewport>"
+        ]
+      },
+      {
+        "name": "MessageScrollerContent",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<typeof MessageScrollerPrimitive.Content>"
+        ]
+      },
+      {
+        "name": "MessageScrollerItem",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<typeof MessageScrollerPrimitive.Item>"
+        ]
+      },
+      {
+        "name": "MessageScrollerButton",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<typeof MessageScrollerPrimitive.Button>",
+          "Pick<React.ComponentProps<typeof Button>, \"variant\" | \"size\">"
+        ]
+      }
+    ],
+    "exports": [
+      "useMessageScroller",
+      "useMessageScrollerScrollable",
+      "useMessageScrollerVisibility"
+    ]
+  },
+  "utils": {
+    "imports": [
+      {
+        "module": "@/lib/utils",
+        "names": [
+          "cn"
+        ]
+      }
+    ],
+    "components": [],
+    "exports": [
+      "cn"
+    ]
+  },
+  "highlight": {
+    "imports": [
+      {
+        "module": "@/lib/highlight",
+        "names": [
+          "DIFF_MARK",
+          "DIFF_ROW",
+          "Token",
+          "TOKEN_COLORS",
+          "TOKEN_COLORS_MONO",
+          "TOKEN_PALETTES",
+          "tokenize",
+          "tokenizeCommand",
+          "TokenKind",
+          "TokenPalette"
+        ]
+      }
+    ],
+    "components": [],
+    "exports": [
+      "DIFF_MARK",
+      "DIFF_ROW",
+      "Token",
+      "TOKEN_COLORS",
+      "TOKEN_COLORS_MONO",
+      "TOKEN_PALETTES",
+      "tokenize",
+      "tokenizeCommand",
+      "TokenKind",
+      "TokenPalette"
+    ]
+  },
+  "colors": {
+    "imports": [
+      {
+        "module": "@/lib/colors",
+        "names": [
+          "ColorGroup",
+          "colorGroups",
+          "ColorToken",
+          "colorTokens"
+        ]
+      }
+    ],
+    "components": [],
+    "exports": [
+      "ColorGroup",
+      "colorGroups",
+      "ColorToken",
+      "colorTokens"
+    ]
+  },
+  "providers": {
+    "imports": [
+      {
+        "module": "@/lib/providers",
+        "names": [
+          "findProvider",
+          "labs",
+          "platforms",
+          "Provider",
+          "ProviderKind",
+          "providers"
+        ]
+      }
+    ],
+    "components": [],
+    "exports": [
+      "findProvider",
+      "labs",
+      "platforms",
+      "Provider",
+      "ProviderKind",
+      "providers"
+    ]
+  },
+  "models": {
+    "imports": [
+      {
+        "module": "@/lib/models",
+        "names": [
+          "canUseModel",
+          "filterModels",
+          "findModel",
+          "formatContextWindow",
+          "matchesModel",
+          "Model",
+          "modelCapabilities",
+          "ModelCapability",
+          "ModelCapabilityMeta",
+          "models",
+          "modelsByProvider",
+          "ModelTier",
+          "modelTiers"
+        ]
+      }
+    ],
+    "components": [],
+    "exports": [
+      "canUseModel",
+      "filterModels",
+      "findModel",
+      "formatContextWindow",
+      "matchesModel",
+      "Model",
+      "modelCapabilities",
+      "ModelCapability",
+      "ModelCapabilityMeta",
+      "models",
+      "modelsByProvider",
+      "ModelTier",
+      "modelTiers"
+    ]
+  },
+  "tools": {
+    "imports": [
+      {
+        "module": "@/lib/tools",
+        "names": [
+          "findTool",
+          "findToolCategory",
+          "Tool",
+          "toolCategories",
+          "ToolCategory",
+          "tools",
+          "toolsByCategory"
+        ]
+      }
+    ],
+    "components": [],
+    "exports": [
+      "findTool",
+      "findToolCategory",
+      "Tool",
+      "toolCategories",
+      "ToolCategory",
+      "tools",
+      "toolsByCategory"
+    ]
+  },
+  "instructions": {
+    "imports": [
+      {
+        "module": "@/lib/instructions",
+        "names": [
+          "findInstruction",
+          "findInstructionCategory",
+          "Instruction",
+          "instructionCategories",
+          "InstructionCategory",
+          "instructions",
+          "instructionsByCategory"
+        ]
+      }
+    ],
+    "components": [],
+    "exports": [
+      "findInstruction",
+      "findInstructionCategory",
+      "Instruction",
+      "instructionCategories",
+      "InstructionCategory",
+      "instructions",
+      "instructionsByCategory"
+    ]
+  },
+  "fonts": {
+    "imports": [
+      {
+        "module": "@/lib/fonts",
+        "names": [
+          "fontFamilies",
+          "FontFamily",
+          "fontMono",
+          "fontSans",
+          "fontVariables",
+          "FontWeight",
+          "fontWeights",
+          "typeScale",
+          "TypeStep"
+        ]
+      }
+    ],
+    "components": [],
+    "exports": [
+      "fontFamilies",
+      "FontFamily",
+      "fontMono",
+      "fontSans",
+      "fontVariables",
+      "FontWeight",
+      "fontWeights",
+      "typeScale",
+      "TypeStep"
+    ]
+  },
+  "use-copy-to-clipboard": {
+    "imports": [
+      {
+        "module": "@/hooks/use-copy-to-clipboard",
+        "names": [
+          "useCopyToClipboard",
+          "UseCopyToClipboardOptions"
+        ]
+      }
+    ],
+    "components": [],
+    "exports": [
+      "useCopyToClipboard",
+      "UseCopyToClipboardOptions"
+    ]
+  },
+  "code-icons": {
+    "imports": [
+      {
+        "module": "@/components/icons/code-icons",
+        "names": [
+          "CodeIcon",
+          "BRAND_ICONS",
+          "codeIconFrom",
+          "CodeIconSet",
+          "iconFor",
+          "LANGUAGE_ICONS"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "CodeIcon",
+        "description": "The badge for a filename or a language, in whichever set was asked for. `mono` is the default everywhere, because a badge in a header is interface: it should take the colour of the text beside it and get quieter with it. Set `brand` where the file's identity is the point — a tab strip of five languages, a tree of a mixed project — and each mark arrives in its own colours.",
+        "props": [
+          {
+            "name": "name",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "name": "set",
+            "type": "CodeIconSet",
+            "optional": true,
+            "default": "\"mono\""
+          }
+        ],
+        "extends": [
+          "React.SVGProps<SVGSVGElement>"
+        ]
+      }
+    ],
+    "exports": [
+      "BRAND_ICONS",
+      "codeIconFrom",
+      "CodeIconSet",
+      "iconFor",
+      "LANGUAGE_ICONS"
+    ]
+  },
+  "model-icons": {
+    "imports": [
+      {
+        "module": "@/components/icons/model-icons",
+        "names": [
+          "ProviderIcon",
+          "ModelIcon",
+          "CapabilityIcon",
+          "CAPABILITY_ICONS",
+          "capabilityIconFor",
+          "familyKeys",
+          "MODEL_BRAND_MARKS",
+          "MODEL_ICONS",
+          "MODEL_MARKS",
+          "modelIconFor",
+          "ModelIconSet",
+          "PROVIDER_BRAND_MARKS",
+          "PROVIDER_ICONS",
+          "PROVIDER_MARKS",
+          "providerIconFor"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "ProviderIcon",
+        "description": "A provider's mark, monochrome unless asked otherwise. Colour first when it *is* asked for, then the drawn monochrome one, then Hugeicons — so `set=\"brand\"` never leaves a gap where a house has no colour version, it falls back to that house's own plain mark rather than borrowing anyone's. Every mark is `aria-hidden`: the name it sits beside already says which provider this is, and a glyph repeating it is one more thing read aloud for nothing.",
+        "props": [
+          {
+            "name": "provider",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "name": "set",
+            "type": "ModelIconSet",
+            "optional": true,
+            "description": "`brand` draws the company's colours where there are any, `mono` the plain mark. The defaults differ by what is being drawn: models colour, providers not. Left off, each part picks its own.",
+            "default": "\"mono\""
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<typeof HugeiconsIcon>, \"icon\">"
+        ]
+      },
+      {
+        "name": "ModelIcon",
+        "description": "A model's own mark, falling back through its provider — so a house whose families are all unlisted still shows the right logo, in whichever set was asked for. Colour by default, where `ProviderIcon` is monochrome by default, and the asymmetry is deliberate: a model is the thing being chosen, and its logo is how it is recognised. The house is context around that choice, and a column of colour beside a column of colour makes neither one stand out. Pass `set` to override either.",
+        "props": [
+          {
+            "name": "model",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "name": "provider",
+            "type": "string",
+            "optional": true
+          },
+          {
+            "name": "set",
+            "type": "ModelIconSet",
+            "optional": true,
+            "description": "`brand` draws the company's colours where there are any, `mono` the plain mark. The defaults differ by what is being drawn: models colour, providers not. Left off, each part picks its own.",
+            "default": "\"brand\""
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<typeof HugeiconsIcon>, \"icon\">"
+        ]
+      },
+      {
+        "name": "CapabilityIcon",
+        "props": [
+          {
+            "name": "capability",
+            "type": "ModelCapability",
+            "optional": false
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<typeof HugeiconsIcon>, \"icon\" | \"set\">"
+        ]
+      }
+    ],
+    "exports": [
+      "CAPABILITY_ICONS",
+      "capabilityIconFor",
+      "familyKeys",
+      "MODEL_BRAND_MARKS",
+      "MODEL_ICONS",
+      "MODEL_MARKS",
+      "modelIconFor",
+      "ModelIconSet",
+      "PROVIDER_BRAND_MARKS",
+      "PROVIDER_ICONS",
+      "PROVIDER_MARKS",
+      "providerIconFor"
+    ]
+  }
+}
