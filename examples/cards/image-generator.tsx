@@ -217,7 +217,7 @@ export function ImageGeneratorDemo() {
       }
     >
       {runs.length === 0 ? (
-        <EmptyState className="m-auto">
+        <EmptyState size="sm" className="m-auto">
           <EmptyStateMedia>
             <HugeiconsIcon icon={AiImageIcon} />
           </EmptyStateMedia>

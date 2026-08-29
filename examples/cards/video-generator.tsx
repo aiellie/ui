@@ -246,7 +246,7 @@ export function VideoGeneratorDemo() {
       }
     >
       {runs.length === 0 ? (
-        <EmptyState className="m-auto">
+        <EmptyState size="sm" className="m-auto">
           <EmptyStateMedia>
             <HugeiconsIcon icon={AiVideo01Icon} />
           </EmptyStateMedia>

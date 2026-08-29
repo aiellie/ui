@@ -3375,8 +3375,14 @@
     "components": [
       {
         "name": "EmptyState",
-        "description": "What a screen says while there is nothing on it yet: a line to open with, and a line under it saying what to do about that. Those two things and no more. An opening screen usually wants a composer, the prompts on offer, whatever the conversation is set to across the top — but where each of those sits is a property of the screen holding them rather than of the greeting, and one component owning the layout of all of it could only ever suit the screen it was written for. This fills the room it is given and centres itself in it; put it in the middle of whatever frame you have, and arrange the rest around it.",
-        "props": [],
+        "props": [
+          {
+            "name": "size",
+            "type": "EmptyStateSize",
+            "optional": true,
+            "default": "\"default\""
+          }
+        ],
         "extends": [
           "React.ComponentProps<\"div\">"
         ]

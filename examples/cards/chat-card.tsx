@@ -178,7 +178,7 @@ export function ChatCardDemo() {
         </ChatAvatar>
 
         {turns.length === 0 ? (
-          <EmptyState className="m-auto">
+          <EmptyState size="sm" className="m-auto">
             <EmptyStateMedia>
               <HugeiconsIcon icon={BubbleChatIcon} />
             </EmptyStateMedia>

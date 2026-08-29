@@ -69,12 +69,126 @@ export function ReasoningDemo() {
 }
 
 /**
- * The work as the tree it actually was: steps with glyphs and the fact worth
- * pinning to each one, and the steps that were made of steps folding on their
- * own — a file inside the edits inside the run, each level one rule further
- * in. This is the shape a work log has once thinking is more than prose.
+ * One frame every beat, wrapping at the end: the whole demo is derived from
+ * the number, so the script is thresholds rather than a pile of timers, and
+ * unmounting cleans up one interval.
+ */
+function useFrame(frames: number, ms = 1100) {
+  const [frame, setFrame] = React.useState(0)
+
+  React.useEffect(() => {
+    const id = setInterval(() => setFrame((f) => (f + 1) % frames), ms)
+    return () => clearInterval(id)
+  }, [frames, ms])
+
+  return frame
+}
+
+/**
+ * A run, lived: the browser read, a search branch that opens while it works
+ * — sub-steps going pending → running → done inside it — and folds itself
+ * on its result; the edits landing file by file; the check at the end; and
+ * then the whole log folding to one line, because that is what a finished
+ * run owes the answer under it. Loops, so however the card is caught it is
+ * doing something.
  */
 export function ReasoningWorkflowDemo() {
+  const frame = useFrame(14)
+  const settled = frame >= 10
+
+  return (
+    <div className="w-full max-w-sm">
+      {/* Not keyed per pass on purpose: a reader who folds the log keeps it
+          folded across loops — their disagreement outranks the script, which
+          is the component's own rule. */}
+      <Reasoning thinking={!settled} duration={settled ? 11 : undefined}>
+        <ReasoningTrigger />
+        <ReasoningContent>
+          <ReasoningStep
+            icon={AiBrowserIcon}
+            status={frame >= 1 ? "done" : "running"}
+            detail={frame >= 1 ? "3 pages" : undefined}
+          >
+            Read the element pages
+          </ReasoningStep>
+
+          {frame >= 1 ? (
+            <ReasoningBranch
+              open={frame < 4}
+              status={frame >= 4 ? "done" : "running"}
+            >
+              <ReasoningBranchTrigger
+                icon={TextSearchIcon}
+                status={frame >= 4 ? "done" : "running"}
+                detail={frame >= 4 ? "12 matches" : undefined}
+              >
+                Searching the registry
+              </ReasoningBranchTrigger>
+              <ReasoningBranchContent>
+                <ReasoningStep status={frame >= 2 ? "done" : "running"}>
+                  The bubble variants all pass through cva.
+                </ReasoningStep>
+                {frame >= 2 ? (
+                  <ReasoningStep status={frame >= 3 ? "done" : "running"}>
+                    The examples import them bare.
+                  </ReasoningStep>
+                ) : null}
+                {frame >= 3 ? (
+                  <ReasoningStep status="running">
+                    Compare against the tokens file.
+                  </ReasoningStep>
+                ) : null}
+              </ReasoningBranchContent>
+            </ReasoningBranch>
+          ) : null}
+
+          {frame >= 5 ? (
+            <ReasoningBranch open>
+              <ReasoningBranchTrigger
+                icon={PencilEdit02Icon}
+                detail={`${Math.min(frame - 4, 3)} ${frame === 5 ? "file" : "files"}`}
+              >
+                Edited files
+              </ReasoningBranchTrigger>
+              <ReasoningBranchContent>
+                <ReasoningStep icon={FileEditIcon} detail="+41 −7">
+                  attachments.tsx
+                </ReasoningStep>
+                {frame >= 6 ? (
+                  <ReasoningStep icon={FileEditIcon} detail="+12">
+                    timestamps.tsx
+                  </ReasoningStep>
+                ) : null}
+                {frame >= 7 ? (
+                  <ReasoningStep icon={FileEditIcon} detail="+3 −3">
+                    chat.tsx
+                  </ReasoningStep>
+                ) : null}
+              </ReasoningBranchContent>
+            </ReasoningBranch>
+          ) : null}
+
+          {frame >= 8 ? (
+            <ReasoningStep
+              icon={TerminalIcon}
+              status={frame >= 9 ? "done" : "running"}
+              detail={frame >= 9 ? "2s" : undefined}
+            >
+              pnpm typecheck
+            </ReasoningStep>
+          ) : null}
+        </ReasoningContent>
+      </Reasoning>
+    </div>
+  )
+}
+
+/**
+ * The tree standing still, at full depth: a file inside the edits inside the
+ * run, each level one rule further in and folding on its own. This is the
+ * shape a work log has once thinking is more than prose.
+ */
+export function ReasoningNestedDemo() {
   return (
     <div className="w-full max-w-sm">
       <Reasoning duration={25} defaultOpen>
@@ -118,46 +232,6 @@ export function ReasoningWorkflowDemo() {
           <ReasoningStep icon={TerminalIcon} status="done" detail="2s">
             pnpm typecheck
           </ReasoningStep>
-        </ReasoningContent>
-      </Reasoning>
-    </div>
-  )
-}
-
-/**
- * The same tree, still growing: the branch being worked is open with its
- * spinner turning, the finished ones sit above it, and the clock on the
- * trigger keeps counting.
- */
-export function ReasoningWorkflowLiveDemo() {
-  return (
-    <div className="w-full max-w-sm">
-      <Reasoning thinking>
-        <ReasoningTrigger />
-        <ReasoningContent>
-          <ReasoningStep icon={AiBrowserIcon} status="done" detail="8s">
-            Read the element pages
-          </ReasoningStep>
-          <ReasoningBranch status="running">
-            <ReasoningBranchTrigger
-              icon={TextSearchIcon}
-              status="running"
-              detail="12 matches"
-            >
-              Searching the registry
-            </ReasoningBranchTrigger>
-            <ReasoningBranchContent>
-              <ReasoningStep status="done">
-                The bubble variants all pass through cva.
-              </ReasoningStep>
-              <ReasoningStep status="running">
-                Reading the examples that import them…
-              </ReasoningStep>
-              <ReasoningStep status="pending">
-                Compare against the tokens file.
-              </ReasoningStep>
-            </ReasoningBranchContent>
-          </ReasoningBranch>
         </ReasoningContent>
       </Reasoning>
     </div>

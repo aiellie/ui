@@ -582,9 +582,9 @@ export const examples: Registry["items"] = [
     categories: ["messages"],
     meta: {
       variants: [
-        { name: "Thinking", demo: "ReasoningDemo" },
         { name: "Workflow", demo: "ReasoningWorkflowDemo" },
-        { name: "Live", demo: "ReasoningWorkflowLiveDemo" },
+        { name: "Nested", demo: "ReasoningNestedDemo" },
+        { name: "Thinking", demo: "ReasoningDemo" },
         { name: "Settled", demo: "ReasoningSettledDemo" },
       ],
       wide: false,
