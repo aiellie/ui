@@ -52,6 +52,53 @@ export const examples: Registry["items"] = [
     },
   },
   {
+    name: "chat-demo",
+    type: "registry:example",
+    title: "Chat",
+    description:
+      "Everything in this registry standing in one frame: a thread of agentic turns — thinking, tool calls, an answer with its sources, a code block — and a composer carrying files, mentions, slash commands, the model, the tools, the effort and the approval mode.",
+    registryDependencies: [
+      "chat",
+      "add-menu",
+      "approval-mode-menu",
+      "chat-card",
+      "citations",
+      "effort-menu",
+      "empty-state",
+      "mentions",
+      "model-picker",
+      "response",
+      "slash-menu",
+      "suggestions",
+      "tool-picker",
+      "tooltip-icon-button",
+      "typing-indicator",
+      "message",
+      "tooltip",
+    ],
+    dependencies: [
+      "@base-ui/react",
+      "@hugeicons/core-free-icons",
+      "@hugeicons/react",
+      "ai",
+    ],
+    files: [
+      {
+        path: "examples/messages/chat.tsx",
+        type: "registry:example",
+        target: "examples/messages/chat.tsx",
+      },
+    ],
+    categories: ["chat"],
+    meta: {
+      variants: [
+        { name: "Default", demo: "ChatDemo" },
+        { name: "Opening", demo: "ChatOpeningDemo" },
+      ],
+      wide: true,
+    },
+  },
+  {
     name: "code-block-demo",
     type: "registry:example",
     title: "Code Block",

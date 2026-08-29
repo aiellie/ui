@@ -4,6 +4,7 @@ import {
   AiBrain01Icon,
   Link02Icon,
   ChatBotIcon,
+  AiChat02Icon,
   Home01Icon,
   SlashIcon,
   BubblesIcon,
@@ -58,6 +59,7 @@ import * as codeSnippetDemos from "@/examples/coding/code-snippet"
 import * as bubbleDemos from "@/examples/messages/bubble"
 import * as messageDemos from "@/examples/messages/message"
 import * as chatCardDemos from "@/examples/messages/chat-card"
+import * as chatDemos from "@/examples/messages/chat"
 import * as chatAvatarDemos from "@/examples/messages/chat-avatar"
 import * as messageActionsDemos from "@/examples/messages/message-actions"
 import * as emptyStateDemos from "@/examples/composer/empty-state"
@@ -207,6 +209,10 @@ const exampleDemos: Record<string, ExampleDemos> = {
   "chat-card-demo": {
     icon: ChatBotIcon,
     components: { ...chatCardDemos },
+  },
+  "chat-demo": {
+    icon: AiChat02Icon,
+    components: { ...chatDemos },
   },
   "chat-avatar-demo": {
     icon: UserCircle02Icon,

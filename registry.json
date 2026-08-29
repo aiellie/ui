@@ -557,6 +557,43 @@
       ]
     },
     {
+      "name": "chat",
+      "type": "registry:ui",
+      "title": "Chat",
+      "description": "A whole agentic chat, assembled: the frame, a thread that follows the answer without dragging a reader back, one turn drawn from what an answer is made of — the thinking, the tool calls, the words, the sources — and the composer under it carrying files, a plus, a send and everything the message is being sent with.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/add-menu.json",
+        "https://ui.aiellie.dev/r/attachments.json",
+        "https://ui.aiellie.dev/r/bubble.json",
+        "https://ui.aiellie.dev/r/chat-card.json",
+        "https://ui.aiellie.dev/r/citations.json",
+        "https://ui.aiellie.dev/r/message.json",
+        "https://ui.aiellie.dev/r/message-actions.json",
+        "https://ui.aiellie.dev/r/message-input.json",
+        "https://ui.aiellie.dev/r/message-scroller.json",
+        "https://ui.aiellie.dev/r/message-status.json",
+        "https://ui.aiellie.dev/r/reasoning.json",
+        "https://ui.aiellie.dev/r/response.json",
+        "https://ui.aiellie.dev/r/streaming-text.json",
+        "https://ui.aiellie.dev/r/timestamps.json",
+        "https://ui.aiellie.dev/r/tool-call.json",
+        "https://ui.aiellie.dev/r/use-copy-to-clipboard.json",
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react",
+        "ai"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/chat.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/chat.tsx"
+        }
+      ]
+    },
+    {
       "name": "chat-avatar",
       "type": "registry:ui",
       "title": "Chat Avatar",
@@ -1083,6 +1120,60 @@
           {
             "name": "Empty",
             "demo": "ChatCardEmptyDemo"
+          }
+        ],
+        "wide": true
+      }
+    },
+    {
+      "name": "chat-demo",
+      "type": "registry:example",
+      "title": "Chat",
+      "description": "Everything in this registry standing in one frame: a thread of agentic turns — thinking, tool calls, an answer with its sources, a code block — and a composer carrying files, mentions, slash commands, the model, the tools, the effort and the approval mode.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/chat.json",
+        "https://ui.aiellie.dev/r/add-menu.json",
+        "https://ui.aiellie.dev/r/approval-mode-menu.json",
+        "https://ui.aiellie.dev/r/chat-card.json",
+        "https://ui.aiellie.dev/r/citations.json",
+        "https://ui.aiellie.dev/r/effort-menu.json",
+        "https://ui.aiellie.dev/r/empty-state.json",
+        "https://ui.aiellie.dev/r/mentions.json",
+        "https://ui.aiellie.dev/r/model-picker.json",
+        "https://ui.aiellie.dev/r/response.json",
+        "https://ui.aiellie.dev/r/slash-menu.json",
+        "https://ui.aiellie.dev/r/suggestions.json",
+        "https://ui.aiellie.dev/r/tool-picker.json",
+        "https://ui.aiellie.dev/r/tooltip-icon-button.json",
+        "https://ui.aiellie.dev/r/typing-indicator.json",
+        "https://ui.aiellie.dev/r/message.json",
+        "https://ui.aiellie.dev/r/tooltip.json"
+      ],
+      "dependencies": [
+        "@base-ui/react",
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react",
+        "ai"
+      ],
+      "files": [
+        {
+          "path": "examples/messages/chat.tsx",
+          "type": "registry:example",
+          "target": "examples/messages/chat.tsx"
+        }
+      ],
+      "categories": [
+        "chat"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Default",
+            "demo": "ChatDemo"
+          },
+          {
+            "name": "Opening",
+            "demo": "ChatOpeningDemo"
           }
         ],
         "wide": true
