@@ -841,6 +841,12 @@
       "registryDependencies": [
         "https://ui.aiellie.dev/r/utils.json"
       ],
+      "dependencies": [
+        "tw-shimmer"
+      ],
+      "css": {
+        "@import \"tw-shimmer\"": {}
+      },
       "files": [
         {
           "path": "components/aiellie-ui/actions.tsx",
@@ -965,7 +971,7 @@
       "name": "bubble",
       "type": "registry:ui",
       "title": "Bubble",
-      "description": "A bubble is a container for a message.",
+      "description": "The shape a message wears: muted, tinted, or glass, aligned to its side of the thread, with a content part that can render as anything pressable.",
       "registryDependencies": [
         "https://ui.aiellie.dev/r/utils.json"
       ],
@@ -1005,7 +1011,7 @@
       "name": "input",
       "type": "registry:ui",
       "title": "Input",
-      "description": "A single-line text field.",
+      "description": "Base UI's input on the elements' field surface — the quiet fill the composer and the rail's search share, with the same focus treatment throughout.",
       "registryDependencies": [
         "https://ui.aiellie.dev/r/utils.json"
       ],
@@ -1555,7 +1561,7 @@
       "name": "bubble-demo",
       "type": "registry:example",
       "title": "Bubble",
-      "description": "A bubble is a container for a message.",
+      "description": "A short exchange in bubbles: the default pair, every variant side by side, and a bubble carrying reactions.",
       "registryDependencies": [
         "https://ui.aiellie.dev/r/bubble.json"
       ],
@@ -1567,7 +1573,7 @@
         }
       ],
       "categories": [
-        "chat"
+        "messages"
       ],
       "meta": {
         "variants": [
@@ -1604,7 +1610,7 @@
         }
       ],
       "categories": [
-        "chat"
+        "messages"
       ],
       "meta": {
         "variants": [
@@ -1644,7 +1650,7 @@
         }
       ],
       "categories": [
-        "chat"
+        "messages"
       ],
       "meta": {
         "variants": [
@@ -1709,7 +1715,7 @@
         }
       ],
       "categories": [
-        "chat"
+        "messages"
       ],
       "meta": {
         "variants": [
@@ -1747,7 +1753,7 @@
         }
       ],
       "categories": [
-        "chat"
+        "messages"
       ],
       "meta": {
         "variants": [
@@ -1784,7 +1790,7 @@
         }
       ],
       "categories": [
-        "chat"
+        "messages"
       ],
       "meta": {
         "variants": [
@@ -1821,7 +1827,7 @@
         }
       ],
       "categories": [
-        "chat"
+        "messages"
       ],
       "meta": {
         "variants": [
@@ -1855,7 +1861,7 @@
         }
       ],
       "categories": [
-        "chat"
+        "messages"
       ],
       "meta": {
         "variants": [
@@ -1888,7 +1894,7 @@
         }
       ],
       "categories": [
-        "chat"
+        "messages"
       ],
       "meta": {
         "variants": [
@@ -1926,7 +1932,7 @@
         }
       ],
       "categories": [
-        "chat"
+        "messages"
       ],
       "meta": {
         "variants": [
@@ -1964,7 +1970,7 @@
         }
       ],
       "categories": [
-        "chat"
+        "messages"
       ],
       "meta": {
         "variants": [
@@ -2002,7 +2008,7 @@
         }
       ],
       "categories": [
-        "chat"
+        "messages"
       ],
       "meta": {
         "variants": [
@@ -2043,7 +2049,7 @@
         }
       ],
       "categories": [
-        "chat"
+        "messages"
       ],
       "meta": {
         "variants": [
@@ -2081,7 +2087,7 @@
         }
       ],
       "categories": [
-        "chat"
+        "messages"
       ],
       "meta": {
         "variants": [
@@ -2114,7 +2120,7 @@
         }
       ],
       "categories": [
-        "chat"
+        "messages"
       ],
       "meta": {
         "variants": [
@@ -2168,7 +2174,7 @@
         }
       ],
       "categories": [
-        "chat"
+        "composer"
       ],
       "meta": {
         "variants": [
@@ -2204,7 +2210,7 @@
         }
       ],
       "categories": [
-        "chat"
+        "composer"
       ],
       "meta": {
         "variants": [
@@ -2276,7 +2282,7 @@
         }
       ],
       "categories": [
-        "chat"
+        "composer"
       ],
       "meta": {
         "variants": [
@@ -2333,7 +2339,7 @@
         }
       ],
       "categories": [
-        "chat"
+        "composer"
       ],
       "meta": {
         "variants": [
@@ -2377,7 +2383,7 @@
         }
       ],
       "categories": [
-        "chat"
+        "composer"
       ],
       "meta": {
         "variants": [
@@ -2414,7 +2420,7 @@
         }
       ],
       "categories": [
-        "chat"
+        "composer"
       ],
       "meta": {
         "variants": [
@@ -2459,7 +2465,7 @@
         }
       ],
       "categories": [
-        "chat"
+        "composer"
       ],
       "meta": {
         "variants": [
@@ -2499,7 +2505,7 @@
         }
       ],
       "categories": [
-        "chat"
+        "composer"
       ],
       "meta": {
         "variants": [
@@ -2540,7 +2546,7 @@
         }
       ],
       "categories": [
-        "chat"
+        "composer"
       ],
       "meta": {
         "variants": [
@@ -2585,7 +2591,7 @@
         }
       ],
       "categories": [
-        "chat"
+        "composer"
       ],
       "meta": {
         "variants": [
@@ -2632,7 +2638,7 @@
         }
       ],
       "categories": [
-        "chat"
+        "composer"
       ],
       "meta": {
         "variants": [
@@ -2673,7 +2679,7 @@
         }
       ],
       "categories": [
-        "chat"
+        "messages"
       ],
       "meta": {
         "variants": [
@@ -2738,7 +2744,7 @@
       "name": "utils",
       "type": "registry:lib",
       "title": "Utils",
-      "description": "Utility functions for the elements.",
+      "description": "The cn helper every element classes itself with — clsx merged through tailwind-merge, so a caller's className wins the argument.",
       "dependencies": [
         "clsx",
         "tailwind-merge"

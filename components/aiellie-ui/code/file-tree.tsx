@@ -175,9 +175,13 @@ function seedOpen(nodes: readonly FileNode[], prefix = ""): string[] {
 
 export interface FileTreeNodesProps {
   nodes: readonly FileNode[]
-  /** Which file is being shown, when the tree is driving something. */
+  /**
+   * The path of the file being shown, when the tree is driving something —
+   * the path and not the name, because a project has an `index.ts` in every
+   * folder and a selection keyed by name would light up all of them.
+   */
   selected?: string
-  onSelect?: (name: string) => void
+  onSelect?: (path: string) => void
   /**
    * Which set the file badges come from. `brand` puts each language in its own
    * colours, which is worth it in a tree of a mixed project and noise in a
@@ -288,7 +292,7 @@ function FileTreeNodes({
     <div ref={ref} className="contents" onKeyDown={onKeyDown}>
       {rows.map((row) => {
         const group = siblings.get(row.parent ?? "") ?? []
-        const isSelected = !row.folder && selected === row.node.name
+        const isSelected = !row.folder && selected === row.path
 
         return (
           <button
@@ -310,7 +314,7 @@ function FileTreeNodes({
             style={{ paddingInlineStart: `${0.75 + row.depth * 0.875}rem` }}
             onFocus={() => setActive(row.path)}
             onClick={() =>
-              row.folder ? toggle(row.path) : onSelect?.(row.node.name)
+              row.folder ? toggle(row.path) : onSelect?.(row.path)
             }
             className={cn(
               fileTreeRow,

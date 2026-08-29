@@ -244,9 +244,9 @@ function MenuSub(props: MenuPrimitive.SubmenuRoot.Props) {
 }
 
 /**
- * A row that opens another menu. The chevron is drawn rather than imported, and
- * it is logical rather than left-to-right: in an RTL layout the submenu opens
- * the other way, and an arrow pointing the wrong way is worse than none.
+ * A row that opens another menu. Its chevron is logical rather than
+ * left-to-right: in an RTL layout the submenu opens the other way, and an
+ * arrow pointing the wrong way is worse than none.
  */
 function MenuSubTrigger({
   className,

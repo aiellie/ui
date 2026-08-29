@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "bubble-demo",
   "title": "Bubble",
-  "description": "A bubble is a container for a message.",
+  "description": "A short exchange in bubbles: the default pair, every variant side by side, and a bubble carrying reactions.",
   "registryDependencies": [
     "https://ui.aiellie.dev/r/bubble.json"
   ],
@@ -32,7 +32,7 @@
     "wide": false
   },
   "categories": [
-    "chat"
+    "messages"
   ],
   "type": "registry:example"
 }

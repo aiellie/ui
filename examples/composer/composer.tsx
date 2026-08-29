@@ -223,7 +223,7 @@ export function ComposerDemo() {
             </ComposerLine>
 
             <ComposerToolbar>
-            <ApprovalModeMenu value={mode} onValueChange={setMode}>
+              <ApprovalModeMenu value={mode} onValueChange={setMode}>
                 <ApprovalModeMenuTrigger />
                 <ApprovalModeMenuContent side="top" />
               </ApprovalModeMenu>
@@ -232,7 +232,6 @@ export function ComposerDemo() {
                 <ToolPickerContent side="top" />
                 <ToolPickerActive />
               </ToolPicker>
-             
 
               <ComposerToolbarGroup end>
                 <ModelPicker value={model} onValueChange={setModel}>
@@ -247,7 +246,9 @@ export function ComposerDemo() {
             </ComposerToolbar>
           </ComposerInput>
         </Composer>
-       {/* <p className="min-h-4 ps-1 text-xs text-muted-foreground">{note}</p> */}
+        {/* The state the controls hold, said back in a sentence — the point of
+            the demo is that every menu below the line is feeding one message. */}
+        <p className="min-h-4 ps-1 text-xs text-muted-foreground">{note}</p>
       </div>
     </TooltipProvider>
   )

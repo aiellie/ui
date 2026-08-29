@@ -92,9 +92,11 @@ that scrolls sideways and lifts on hover needs the room as padding:
 `group-hover/message:` is always joined by `group-focus-within/message:`. A row
 that only answers the mouse cannot be reached at all.
 
-**Keep a control alive while its popup is open.** `has-data-open:opacity-100` on
-a hover-revealed row, or the menu trigger vanishes from under its own menu when
-the pointer leaves.
+**Keep a control alive while its popup is open.** `has-data-popup-open:opacity-100`
+on a hover-revealed row, or the menu trigger vanishes from under its own menu when
+the pointer leaves. It is `data-popup-open` because that is the attribute Base UI
+puts on an open *trigger* — `data-open` goes on the popup, which is portalled out
+of the row and can never match a `has-` selector inside it.
 
 ## Motion
 

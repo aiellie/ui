@@ -329,7 +329,8 @@ export const examples: Registry["items"] = [
     name: "bubble-demo",
     type: "registry:example",
     title: "Bubble",
-    description: "A bubble is a container for a message.",
+    description:
+      "A short exchange in bubbles: the default pair, every variant side by side, and a bubble carrying reactions.",
     registryDependencies: ["bubble"],
     files: [
       {
@@ -338,7 +339,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/bubble.tsx",
       },
     ],
-    categories: ["chat"],
+    categories: ["messages"],
     meta: {
       variants: [
         { name: "Default", demo: "BubbleDemo" },
@@ -362,7 +363,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/message.tsx",
       },
     ],
-    categories: ["chat"],
+    categories: ["messages"],
     meta: {
       variants: [
         { name: "Default", demo: "MessageDemo" },
@@ -392,7 +393,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/message-scroller.tsx",
       },
     ],
-    categories: ["chat"],
+    categories: ["messages"],
     meta: {
       variants: [
         { name: "Anchoring turns", demo: "MessageScrollerAnchoringDemo" },
@@ -423,7 +424,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/suggestions.tsx",
       },
     ],
-    categories: ["chat"],
+    categories: ["messages"],
     meta: {
       variants: [
         { name: "Pills", demo: "SuggestionsDemo" },
@@ -447,7 +448,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/reactions.tsx",
       },
     ],
-    categories: ["chat"],
+    categories: ["messages"],
     meta: {
       variants: [
         { name: "Default", demo: "ReactionsDemo" },
@@ -471,7 +472,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/quoted-message.tsx",
       },
     ],
-    categories: ["chat"],
+    categories: ["messages"],
     meta: {
       variants: [
         { name: "In a reply", demo: "QuotedMessageDemo" },
@@ -495,7 +496,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/reasoning.tsx",
       },
     ],
-    categories: ["chat"],
+    categories: ["messages"],
     meta: {
       variants: [
         { name: "Thinking", demo: "ReasoningDemo" },
@@ -518,7 +519,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/citations.tsx",
       },
     ],
-    categories: ["chat"],
+    categories: ["messages"],
     meta: {
       variants: [
         { name: "In an answer", demo: "CitationsDemo" },
@@ -541,7 +542,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/response.tsx",
       },
     ],
-    categories: ["chat"],
+    categories: ["messages"],
     meta: {
       variants: [
         { name: "Prose", demo: "ResponseDemo" },
@@ -565,7 +566,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/message-status.tsx",
       },
     ],
-    categories: ["chat"],
+    categories: ["messages"],
     meta: {
       variants: [
         { name: "Travelling", demo: "MessageStatusDemo" },
@@ -589,7 +590,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/streaming-text.tsx",
       },
     ],
-    categories: ["chat"],
+    categories: ["messages"],
     meta: {
       variants: [
         { name: "Typed out", demo: "StreamingTextDemo" },
@@ -613,7 +614,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/typing-indicator.tsx",
       },
     ],
-    categories: ["chat"],
+    categories: ["messages"],
     meta: {
       variants: [
         { name: "Default", demo: "TypingIndicatorDemo" },
@@ -638,7 +639,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/message-highlight-toolbar.tsx",
       },
     ],
-    categories: ["chat"],
+    categories: ["messages"],
     meta: {
       variants: [
         { name: "One message", demo: "MessageHighlightToolbarDemo" },
@@ -662,7 +663,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/message-context-menu.tsx",
       },
     ],
-    categories: ["chat"],
+    categories: ["messages"],
     meta: {
       variants: [
         { name: "Default", demo: "MessageContextMenuDemo" },
@@ -685,7 +686,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/timestamps.tsx",
       },
     ],
-    categories: ["chat"],
+    categories: ["messages"],
     meta: {
       variants: [
         { name: "In a thread", demo: "TimestampsDemo" },
@@ -722,7 +723,7 @@ export const examples: Registry["items"] = [
         target: "examples/composer/composer.tsx",
       },
     ],
-    categories: ["chat"],
+    categories: ["composer"],
     meta: {
       variants: [
         { name: "Default", demo: "ComposerDemo" },
@@ -746,7 +747,7 @@ export const examples: Registry["items"] = [
         target: "examples/composer/message-input.tsx",
       },
     ],
-    categories: ["chat"],
+    categories: ["composer"],
     meta: {
       variants: [
         { name: "Default", demo: "MessageInputDemo" },
@@ -797,7 +798,7 @@ export const examples: Registry["items"] = [
         target: "examples/composer/attachments.tsx",
       },
     ],
-    categories: ["chat"],
+    categories: ["composer"],
     meta: {
       variants: [
         { name: "Default", demo: "AttachmentsDemo" },
@@ -833,7 +834,7 @@ export const examples: Registry["items"] = [
         target: "examples/composer/agents.ts",
       },
     ],
-    categories: ["chat"],
+    categories: ["composer"],
     meta: {
       variants: [
         { name: "People and agents", demo: "MentionsDemo" },
@@ -867,7 +868,7 @@ export const examples: Registry["items"] = [
         target: "examples/composer/commands.ts",
       },
     ],
-    categories: ["chat"],
+    categories: ["composer"],
     meta: {
       variants: [
         { name: "Commands", demo: "SlashMenuDemo" },
@@ -897,7 +898,7 @@ export const examples: Registry["items"] = [
         target: "examples/composer/model-picker.tsx",
       },
     ],
-    categories: ["chat"],
+    categories: ["composer"],
     meta: {
       variants: [
         { name: "Default", demo: "ModelPickerDemo" },
@@ -929,7 +930,7 @@ export const examples: Registry["items"] = [
         target: "examples/composer/tool-picker.tsx",
       },
     ],
-    categories: ["chat"],
+    categories: ["composer"],
     meta: {
       variants: [
         { name: "Default", demo: "ToolPickerDemo" },
@@ -959,7 +960,7 @@ export const examples: Registry["items"] = [
         target: "examples/composer/approval-mode-menu.tsx",
       },
     ],
-    categories: ["chat"],
+    categories: ["composer"],
     meta: {
       variants: [
         { name: "Default", demo: "ApprovalModeMenuDemo" },
@@ -990,7 +991,7 @@ export const examples: Registry["items"] = [
         target: "examples/composer/effort-menu.tsx",
       },
     ],
-    categories: ["chat"],
+    categories: ["composer"],
     meta: {
       variants: [
         { name: "Default", demo: "EffortMenuDemo" },
@@ -1022,7 +1023,7 @@ export const examples: Registry["items"] = [
         target: "examples/composer/prompt-menu.tsx",
       },
     ],
-    categories: ["chat"],
+    categories: ["composer"],
     meta: {
       variants: [
         { name: "Default", demo: "PromptMenuDemo" },
@@ -1054,7 +1055,7 @@ export const examples: Registry["items"] = [
         target: "examples/composer/add-menu.tsx",
       },
     ],
-    categories: ["chat"],
+    categories: ["composer"],
     meta: {
       variants: [
         { name: "Default", demo: "AddMenuDemo" },
@@ -1079,7 +1080,7 @@ export const examples: Registry["items"] = [
         target: "examples/messages/message-actions.tsx",
       },
     ],
-    categories: ["chat"],
+    categories: ["messages"],
     meta: {
       variants: [
         { name: "Default", demo: "MessageActionsDemo" },

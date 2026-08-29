@@ -16,6 +16,15 @@ export const components: Registry["items"] = [
     description:
       "The class strings every element shares — surfaces, pressable buttons, the icon and label swaps — kept in one place so a card and a toolbar agree on what a press looks like.",
     registryDependencies: ["utils"],
+    /* ShimmerLabel leans on the `shimmer` utility from the tw-shimmer Tailwind
+       plugin. Without the dependency and the import, a consumer's install
+       compiles but the busy state loses its sheen silently — the worst kind of
+       missing piece, so both are declared here and shadcn injects the import
+       into the consumer's stylesheet. */
+    dependencies: ["tw-shimmer"],
+    css: {
+      '@import "tw-shimmer"': {},
+    },
     files: [
       {
         path: "components/aiellie-ui/actions.tsx",

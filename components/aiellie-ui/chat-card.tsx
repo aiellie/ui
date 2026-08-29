@@ -146,7 +146,7 @@ export function ChatCardThread({
       ref={ref}
       data-slot="chat-card-thread"
       className={cn(
-        "flex min-h-0 flex-col gap-3 overflow-y-none overscroll-contain p-3",
+        "flex min-h-0 flex-col gap-3 overflow-y-auto overscroll-contain p-3",
         className
       )}
       {...props}

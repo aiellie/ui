@@ -56,10 +56,13 @@ function MessageActions({
           "flex w-fit items-center gap-0.5",
           // Focus counts as well as hover: a keyboard never hovers anything,
           // and a row that only answers the mouse cannot be reached at all.
-          // `has-data-open` keeps the row up while its menu is open, so the
-          // trigger does not vanish from under the popup.
+          // `has-data-popup-open` keeps the row up while its menu is open, so
+          // the trigger does not vanish from under the popup. Base UI marks an
+          // open *trigger* with `data-popup-open` — `data-open` goes on the
+          // popup itself, which is portalled out of this row and so can never
+          // match a `has-` selector here.
           showOnHover &&
-            "opacity-0 transition-opacity duration-150 group-focus-within/message:opacity-100 group-hover/message:opacity-100 has-data-open:opacity-100 motion-reduce:transition-none",
+            "opacity-0 transition-opacity duration-150 group-focus-within/message:opacity-100 group-hover/message:opacity-100 has-data-popup-open:opacity-100 motion-reduce:transition-none",
           className
         )}
         {...props}

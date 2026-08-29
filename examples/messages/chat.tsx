@@ -434,6 +434,28 @@ export function ChatDemo() {
       },
     ])
 
+    // The answer's settled shape, written once: the third beat shows it still
+    // arriving, and the last beat shows the same parts with the caret gone —
+    // a part left `streaming: true` after the run keeps its pulse forever.
+    const answered: ChatPart[] = [
+      { type: "reasoning", duration: 3, steps: thinking.slice(0, 2) },
+      {
+        type: "tool",
+        name: "search_files",
+        summary: "3 matches",
+        status: "done",
+        arguments: SEARCH_ARGS,
+        result: SEARCH_RESULT,
+      },
+      {
+        type: "streaming",
+        streaming: true,
+        segments: [
+          `Nothing has changed since Tuesday: ${question.replace(/[?.]+$/, "")} still comes down to the same flag, and it is staff-only until the migration lands.`,
+        ],
+      },
+    ]
+
     timers.current.push(
       setTimeout(
         () =>
@@ -448,29 +470,15 @@ export function ChatDemo() {
           ]),
         1600
       ),
-      setTimeout(
-        () =>
-          patch([
-            { type: "reasoning", duration: 3, steps: thinking.slice(0, 2) },
-            {
-              type: "tool",
-              name: "search_files",
-              summary: "3 matches",
-              status: "done",
-              arguments: SEARCH_ARGS,
-              result: SEARCH_RESULT,
-            },
-            {
-              type: "streaming",
-              streaming: true,
-              segments: [
-                `Nothing has changed since Tuesday: ${question.replace(/[?.]+$/, "")} still comes down to the same flag, and it is staff-only until the migration lands.`,
-              ],
-            },
-          ]),
-        3200
-      ),
-      setTimeout(() => setStatus("ready"), 6000)
+      setTimeout(() => patch(answered), 3200),
+      setTimeout(() => {
+        patch(
+          answered.map((part) =>
+            part.type === "streaming" ? { ...part, streaming: false } : part
+          )
+        )
+        setStatus("ready")
+      }, 6000)
     )
   }
 

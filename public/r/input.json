@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "input",
   "title": "Input",
-  "description": "A single-line text field.",
+  "description": "Base UI's input on the elements' field surface — the quiet fill the composer and the rail's search share, with the same focus treatment throughout.",
   "dependencies": [
     "@base-ui/react"
   ],

@@ -2,7 +2,7 @@ import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {
   /**
-   * The rules panel reads `CLAUDE.md`, `DESIGN.md` and `TODO.md` off disk.
+   * The rules panel reads `CLAUDE.md`, `DESIGN.md` and `ROADMAP.md` off disk.
    * Every route is prerendered, so that happens at build time and the text is
    * baked into the output — but the read is written against `process.cwd()`,
    * which the tracer cannot follow, and left to guess it drags the whole
@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
    * keeps them present should a route under this layout ever become dynamic.
    */
   outputFileTracingIncludes: {
-    "/**": ["./CLAUDE.md", "./DESIGN.md", "./TODO.md"],
+    "/**": ["./CLAUDE.md", "./DESIGN.md", "./ROADMAP.md"],
   },
 
   /**

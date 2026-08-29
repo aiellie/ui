@@ -37,7 +37,7 @@ function MessageContextMenuTrigger({
     <ContextMenuPrimitive.Trigger
       data-slot="message-context-menu-trigger"
       className={cn(
-        "w-fit rounded-xl transition-opacity duration-150 motion-reduce:transition-none data-open:opacity-90",
+        "w-fit rounded-xl transition-opacity duration-150 motion-reduce:transition-none data-popup-open:opacity-90",
         className
       )}
       {...props}

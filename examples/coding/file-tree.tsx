@@ -45,21 +45,23 @@ export function FileTreeDemo() {
   )
 }
 
+/* Keyed by path, as the selection is: the tree hands back where a file lives,
+   which is what keeps two files with one name apart. */
 const SOURCE: Record<string, string> = {
-  "code-block.tsx": `export function CodeBlock(props: Props) {
+  "components/code/code-block.tsx": `export function CodeBlock(props: Props) {
   return <figure data-slot="code-block" {...props} />
 }`,
-  "code-diff.tsx": `export function parseDiff(diff: string) {
+  "components/code/code-diff.tsx": `export function parseDiff(diff: string) {
   const rows: DiffRow[] = []
   return rows
 }`,
-  "code-snippet.tsx": `export function resolveCommand(pm, command) {
+  "components/code/code-snippet.tsx": `export function resolveCommand(pm, command) {
   return \`\${RUNNERS[pm]} \${command}\`
 }`,
-  "tooltip.tsx": `function Tooltip(props: Root.Props) {
+  "components/ui/tooltip.tsx": `function Tooltip(props: Root.Props) {
   return <Root data-slot="tooltip" {...props} />
 }`,
-  "highlight.ts": `export function tokenize(code: string) {
+  "lib/highlight.ts": `export function tokenize(code: string) {
   return code.split("\\n").map(scan)
 }`,
   "legacy.ts": `// Nothing imports this any more.`,
@@ -72,8 +74,12 @@ const SOURCE: Record<string, string> = {
  * hand it straight back.
  */
 export function FileTreeSelectionDemo() {
-  const [selected, setSelected] = React.useState("code-diff.tsx")
+  const [selected, setSelected] = React.useState(
+    "components/code/code-diff.tsx"
+  )
   const code = SOURCE[selected] ?? ""
+  // The block's caption is the file, not the address the tree already shows.
+  const title = selected.split("/").pop() ?? selected
 
   return (
     <div className="flex w-full max-w-2xl items-start gap-3">
@@ -86,7 +92,7 @@ export function FileTreeSelectionDemo() {
       </FileTree>
       <CodeBlock className="min-w-0 flex-1">
         <CodeBlockHeader>
-          <CodeBlockTitle>{selected}</CodeBlockTitle>
+          <CodeBlockTitle>{title}</CodeBlockTitle>
           <CodeBlockActions>
             <CodeBlockCopy code={code} />
           </CodeBlockActions>

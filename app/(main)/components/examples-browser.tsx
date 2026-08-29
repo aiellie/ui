@@ -395,7 +395,7 @@ function ExampleCard({
 /**
  * A page's examples behind a rail of all of them, labelled by the category each
  * fell into, with the one being read beside it. Which examples arrive here is
- * the page's business — `/design` passes the token ones, `/elements` the rest —
+ * the caller's business — `/elements` passes everything with a demo —
  * so a new demo needs an item in `registry/_examples-registry.ts`, its
  * components in `registry/_demos.ts`, a category in `lib/categories.ts` if it
  * carries a new one, and nothing here.
@@ -880,7 +880,12 @@ function ExamplesBrowser({
 
         <ResizableHandle withHandle className={handle} />
 
-        <ResizablePanel id="stage" defaultSize="80" minSize={STAGE_MIN}>
+        {/* The rail's default is a number and this one a string on purpose:
+            react-resizable-panels reads numbers as pixels and strings as
+            percentages, so the rail opens at 240px and the stage takes 80%
+            of what is left. The unit is written out so the difference reads
+            as chosen rather than mixed. */}
+        <ResizablePanel id="stage" defaultSize="80%" minSize={STAGE_MIN}>
           {/* The stage is a height, not a scroller: the card takes what it is
             given, and what is being demonstrated does its own scrolling inside
             it. `overflow-hidden` so a demo that is briefly too tall on its way

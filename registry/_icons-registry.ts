@@ -1,7 +1,8 @@
 import type { Registry } from "shadcn/schema"
 
 /**
- * Registry item definitions for lib utilities, used to build registry.json
+ * Registry item definitions for the icon lookups — the file, language and
+ * model marks — used to build registry.json
  * (https://ui.shadcn.com/docs/registry/getting-started).
  */
 export const icons: Registry["items"] = [

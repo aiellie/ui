@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "utils",
   "title": "Utils",
-  "description": "Utility functions for the elements.",
+  "description": "The cn helper every element classes itself with — clsx merged through tailwind-merge, so a caller's className wins the argument.",
   "dependencies": [
     "clsx",
     "tailwind-merge"

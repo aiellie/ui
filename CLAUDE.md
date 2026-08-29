@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 pnpm dev                 # Next.js dev server
-pnpm registry:build      # regenerate registry.json + public/r/*.json (run after ANY registry edit)
+pnpm registry:build      # regenerate registry/docs.json, registry.json + public/r/*.json (run after ANY registry edit)
 pnpm build               # registry:build, then next build
 pnpm typecheck           # tsc --noEmit
 pnpm lint                # eslint
@@ -47,7 +47,7 @@ failing, so check the dev console when a card doesn't appear.
 
 ### Where items are registered
 
-`registry/_registry.ts` composes six files, each mapping to one directory:
+`registry/_registry.ts` composes seven files, each mapping to one directory:
 
 | File                      | Target directory         | Holds                                                         |
 | ------------------------- | ------------------------ | ------------------------------------------------------------- |
@@ -57,6 +57,7 @@ failing, so check the dev console when a card doesn't appear.
 | `_examples-registry.ts`   | `examples/<category>/`   | the `-demo` items, one per card                               |
 | `_lib-registry.ts`        | `lib/`                   | utils, highlight, colors, fonts                               |
 | `_hooks-registry.ts`      | `hooks/`                 | use-copy-to-clipboard                                         |
+| `_icons-registry.ts`      | `components/icons/`      | the icon lookups (code-icons, model-icons)                    |
 
 ### The build script is a validator
 
@@ -202,7 +203,8 @@ card just isn't on the page.
    ```
 
    Use `variants:` instead of `components:` for a demo whose tabs are generated from data
-   rather than named exports (see `colors-demo`).
+   rather than named exports (no current entry uses it, but the mechanism is
+   kept for the next data-driven demo).
 
 6. **`pnpm registry:build`**, then check the page. Nothing in `app/` needs editing — the
    grid, sections, numbering, and install commands all derive from the registry.

@@ -6,7 +6,13 @@ import { cn } from "@/lib/utils"
 
 export const paper = "bg-background border border-border/60 dark:bg-popover"
 
-export const floating = "bg-background border border-border/60 dark:bg-popover"
+/* The difference from `paper` is the whole point of having two: a floating
+   surface sits over content, so its fill is one the content shows through and
+   its border is lightened to match. The consumers add `backdrop-blur-xl` —
+   glass is a fill you can see through plus a blur, and an opaque panel under a
+   backdrop filter is just a card. */
+export const floating =
+  "bg-background/70 border border-border/40 dark:bg-popover/70"
 
 export const field = "bg-foreground/[0.04] dark:bg-foreground/[0.06]"
 
@@ -80,11 +86,17 @@ export function SwapLabel({
   children: [React.ReactNode, React.ReactNode]
   className?: string
 }) {
-  const layers = [useRef<HTMLSpanElement>(null), useRef<HTMLSpanElement>(null)]
+  /* Two refs held singly, not as `[useRef(), useRef()]`: an array literal is a
+     fresh identity every render, which either re-runs the measuring effect per
+     render or forces the effect to lie about its dependencies. The refs are
+     the stable things; the pair below is derived where it is read. */
+  const firstLayer = useRef<HTMLSpanElement>(null)
+  const secondLayer = useRef<HTMLSpanElement>(null)
+  const layers = [firstLayer, secondLayer]
   const [width, setWidth] = useState<number | null>(null)
 
   useLayoutEffect(() => {
-    const target = layers[active]?.current
+    const target = (active === 0 ? firstLayer : secondLayer).current
     if (!target) return undefined
     const measure = () =>
       setWidth(Math.ceil(target.getBoundingClientRect().width))

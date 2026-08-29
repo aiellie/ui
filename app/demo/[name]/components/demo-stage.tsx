@@ -41,7 +41,10 @@ function DemoStage({ slug }: { slug: string }) {
            the list in front of you is the point of leaving. */
         fullscreenHref={basePath}
       />
-      <div className="flex min-h-0 flex-1 items-center justify-center bg-dotted p-6 md:p-10">
+      {/* The safe variants, for the reason DESIGN.md gives: centred content
+          wider than the viewport hides both of its ends, and a stage cannot
+          ask a demo to be narrow. Overflow scrolls instead. */}
+      <div className="flex min-h-0 flex-1 items-center-safe justify-center-safe overflow-auto bg-dotted p-6 md:p-10">
         <DemosSwitcher variants={example.variants} active={active} />
       </div>
     </main>

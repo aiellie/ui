@@ -188,25 +188,33 @@ export function MessageActionsDemo() {
  * The row held back until the message is hovered, which is how a thread of them
  * stays readable. `group/message` is what it hovers against.
  */
-export function MessageActionsOnHoverDemo() {
+/* Each message owns its rating — one state shared across the map would show
+   every message wearing whichever thumb was given last. */
+function HoverMessage({ text }: { text: string }) {
   const [rating, setRating] = React.useState<Rating>(null)
 
   return (
+    <div className="group/message flex flex-col gap-1">
+      <BubbleGroup>
+        <Bubble variant="muted">
+          <BubbleContent>{text}</BubbleContent>
+        </Bubble>
+      </BubbleGroup>
+      <MessageActions showOnHover className="ps-1">
+        <CopyAction />
+        <RatingMenu rating={rating} onRating={setRating} />
+        <RetryAction />
+        <MoreMenu />
+      </MessageActions>
+    </div>
+  )
+}
+
+export function MessageActionsOnHoverDemo() {
+  return (
     <div className="flex w-full max-w-sm flex-col gap-4">
       {[answer, "Shipping is behind a flag until Tuesday."].map((text) => (
-        <div key={text} className="group/message flex flex-col gap-1">
-          <BubbleGroup>
-            <Bubble variant="muted">
-              <BubbleContent>{text}</BubbleContent>
-            </Bubble>
-          </BubbleGroup>
-          <MessageActions showOnHover className="ps-1">
-            <CopyAction />
-            <RatingMenu rating={rating} onRating={setRating} />
-            <RetryAction />
-            <MoreMenu />
-          </MessageActions>
-        </div>
+        <HoverMessage key={text} text={text} />
       ))}
     </div>
   )

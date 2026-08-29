@@ -231,15 +231,28 @@ function DiffMark({ row }: { row?: DiffRow }) {
   const tinted = row && (row.kind === "add" || row.kind === "remove")
 
   return (
-    <span
-      aria-hidden
-      className={cn(
-        "w-3 shrink-0 select-none",
-        tinted ? DIFF_MARK[row.kind as "add" | "remove"] : "text-foreground/20"
+    <>
+      <span
+        aria-hidden
+        className={cn(
+          "w-3 shrink-0 select-none",
+          tinted
+            ? DIFF_MARK[row.kind as "add" | "remove"]
+            : "text-foreground/20"
+        )}
+      >
+        {row ? MARKS[row.kind] : ""}
+      </span>
+      {/* The one distinction a diff exists to make, said in a word: the mark
+          is hidden from readers and the tint is only a colour, so without
+          this an added and a removed line arrive as the same stream of code.
+          `select-none` keeps the word out of a copied diff. */}
+      {tinted && (
+        <span className="sr-only select-none">
+          {row.kind === "add" ? "added: " : "removed: "}
+        </span>
       )}
-    >
-      {row ? MARKS[row.kind] : ""}
-    </span>
+    </>
   )
 }
 

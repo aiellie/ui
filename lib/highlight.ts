@@ -138,7 +138,10 @@ function kindOf(match: RegExpMatchArray): TokenKind {
   if (comment) return "comment"
   if (string) return "string"
   if (number) return "number"
-  if (call) return "function"
+  /* A keyword is a keyword even in call position — `while (x)`, `if (x)`,
+     `return (x)` all put a paren after a word the language reserved. The
+     call-site group only decides the kind of a name the language left free. */
+  if (call) return KEYWORDS.has(call) ? "keyword" : "function"
   if (word) return KEYWORDS.has(word) ? "keyword" : "plain"
   return "punctuation"
 }

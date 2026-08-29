@@ -33,9 +33,11 @@ function titleFor({ emoji, count, reacted, people }: Reaction) {
     if (reacted) names.unshift("You")
     return `${names.join(", ")} reacted with ${emoji}`
   }
-  return reacted
-    ? `You and ${count - 1} others reacted with ${emoji}`
-    : `${count} reacted with ${emoji}`
+  if (!reacted) return `${count} reacted with ${emoji}`
+  /* "You and 0 others" is worse than saying so plainly — the same rule the
+     timestamps keep about "in 0 minutes". */
+  if (count === 1) return `You reacted with ${emoji}`
+  return `You and ${count - 1} ${count === 2 ? "other" : "others"} reacted with ${emoji}`
 }
 
 /**

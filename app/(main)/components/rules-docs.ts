@@ -22,18 +22,20 @@ import type { RuleDoc } from "./rules"
  * since every route here is prerendered there is no function for the wider
  * trace to weigh down.
  */
+/* ROADMAP.md and not TODO.md: the roadmap is written for readers, the todo is
+   scratch notes for the author. Publishing working notes reads as candour
+   right up until it reads as unedited. */
 const documents = [
   { name: "claude", file: "CLAUDE.md" },
   { name: "design", file: "DESIGN.md" },
-  { name: "todo", file: "TODO.md" },
+  { name: "roadmap", file: "ROADMAP.md" },
 ]
 
 /**
  * An HTML comment is a note to whoever edits the file, not to whoever reads
- * it — `TODO.md` opens with a marker of exactly that kind. Taken out here
- * rather than in the renderer so the search counts and the rendering agree:
- * a hit in a comment would otherwise be reported on a tab that then had
- * nothing to show for it.
+ * it. Taken out here rather than in the renderer so the search counts and the
+ * rendering agree: a hit in a comment would otherwise be reported on a tab
+ * that then had nothing to show for it.
  */
 function withoutComments(source: string) {
   return source.replace(/<!--[\s\S]*?-->\n?/g, "")
@@ -41,9 +43,9 @@ function withoutComments(source: string) {
 
 /**
  * Drop the document's own title, but only when the title is the document —
- * `# CLAUDE.md` under a tab reading CLAUDE.md is a mistake, while `TODO.md`
- * opens on a heading that is a warning and has to stay. Matching the heading
- * against the file name is what tells the two apart.
+ * `# CLAUDE.md` under a tab reading CLAUDE.md is a mistake, while a heading
+ * that says something of its own has to stay. Matching the heading against
+ * the file name is what tells the two apart.
  */
 function withoutTitle(source: string, file: string) {
   return source.replace(/^#\s+(.*)\n+/, (whole, title: string) =>

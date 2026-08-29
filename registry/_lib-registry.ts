@@ -9,7 +9,8 @@ export const lib: Registry["items"] = [
     name: "utils",
     type: "registry:lib",
     title: "Utils",
-    description: "Utility functions for the elements.",
+    description:
+      "The cn helper every element classes itself with — clsx merged through tailwind-merge, so a caller's className wins the argument.",
     dependencies: ["clsx", "tailwind-merge"],
     files: [
       {

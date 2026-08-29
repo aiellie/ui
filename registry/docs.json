@@ -645,14 +645,14 @@
           },
           {
             "name": "onSelect",
-            "type": "(name: string) => void",
+            "type": "(path: string) => void",
             "optional": true
           },
           {
             "name": "selected",
             "type": "string",
             "optional": true,
-            "description": "Which file is being shown, when the tree is driving something."
+            "description": "The path of the file being shown, when the tree is driving something — the path and not the name, because a project has an `index.ts` in every folder and a selection keyed by name would light up all of them."
           }
         ],
         "extends": []
@@ -1160,7 +1160,7 @@
       },
       {
         "name": "MenuSubTrigger",
-        "description": "A row that opens another menu. The chevron is drawn rather than imported, and it is logical rather than left-to-right: in an RTL layout the submenu opens the other way, and an arrow pointing the wrong way is worse than none.",
+        "description": "A row that opens another menu. Its chevron is logical rather than left-to-right: in an RTL layout the submenu opens the other way, and an arrow pointing the wrong way is worse than none.",
         "props": [],
         "extends": [
           "MenuPrimitive.SubmenuTrigger.Props"
@@ -4068,6 +4068,13 @@
             "description": "The same, for the example that demos it — the button's second option."
           },
           {
+            "name": "docsOpen",
+            "type": "boolean",
+            "optional": true,
+            "description": "Whether the reference beside this demo is showing. Paired with `onDocsOpenChange`; without that handler no button is drawn, since a toolbar has nowhere to put a panel it is not being told about.",
+            "default": "false"
+          },
+          {
             "name": "fullscreen",
             "type": "boolean",
             "optional": true,
@@ -4089,6 +4096,11 @@
             "type": "string",
             "optional": true,
             "description": "The whole line that installs the element, under the terminal button."
+          },
+          {
+            "name": "onDocsOpenChange",
+            "type": "(open: boolean) => void",
+            "optional": true
           },
           {
             "name": "title",

@@ -43,7 +43,8 @@ export const ui: Registry["items"] = [
     name: "bubble",
     type: "registry:ui",
     title: "Bubble",
-    description: "A bubble is a container for a message.",
+    description:
+      "The shape a message wears: muted, tinted, or glass, aligned to its side of the thread, with a content part that can render as anything pressable.",
     registryDependencies: ["utils"],
     dependencies: ["@base-ui/react", "class-variance-authority"],
     files: [
@@ -74,7 +75,8 @@ export const ui: Registry["items"] = [
     name: "input",
     type: "registry:ui",
     title: "Input",
-    description: "A single-line text field.",
+    description:
+      "Base UI's input on the elements' field surface — the quiet fill the composer and the rail's search share, with the same focus treatment throughout.",
     registryDependencies: ["utils"],
     dependencies: ["@base-ui/react"],
     files: [
