@@ -79,7 +79,7 @@ export function ApprovalModeMenuComposerDemo() {
               <ApprovalModeMenuContent side="top" />
             </ApprovalModeMenu>
             <ModelPicker value={model} onValueChange={setModel}>
-              <ModelPickerTrigger showIcon={false} />
+              <ModelPickerTrigger />
               <ModelPickerContent side="top" />
             </ModelPicker>
           </MessageInputToolbar>

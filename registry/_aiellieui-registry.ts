@@ -573,11 +573,11 @@ export const aiellieui: Registry["items"] = [
     description:
       "Which model is answering, and the choosing of another one — the catalogue stood under the house each model comes from, searchable, each row carrying its model's mark and the marks for what it can do, with what it is for and how much it holds a hover away, and the ones above the plan shown locked rather than left out.",
     registryDependencies: [
-      "button",
       "menu",
       "model-icons",
       "models",
       "tooltip",
+      "tooltip-icon-button",
       "utils",
     ],
     dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],

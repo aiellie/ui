@@ -152,7 +152,7 @@ function ToolPickerTrigger({
           tooltip="Tools"
           side="top"
           className={cn(
-            "size-7 rounded-full text-muted-foreground hover:text-foreground",
+            "rounded-full text-muted-foreground hover:text-foreground",
             className
           )}
         />
@@ -217,7 +217,7 @@ function ToolPickerActiveTool({
         if (!event.defaultPrevented) toggle(tool.id, !on)
       }}
       className={cn(
-        "size-7 rounded-full border hover:bg-current/15 hover:no-underline",
+        "rounded-full border hover:bg-current/15 hover:no-underline",
         tool.color,
         className
       )}

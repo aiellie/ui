@@ -19,6 +19,7 @@ import {
   messageInputStack,
   MessageInputSubmit,
   MessageInputToolbar,
+  MessageInputToolbarGroup,
   type MessageInputFieldProps,
   type MessageInputProps,
   type MessageInputSubmitProps,
@@ -243,6 +244,20 @@ export function ComposerToolbar({
   return (
     <MessageInputToolbar
       data-slot="composer-toolbar"
+      className={className}
+      {...props}
+    />
+  )
+}
+
+/** A run within that row, under the name a composer calls it by. */
+export function ComposerToolbarGroup({
+  className,
+  ...props
+}: React.ComponentProps<typeof MessageInputToolbarGroup>) {
+  return (
+    <MessageInputToolbarGroup
+      data-slot="composer-toolbar-group"
       className={className}
       {...props}
     />

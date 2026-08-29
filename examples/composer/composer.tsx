@@ -28,6 +28,7 @@ import {
   ComposerLine,
   ComposerSubmit,
   ComposerToolbar,
+  ComposerToolbarGroup,
 } from "@/components/aiellie-ui/composer/composer"
 import {
   EffortMenu,
@@ -137,12 +138,16 @@ const addActions: AddAction[] = [
 /**
  * The whole of it, in the order the parts belong in: the files it carries
  * above the line, the plus and the send either side of the field on it, and
- * everything the message is being sent with on the row underneath — who is
- * answering, what it may reach for, how hard it should think, and how much it
- * may do unattended.
+ * everything the message is being sent with on the row underneath.
  *
- * Nothing here arranges any of that. The three courses are `composer`'s own
- * parts; this file only says which controls stand on the row.
+ * That row is read from both ends. What the message may *do* is on the left —
+ * what it may reach for, and how much of it goes unwatched — and who is
+ * *answering* is grouped away at the right: the model, and how hard it is being
+ * asked to think, which is a setting on that model rather than a fifth thing in
+ * a line of four. Those two go together or neither is worth grouping.
+ *
+ * Nothing here arranges any of that. The three courses and the run at the end
+ * are `composer`'s own parts; this file only says which controls stand where.
  */
 export function ComposerDemo() {
   const [model, setModel] = React.useState("claude-opus-5")
@@ -218,27 +223,31 @@ export function ComposerDemo() {
             </ComposerLine>
 
             <ComposerToolbar>
-              <ModelPicker value={model} onValueChange={setModel}>
-                <ModelPickerTrigger />
-                <ModelPickerContent side="top" />
-              </ModelPicker>
+            <ApprovalModeMenu value={mode} onValueChange={setMode}>
+                <ApprovalModeMenuTrigger />
+                <ApprovalModeMenuContent side="top" />
+              </ApprovalModeMenu>
               <ToolPicker value={tools} onValueChange={setTools}>
                 <ToolPickerTrigger />
                 <ToolPickerContent side="top" />
                 <ToolPickerActive />
               </ToolPicker>
-              <EffortMenu value={effort} onValueChange={setEffort}>
-                <EffortMenuTrigger />
-                <EffortMenuContent side="top" />
-              </EffortMenu>
-              <ApprovalModeMenu value={mode} onValueChange={setMode}>
-                <ApprovalModeMenuTrigger />
-                <ApprovalModeMenuContent side="top" />
-              </ApprovalModeMenu>
+             
+
+              <ComposerToolbarGroup end>
+                <ModelPicker value={model} onValueChange={setModel}>
+                  <ModelPickerTrigger />
+                  <ModelPickerContent side="top" />
+                </ModelPicker>
+                <EffortMenu value={effort} onValueChange={setEffort}>
+                  <EffortMenuTrigger />
+                  <EffortMenuContent side="top" />
+                </EffortMenu>
+              </ComposerToolbarGroup>
             </ComposerToolbar>
           </ComposerInput>
         </Composer>
-        <p className="min-h-4 ps-1 text-xs text-muted-foreground">{note}</p>
+       {/* <p className="min-h-4 ps-1 text-xs text-muted-foreground">{note}</p> */}
       </div>
     </TooltipProvider>
   )

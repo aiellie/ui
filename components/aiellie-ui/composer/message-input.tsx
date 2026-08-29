@@ -164,6 +164,35 @@ export const MessageInputToolbar = ({
 )
 
 /**
+ * A run of controls within that row, standing as one thing rather than as
+ * however many buttons it holds.
+ *
+ * The gap inside is tighter than the row's own, which is the whole of what
+ * grouping is here: a control is nearer its own kind than it is to anything
+ * outside the run, and that holds however many are added to either side. `end`
+ * sends the run to the far end of the row, and the space that opens up in the
+ * middle is what says the two sides answer different questions — who is
+ * answering on one, what it may do on the other.
+ *
+ * Optional, and pointedly so. A toolbar of four controls reads fine as four
+ * controls; a group is worth reaching for at the point where it does not.
+ */
+export const MessageInputToolbarGroup = ({
+  className,
+  end,
+  ...props
+}: React.ComponentProps<"div"> & {
+  /** Pushes the run to the far end of the row, away from what precedes it. */
+  end?: boolean
+}) => (
+  <div
+    data-slot="message-input-toolbar-group"
+    className={cn("flex items-center gap-0.5", end && "ms-auto", className)}
+    {...props}
+  />
+)
+
+/**
  * Exported so a composer that outgrows a single line can dress a textarea to
  * match rather than guessing at these values.
  */

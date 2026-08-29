@@ -185,7 +185,7 @@ export function AddMenuComposerDemo() {
 
           <MessageInputToolbar>
             <ModelPicker value={model} onValueChange={setModel}>
-              <ModelPickerTrigger showIcon={false} />
+              <ModelPickerTrigger />
               <ModelPickerContent side="top" />
             </ModelPicker>
           </MessageInputToolbar>

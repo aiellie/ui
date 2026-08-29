@@ -51,6 +51,7 @@ import {
   useMentions,
   type MentionItem,
 } from "@/components/aiellie-ui/composer/mentions"
+import { MessageInputToolbarGroup } from "@/components/aiellie-ui/composer/message-input"
 import {
   ModelPicker,
   ModelPickerContent,
@@ -302,6 +303,9 @@ function Header({ subtitle }: { subtitle: string }) {
 /**
  * Everything the composer is being sent with. Four menus and the tools that are
  * on, on the row under the field — which is the whole reason that row exists.
+ *
+ * Read from both ends: what the message may *do* on the left, who is
+ * *answering* grouped away at the right, as in the composer's own demo.
  */
 function Settings({
   model,
@@ -324,23 +328,26 @@ function Settings({
 }) {
   return (
     <>
-      <ModelPicker value={model} onValueChange={onModel}>
-        <ModelPickerTrigger />
-        <ModelPickerContent side="top" />
-      </ModelPicker>
       <ToolPicker value={tools} onValueChange={onTools}>
         <ToolPickerTrigger />
         <ToolPickerContent side="top" />
         <ToolPickerActive />
       </ToolPicker>
-      <EffortMenu value={effort} onValueChange={onEffort}>
-        <EffortMenuTrigger />
-        <EffortMenuContent side="top" />
-      </EffortMenu>
       <ApprovalModeMenu value={mode} onValueChange={onMode}>
         <ApprovalModeMenuTrigger />
         <ApprovalModeMenuContent side="top" />
       </ApprovalModeMenu>
+
+      <MessageInputToolbarGroup end>
+        <ModelPicker value={model} onValueChange={onModel}>
+          <ModelPickerTrigger />
+          <ModelPickerContent side="top" />
+        </ModelPicker>
+        <EffortMenu value={effort} onValueChange={onEffort}>
+          <EffortMenuTrigger />
+          <EffortMenuContent side="top" />
+        </EffortMenu>
+      </MessageInputToolbarGroup>
     </>
   )
 }

@@ -19,13 +19,13 @@ import {
   MenuSubTrigger,
   MenuTrigger,
 } from "@/components/aiellie-ui/menu"
+import { TooltipIconButton } from "@/components/aiellie-ui/tooltip-icon-button"
 import type { ModelIconSet } from "@/components/icons/model-icons"
 import {
   CapabilityIcon,
   ModelIcon,
   ProviderIcon,
 } from "@/components/icons/model-icons"
-import { Button } from "@/components/ui/button"
 import {
   Tooltip,
   TooltipContent,
@@ -54,7 +54,8 @@ import { cn } from "@/lib/utils"
  * stays a list rather than becoming fifteen paragraphs. The search field is
  * what makes that scale: past a dozen models, scanning is slower than typing.
  *
- * The menu is `menu`'s, whole; the marks are `model-icons`'.
+ * The menu is `menu`'s, whole; the marks are `model-icons`'; the trigger is
+ * the `tooltip-icon-button` the rest of the toolbar is drawn with.
  */
 
 type ModelPickerContextValue = {
@@ -172,12 +173,15 @@ function ModelPicker({
 }
 
 /**
- * The chosen model, as the thing that opens the list. It is a ghost button and
- * a small one on purpose: in a composer this sits beside the field, and a
- * control with a border on it competes with the field for the same attention.
+ * The model that is answering, as the mark that opens the list.
+ * `TooltipIconButton` is the control, as it is on the three menus beside it on
+ * a composer's toolbar: ghost, square, and carrying the model's name on a
+ * hover, so a row of glyphs still says which model is writing without taking a
+ * name's width to do it.
  *
  * The mark is the model's rather than the house's — someone running Qwen is not
- * looking for Alibaba.
+ * looking for Alibaba. `ModelIcon` falls back on its own for a model the
+ * catalogue has never heard of, so the button is never empty.
  *
  * `render` is passed straight through, so a composer with a control of its own
  * keeps it and only borrows the behaviour.
@@ -185,9 +189,8 @@ function ModelPicker({
 function ModelPickerTrigger({
   className,
   children,
-  showIcon = true,
   ...props
-}: React.ComponentProps<typeof MenuTrigger> & { showIcon?: boolean }) {
+}: React.ComponentProps<typeof MenuTrigger>) {
   const { value, models, icons } = useModelPickerContext("ModelPickerTrigger")
   const model = findModel(value, models)
 
@@ -196,15 +199,12 @@ function ModelPickerTrigger({
       data-slot="model-picker-trigger"
       aria-label={model ? `Model: ${model.name}` : "Choose a model"}
       render={
-        <Button
+        <TooltipIconButton
           type="button"
-          variant="ghost"
-          size="sm"
+          tooltip={model?.name ?? "Choose a model"}
+          side="top"
           className={cn(
-            // `w-fit` because a Button is `width: auto` and a picker put in a
-            // column would otherwise be stretched the width of the column —
-            // a chip that says which model is answering, drawn as a bar.
-            "w-fit gap-1.5 font-medium text-muted-foreground hover:text-foreground",
+            "size-7 text-muted-foreground hover:text-foreground",
             className
           )}
         />
@@ -212,17 +212,12 @@ function ModelPickerTrigger({
       {...props}
     >
       {children ?? (
-        <>
-          {showIcon && model ? (
-            <ModelIcon
-              model={model.id}
-              provider={model.provider}
-              set={icons}
-              className="size-3.5 opacity-70"
-            />
-          ) : null}
-          {model?.name ?? "Choose a model"}
-        </>
+        <ModelIcon
+          model={model?.id ?? value}
+          provider={model?.provider}
+          set={icons}
+          className="size-3.5 opacity-70"
+        />
       )}
     </MenuTrigger>
   )

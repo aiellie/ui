@@ -87,7 +87,7 @@ export function PromptMenuComposerDemo() {
               <PromptMenuContent side="top" />
             </PromptMenu>
             <ModelPicker value={model} onValueChange={setModel}>
-              <ModelPickerTrigger showIcon={false} />
+              <ModelPickerTrigger />
               <ModelPickerContent side="top" />
             </ModelPicker>
           </MessageInputToolbar>

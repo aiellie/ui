@@ -660,11 +660,11 @@
       "title": "Model Picker",
       "description": "Which model is answering, and the choosing of another one — the catalogue stood under the house each model comes from, searchable, each row carrying its model's mark and the marks for what it can do, with what it is for and how much it holds a hover away, and the ones above the plan shown locked rather than left out.",
       "registryDependencies": [
-        "https://ui.aiellie.dev/r/button.json",
         "https://ui.aiellie.dev/r/menu.json",
         "https://ui.aiellie.dev/r/model-icons.json",
         "https://ui.aiellie.dev/r/models.json",
         "https://ui.aiellie.dev/r/tooltip.json",
+        "https://ui.aiellie.dev/r/tooltip-icon-button.json",
         "https://ui.aiellie.dev/r/utils.json"
       ],
       "dependencies": [
@@ -1139,6 +1139,7 @@
         "https://ui.aiellie.dev/r/effort-menu.json",
         "https://ui.aiellie.dev/r/empty-state.json",
         "https://ui.aiellie.dev/r/mentions.json",
+        "https://ui.aiellie.dev/r/message-input.json",
         "https://ui.aiellie.dev/r/model-picker.json",
         "https://ui.aiellie.dev/r/response.json",
         "https://ui.aiellie.dev/r/slash-menu.json",

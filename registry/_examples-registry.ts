@@ -66,6 +66,7 @@ export const examples: Registry["items"] = [
       "effort-menu",
       "empty-state",
       "mentions",
+      "message-input",
       "model-picker",
       "response",
       "slash-menu",
