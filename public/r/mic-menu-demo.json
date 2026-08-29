@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "mic-menu-demo",
+  "title": "Mic Menu",
+  "description": "The system's own input list, numbered honestly until access is granted and named the moment it is.",
+  "registryDependencies": [
+    "https://ui.aiellie.dev/r/mic-menu.json",
+    "https://ui.aiellie.dev/r/tooltip.json"
+  ],
+  "files": [
+    {
+      "path": "examples/audio/mic-menu.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport {\n  MicMenu,\n  MicMenuContent,\n  MicMenuTrigger,\n} from \"@/components/aiellie-ui/audio/mic-menu\"\nimport { TooltipProvider } from \"@/components/ui/tooltip\"\n\n/**\n * The system's own input list. Until the page has been granted the\n * microphone once the browser blanks the names — the menu numbers them\n * honestly and offers the one-tap grant that reveals them.\n */\nexport function MicMenuDemo() {\n  const [device, setDevice] = React.useState(\"\")\n\n  return (\n    <TooltipProvider>\n      <div className=\"flex flex-col items-center gap-2\">\n        <MicMenu value={device} onValueChange={setDevice}>\n          <MicMenuTrigger showLabel />\n          <MicMenuContent />\n        </MicMenu>\n        <p className=\"max-w-60 text-center text-[11px] text-muted-foreground\">\n          {device\n            ? \"Chosen for the next call.\"\n            : \"The system default, until one is chosen.\"}\n        </p>\n      </div>\n    </TooltipProvider>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/audio/mic-menu.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Default",
+        "demo": "MicMenuDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "audio"
+  ],
+  "type": "registry:example"
+}

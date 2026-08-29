@@ -1,0 +1,39 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "mesh-gradient-demo",
+  "title": "Mesh Gradient",
+  "description": "The house indigo folding over itself — and what it is for: a wash to stand glass on, with the card above borrowing the menus' own surface.",
+  "dependencies": [
+    "@hugeicons/core-free-icons",
+    "@hugeicons/react"
+  ],
+  "registryDependencies": [
+    "https://ui.aiellie.dev/r/mesh-gradient.json",
+    "https://ui.aiellie.dev/r/empty-state.json"
+  ],
+  "files": [
+    {
+      "path": "examples/media/mesh-gradient.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { BubbleChatIcon } from \"@hugeicons/core-free-icons\"\nimport { HugeiconsIcon } from \"@hugeicons/react\"\n\nimport {\n  EmptyState,\n  EmptyStateDescription,\n  EmptyStateMedia,\n  EmptyStateTitle,\n} from \"@/components/aiellie-ui/composer/empty-state\"\nimport { MeshGradientBackground } from \"@/components/aiellie-ui/mesh-gradient\"\n\n/** The house indigo, folding over itself at a walking pace. */\nexport function MeshGradientDemo() {\n  return <MeshGradientBackground className=\"max-w-lg\" />\n}\n\n/**\n * What it is for: a wash to stand glass on. The panel above it borrows the\n * menus' own surface, so backdrop and card read as one design rather than a\n * screenshot with a widget pasted over it.\n */\nexport function MeshGradientBackdropDemo() {\n  return (\n    <MeshGradientBackground className=\"h-80 max-w-lg\" speed={0.35}>\n      <div className=\"flex h-full items-center justify-center p-6\">\n        <div className=\"w-full max-w-2xs rounded-2xl border border-white/30 bg-background/70 p-6 shadow-xl backdrop-blur-xl dark:bg-popover/70\">\n          <EmptyState size=\"sm\">\n            <EmptyStateMedia>\n              <HugeiconsIcon icon={BubbleChatIcon} />\n            </EmptyStateMedia>\n            <EmptyStateTitle>Ask anything</EmptyStateTitle>\n            <EmptyStateDescription>\n              Glass over the gradient — the wash stays busy, the words stay\n              still.\n            </EmptyStateDescription>\n          </EmptyState>\n        </div>\n      </div>\n    </MeshGradientBackground>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/media/mesh-gradient.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Default",
+        "demo": "MeshGradientDemo"
+      },
+      {
+        "name": "Backdrop",
+        "demo": "MeshGradientBackdropDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "media"
+  ],
+  "type": "registry:example"
+}

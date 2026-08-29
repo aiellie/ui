@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "mesh-gradient",
+  "title": "Mesh Gradient",
+  "description": "Moving colour to stand things on: the house indigo folding over itself at a walking pace, standing still for anyone who asked for less motion, with the children rendered above the shader so it backs a whole card as easily as it fills a panel.",
+  "dependencies": [
+    "@paper-design/shaders-react"
+  ],
+  "registryDependencies": [
+    "https://ui.aiellie.dev/r/utils.json"
+  ],
+  "files": [
+    {
+      "path": "components/aiellie-ui/mesh-gradient.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { MeshGradient } from \"@paper-design/shaders-react\"\n\nimport { cn } from \"@/lib/utils\"\n\n/**\n * Moving colour to stand things on: the house indigo, folding over itself.\n *\n * A backdrop, not a picture — the defaults keep to one hue family so glass\n * surfaces sitting on it stay legible, and the motion sits at a walking\n * pace because a background that demands watching has changed jobs. The\n * children render above the shader, so the same component is the panel on\n * its own and the wash behind a whole card.\n */\n\n/** One family, four weights — the site's own primary and its tints, so the\n * gradient reads as the brand breathing rather than as a screensaver. */\nconst BRAND_COLORS = [\"#4f46e5\", \"#818cf8\", \"#c7d2fe\", \"#e0e7ff\"]\n\nexport interface MeshGradientBackgroundProps extends React.ComponentProps<\"div\"> {\n  colors?: string[]\n  /** Walking pace by default. 0 stands still. */\n  speed?: number\n  distortion?: number\n  swirl?: number\n}\n\nexport function MeshGradientBackground({\n  colors = BRAND_COLORS,\n  speed = 0.5,\n  distortion = 0.8,\n  swirl = 0.6,\n  className,\n  children,\n  ...props\n}: MeshGradientBackgroundProps) {\n  /* One `prefers-reduced-motion` read, kept live: a shader animating at any\n     speed is motion, and the CSS escape hatches cannot reach a WebGL clock. */\n  const still = React.useSyncExternalStore(\n    (onChange) => {\n      const query = window.matchMedia(\"(prefers-reduced-motion: reduce)\")\n      query.addEventListener(\"change\", onChange)\n      return () => query.removeEventListener(\"change\", onChange)\n    },\n    () => window.matchMedia(\"(prefers-reduced-motion: reduce)\").matches,\n    () => false\n  )\n\n  return (\n    <div\n      data-slot=\"mesh-gradient\"\n      className={cn(\n        \"relative h-64 w-full overflow-hidden rounded-2xl border border-border/60\",\n        className\n      )}\n      {...props}\n    >\n      <MeshGradient\n        className=\"absolute inset-0 size-full\"\n        colors={colors}\n        distortion={distortion}\n        swirl={swirl}\n        speed={still ? 0 : speed}\n      />\n      {children ? (\n        <div className=\"relative z-10 h-full w-full\">{children}</div>\n      ) : null}\n    </div>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "components/aiellie-ui/mesh-gradient.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

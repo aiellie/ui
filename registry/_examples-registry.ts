@@ -1286,4 +1286,145 @@ export const examples: Registry["items"] = [
       wide: false,
     },
   },
+  {
+    name: "orb-demo",
+    type: "registry:example",
+    title: "Orb",
+    description:
+      "The orb, driven: five states to put it in — listening opens the real microphone and the orb swells with the room — presets to name it by, a shuffle that rolls a word, and a grid proving any word always looks the same.",
+    registryDependencies: [
+      "orb",
+      "tooltip-icon-button",
+      "tooltip",
+      "use-audio-level",
+      "utils",
+    ],
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    files: [
+      {
+        path: "examples/audio/orb.tsx",
+        type: "registry:example",
+        target: "examples/audio/orb.tsx",
+      },
+    ],
+    categories: ["audio"],
+    meta: {
+      variants: [
+        { name: "Orb", demo: "OrbDemo" },
+        { name: "Seeds", demo: "OrbSeedsDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "waveform-demo",
+    type: "registry:example",
+    title: "Waveform",
+    description:
+      "A clip's shape with the whole strip as the slider, and the live window carrying the room once the microphone is allowed — breathing on a sample swell until it is.",
+    registryDependencies: ["waveform", "button", "use-audio-level"],
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    files: [
+      {
+        path: "examples/audio/waveform.tsx",
+        type: "registry:example",
+        target: "examples/audio/waveform.tsx",
+      },
+    ],
+    categories: ["audio"],
+    meta: {
+      variants: [
+        { name: "Clip", demo: "WaveformDemo" },
+        { name: "Live", demo: "WaveformLiveDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "audio-player-demo",
+    type: "registry:example",
+    title: "Audio Player",
+    description:
+      "A playable clip with no file shipped: the demo synthesises a small figure on mount and hands the player a blob URL — the element is real, only the material is minted locally.",
+    registryDependencies: ["audio-player"],
+    files: [
+      {
+        path: "examples/audio/audio-player.tsx",
+        type: "registry:example",
+        target: "examples/audio/audio-player.tsx",
+      },
+    ],
+    categories: ["audio"],
+    meta: {
+      variants: [{ name: "Default", demo: "AudioPlayerDemo" }],
+      wide: false,
+    },
+  },
+  {
+    name: "mic-menu-demo",
+    type: "registry:example",
+    title: "Mic Menu",
+    description:
+      "The system's own input list, numbered honestly until access is granted and named the moment it is.",
+    registryDependencies: ["mic-menu", "tooltip"],
+    files: [
+      {
+        path: "examples/audio/mic-menu.tsx",
+        type: "registry:example",
+        target: "examples/audio/mic-menu.tsx",
+      },
+    ],
+    categories: ["audio"],
+    meta: {
+      variants: [{ name: "Default", demo: "MicMenuDemo" }],
+      wide: false,
+    },
+  },
+  {
+    name: "transcript-demo",
+    type: "registry:example",
+    title: "Transcript",
+    description:
+      "A call being written down as it happens: each line arrives as a shimmering guess that grows word by word and settles into ink — and the two states side by side, standing still.",
+    registryDependencies: ["transcript"],
+    files: [
+      {
+        path: "examples/audio/transcript.tsx",
+        type: "registry:example",
+        target: "examples/audio/transcript.tsx",
+      },
+    ],
+    categories: ["audio"],
+    meta: {
+      variants: [
+        { name: "Live", demo: "TranscriptDemo" },
+        { name: "States", demo: "TranscriptStatesDemo" },
+      ],
+      wide: false,
+    },
+  },
+  {
+    name: "mesh-gradient-demo",
+    type: "registry:example",
+    title: "Mesh Gradient",
+    description:
+      "The house indigo folding over itself — and what it is for: a wash to stand glass on, with the card above borrowing the menus' own surface.",
+    registryDependencies: ["mesh-gradient", "empty-state"],
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    files: [
+      {
+        path: "examples/media/mesh-gradient.tsx",
+        type: "registry:example",
+        target: "examples/media/mesh-gradient.tsx",
+      },
+    ],
+    categories: ["media"],
+    meta: {
+      variants: [
+        { name: "Default", demo: "MeshGradientDemo" },
+        { name: "Backdrop", demo: "MeshGradientBackdropDemo" },
+      ],
+      wide: false,
+    },
+  },
 ]

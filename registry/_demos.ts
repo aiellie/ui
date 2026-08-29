@@ -46,6 +46,12 @@ import {
   Album02Icon,
   Exchange01Icon,
   AspectRatioIcon,
+  RippleIcon,
+  AudioWave01Icon,
+  PlayIcon,
+  Mic01Icon,
+  SubtitleIcon,
+  PaintBoardIcon,
 } from "@hugeicons/core-free-icons"
 import type { IconSvgElement } from "@hugeicons/react"
 import type { RegistryItem } from "shadcn/schema"
@@ -92,6 +98,12 @@ import * as mediaDemos from "@/examples/media/media"
 import * as mediaGalleryDemos from "@/examples/media/media-gallery"
 import * as imageCompareDemos from "@/examples/media/image-compare"
 import * as ratioMenuDemos from "@/examples/composer/ratio-menu"
+import * as orbDemos from "@/examples/audio/orb"
+import * as waveformDemos from "@/examples/audio/waveform"
+import * as audioPlayerDemos from "@/examples/audio/audio-player"
+import * as micMenuDemos from "@/examples/audio/mic-menu"
+import * as transcriptDemos from "@/examples/audio/transcript"
+import * as meshGradientDemos from "@/examples/media/mesh-gradient"
 import * as reasoningDemos from "@/examples/messages/reasoning"
 import * as responseDemos from "@/examples/messages/response"
 import * as streamingTextDemos from "@/examples/messages/streaming-text"
@@ -278,6 +290,30 @@ const exampleDemos: Record<string, ExampleDemos> = {
   "ratio-menu-demo": {
     icon: AspectRatioIcon,
     components: { ...ratioMenuDemos },
+  },
+  "orb-demo": {
+    icon: RippleIcon,
+    components: { ...orbDemos },
+  },
+  "waveform-demo": {
+    icon: AudioWave01Icon,
+    components: { ...waveformDemos },
+  },
+  "audio-player-demo": {
+    icon: PlayIcon,
+    components: { ...audioPlayerDemos },
+  },
+  "mic-menu-demo": {
+    icon: Mic01Icon,
+    components: { ...micMenuDemos },
+  },
+  "transcript-demo": {
+    icon: SubtitleIcon,
+    components: { ...transcriptDemos },
+  },
+  "mesh-gradient-demo": {
+    icon: PaintBoardIcon,
+    components: { ...meshGradientDemos },
   },
   "response-demo": {
     icon: ParagraphIcon,

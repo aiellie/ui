@@ -19,4 +19,18 @@ export const hooks: Registry["items"] = [
       },
     ],
   },
+  {
+    name: "use-audio-level",
+    type: "registry:hook",
+    title: "Use Audio Level",
+    description:
+      "The microphone as one number: how loud the room is right now, 0 to 1, smoothed to move like motion — with a start that can name a device and a stop that genuinely lets the microphone go.",
+    files: [
+      {
+        path: "hooks/use-audio-level.ts",
+        type: "registry:hook",
+        target: "hooks/use-audio-level.ts",
+      },
+    ],
+  },
 ]

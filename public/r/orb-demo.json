@@ -1,0 +1,42 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "orb-demo",
+  "title": "Orb",
+  "description": "The orb, driven: five states to put it in — listening opens the real microphone and the orb swells with the room — presets to name it by, a shuffle that rolls a word, and a grid proving any word always looks the same.",
+  "dependencies": [
+    "@hugeicons/core-free-icons",
+    "@hugeicons/react"
+  ],
+  "registryDependencies": [
+    "https://ui.aiellie.dev/r/orb.json",
+    "https://ui.aiellie.dev/r/tooltip-icon-button.json",
+    "https://ui.aiellie.dev/r/tooltip.json",
+    "https://ui.aiellie.dev/r/use-audio-level.json",
+    "https://ui.aiellie.dev/r/utils.json"
+  ],
+  "files": [
+    {
+      "path": "examples/audio/orb.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport {\n  AiBrain01Icon,\n  CircleIcon,\n  EyeClosedIcon,\n  Megaphone01Icon,\n  Mic01Icon,\n  ShuffleIcon,\n} from \"@hugeicons/core-free-icons\"\nimport { HugeiconsIcon, type IconSvgElement } from \"@hugeicons/react\"\n\nimport {\n  Orb,\n  orbPresets,\n  type OrbState,\n} from \"@/components/aiellie-ui/audio/orb\"\nimport { TooltipIconButton } from \"@/components/aiellie-ui/tooltip-icon-button\"\nimport { TooltipProvider } from \"@/components/ui/tooltip\"\nimport { useAudioLevel } from \"@/hooks/use-audio-level\"\nimport { cn } from \"@/lib/utils\"\n\nconst STATES: { state: OrbState; icon: IconSvgElement; label: string }[] = [\n  { state: \"idle\", icon: CircleIcon, label: \"Idle\" },\n  { state: \"listening\", icon: Mic01Icon, label: \"Listening\" },\n  { state: \"thinking\", icon: AiBrain01Icon, label: \"Thinking\" },\n  { state: \"speaking\", icon: Megaphone01Icon, label: \"Speaking\" },\n  { state: \"asleep\", icon: EyeClosedIcon, label: \"Asleep\" },\n]\n\n/* Two-word names roll pronounceable seeds — short enough to say out loud,\n   and they round-trip because the look derives from the name itself. */\nconst ADJECTIVES = [\n  \"amber\",\n  \"cobalt\",\n  \"dusk\",\n  \"ember\",\n  \"jade\",\n  \"lunar\",\n  \"neon\",\n  \"opal\",\n  \"tidal\",\n  \"velvet\",\n]\nconst NOUNS = [\n  \"arc\",\n  \"bloom\",\n  \"drift\",\n  \"echo\",\n  \"flux\",\n  \"glow\",\n  \"orbit\",\n  \"pulse\",\n  \"tide\",\n  \"wisp\",\n]\n\nconst randomSeed = () => {\n  const pick = (list: string[]) => list[Math.floor(Math.random() * list.length)]\n  return `${pick(ADJECTIVES)}-${pick(NOUNS)}`\n}\n\n/**\n * The orb, driven: five states to put it in — listening opens the real\n * microphone, and the orb swells with the room — and a name to theme it by.\n * Preset names land on their preset; the shuffle rolls a word, and any word\n * always looks the same.\n */\nexport function OrbDemo() {\n  const [state, setState] = React.useState<OrbState>(\"idle\")\n  const [seed, setSeed] = React.useState(\"aiellie\")\n  const { level, listening, start, stop } = useAudioLevel()\n\n  /* Listening is the one state backed by hardware: entering it opens the\n     mic, leaving it closes it again — the orb must never keep a tab's mic\n     light on for decoration. */\n  const changeState = (next: OrbState) => {\n    setState(next)\n    if (next === \"listening\") {\n      if (!listening) void start()\n    } else if (listening) {\n      stop()\n    }\n  }\n\n  return (\n    <TooltipProvider>\n      <div className=\"flex w-full max-w-sm flex-col items-center gap-5\">\n        <Orb state={state} seed={seed} size={180} level={level} />\n\n        <div\n          role=\"toolbar\"\n          aria-label=\"Orb state\"\n          className=\"flex items-center gap-1\"\n        >\n          {STATES.map((entry) => (\n            <TooltipIconButton\n              key={entry.state}\n              tooltip={entry.label}\n              aria-pressed={state === entry.state}\n              onClick={() => changeState(entry.state)}\n              className={cn(\n                state === entry.state &&\n                  \"bg-primary text-primary-foreground hover:bg-primary/85 hover:text-primary-foreground\"\n              )}\n            >\n              <HugeiconsIcon icon={entry.icon} />\n            </TooltipIconButton>\n          ))}\n        </div>\n\n        <div className=\"flex flex-wrap items-center justify-center gap-1.5\">\n          {Object.keys(orbPresets).map((name) => (\n            <button\n              key={name}\n              type=\"button\"\n              aria-pressed={seed === name}\n              onClick={() => setSeed(name)}\n              className={cn(\n                \"rounded-full border border-dashed border-border px-2.5 py-1 text-[11px] font-medium text-muted-foreground transition-colors hover:text-foreground motion-reduce:transition-none\",\n                seed === name &&\n                  \"border-solid border-transparent bg-primary/10 text-primary\"\n              )}\n            >\n              {name}\n            </button>\n          ))}\n          <TooltipIconButton\n            tooltip=\"Roll a seed\"\n            className=\"size-6\"\n            onClick={() => setSeed(randomSeed())}\n          >\n            <HugeiconsIcon icon={ShuffleIcon} className=\"size-3.5\" />\n          </TooltipIconButton>\n        </div>\n\n        {/* The word currently naming the look — any word works. */}\n        <p className=\"text-[11px] text-muted-foreground tabular-nums\">\n          seed: {seed}\n        </p>\n      </div>\n    </TooltipProvider>\n  )\n}\n\n/**\n * Four names, four orbs, forever: the point of seeding is that a look can\n * be spoken. These are ordinary words hashed into palettes nobody drew.\n */\nexport function OrbSeedsDemo() {\n  const seeds = [\"dusk-orbit\", \"jade-pulse\", \"ember-tide\", \"lunar-wisp\"]\n\n  return (\n    <div className=\"grid grid-cols-2 gap-6 sm:grid-cols-4\">\n      {seeds.map((seed) => (\n        <figure key={seed} className=\"flex flex-col items-center gap-2\">\n          <Orb seed={seed} size={88} />\n          <figcaption className=\"text-[11px] text-muted-foreground\">\n            {seed}\n          </figcaption>\n        </figure>\n      ))}\n    </div>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/audio/orb.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Orb",
+        "demo": "OrbDemo"
+      },
+      {
+        "name": "Seeds",
+        "demo": "OrbSeedsDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "audio"
+  ],
+  "type": "registry:example"
+}

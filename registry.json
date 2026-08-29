@@ -993,6 +993,159 @@
       ]
     },
     {
+      "name": "orb",
+      "type": "registry:ui",
+      "title": "Orb",
+      "description": "The assistant, embodied: a sphere of moving colour that idles, listens, thinks, speaks and sleeps — its look named by a seed word that always resolves to the same palette, its surface swelling with the microphone, and its body language plain CSS with a motion-reduce escape.",
+      "dependencies": [
+        "@paper-design/shaders-react"
+      ],
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "css": {
+        "@keyframes orb-breathe": {
+          "0%, 100%": {
+            "scale": "1"
+          },
+          "50%": {
+            "scale": "1.02"
+          }
+        },
+        "@keyframes orb-pulse": {
+          "0%, 100%": {
+            "scale": "1"
+          },
+          "30%": {
+            "scale": "1.06"
+          },
+          "60%": {
+            "scale": "0.99"
+          },
+          "80%": {
+            "scale": "1.05"
+          }
+        },
+        "@keyframes orb-drowse": {
+          "0%, 100%": {
+            "scale": "0.86"
+          },
+          "50%": {
+            "scale": "0.9"
+          }
+        }
+      },
+      "files": [
+        {
+          "path": "components/aiellie-ui/audio/orb.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/audio/orb.tsx"
+        }
+      ]
+    },
+    {
+      "name": "waveform",
+      "type": "registry:ui",
+      "title": "Waveform",
+      "description": "Sound as the bars everyone already reads, in audio's two tenses: a clip's peaks laid out whole and scrubbable through one real range input, and a live window of the room sliding as the level arrives.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/audio/waveform.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/audio/waveform.tsx"
+        }
+      ]
+    },
+    {
+      "name": "audio-player",
+      "type": "registry:ui",
+      "title": "Audio Player",
+      "description": "A clip in a chat, playable where it stands: a play that becomes a pause, the clip's own shape to scrub through, and the time in digits that do not jitter — parts around a real audio element that keeps the state.",
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/actions.json",
+        "https://ui.aiellie.dev/r/waveform.json",
+        "https://ui.aiellie.dev/r/tooltip-icon-button.json",
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/audio/audio-player.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/audio/audio-player.tsx"
+        }
+      ]
+    },
+    {
+      "name": "mic-menu",
+      "type": "registry:ui",
+      "title": "Mic Menu",
+      "description": "Which microphone, chosen where the call is set up — honest about the browser blanking names before access is granted, numbered until then, with one row that asks and a list that redraws when a headset is plugged in.",
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/menu.json",
+        "https://ui.aiellie.dev/r/tooltip-icon-button.json",
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/audio/mic-menu.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/audio/mic-menu.tsx"
+        }
+      ]
+    },
+    {
+      "name": "transcript",
+      "type": "registry:ui",
+      "title": "Transcript",
+      "description": "Speech becoming text: guessed words shimmer while the recogniser can still change its mind and settle into ink when it commits, in a log that follows itself and never reads a sentence out before it is final.",
+      "dependencies": [
+        "tw-shimmer"
+      ],
+      "css": {
+        "@import \"tw-shimmer\"": {}
+      },
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/audio/transcript.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/audio/transcript.tsx"
+        }
+      ]
+    },
+    {
+      "name": "mesh-gradient",
+      "type": "registry:ui",
+      "title": "Mesh Gradient",
+      "description": "Moving colour to stand things on: the house indigo folding over itself at a walking pace, standing still for anyone who asked for less motion, with the children rendered above the shader so it backs a whole card as easily as it fills a panel.",
+      "dependencies": [
+        "@paper-design/shaders-react"
+      ],
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "components/aiellie-ui/mesh-gradient.tsx",
+          "type": "registry:ui",
+          "target": "components/aiellie-ui/mesh-gradient.tsx"
+        }
+      ]
+    },
+    {
       "name": "actions",
       "type": "registry:component",
       "title": "Actions",
@@ -3132,6 +3285,210 @@
       }
     },
     {
+      "name": "orb-demo",
+      "type": "registry:example",
+      "title": "Orb",
+      "description": "The orb, driven: five states to put it in — listening opens the real microphone and the orb swells with the room — presets to name it by, a shuffle that rolls a word, and a grid proving any word always looks the same.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/orb.json",
+        "https://ui.aiellie.dev/r/tooltip-icon-button.json",
+        "https://ui.aiellie.dev/r/tooltip.json",
+        "https://ui.aiellie.dev/r/use-audio-level.json",
+        "https://ui.aiellie.dev/r/utils.json"
+      ],
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "files": [
+        {
+          "path": "examples/audio/orb.tsx",
+          "type": "registry:example",
+          "target": "examples/audio/orb.tsx"
+        }
+      ],
+      "categories": [
+        "audio"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Orb",
+            "demo": "OrbDemo"
+          },
+          {
+            "name": "Seeds",
+            "demo": "OrbSeedsDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "waveform-demo",
+      "type": "registry:example",
+      "title": "Waveform",
+      "description": "A clip's shape with the whole strip as the slider, and the live window carrying the room once the microphone is allowed — breathing on a sample swell until it is.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/waveform.json",
+        "https://ui.aiellie.dev/r/button.json",
+        "https://ui.aiellie.dev/r/use-audio-level.json"
+      ],
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "files": [
+        {
+          "path": "examples/audio/waveform.tsx",
+          "type": "registry:example",
+          "target": "examples/audio/waveform.tsx"
+        }
+      ],
+      "categories": [
+        "audio"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Clip",
+            "demo": "WaveformDemo"
+          },
+          {
+            "name": "Live",
+            "demo": "WaveformLiveDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "audio-player-demo",
+      "type": "registry:example",
+      "title": "Audio Player",
+      "description": "A playable clip with no file shipped: the demo synthesises a small figure on mount and hands the player a blob URL — the element is real, only the material is minted locally.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/audio-player.json"
+      ],
+      "files": [
+        {
+          "path": "examples/audio/audio-player.tsx",
+          "type": "registry:example",
+          "target": "examples/audio/audio-player.tsx"
+        }
+      ],
+      "categories": [
+        "audio"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Default",
+            "demo": "AudioPlayerDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "mic-menu-demo",
+      "type": "registry:example",
+      "title": "Mic Menu",
+      "description": "The system's own input list, numbered honestly until access is granted and named the moment it is.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/mic-menu.json",
+        "https://ui.aiellie.dev/r/tooltip.json"
+      ],
+      "files": [
+        {
+          "path": "examples/audio/mic-menu.tsx",
+          "type": "registry:example",
+          "target": "examples/audio/mic-menu.tsx"
+        }
+      ],
+      "categories": [
+        "audio"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Default",
+            "demo": "MicMenuDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "transcript-demo",
+      "type": "registry:example",
+      "title": "Transcript",
+      "description": "A call being written down as it happens: each line arrives as a shimmering guess that grows word by word and settles into ink — and the two states side by side, standing still.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/transcript.json"
+      ],
+      "files": [
+        {
+          "path": "examples/audio/transcript.tsx",
+          "type": "registry:example",
+          "target": "examples/audio/transcript.tsx"
+        }
+      ],
+      "categories": [
+        "audio"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Live",
+            "demo": "TranscriptDemo"
+          },
+          {
+            "name": "States",
+            "demo": "TranscriptStatesDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
+      "name": "mesh-gradient-demo",
+      "type": "registry:example",
+      "title": "Mesh Gradient",
+      "description": "The house indigo folding over itself — and what it is for: a wash to stand glass on, with the card above borrowing the menus' own surface.",
+      "registryDependencies": [
+        "https://ui.aiellie.dev/r/mesh-gradient.json",
+        "https://ui.aiellie.dev/r/empty-state.json"
+      ],
+      "dependencies": [
+        "@hugeicons/core-free-icons",
+        "@hugeicons/react"
+      ],
+      "files": [
+        {
+          "path": "examples/media/mesh-gradient.tsx",
+          "type": "registry:example",
+          "target": "examples/media/mesh-gradient.tsx"
+        }
+      ],
+      "categories": [
+        "media"
+      ],
+      "meta": {
+        "variants": [
+          {
+            "name": "Default",
+            "demo": "MeshGradientDemo"
+          },
+          {
+            "name": "Backdrop",
+            "demo": "MeshGradientBackdropDemo"
+          }
+        ],
+        "wide": false
+      }
+    },
+    {
       "name": "utils",
       "type": "registry:lib",
       "title": "Utils",
@@ -3293,6 +3650,19 @@
           "path": "hooks/use-copy-to-clipboard.ts",
           "type": "registry:hook",
           "target": "hooks/use-copy-to-clipboard.ts"
+        }
+      ]
+    },
+    {
+      "name": "use-audio-level",
+      "type": "registry:hook",
+      "title": "Use Audio Level",
+      "description": "The microphone as one number: how loud the room is right now, 0 to 1, smoothed to move like motion — with a start that can name a device and a stop that genuinely lets the microphone go.",
+      "files": [
+        {
+          "path": "hooks/use-audio-level.ts",
+          "type": "registry:hook",
+          "target": "hooks/use-audio-level.ts"
         }
       ]
     },

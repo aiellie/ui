@@ -4427,6 +4427,385 @@
       "messageActionItem"
     ]
   },
+  "orb": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/audio/orb",
+        "names": [
+          "Orb",
+          "OrbColors",
+          "OrbConfig",
+          "orbConfigFromSeed",
+          "orbPresets",
+          "OrbProps",
+          "OrbState"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "Orb",
+        "props": [
+          {
+            "name": "colors",
+            "type": "OrbColors",
+            "optional": true,
+            "description": "Overrides the seed's palette while keeping its tuning."
+          },
+          {
+            "name": "level",
+            "type": "number",
+            "optional": true,
+            "description": "How loud the person is, 0–1 — `use-audio-level`'s number. Only read while listening or speaking, where it swells the orb and roughens the surface; the states carry themselves without it.",
+            "default": "0"
+          },
+          {
+            "name": "seed",
+            "type": "string",
+            "optional": true,
+            "description": "Names the look: a preset name lands on that preset, any other word hashes to a look that never changes for that word.",
+            "default": "\"aiellie\""
+          },
+          {
+            "name": "size",
+            "type": "number",
+            "optional": true,
+            "description": "Edge of the square shader, and so the diameter of the orb.",
+            "default": "160"
+          },
+          {
+            "name": "state",
+            "type": "OrbState",
+            "optional": true,
+            "default": "\"idle\""
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"div\">, \"children\">"
+        ]
+      }
+    ],
+    "exports": [
+      "OrbColors",
+      "OrbConfig",
+      "orbConfigFromSeed",
+      "orbPresets",
+      "OrbProps",
+      "OrbState"
+    ]
+  },
+  "waveform": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/audio/waveform",
+        "names": [
+          "Waveform",
+          "WaveformLive",
+          "WaveformLiveProps",
+          "WaveformProps"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "Waveform",
+        "props": [
+          {
+            "name": "peaks",
+            "type": "readonly number[]",
+            "optional": false,
+            "description": "The clip's shape, 0–1 per bar. However many you have is how many draw."
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "optional": true,
+            "description": "What the slider is called to assistive tech.",
+            "default": "\"Seek\""
+          },
+          {
+            "name": "onSeek",
+            "type": "(fraction: number) => void",
+            "optional": true,
+            "description": "Makes the strip a real slider over the clip."
+          },
+          {
+            "name": "progress",
+            "type": "number",
+            "optional": true,
+            "description": "How much has played, 0–1. Bars up to here take the primary tint.",
+            "default": "0"
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"div\">, \"children\" | \"onSeek\">"
+        ]
+      },
+      {
+        "name": "WaveformLive",
+        "description": "The level as it happens: each new reading pushes in from the end and the window slides, so speech reads as weather moving across the strip rather than one bar twitching.",
+        "props": [
+          {
+            "name": "level",
+            "type": "number",
+            "optional": false,
+            "description": "The room right now, 0–1 — `use-audio-level`'s number."
+          },
+          {
+            "name": "bars",
+            "type": "number",
+            "optional": true,
+            "description": "How much history stands in the window.",
+            "default": "LIVE_BARS"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "optional": true,
+            "description": "Announced state, since the bars themselves are decoration.",
+            "default": "\"Microphone level\""
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<\"div\">, \"children\">"
+        ]
+      }
+    ],
+    "exports": [
+      "WaveformLiveProps",
+      "WaveformProps"
+    ]
+  },
+  "audio-player": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/audio/audio-player",
+        "names": [
+          "AudioPlayer",
+          "AudioPlayerButton",
+          "AudioPlayerWaveform",
+          "AudioPlayerTime",
+          "AudioPlayerProps"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "AudioPlayer",
+        "props": [
+          {
+            "name": "src",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "name": "duration",
+            "type": "number",
+            "optional": true,
+            "description": "Read before metadata arrives — a blob URL reports its length late, and a player that says 0:00 until then reads as broken."
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "AudioPlayerButton",
+        "description": "The one control. Play becomes pause in place, and says which it is.",
+        "props": [],
+        "extends": [
+          "Omit<React.ComponentProps<typeof TooltipIconButton>, \"tooltip\" | \"children\">"
+        ]
+      },
+      {
+        "name": "AudioPlayerWaveform",
+        "description": "The clip's shape, scrubbable: progress comes from playback and a drag goes straight back into it.",
+        "props": [],
+        "extends": [
+          "Omit<React.ComponentProps<typeof Waveform>, \"progress\" | \"onSeek\">"
+        ]
+      },
+      {
+        "name": "AudioPlayerTime",
+        "description": "Elapsed over length. Tabular figures, so the digits ticking over do not push the row around — the same rule every timestamp here follows.",
+        "props": [],
+        "extends": [
+          "Omit<React.ComponentProps<\"span\">, \"children\">"
+        ]
+      }
+    ],
+    "exports": [
+      "AudioPlayerProps"
+    ]
+  },
+  "mic-menu": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/audio/mic-menu",
+        "names": [
+          "MicMenu",
+          "MicMenuTrigger",
+          "MicMenuContent",
+          "MicDevice",
+          "MicMenuProps",
+          "useMicDevices"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "MicMenu",
+        "props": [
+          {
+            "name": "children",
+            "type": "React.ReactNode",
+            "optional": true
+          },
+          {
+            "name": "defaultValue",
+            "type": "string",
+            "optional": true,
+            "default": "\"\""
+          },
+          {
+            "name": "onValueChange",
+            "type": "(deviceId: string) => void",
+            "optional": true
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "optional": true,
+            "description": "The chosen `deviceId`. Empty means the system default."
+          }
+        ],
+        "extends": [
+          "Omit<React.ComponentProps<typeof Menu>, \"children\">"
+        ]
+      },
+      {
+        "name": "MicMenuTrigger",
+        "props": [
+          {
+            "name": "showLabel",
+            "type": "boolean",
+            "optional": true,
+            "default": "false"
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<typeof MenuTrigger>"
+        ]
+      },
+      {
+        "name": "MicMenuContent",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<typeof MenuContent>"
+        ]
+      }
+    ],
+    "exports": [
+      "MicDevice",
+      "MicMenuProps",
+      "useMicDevices"
+    ]
+  },
+  "transcript": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/audio/transcript",
+        "names": [
+          "Transcript",
+          "TranscriptSegment",
+          "TranscriptSegmentProps"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "Transcript",
+        "description": "Speech, becoming text in front of you. A transcriber's defining state is *provisional*: words arrive as guesses, shimmer while the recogniser can still change its mind, and settle into ink when it commits. Interim text is therefore a first-class look here — the tw-shimmer sheen over muted text — rather than a style a demo fakes, and swapping a guessed segment for its final form is one prop flipping. The log follows itself the way a thread does: new lines keep the newest in view until the reader scrolls up to re-read, at which point following is theirs to resume. `role=\"log\"` says what this is, and the politeness means finished lines are read out without cutting anyone off.",
+        "props": [],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      },
+      {
+        "name": "TranscriptSegment",
+        "props": [
+          {
+            "name": "interim",
+            "type": "boolean",
+            "optional": true,
+            "description": "Still a guess: shimmering, muted, and hidden from the polite log until it settles, so a screen reader never hears a sentence that then un-happens.",
+            "default": "false"
+          },
+          {
+            "name": "speaker",
+            "type": "string",
+            "optional": true,
+            "description": "Who said it. Omitted, the line stands alone — a dictation, not a call."
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<\"p\">"
+        ]
+      }
+    ],
+    "exports": [
+      "TranscriptSegmentProps"
+    ]
+  },
+  "mesh-gradient": {
+    "imports": [
+      {
+        "module": "@/components/aiellie-ui/mesh-gradient",
+        "names": [
+          "MeshGradientBackground",
+          "MeshGradientBackgroundProps"
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "MeshGradientBackground",
+        "props": [
+          {
+            "name": "colors",
+            "type": "string[]",
+            "optional": true,
+            "default": "BRAND_COLORS"
+          },
+          {
+            "name": "distortion",
+            "type": "number",
+            "optional": true,
+            "default": "0.8"
+          },
+          {
+            "name": "speed",
+            "type": "number",
+            "optional": true,
+            "description": "Walking pace by default. 0 stands still.",
+            "default": "0.5"
+          },
+          {
+            "name": "swirl",
+            "type": "number",
+            "optional": true,
+            "default": "0.6"
+          }
+        ],
+        "extends": [
+          "React.ComponentProps<\"div\">"
+        ]
+      }
+    ],
+    "exports": [
+      "MeshGradientBackgroundProps"
+    ]
+  },
   "actions": {
     "imports": [
       {
@@ -5468,6 +5847,20 @@
     "exports": [
       "useCopyToClipboard",
       "UseCopyToClipboardOptions"
+    ]
+  },
+  "use-audio-level": {
+    "imports": [
+      {
+        "module": "@/hooks/use-audio-level",
+        "names": [
+          "useAudioLevel"
+        ]
+      }
+    ],
+    "components": [],
+    "exports": [
+      "useAudioLevel"
     ]
   },
   "code-icons": {

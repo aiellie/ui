@@ -1,0 +1,34 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "transcript-demo",
+  "title": "Transcript",
+  "description": "A call being written down as it happens: each line arrives as a shimmering guess that grows word by word and settles into ink — and the two states side by side, standing still.",
+  "registryDependencies": [
+    "https://ui.aiellie.dev/r/transcript.json"
+  ],
+  "files": [
+    {
+      "path": "examples/audio/transcript.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\n\nimport {\n  Transcript,\n  TranscriptSegment,\n} from \"@/components/aiellie-ui/audio/transcript\"\n\n/**\n * A call being written down as it happens. Each line arrives as a shimmering\n * guess that grows word by word, then settles into ink when the recogniser\n * commits — which is the state a transcriber lives in and the one this\n * element exists to draw. Loops.\n */\n\nconst SCRIPT: { speaker: string; text: string }[] = [\n  { speaker: \"Marta\", text: \"Did the flag land in the end?\" },\n  { speaker: \"You\", text: \"Last night, behind rollout dot tuesday.\" },\n  { speaker: \"Marta\", text: \"Staff first, or everyone at once?\" },\n  { speaker: \"You\", text: \"Staff first — everyone on Thursday.\" },\n  { speaker: \"Marta\", text: \"Good, I'll warn support this afternoon.\" },\n]\n\n/** Beats per line: its word count while interim, plus one settled beat. */\nconst BEATS = SCRIPT.map((line) => line.text.split(\" \").length + 1)\nconst TOTAL = BEATS.reduce((sum, beats) => sum + beats, 0) + 4\n\nexport function TranscriptDemo() {\n  const [beat, setBeat] = React.useState(0)\n\n  React.useEffect(() => {\n    const id = setInterval(() => setBeat((b) => (b + 1) % TOTAL), 380)\n    return () => clearInterval(id)\n  }, [])\n\n  /* Walk the script with what is left of the clock: everything before the\n     cursor is settled, the line under it shows only the words that have\n     arrived, everything after does not exist yet. */\n  let remaining = beat\n  const lines: {\n    speaker: string\n    text: string\n    interim: boolean\n  }[] = []\n  for (let i = 0; i < SCRIPT.length; i++) {\n    const line = SCRIPT[i]\n    const words = line.text.split(\" \")\n    if (remaining >= BEATS[i]) {\n      lines.push({ speaker: line.speaker, text: line.text, interim: false })\n      remaining -= BEATS[i]\n      continue\n    }\n    if (remaining > 0) {\n      lines.push({\n        speaker: line.speaker,\n        text: words.slice(0, remaining).join(\" \"),\n        interim: true,\n      })\n    }\n    break\n  }\n\n  return (\n    <div className=\"w-full max-w-sm\">\n      <Transcript>\n        {lines.map((line, index) => (\n          <TranscriptSegment\n            key={index}\n            speaker={line.speaker}\n            interim={line.interim}\n          >\n            {line.text}\n          </TranscriptSegment>\n        ))}\n      </Transcript>\n    </div>\n  )\n}\n\n/** The two states side by side and standing still, for reading the design\n * rather than catching it. */\nexport function TranscriptStatesDemo() {\n  return (\n    <div className=\"w-full max-w-sm\">\n      <Transcript>\n        <TranscriptSegment speaker=\"Marta\">\n          Did the flag land in the end?\n        </TranscriptSegment>\n        <TranscriptSegment speaker=\"You\">\n          Last night, behind rollout dot tuesday.\n        </TranscriptSegment>\n        <TranscriptSegment speaker=\"Marta\" interim>\n          Staff first, or every\n        </TranscriptSegment>\n      </Transcript>\n    </div>\n  )\n}\n",
+      "type": "registry:example",
+      "target": "examples/audio/transcript.tsx"
+    }
+  ],
+  "meta": {
+    "variants": [
+      {
+        "name": "Live",
+        "demo": "TranscriptDemo"
+      },
+      {
+        "name": "States",
+        "demo": "TranscriptStatesDemo"
+      }
+    ],
+    "wide": false
+  },
+  "categories": [
+    "audio"
+  ],
+  "type": "registry:example"
+}

@@ -70,7 +70,7 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.141 0.005 285.823);
   --primary: oklch(0.585 0.233 277.117);
-  --primary-foreground: oklch(.962 0.018 272.314);
+  --primary-foreground: oklch(0.962 0.018 272.314);
   --secondary: oklch(0.967 0.001 286.375);
   --secondary-foreground: oklch(0.21 0.006 285.885);
   --muted: oklch(0.967 0.001 286.375);
@@ -109,7 +109,7 @@
   --popover: oklch(0.21 0.006 285.885);
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.585 0.233 277.117);
-  --primary-foreground: oklch(.962 0.018 272.314);
+  --primary-foreground: oklch(0.962 0.018 272.314);
   --secondary: oklch(0.274 0.006 286.033);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.274 0.006 286.033);
@@ -147,17 +147,17 @@
   }
   html {
     @apply overscroll-y-none scroll-smooth;
-    }
-    ::selection {
-      @apply bg-selection text-selection-foreground;
-    }
-    * {
-      scrollbar-color: var(--border) transparent;
-    } 
-    a {
-      @apply hover:text-link;
-    }
   }
+  ::selection {
+    @apply bg-selection text-selection-foreground;
+  }
+  * {
+    scrollbar-color: var(--border) transparent;
+  }
+  a {
+    @apply hover:text-link;
+  }
+}
 @utility bg-dotted {
   background-image: radial-gradient(
     color-mix(in oklch, var(--border) 70%, transparent) 1px,
@@ -165,6 +165,44 @@
   );
   background-size: 16px 16px;
 }
-button:not(:disabled), [role="button"]:not(:disabled) {
+button:not(:disabled),
+[role="button"]:not(:disabled) {
   cursor: pointer;
+}
+/* The orb's body language. Keyframes rather than transitions because these
+   run forever: a breathe at rest, a pulse while speaking, a slow sway while
+   asleep. The orb element references them by name, and its registry item
+   carries this block so an install brings the breathing with it. */
+@keyframes orb-breathe {
+  0%,
+  100% {
+    scale: 1;
   }
+  50% {
+    scale: 1.02;
+  }
+}
+@keyframes orb-pulse {
+  0%,
+  100% {
+    scale: 1;
+  }
+  30% {
+    scale: 1.06;
+  }
+  60% {
+    scale: 0.99;
+  }
+  80% {
+    scale: 1.05;
+  }
+}
+@keyframes orb-drowse {
+  0%,
+  100% {
+    scale: 0.86;
+  }
+  50% {
+    scale: 0.9;
+  }
+}

@@ -838,4 +838,123 @@ export const aiellieui: Registry["items"] = [
       },
     ],
   },
+  {
+    name: "orb",
+    type: "registry:ui",
+    title: "Orb",
+    description:
+      "The assistant, embodied: a sphere of moving colour that idles, listens, thinks, speaks and sleeps — its look named by a seed word that always resolves to the same palette, its surface swelling with the microphone, and its body language plain CSS with a motion-reduce escape.",
+    dependencies: ["@paper-design/shaders-react"],
+    registryDependencies: ["utils"],
+    css: {
+      "@keyframes orb-breathe": {
+        "0%, 100%": { scale: "1" },
+        "50%": { scale: "1.02" },
+      },
+      "@keyframes orb-pulse": {
+        "0%, 100%": { scale: "1" },
+        "30%": { scale: "1.06" },
+        "60%": { scale: "0.99" },
+        "80%": { scale: "1.05" },
+      },
+      "@keyframes orb-drowse": {
+        "0%, 100%": { scale: "0.86" },
+        "50%": { scale: "0.9" },
+      },
+    },
+    files: [
+      {
+        path: "components/aiellie-ui/audio/orb.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/audio/orb.tsx",
+      },
+    ],
+  },
+  {
+    name: "waveform",
+    type: "registry:ui",
+    title: "Waveform",
+    description:
+      "Sound as the bars everyone already reads, in audio's two tenses: a clip's peaks laid out whole and scrubbable through one real range input, and a live window of the room sliding as the level arrives.",
+    registryDependencies: ["utils"],
+    files: [
+      {
+        path: "components/aiellie-ui/audio/waveform.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/audio/waveform.tsx",
+      },
+    ],
+  },
+  {
+    name: "audio-player",
+    type: "registry:ui",
+    title: "Audio Player",
+    description:
+      "A clip in a chat, playable where it stands: a play that becomes a pause, the clip's own shape to scrub through, and the time in digits that do not jitter — parts around a real audio element that keeps the state.",
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    registryDependencies: [
+      "actions",
+      "waveform",
+      "tooltip-icon-button",
+      "utils",
+    ],
+    files: [
+      {
+        path: "components/aiellie-ui/audio/audio-player.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/audio/audio-player.tsx",
+      },
+    ],
+  },
+  {
+    name: "mic-menu",
+    type: "registry:ui",
+    title: "Mic Menu",
+    description:
+      "Which microphone, chosen where the call is set up — honest about the browser blanking names before access is granted, numbered until then, with one row that asks and a list that redraws when a headset is plugged in.",
+    dependencies: ["@hugeicons/core-free-icons", "@hugeicons/react"],
+    registryDependencies: ["menu", "tooltip-icon-button", "utils"],
+    files: [
+      {
+        path: "components/aiellie-ui/audio/mic-menu.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/audio/mic-menu.tsx",
+      },
+    ],
+  },
+  {
+    name: "transcript",
+    type: "registry:ui",
+    title: "Transcript",
+    description:
+      "Speech becoming text: guessed words shimmer while the recogniser can still change its mind and settle into ink when it commits, in a log that follows itself and never reads a sentence out before it is final.",
+    dependencies: ["tw-shimmer"],
+    css: {
+      '@import "tw-shimmer"': {},
+    },
+    registryDependencies: ["utils"],
+    files: [
+      {
+        path: "components/aiellie-ui/audio/transcript.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/audio/transcript.tsx",
+      },
+    ],
+  },
+  {
+    name: "mesh-gradient",
+    type: "registry:ui",
+    title: "Mesh Gradient",
+    description:
+      "Moving colour to stand things on: the house indigo folding over itself at a walking pace, standing still for anyone who asked for less motion, with the children rendered above the shader so it backs a whole card as easily as it fills a panel.",
+    dependencies: ["@paper-design/shaders-react"],
+    registryDependencies: ["utils"],
+    files: [
+      {
+        path: "components/aiellie-ui/mesh-gradient.tsx",
+        type: "registry:ui",
+        target: "components/aiellie-ui/mesh-gradient.tsx",
+      },
+    ],
+  },
 ]
